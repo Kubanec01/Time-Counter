@@ -4,9 +4,6 @@ import { useState } from "react";
 const ProjectsBars = () => {
   const [projectsData, setProjectsData] = useState(projects);
 
-  console.log("This is useState =>", projectsData.length);
-  console.log("This is useState =>", projects.length);
-
   // Delete Project Function
   const deleteDataItem = (index: number) => {
     console.log("button was clicked");
@@ -15,7 +12,7 @@ const ProjectsBars = () => {
     setProjectsData(currProjects);
   };
 
-//   ! vo vykreslovani a mazani sa bez servera vobec nepohnem v tomto
+  //   ! vo vykreslovani a mazani sa bez servera vobec nepohnem v tomto
 
   return (
     <section className="w-full h-[60%] flex justify-center items-center gap-5">

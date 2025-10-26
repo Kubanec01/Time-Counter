@@ -1,30 +1,33 @@
 "use client";
-import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
-import { auth } from "@/app/firebase/config";
+
 import { useState } from "react";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { auth } from "@/app/firebase/config";
+import { useRouter } from "next/navigation";
 
 const page = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [createUserWithEmailAndPassword] =
-    useCreateUserWithEmailAndPassword(auth);
+  const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
+  const router = useRouter();
 
-  const handleSignUp = async () => {
+  const handleSignIn = async () => {
     try {
-      const resp = await createUserWithEmailAndPassword(email, password);
+      const resp = await signInWithEmailAndPassword(email, password);
       console.log(resp);
       setEmail("");
       setPassword("");
+      router.push("/");
     } catch (err) {
-      console.error("Error Create User With Email Or Password.", err);
+      console.error("Error try to Sign In", err);
     }
   };
 
   return (
     <section className="w-full h-screen flex justify-center items-center">
       <div className="border w-[400px] h-[300px] rounded-2xl flex flex-col px-4">
-        <h1 className="text-3xl text-center mt-8">Sign Up</h1>
+        <h1 className="text-3xl text-center mt-8">Sign In</h1>
         <div className="w-full flex flex-col justify-center items-center flex-1 gap-4">
           {/* Email Input */}
           <input
@@ -41,7 +44,7 @@ const page = () => {
             type="password"
           />
           <button
-            onClick={handleSignUp}
+            onClick={handleSignIn}
             className="text-lg border rounded-2xl px-4 py-1"
           >
             Sign Up
