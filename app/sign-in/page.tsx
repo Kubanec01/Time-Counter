@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "@/app/firebase/config";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const page = () => {
   const [email, setEmail] = useState("");
@@ -25,7 +26,7 @@ const page = () => {
   };
 
   return (
-    <section className="w-full h-screen flex justify-center items-center">
+    <section className="w-full h-screen flex flex-col justify-center items-center">
       <div className="border w-[400px] h-[300px] rounded-2xl flex flex-col px-4">
         <h1 className="text-3xl text-center mt-8">Sign In</h1>
         <div className="w-full flex flex-col justify-center items-center flex-1 gap-4">
@@ -47,10 +48,14 @@ const page = () => {
             onClick={handleSignIn}
             className="text-lg border rounded-2xl px-4 py-1"
           >
-            Sign Up
+            Sign In
           </button>
         </div>
       </div>
+      <Link
+      href="/sign-up"
+      className="mt-6 cursor-pointer border-b-none hover:border-b"
+      >Don't have account? Sign Up</Link>
     </section>
   );
 };
