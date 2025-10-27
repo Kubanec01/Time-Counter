@@ -7,7 +7,11 @@ interface projectProps {
 const ProjectCart = ({ ...props }: projectProps) => {
   const project = projects.find((i) => i.id === props.id);
 
+  let sections = project?.sections;
+
+  // ! tu treba doladit do buducna navigaciu na 404 stranku
   if (!project) return;
+  if (!sections) sections = [];
 
   return (
     <div className="border max-w-[1200px] w-11/12 h-[700px] m-auto rounded-3xl overflow-hidden flex flex-col">
@@ -18,8 +22,11 @@ const ProjectCart = ({ ...props }: projectProps) => {
         </button>
       </div>
       <ul className="border flex-1 mt-10 px-6 py-2">
-        {project.sections.map((i) => (
-          <li className="border w-full h-18 rounded-2xl flex items-center justify-between">
+        {sections.map((i) => (
+          <li
+            key={i.id}
+            className="border w-full h-18 rounded-2xl flex items-center justify-between"
+          >
             <div className="w-4/12 flex items-center justify-start text-2xl pl-16">
               <h1>{i.title}</h1>
             </div>

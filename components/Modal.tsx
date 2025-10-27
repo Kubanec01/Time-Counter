@@ -1,6 +1,6 @@
 "use client";
-
-import { projects } from "@/data/projects";
+import { auth, db } from "@/app/firebase/config";
+import { arrayUnion, doc, setDoc, updateDoc } from "firebase/firestore";
 import { Dispatch, SetStateAction, useState } from "react";
 
 interface ModalProps {
@@ -11,18 +11,29 @@ interface ModalProps {
 
 const Modal = ({ ...props }: ModalProps) => {
   // Data Management
-  const data = projects;
-
-
   const [inputValue, setInputValue] = useState<string>("");
 
-  const createNewData = (e: React.FormEvent<HTMLFormElement>) => {
+  const userId = auth.currentUser?.uid;
+
+  const createNewData = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    data.push({ id: inputValue.replace(/\s+/g, ""), title: inputValue });
-    console.log("Form Send");
+    if (!userId) return;
+
+    const useRef = doc(db, "users", userId);
+
+    const newProject = {
+      id: inputValue,
+      title: inputValue,
+      sections: [],
+    };
+
     setInputValue("");
-    closeModal();
+    props.setIsModalOpen(false);
+
+    await updateDoc(useRef, {
+      projects: arrayUnion(newProject),
+    });
   };
 
   //   Style

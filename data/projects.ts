@@ -7,7 +7,7 @@ interface Section {
 interface Project {
   id: string;
   title: string;
-  sections: Section[];
+  sections?: Section[];
 }
 
 export let projects: Project[] = [

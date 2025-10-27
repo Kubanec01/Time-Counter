@@ -1,12 +1,16 @@
 "use client";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
-import { auth } from "@/app/firebase/config";
+import { auth, db } from "@/app/firebase/config";
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { collection, doc, getDocs, setDoc } from "firebase/firestore";
 
 const page = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const router = useRouter();
 
   const [createUserWithEmailAndPassword] =
     useCreateUserWithEmailAndPassword(auth);
@@ -14,9 +18,17 @@ const page = () => {
   const handleSignUp = async () => {
     try {
       const resp = await createUserWithEmailAndPassword(email, password);
-      console.log(resp);
-      setEmail("");
-      setPassword("");
+
+      if (resp?.user) {
+        await setDoc(doc(db, "users", resp.user.uid), {
+          email: resp.user.email,
+        });
+        setEmail("");
+        setPassword("");
+        router.push("/");
+      } else {
+        console.log("Error With Sign Up User");
+      }
     } catch (err) {
       console.error("Error Create User With Email Or Password.", err);
     }

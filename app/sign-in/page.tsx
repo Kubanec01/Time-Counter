@@ -16,10 +16,15 @@ const page = () => {
   const handleSignIn = async () => {
     try {
       const resp = await signInWithEmailAndPassword(email, password);
-      console.log(resp);
-      setEmail("");
-      setPassword("");
-      router.push("/");
+
+      if(resp?.user) {
+        console.log(resp);
+        setEmail("");
+        setPassword("");
+        router.push("/");
+      } else {
+        console.log("User Not Found")
+      }
     } catch (err) {
       console.error("Error try to Sign In", err);
     }
