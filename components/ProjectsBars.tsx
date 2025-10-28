@@ -1,5 +1,6 @@
 import { auth, db } from "@/app/firebase/config";
 import { doc, onSnapshot } from "firebase/firestore";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 interface Section {
@@ -46,9 +47,11 @@ const ProjectsBars = () => {
             className="border w-[300px] h-full rounded-2xl flex flex-col justify-center items-center"
           >
             <h1 className="mb-16 text-center text-2xl">{project.title}</h1>
-            <button className=" text-base py-2 px-4 rounded-2xl cursor-pointer bg-blue-600 text-white">
+            <Link
+            href={`/projects/${project.id}`}
+            className=" text-base py-2 px-4 rounded-2xl cursor-pointer bg-blue-600 text-white">
               Enter Project
-            </button>
+            </Link>
           </div>
         ))
       )}

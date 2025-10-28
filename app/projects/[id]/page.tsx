@@ -4,8 +4,8 @@ import { useParams } from "next/navigation";
 import ProjectCart from "./components/ProjectCart";
 
 const page = () => {
-  const params = useParams();
-  const id = params.id;
+  const {id} = useParams();
+  
 
   return (
     <section className="w-full h-screen flex justify-center items-center">

@@ -7,22 +7,43 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "@/app/firebase/config";
 import { useRouter } from "next/navigation";
 import { signOut } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [user, loading] = useAuthState(auth);
+  const [inputValue, setInputValue] = useState<string>("");
 
   const router = useRouter();
+
+  const userId = auth.currentUser?.uid;
+
+  const createNewData = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!userId) return;
+
+    const useRef = doc(db, "users", userId);
+
+    const newProject = {
+      id: inputValue.replace(/\s+/g, ""),
+      title: inputValue,
+      sections: [],
+    };
+
+    setInputValue("");
+    setIsModalOpen(false);
+
+    await updateDoc(useRef, {
+      projects: arrayUnion(newProject),
+    });
+  };
 
   useEffect(() => {
     if (!loading && !user) {
       router.push("/sign-in");
     }
   }, [user, loading, router]);
-
-  
-
 
   return (
     <section className="text-4xl w-full h-screen flex flex-col justify-center items-center">
@@ -48,6 +69,9 @@ export default function Home() {
         title="Project"
         setIsModalOpen={setIsModalOpen}
         isModalOpen={isModalOpen}
+        setInputValue={setInputValue}
+        inputValue={inputValue}
+        formFunction={createNewData}
       />
     </section>
   );

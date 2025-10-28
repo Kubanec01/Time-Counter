@@ -1,41 +1,15 @@
-"use client";
-import { auth, db } from "@/app/firebase/config";
-import { arrayUnion, doc, setDoc, updateDoc } from "firebase/firestore";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 
 interface ModalProps {
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
   isModalOpen: boolean;
+  setInputValue: Dispatch<SetStateAction<string>>;
+  inputValue: string;
   title: string;
+  formFunction: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
 const Modal = ({ ...props }: ModalProps) => {
-  // Data Management
-  const [inputValue, setInputValue] = useState<string>("");
-
-  const userId = auth.currentUser?.uid;
-
-  const createNewData = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (!userId) return;
-
-    const useRef = doc(db, "users", userId);
-
-    const newProject = {
-      id: inputValue,
-      title: inputValue,
-      sections: [],
-    };
-
-    setInputValue("");
-    props.setIsModalOpen(false);
-
-    await updateDoc(useRef, {
-      projects: arrayUnion(newProject),
-    });
-  };
-
   //   Style
   const openStyle = props.isModalOpen ? "flex" : "hidden";
 
@@ -48,13 +22,13 @@ const Modal = ({ ...props }: ModalProps) => {
     >
       <div className="border-2 border-[#bababa] w-[500px] h-[280px] rounded-3xl bg-[white] px-6 py-8 -mt-[100px]">
         <form
-          onSubmit={createNewData}
-          className="w-[374px] h-full mx-auto flex flex-col justify-between items-center"
+          onSubmit={props.formFunction}
+          className="w-[374px] h-full mx-auto flex flex-col justify-between items-center text-3xl"
         >
-          <h1>Create New {props.title}</h1>
+          <h1>Create New {props.title.toUpperCase()}</h1>
           <input
-            onChange={(v) => setInputValue(v.target.value)}
-            value={inputValue}
+            onChange={(v) => props.setInputValue(v.target.value)}
+            value={props.inputValue}
             type="text"
             placeholder="Project Name..."
             className="border w-full rounded-xl text-xl py-2 px-2 focus:outline-blue-300 text-[#403f3f]"
