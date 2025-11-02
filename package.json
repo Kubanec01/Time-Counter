@@ -13,7 +13,8 @@
     "next": "16.0.0",
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "react-firebase-hooks": "^5.1.1"
+    "react-firebase-hooks": "^5.1.1",
+    "react-timer-hook": "^4.0.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

@@ -1,17 +1,16 @@
+"use client";
+
 import { auth, db } from "@/app/firebase/config";
 import Modal from "@/components/Modal";
-import { doc, getDoc, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
+import { doc, getDoc, onSnapshot, setDoc } from "firebase/firestore";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useStopwatch } from "react-timer-hook";
+import SectionCart from "./components/SectionCart";
 
 interface projectProps {
   id: string;
-}
-
-interface Section {
-  id: string;
-  title: string;
-  time: string;
 }
 
 interface Section {
@@ -30,11 +29,42 @@ const ProjectCart = ({ ...props }: projectProps) => {
   const [sections, setSections] = useState<Section[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("");
+  const [userId, setUserId] = useState<string | null>(null);
 
   const params = useParams();
-  const userId = auth.currentUser?.uid;
   const projectId = params.id;
 
+  // CallbackUser Function
+  useEffect(() => {
+    const unsubAuth = onAuthStateChanged(auth, (user) => {
+      setUserId(user?.uid || null);
+    });
+
+    return () => unsubAuth();
+  }, []);
+
+  // Load Sections Data
+  useEffect(() => {
+    if (!userId || !projectId) return;
+
+    const userRef = doc(db, "users", userId);
+
+    const fetchSections = onSnapshot(userRef, (snap) => {
+      if (snap.exists()) {
+        const data = snap.data();
+        const projects = data.projects || [];
+
+        const project = projects.find((p: Project) => p.id === projectId);
+        setSections(project.sections || []);
+      } else {
+        setSections([]);
+      }
+    });
+
+    return () => fetchSections();
+  }, [userId, projectId]);
+
+  // Add Section Function
   const createNewData = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -66,26 +96,8 @@ const ProjectCart = ({ ...props }: projectProps) => {
     setIsModalOpen(false);
   };
 
-  // Load Sections Data
-  useEffect(() => {
-    if (!userId || !projectId) return;
-
-    const userRef = doc(db, "users", userId);
-
-    const fetchSections = onSnapshot(userRef, (snap) => {
-      if (snap.exists()) {
-        const data = snap.data();
-        const projects = data.projects || [];
-
-        const project = projects.find((p: Project) => p.id === projectId);
-        setSections(project.sections || []);
-      } else {
-        setSections([]);
-      }
-    });
-
-    return () => fetchSections();
-  }, [userId, projectId]);
+  const { seconds, minutes, hours, days, isRunning, start, pause, reset } =
+    useStopwatch({ autoStart: false });
 
   return (
     <div className="border max-w-[1200px] w-11/12 h-[700px] m-auto rounded-3xl overflow-hidden flex flex-col">
@@ -102,25 +114,12 @@ const ProjectCart = ({ ...props }: projectProps) => {
         {sections.length > 0 ? (
           <>
             {sections.map((i) => (
-              <li
+              <SectionCart
                 key={i.id}
-                className="border w-full h-18 rounded-2xl flex items-center justify-between"
-              >
-                <div className="w-4/12 flex items-center justify-start text-2xl pl-16">
-                  <h1>{i.title}</h1>
-                </div>
-                <div className="w-4/12 flex items-center justify-center text-2xl">
-                  <span>{i.time}</span>
-                </div>
-                <div className="w-4/12 flex items-center justify-center gap-10">
-                  <button className="border px-3 py-1 rounded-2xl cursor-pointer">
-                    Start/Stop
-                  </button>
-                  <button className="border px-3 py-1 rounded-2xl cursor-pointer">
-                    Delete
-                  </button>
-                </div>
-              </li>
+                sectionId={i.id}
+                title={i.title}
+                userId={userId}
+              />
             ))}
           </>
         ) : (
