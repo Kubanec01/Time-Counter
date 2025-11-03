@@ -73,7 +73,7 @@ const ProjectCart = ({ ...props }: projectProps) => {
     const newSection: Section = {
       id: inputValue.replace(/\s+/g, ""),
       title: inputValue.toUpperCase(),
-      time: "00:00:00",
+      time: "0:0:0",
     };
 
     const userRef = doc(db, "users", userId);
