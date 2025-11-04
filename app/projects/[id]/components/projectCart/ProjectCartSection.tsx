@@ -8,22 +8,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useStopwatch } from "react-timer-hook";
 import SectionCart from "./components/SectionCart";
-
-interface projectProps {
-  id: string;
-}
-
-interface Section {
-  id: string;
-  title: string;
-  time: string;
-}
-
-interface Project {
-  id: string;
-  title: string;
-  sections?: Section[];
-}
+import { Project, projectProps, Section } from "@/types";
 
 const ProjectCart = ({ ...props }: projectProps) => {
   const [sections, setSections] = useState<Section[]>([]);
@@ -74,6 +59,7 @@ const ProjectCart = ({ ...props }: projectProps) => {
       id: inputValue.replace(/\s+/g, ""),
       title: inputValue.toUpperCase(),
       time: "0:0:0",
+      timeCheckout: [],
     };
 
     const userRef = doc(db, "users", userId);

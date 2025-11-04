@@ -6,27 +6,9 @@ import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useStopwatch } from "react-timer-hook";
+import { Project, SectionCartProps, Section, Checkout } from "@/types";
 
-interface SectionCart {
-  sectionId: string;
-  title: string;
-  userId: string | null;
-  // time: string;
-}
-
-interface Section {
-  id: string;
-  title: string;
-  time: string;
-}
-
-interface Project {
-  id: string;
-  title: string;
-  sections?: Section[];
-}
-
-const SectionCart = ({ ...props }: SectionCart) => {
+const SectionCart = ({ ...props }: SectionCartProps) => {
   const params = useParams();
   const projectId = params.id;
 
@@ -40,6 +22,7 @@ const SectionCart = ({ ...props }: SectionCart) => {
   const [btnTittle, setBtnTittle] = useState<"Start" | "Pause">("Start");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [startTime, setStartTime] = useState("");
 
   let newTime = `${hours.toString()}:${minutes.toString()}:${seconds.toString()}`;
 
@@ -68,19 +51,6 @@ const SectionCart = ({ ...props }: SectionCart) => {
       await updateDoc(userRef, {
         projects: updateProjects,
       });
-    }
-  };
-
-  const toggleTimer = () => {
-    if (!isRunning) {
-      setIsRunning(true);
-      start();
-      setBtnTittle("Pause");
-    } else {
-      setIsRunning(false);
-      pause();
-      setBtnTittle("Start");
-      sendData();
     }
   };
 
@@ -155,6 +125,67 @@ const SectionCart = ({ ...props }: SectionCart) => {
   ]);
 
   const isAnySections = sections.length > 0 ? true : false;
+
+  const date = new Date();
+
+  const toggleTimer = () => {
+    const now = new Date();
+    const formattedTime = `${now.getHours()}:${now.getMinutes()}`;
+
+    if (!isRunning) {
+      setIsRunning(true);
+      setStartTime(formattedTime);
+      start();
+      setBtnTittle("Pause");
+    } else {
+      setIsRunning(false);
+      pause();
+      setBtnTittle("Start");
+      sendData();
+      logTimeCheckout(formattedTime);
+    }
+  };
+
+  const logTimeCheckout = async (stopTimeNow: string) => {
+    if (!props.userId || !projectId) return;
+
+    const userRef = doc(db, "users", props.userId);
+    const userSnap = await getDoc(userRef);
+
+    if (userSnap.exists()) {
+      const data = userSnap.data();
+      const projects: Project[] = data.projects || [];
+
+      const updatedProjects = projects.map((p) => {
+        if (p.id !== projectId) return p;
+
+        const updatedSections = p.sections?.map((s: Section) => {
+          if (s.id === props.sectionId) {
+            const arrLength = s.timeCheckout.length;
+
+            const newCheckout: Checkout = {
+              id: arrLength + 1,
+              startTime: startTime,
+              stopTime: stopTimeNow,
+              clockTime: `${hours}:${minutes}:${seconds}`,
+              date: `${date.getDate()}.${
+                date.getMonth() + 1
+              }.${date.getFullYear()}`,
+            };
+
+            const updatedTimeCheckout = s.timeCheckout
+              ? [...s.timeCheckout, newCheckout]
+              : [newCheckout];
+
+            return { ...s, timeCheckout: updatedTimeCheckout };
+          }
+          return s;
+        });
+        return { ...p, sections: updatedSections };
+      });
+      await updateDoc(userRef, { projects: updatedProjects });
+    }
+  };
 
   return (
     <li
