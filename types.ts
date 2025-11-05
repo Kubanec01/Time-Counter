@@ -2,8 +2,9 @@ export interface projectProps {
   id: string;
 }
 
-export interface Checkout {
+export interface TimeCheckout {
   id: number;
+  sectionId: string;
   startTime: string;
   stopTime: string;
   clockTime: string;
@@ -11,20 +12,20 @@ export interface Checkout {
 }
 
 export interface Section {
-  id: string;
+  projectId: string;
+  sectionId: string;
   title: string;
   time: string;
-  timeCheckout: Checkout[];
 }
 
 export interface Project {
-  id: string;
+  projectId: string;
   title: string;
-  sections?: Section[];
 }
 
 export interface SectionCartProps {
   sectionId: string;
+  projectId: string;
   title: string;
   userId: string | null;
 }

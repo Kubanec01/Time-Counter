@@ -3,7 +3,14 @@
 import { auth, db } from "@/app/firebase/config";
 import Modal from "@/components/Modal";
 import { onAuthStateChanged } from "firebase/auth";
-import { doc, getDoc, onSnapshot, setDoc } from "firebase/firestore";
+import {
+  arrayUnion,
+  doc,
+  getDoc,
+  onSnapshot,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useStopwatch } from "react-timer-hook";
@@ -16,8 +23,7 @@ const ProjectCart = ({ ...props }: projectProps) => {
   const [inputValue, setInputValue] = useState<string>("");
   const [userId, setUserId] = useState<string | null>(null);
 
-  const params = useParams();
-  const projectId = params.id;
+  const projectId = props.id;
 
   // CallbackUser Function
   useEffect(() => {
@@ -28,62 +34,42 @@ const ProjectCart = ({ ...props }: projectProps) => {
     return () => unsubAuth();
   }, []);
 
-  // Load Sections Data
-  useEffect(() => {
-    if (!userId || !projectId) return;
-
-    const userRef = doc(db, "users", userId);
-
-    const fetchSections = onSnapshot(userRef, (snap) => {
-      if (snap.exists()) {
-        const data = snap.data();
-        const projects = data.projects || [];
-
-        const project = projects.find((p: Project) => p.id === projectId);
-        setSections(project.sections || []);
-      } else {
-        setSections([]);
-      }
-    });
-
-    return () => fetchSections();
-  }, [userId, projectId]);
-
-  // Add Section Function
-  const createNewData = async (e: React.FormEvent<HTMLFormElement>) => {
+  const createSection = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!userId || !projectId) return;
+    if (!userId) return;
 
-    const newSection: Section = {
-      id: inputValue.replace(/\s+/g, ""),
-      title: inputValue.toUpperCase(),
+    const newSection = {
+      projectId: projectId,
+      sectionId: inputValue.replace(/\s+/g, ""),
+      title: inputValue,
       time: "0:0:0",
-      timeCheckout: [],
     };
 
     const userRef = doc(db, "users", userId);
-    const userSnap = await getDoc(userRef);
 
-    if (userSnap.exists()) {
-      const userData = userSnap.data();
-      const projects = userData.projects || [];
-
-      const updatedProjects = projects.map((p: Project) =>
-        p.id === projectId
-          ? { ...p, sections: [...(p.sections || []), newSection] }
-          : p
-      );
-
-      await setDoc(userRef, { projects: updatedProjects }, { merge: true });
-    }
-
+    await updateDoc(userRef, { projectsSections: arrayUnion(newSection) });
     setInputValue("");
-    setIsModalOpen(false);
   };
 
-  const { seconds, minutes, hours, days, isRunning, start, pause, reset } =
-    useStopwatch({ autoStart: false });
+  useEffect(() => {
+    if (!userId || !projectId) return;
+    const userRef = doc(db, "users", userId);
+
+    const getSectionsData = onSnapshot(userRef, (snap) => {
+      if (snap.exists()) {
+        const data = snap.data();
+        const sections = data.projectsSections || [];
+
+        const validSections = sections.filter(
+          (s: Section) => s.projectId === projectId
+        );
+        setSections(validSections);
+      } else setSections([]);
+    });
+
+    return () => getSectionsData();
+  }, [userId, projectId]);
 
   return (
     <div className="border max-w-[1200px] w-11/12 h-[700px] m-auto rounded-3xl overflow-hidden flex flex-col">
@@ -101,8 +87,9 @@ const ProjectCart = ({ ...props }: projectProps) => {
           <>
             {sections.map((i) => (
               <SectionCart
-                key={i.id}
-                sectionId={i.id}
+                key={i.sectionId}
+                sectionId={i.sectionId}
+                projectId={i.projectId}
                 title={i.title}
                 userId={userId}
               />
@@ -118,7 +105,7 @@ const ProjectCart = ({ ...props }: projectProps) => {
         isModalOpen={isModalOpen}
         setInputValue={setInputValue}
         inputValue={inputValue}
-        formFunction={createNewData}
+        formFunction={createSection}
       />
     </div>
   );

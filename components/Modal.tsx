@@ -36,12 +36,18 @@ const Modal = ({ ...props }: ModalProps) => {
           <div className="w-full flex justify-between">
             <button
               type="button"
-              onClick={() => closeModal()}
+              onClick={() => {
+                closeModal();
+                props.setInputValue("");
+              }}
               className="text-xl px-8 py-1 rounded-xl cursor-pointer border-red-600 text-red-600 border-2"
             >
               Back
             </button>
             <button
+              onClick={() => {
+                props.setIsModalOpen(false);
+              }}
               type="submit"
               className="text-xl px-8 py-1 rounded-xl cursor-pointer bg-blue-600 text-white border-2 border-blue-600"
             >

@@ -1,19 +1,9 @@
 import { auth, db } from "@/app/firebase/config";
+import { Project } from "@/types";
 import { doc, onSnapshot } from "firebase/firestore";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-interface Section {
-  id: string;
-  title: string;
-  time: string;
-}
-
-interface Project {
-  id: string;
-  title: string;
-  sections?: Section[];
-}
 
 const ProjectsBars = () => {
   const [projectsData, setProjectsData] = useState<Project[]>([]);
@@ -43,12 +33,12 @@ const ProjectsBars = () => {
       ) : (
         projectsData.map((project, index) => (
           <div
-            key={project.id}
+            key={project.projectId}
             className="border w-[300px] h-full rounded-2xl flex flex-col justify-center items-center"
           >
             <h1 className="mb-16 text-center text-2xl">{project.title}</h1>
             <Link
-            href={`/projects/${project.id}`}
+            href={`/projects/${project.projectId}`}
             className=" text-base py-2 px-4 rounded-2xl cursor-pointer bg-blue-600 text-white">
               Enter Project
             </Link>

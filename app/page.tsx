@@ -26,9 +26,8 @@ export default function Home() {
     const useRef = doc(db, "users", userId);
 
     const newProject = {
-      id: inputValue.replace(/\s+/g, ""),
+      projectId: inputValue.replace(/\s+/g, ""),
       title: inputValue,
-      sections: [],
     };
 
     setInputValue("");

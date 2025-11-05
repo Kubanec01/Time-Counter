@@ -2,85 +2,34 @@
 
 import { db } from "@/app/firebase/config";
 import DeleteModal from "@/components/DeleteModal";
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import {
+  arrayUnion,
+  doc,
+  getDoc,
+  onSnapshot,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useStopwatch } from "react-timer-hook";
-import { Project, SectionCartProps, Section, Checkout } from "@/types";
+import { Project, SectionCartProps, Section, TimeCheckout } from "@/types";
 
 const SectionCart = ({ ...props }: SectionCartProps) => {
-  const params = useParams();
-  const projectId = params.id;
-
-  const [dataTime, setDataTime] = useState<Date | undefined>(undefined);
-
   const { seconds, minutes, hours, start, pause, reset } = useStopwatch({
     autoStart: false,
   });
+
+  const [dataTime, setDataTime] = useState<Date | undefined>(undefined);
 
   const [isRunning, setIsRunning] = useState(false);
   const [btnTittle, setBtnTittle] = useState<"Start" | "Pause">("Start");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [startTime, setStartTime] = useState("");
+  const [subSections, setSubSections] = useState<TimeCheckout[] | []>([]);
 
   let newTime = `${hours.toString()}:${minutes.toString()}:${seconds.toString()}`;
-
-  const sendData = async () => {
-    if (!props.userId || !projectId) return;
-
-    const userRef = doc(db, "users", props.userId);
-    const userSnap = await getDoc(userRef);
-
-    if (userSnap.exists()) {
-      const userData = userSnap.data();
-      const projects: Project[] = userData.projects || [];
-
-      const updateProjects = projects.map((p: Project) => {
-        if (p.id !== projectId) return p;
-
-        const updatedSection = p.sections?.map((s: Section) => {
-          if (s.id === props.sectionId) {
-            return { ...s, time: newTime };
-          }
-          return s;
-        });
-        return { ...p, sections: updatedSection };
-      });
-
-      await updateDoc(userRef, {
-        projects: updateProjects,
-      });
-    }
-  };
-
-  // Fetch Time UseEffect
-  useEffect(() => {
-    const fetchInitialTime = async () => {
-      if (!props.userId || !projectId) return;
-
-      const userRef = doc(db, "users", props.userId);
-      const userSnap = await getDoc(userRef);
-
-      if (userSnap.exists()) {
-        const data = userSnap.data();
-        const project = data.projects.find((p: Project) => p.id === projectId);
-        const section: Section = project.sections.find(
-          (s: Section) => s.id === props.sectionId
-        );
-
-        if (section.time) {
-          const [h, m, s] = section.time.split(":").map(Number);
-          const totalSeconds = h * 3600 + m * 60 + s;
-
-          const currTime = new Date();
-          const offset = new Date(currTime.getTime() + totalSeconds * 1005);
-          setDataTime(offset);
-        }
-      }
-    };
-    fetchInitialTime();
-  }, [props.userId, projectId, props.sectionId]);
 
   // Set Time UseEffect
   useEffect(() => {
@@ -89,44 +38,113 @@ const SectionCart = ({ ...props }: SectionCartProps) => {
     }
   }, [dataTime, reset]);
 
-  const deleteSection = async () => {
-    if (!props.userId || !projectId) return;
+  const isAnySections = subSections.length > 0 ? true : false;
+
+  // Fetch Initial ClockTime
+  useEffect(() => {
+    const fetchInitialClockTime = async () => {
+      if (!props.userId || !props.projectId) return;
+
+      const userRef = doc(db, "users", props.userId);
+      const userSnap = await getDoc(userRef);
+
+      if (!userSnap.exists()) return;
+
+      const data = userSnap.data();
+      const section = data.projectsSections.find(
+        (s: Section) => s.sectionId === props.sectionId
+      );
+
+      if (section.time) {
+        const [h, m, s] = section.time.split(":").map(Number);
+        const totalSeconds = h * 3600 + m * 60 + s;
+
+        const currTime = new Date();
+        const offset = new Date(currTime.getTime() + totalSeconds * 1005);
+        setDataTime(offset);
+      }
+    };
+    fetchInitialClockTime();
+  }, [props.userId, props.projectId, props.sectionId]);
+
+  // Fetch Time Checkouts SubSection
+  useEffect(() => {
+    if (!props.userId || !props.sectionId) return;
+
+    const userRef = doc(db, "users", props.userId);
+
+    const fetchTimeCheckouts = onSnapshot(userRef, (snap) => {
+      if (!snap.exists()) return;
+
+      const data = snap.data();
+      const timeCheckouts = data.timeCheckouts.filter(
+        (ch: TimeCheckout) => ch.sectionId === props.sectionId
+      );
+      setSubSections(timeCheckouts);
+    });
+
+    return () => fetchTimeCheckouts();
+  }, [props.userId, props.sectionId]);
+
+  const sendTimeData = async () => {
+    if (!props.userId || !props.projectId) return;
 
     const userRef = doc(db, "users", props.userId);
     const userSnap = await getDoc(userRef);
 
-    if (userSnap.exists()) {
-      const data = userSnap.data();
-      const projects = data.projects || [];
+    if (!userSnap.exists()) return;
+    const data = userSnap.data();
+    const sections = data.projectsSections || [];
 
-      const updatedProjects = projects.map((p: Project) => {
-        if (p.id !== projectId) return p;
+    const updatedSections = sections.map((s: Section) => {
+      if (s.sectionId !== props.sectionId) return s;
 
-        const updatedSections = p.sections?.filter(
-          (s: Section) => s.id !== props.sectionId
-        );
+      return { ...s, time: newTime };
+    });
 
-        return { ...p, sections: updatedSections };
-      });
-      await setDoc(userRef, { projects: updatedProjects });
-    }
-
-    setIsModalOpen(false);
+    await updateDoc(userRef, { projectsSections: updatedSections });
   };
 
-  const [sections, setSections] = useState([
-    {
-      id: 1,
-      startTime: "19:00",
-      stopTime: "20:05",
-      clockTime: "1:5:0",
-      date: "4.11.2025",
-    },
-  ]);
+  const deleteProjectSectionAndCheckouts = async () => {
+    if (!props.userId || !props.projectId) return;
 
-  const isAnySections = sections.length > 0 ? true : false;
+    const userRef = doc(db, "users", props.userId);
+    const userSnap = await getDoc(userRef);
 
-  const date = new Date();
+    if (!userSnap.exists()) return;
+    const data = userSnap.data();
+    const sections = data.projectsSections || [];
+    const TimeCheckouts = data.timeCheckouts || [];
+
+    const updatedSections = sections.filter(
+      (s: Section) => s.sectionId !== props.sectionId
+    );
+
+    const updatedCheckouts = TimeCheckouts.filter(
+      (ch: TimeCheckout) => ch.sectionId !== props.sectionId
+    );
+
+    await updateDoc(userRef, { projectsSections: updatedSections });
+    await updateDoc(userRef, { timeCheckouts: updatedCheckouts });
+  };
+
+  const sendTimeCheckout = async (stopTime: string) => {
+    if (!props.userId) return;
+    const date = new Date();
+
+    const userRef = doc(db, "users", props.userId);
+
+    const newTimeCheckout: TimeCheckout = {
+      sectionId: props.sectionId,
+      id: subSections.length + 1,
+      startTime: startTime,
+      stopTime: stopTime,
+      clockTime: newTime,
+      date: `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`,
+    };
+
+    await updateDoc(userRef, { timeCheckouts: arrayUnion(newTimeCheckout) });
+  };
 
   const toggleTimer = () => {
     const now = new Date();
@@ -141,49 +159,8 @@ const SectionCart = ({ ...props }: SectionCartProps) => {
       setIsRunning(false);
       pause();
       setBtnTittle("Start");
-      sendData();
-      logTimeCheckout(formattedTime);
-    }
-  };
-
-  const logTimeCheckout = async (stopTimeNow: string) => {
-    if (!props.userId || !projectId) return;
-
-    const userRef = doc(db, "users", props.userId);
-    const userSnap = await getDoc(userRef);
-
-    if (userSnap.exists()) {
-      const data = userSnap.data();
-      const projects: Project[] = data.projects || [];
-
-      const updatedProjects = projects.map((p) => {
-        if (p.id !== projectId) return p;
-
-        const updatedSections = p.sections?.map((s: Section) => {
-          if (s.id === props.sectionId) {
-            const arrLength = s.timeCheckout.length;
-
-            const newCheckout: Checkout = {
-              id: arrLength + 1,
-              startTime: startTime,
-              stopTime: stopTimeNow,
-              clockTime: `${hours}:${minutes}:${seconds}`,
-              date: `${date.getDate()}.${
-                date.getMonth() + 1
-              }.${date.getFullYear()}`,
-            };
-
-            const updatedTimeCheckout = s.timeCheckout
-              ? [...s.timeCheckout, newCheckout]
-              : [newCheckout];
-
-            return { ...s, timeCheckout: updatedTimeCheckout };
-          }
-          return s;
-        });
-        return { ...p, sections: updatedSections };
-      });
-      await updateDoc(userRef, { projects: updatedProjects });
+      sendTimeData();
+      sendTimeCheckout(formattedTime);
     }
   };
 
@@ -201,7 +178,7 @@ const SectionCart = ({ ...props }: SectionCartProps) => {
         </div>
         <div className="w-4/12 flex items-center justify-center gap-10">
           <button
-            onClick={toggleTimer}
+            onClick={() => toggleTimer()}
             className="border px-3 py-1 rounded-2xl cursor-pointer"
           >
             {btnTittle}
@@ -217,7 +194,7 @@ const SectionCart = ({ ...props }: SectionCartProps) => {
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
           title={props.title}
-          btnFunction={() => deleteSection()}
+          btnFunction={deleteProjectSectionAndCheckouts}
         />
       </div>
       <ul
@@ -225,9 +202,9 @@ const SectionCart = ({ ...props }: SectionCartProps) => {
           isAnySections ? "flex-1" : "hidden"
         } w-full pt-2 pb-3 px-6 flex items-center gap-4 overflow-x-auto overflow-y-hidden`}
       >
-        {sections.map((s, index) => (
+        {subSections.map((s, index) => (
           <li
-            key={s.id}
+            key={index}
             className="border w-[150px] h-[100px] rounded-xl shrink-0 flex flex-col justify-between items-start p-2"
           >
             <span className="font-semibold">
