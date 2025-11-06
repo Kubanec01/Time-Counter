@@ -29,7 +29,11 @@ const SectionCart = ({ ...props }: SectionCartProps) => {
   const [startTime, setStartTime] = useState("");
   const [subSections, setSubSections] = useState<TimeCheckout[] | []>([]);
 
-  let newTime = `${hours.toString()}:${minutes.toString()}:${seconds.toString()}`;
+  const formateTime = (num: number) => String(num).padStart(2, "0");
+
+    const newTime = `${formateTime(hours)}:${formateTime(minutes)}:${formateTime(
+        seconds
+    )}`;
 
   // Set Time UseEffect
   useEffect(() => {
