@@ -7,13 +7,11 @@ import {
   doc,
   getDoc,
   onSnapshot,
-  setDoc,
   updateDoc,
 } from "firebase/firestore";
-import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useStopwatch } from "react-timer-hook";
-import { Project, SectionCartProps, Section, TimeCheckout } from "@/types";
+import { SectionCartProps, Section, TimeCheckout } from "@/types";
 
 const SectionCart = ({ ...props }: SectionCartProps) => {
   const { seconds, minutes, hours, start, pause, reset } = useStopwatch({
@@ -42,7 +40,7 @@ const SectionCart = ({ ...props }: SectionCartProps) => {
     }
   }, [dataTime, reset]);
 
-  const isAnySections = subSections.length > 0 ? true : false;
+  const isAnySections = subSections.length > 0;
 
   // Fetch Initial ClockTime
   useEffect(() => {
@@ -81,7 +79,8 @@ const SectionCart = ({ ...props }: SectionCartProps) => {
       if (!snap.exists()) return;
 
       const data = snap.data();
-      const timeCheckouts = data.timeCheckouts.filter(
+      const timeCheckoutsData =  data.timeCheckouts || []
+      const timeCheckouts = timeCheckoutsData.filter(
         (ch: TimeCheckout) => ch.sectionId === props.sectionId
       );
       setSubSections(timeCheckouts);
@@ -140,6 +139,7 @@ const SectionCart = ({ ...props }: SectionCartProps) => {
 
     const newTimeCheckout: TimeCheckout = {
       sectionId: props.sectionId,
+        projectId: props.projectId,
       id: subSections.length + 1,
       startTime: startTime,
       stopTime: stopTime,

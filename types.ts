@@ -5,6 +5,7 @@ export interface projectProps {
 export interface TimeCheckout {
   id: number;
   sectionId: string;
+  projectId: string;
   startTime: string;
   stopTime: string;
   clockTime: string;
