@@ -18,7 +18,7 @@ export default function Home() {
 
   const userId = auth.currentUser?.uid;
 
-  const createNewData = async (e: React.FormEvent<HTMLFormElement>) => {
+  const createNewProject = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!userId) return;
@@ -37,6 +37,7 @@ export default function Home() {
       projects: arrayUnion(newProject),
     });
   };
+
 
   useEffect(() => {
     if (!loading && !user) {
@@ -62,7 +63,7 @@ export default function Home() {
             Add Project
           </button>
         </div>
-        <ProjectsBars />
+        <ProjectsBars  />
       </div>
       <Modal
         title="Project"
@@ -70,7 +71,7 @@ export default function Home() {
         isModalOpen={isModalOpen}
         setInputValue={setInputValue}
         inputValue={inputValue}
-        formFunction={createNewData}
+        formFunction={createNewProject}
       />
     </section>
   );
