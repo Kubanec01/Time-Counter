@@ -1,4 +1,4 @@
-import {Dispatch, SetStateAction} from "react";
+import {Dispatch, SetStateAction, useEffect, useRef} from "react";
 
 interface ModalProps {
     setIsModalOpen: Dispatch<SetStateAction<boolean>>;
@@ -10,11 +10,18 @@ interface ModalProps {
 }
 
 const Modal = ({...props}: ModalProps) => {
+    const modalRef = useRef<HTMLInputElement>(null);
+
     //   Style
     const openStyle = props.isModalOpen ? "flex" : "hidden";
 
     //   CloseModal Function
     const closeModal = () => props.setIsModalOpen((v) => !v);
+
+    useEffect(() => {
+
+        modalRef.current?.focus();
+    }, [props.isModalOpen]);
 
     return (
         <section
@@ -27,6 +34,7 @@ const Modal = ({...props}: ModalProps) => {
                 >
                     <h1>{props.title.toUpperCase()}</h1>
                     <input
+                        ref={modalRef}
                         onChange={(v) => props.setInputValue(v.target.value)}
                         value={props.inputValue}
                         type="text"

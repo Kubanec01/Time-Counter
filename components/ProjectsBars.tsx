@@ -4,7 +4,6 @@ import {doc, getDoc, onSnapshot, updateDoc} from "firebase/firestore";
 import Link from "next/link";
 import React, {useEffect, useState} from "react";
 import Modal from "@/components/Modal";
-import {projects} from "@/data/projects";
 
 
 const ProjectsBars = () => {

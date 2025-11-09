@@ -3,7 +3,7 @@
 import { useParams } from "next/navigation";
 import ProjectCart from "./components/projectCart/ProjectCart";
 
-const Page = () => {
+const ProjectPage = () => {
   const {id} = useParams();
   return (
     <section className="w-full h-screen flex justify-center items-center">
@@ -12,4 +12,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default ProjectPage;
