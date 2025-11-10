@@ -109,7 +109,25 @@ const SectionCart = ({...props}: SectionCartProps) => {
             return {...s, time: newTime};
         });
 
-        await updateDoc(userRef, {projectsSections: updatedSections});
+        const orderedSections = () => {
+            const sections: Section[] = []
+
+            for (let i = 0; i < updatedSections.length; i++) {
+
+                const section = updatedSections[i];
+                const condition = section.sectionId === props.sectionId;
+                if (condition) sections.unshift(section);
+                else sections.push(section);
+
+            }
+
+            return sections
+
+        }
+
+        console.log(orderedSections())
+
+        await updateDoc(userRef, {projectsSections: orderedSections()});
     };
 
     const deleteProjectSectionAndCheckouts = async () => {
@@ -197,7 +215,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
     return (
         <li
             key={props.sectionId}
-            className="border w-full rounded-2xl flex flex-col flex-between"
+            className="border w-full rounded-2xl flex flex-col flex-between mt-4"
         >
             <div className="w-full flex items-center justify-between py-4">
                 <div className="w-4/12 flex items-center justify-start text-2xl pl-6">
