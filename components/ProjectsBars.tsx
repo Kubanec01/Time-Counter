@@ -1,26 +1,29 @@
-import {auth, db} from "@/app/firebase/config";
 import {Project, Section, TimeCheckout} from "@/types";
-import {doc, getDoc, onSnapshot, updateDoc} from "firebase/firestore";
+import {onSnapshot, updateDoc} from "firebase/firestore";
 import Link from "next/link";
 import React, {useEffect, useState} from "react";
 import Modal from "@/components/Modal";
+import {useGetUserDatabase} from "@/components/hooks/useGetUserDatabase";
 
 
 const ProjectsBars = () => {
+
+    // States
     const [projectsData, setProjectsData] = useState<Project[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [inputValue, setInputValue] = useState("");
 
-    const userId = auth.currentUser?.uid;
+    // User Data
+    const {userRef, userId, userData} = useGetUserDatabase()
 
+    // Fetch Projects
     useEffect(() => {
-        if (!userId) return;
 
-        const useRef = doc(db, "users", userId);
+        if (!userRef) return;
 
-        const fetchProjects = onSnapshot(useRef, (userSnap) => {
-            if (userSnap.exists()) {
-                const data = userSnap.data();
+        const fetchProjects = onSnapshot(userRef, (snap) => {
+            if (snap.exists()) {
+                const data = snap.data();
                 setProjectsData(data.projects || []);
             } else {
                 setProjectsData([]);
@@ -28,28 +31,26 @@ const ProjectsBars = () => {
         });
 
         return () => fetchProjects();
-    }, [userId]);
+    }, [userId, userRef]);
+
 
     const deleteProject = async (projectId: string) => {
-        if (!userId) return
 
-        const userRef = doc(db, "users", userId);
-        const userSnap = await getDoc(userRef)
-        if (userSnap.exists()) {
-            const data = userSnap.data();
-            const projects = data?.projects || []
-            const projectsSections = data?.projectsSections || [];
-            const timeCheckouts = data?.timeCheckouts || [];
-            const updatedProjects = projects.filter((p: Project) => p.projectId !== projectId);
-            const updatedProjectsSections = projectsSections.filter((s: Section) => s.projectId !== projectId);
-            const updatedTimeCheckouts = timeCheckouts.filter((t: TimeCheckout) => t.projectId !== projectId);
-            await updateDoc(userRef, {
-                projects: updatedProjects,
-                projectsSections: updatedProjectsSections,
-                timeCheckouts: updatedTimeCheckouts
-            });
-        }
+        if (!userRef || !userData) return
+
+        const projects = userData?.projects || []
+        const projectsSections = userData?.projectsSections || [];
+        const timeCheckouts = userData?.timeCheckouts || [];
+        const updatedProjects = projects.filter((p: Project) => p.projectId !== projectId);
+        const updatedProjectsSections = projectsSections.filter((s: Section) => s.projectId !== projectId);
+        const updatedTimeCheckouts = timeCheckouts.filter((t: TimeCheckout) => t.projectId !== projectId);
+        await updateDoc(userRef, {
+            projects: updatedProjects,
+            projectsSections: updatedProjectsSections,
+            timeCheckouts: updatedTimeCheckouts
+        });
     }
+
 
     const editProjectName = async (
         e: React.FormEvent<HTMLFormElement>,
@@ -57,21 +58,15 @@ const ProjectsBars = () => {
 
         e.preventDefault()
 
-        if (!userId) return
+        if (!userRef || !userData) return
 
-        const userRef = doc(db, "users", userId)
-        const userSnap = await getDoc(userRef)
+        const projects = userData.projects || [];
 
-        if (userSnap.exists()) {
-            const data = userSnap.data();
-            const projects = data?.projects || [];
-
-            const updatedProjects = projects.map((p: Project) => {
-                if (p.projectId !== projectId) return p
-                return {...p, title: inputValue}
-            })
-            await updateDoc(userRef, {projects: updatedProjects})
-        }
+        const updatedProjects = projects.map((p: Project) => {
+            if (p.projectId !== projectId) return p
+            return {...p, title: inputValue}
+        })
+        await updateDoc(userRef, {projects: updatedProjects})
     }
 
 

@@ -15,7 +15,8 @@ import {SectionCartProps, Section, TimeCheckout} from "@/types";
 import Modal from "@/components/Modal";
 
 const SectionCart = ({...props}: SectionCartProps) => {
-    // Time Hook
+
+    // React Timer Hook
     const {seconds, minutes, hours, start, pause, reset} = useStopwatch({
         autoStart: false,
     });
@@ -26,6 +27,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
         seconds
     )}`;
 
+
     // States
     const [dataTime, setDataTime] = useState<Date | undefined>(undefined);
     const [isRunning, setIsRunning] = useState(false);
@@ -35,6 +37,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
     const [startTime, setStartTime] = useState("");
     const [subSections, setSubSections] = useState<TimeCheckout[] | []>([]);
     const [inputValue, setInputValue] = useState<string>("");
+    const isAnySections = subSections.length > 0;
 
 
     // Set Time UseEffect
@@ -43,8 +46,6 @@ const SectionCart = ({...props}: SectionCartProps) => {
             reset(dataTime, false);
         }
     }, [dataTime, reset]);
-
-    const isAnySections = subSections.length > 0;
 
     // Fetch Initial ClockTime
     useEffect(() => {
@@ -125,7 +126,6 @@ const SectionCart = ({...props}: SectionCartProps) => {
 
         }
 
-        console.log(orderedSections())
 
         await updateDoc(userRef, {projectsSections: orderedSections()});
     };

@@ -5,7 +5,7 @@ import Modal from "@/components/Modal";
 import {onAuthStateChanged} from "firebase/auth";
 import {
     arrayUnion,
-    doc,
+    doc, getDoc,
     onSnapshot,
     updateDoc,
 } from "firebase/firestore";
@@ -18,15 +18,17 @@ const ProjectCart = ({...props}: projectProps) => {
     const [sections, setSections] = useState<Section[]>([]);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [inputValue, setInputValue] = useState<string>("");
-    const [userId, setUserId] = useState<string | null>(null);
+    const [userId, setUserId] = useState<string | undefined>(undefined);
     const [projectName, setProjectName] = useState<string | null>(null);
 
+    // Variables
     const projectId = props.id;
+
 
     // CallbackUser Function
     useEffect(() => {
         const unsubAuth = onAuthStateChanged(auth, (user) => {
-            setUserId(user?.uid || null);
+            setUserId(user?.uid || undefined);
         });
 
         return () => unsubAuth();

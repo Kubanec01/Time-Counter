@@ -28,5 +28,5 @@ export interface SectionCartProps {
     sectionId: string;
     projectId: string;
     title: string;
-    userId: string | null;
+    userId: string | undefined;
 }

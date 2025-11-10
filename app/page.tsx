@@ -4,26 +4,28 @@ import Modal from "@/components/Modal";
 import ProjectsBars from "@/components/ProjectsBars";
 import {useEffect, useState} from "react";
 import {useAuthState} from "react-firebase-hooks/auth";
-import {auth, db} from "@/app/firebase/config";
+import {auth} from "@/app/firebase/config";
 import {useRouter} from "next/navigation";
 import {signOut} from "firebase/auth";
-import {arrayUnion, doc, updateDoc} from "firebase/firestore";
+import {arrayUnion, updateDoc} from "firebase/firestore";
+import {useGetUserDatabase} from "@/components/hooks/useGetUserDatabase";
 
 
 export default function Home() {
+
+    // User Data
+    const {userRef} = useGetUserDatabase()
+
+
     //   States
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [user, loading] = useAuthState(auth);
     const [inputValue, setInputValue] = useState<string>("");
 
-    const router = useRouter();
-    const userId = auth.currentUser?.uid;
 
     const createNewProject = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (!userId) return;
-        const useRef = doc(db, "users", userId);
+        if (!userRef) return;
 
         // Random Num Variable
         const randomNum = Math.floor(Date.now() * Math.random() % 10_000_000).toString();
@@ -36,10 +38,15 @@ export default function Home() {
         setInputValue("");
         setIsModalOpen(false);
 
-        await updateDoc(useRef, {
+        await updateDoc(userRef, {
             projects: arrayUnion(newProject),
         });
     };
+
+
+    // Auth Route Function
+    const [user, loading] = useAuthState(auth);
+    const router = useRouter();
 
     useEffect(() => {
         if (!loading && !user) {
