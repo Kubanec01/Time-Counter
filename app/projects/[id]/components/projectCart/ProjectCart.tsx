@@ -96,7 +96,7 @@ const ProjectCart = ({...props}: projectProps) => {
     };
 
     return (
-        <div className="border max-w-[1200px] w-11/12 h-[700px] m-auto rounded-3xl overflow-hidden flex flex-col">
+        <div className="border max-w-[1200px] w-11/12 h-[700px] m-auto rounded-3xl flex flex-col">
             <div className="w-full flex justify-center items-center flex-col gap-6">
                 <h1 className="text-center mx-auto text-4xl mt-10">{projectName}</h1>
                 <button
@@ -106,7 +106,7 @@ const ProjectCart = ({...props}: projectProps) => {
                     Add Section
                 </button>
             </div>
-            <ul className="border flex-1 mt-10 px-6 py-2">
+            <ul className="border flex-1 mt-10 px-6 py-2 overflow-y-auto">
                 {sections.length > 0 ? (
                     <>
                         {sections.map((i) => (

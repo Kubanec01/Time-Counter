@@ -38,6 +38,8 @@ const SectionCart = ({...props}: SectionCartProps) => {
     const [subSections, setSubSections] = useState<TimeCheckout[] | []>([]);
     const [inputValue, setInputValue] = useState<string>("");
     const isAnySections = subSections.length > 0;
+    const [lastStopClockTime, setLastStopClockTime] = useState(0)
+    const [subTimeClockDifference, setSubTimeClockDifference] = useState(100)
 
 
     // Set Time UseEffect
@@ -65,6 +67,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
             if (section.time) {
                 const [h, m, s] = section.time.split(":").map(Number);
                 const totalSeconds = h * 3600 + m * 60 + s;
+                setLastStopClockTime(totalSeconds)
 
                 const currTime = new Date();
                 const offset = new Date(currTime.getTime() + totalSeconds * 1005);
@@ -93,6 +96,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
 
         return () => fetchTimeCheckouts();
     }, [props.userId, props.sectionId]);
+
 
     const sendTimeData = async () => {
         if (!props.userId || !props.projectId) return;
@@ -153,6 +157,28 @@ const SectionCart = ({...props}: SectionCartProps) => {
         await updateDoc(userRef, {timeCheckouts: updatedCheckouts});
     };
 
+    const stopTimeDifference = () => {
+        const lastStopValue = lastStopClockTime
+
+        const newTimeToSeconds = () => {
+            const time = newTime.split(":").map(Number);
+            const [h, m, s] = time
+            return (h * 3600 + m * 60 + s)
+        }
+
+        setSubTimeClockDifference(newTimeToSeconds() - lastStopValue)
+
+        setLastStopClockTime(newTimeToSeconds())
+
+        return newTimeToSeconds() - lastStopValue
+
+    }
+
+
+    console.log("Difference =>", subTimeClockDifference)
+    console.log("Last Stop Time value =>", lastStopClockTime)
+
+
     const sendTimeCheckout = async (stopTime: string) => {
         if (!props.userId) return;
         const date = new Date();
@@ -165,30 +191,13 @@ const SectionCart = ({...props}: SectionCartProps) => {
             id: subSections.length + 1,
             startTime: startTime,
             stopTime: stopTime,
-            clockDifference: newTime,
+            clockDifference: stopTimeDifference(),
             date: `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`,
         };
 
         await updateDoc(userRef, {timeCheckouts: arrayUnion(newTimeCheckout)});
     };
 
-    const toggleTimer = () => {
-        const now = new Date();
-        const formattedTime = `${now.getHours()}:${now.getMinutes()}`;
-
-        if (!isRunning) {
-            setIsRunning(true);
-            setStartTime(formattedTime);
-            start();
-            setBtnTittle("Pause");
-        } else {
-            setIsRunning(false);
-            pause();
-            setBtnTittle("Start");
-            sendTimeData();
-            sendTimeCheckout(formattedTime);
-        }
-    };
 
     const editSectionName = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -212,10 +221,29 @@ const SectionCart = ({...props}: SectionCartProps) => {
         setIsEditModalOpen(false);
     }
 
+    const toggleTimer = () => {
+        const now = new Date();
+        const formattedTime = `${now.getHours()}:${now.getMinutes()}`;
+
+        if (!isRunning) {
+            setIsRunning(true);
+            setStartTime(formattedTime);
+            start();
+            setBtnTittle("Pause");
+        } else {
+            setIsRunning(false);
+            pause();
+            setBtnTittle("Start");
+            stopTimeDifference()
+            sendTimeData();
+            sendTimeCheckout(formattedTime);
+        }
+    };
+
     return (
         <li
             key={props.sectionId}
-            className="border w-full rounded-2xl flex flex-col flex-between mt-4"
+            className="border w-full rounded-2xl flex flex-col flex-between my-4"
         >
             <div className="w-full flex items-center justify-between py-4">
                 <div className="w-4/12 flex items-center justify-start text-2xl pl-6">
