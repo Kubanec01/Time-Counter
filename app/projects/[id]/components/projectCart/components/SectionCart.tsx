@@ -39,7 +39,6 @@ const SectionCart = ({...props}: SectionCartProps) => {
     const [inputValue, setInputValue] = useState<string>("");
     const isAnySections = subSections.length > 0;
     const [lastStopClockTime, setLastStopClockTime] = useState(0)
-    const [subTimeClockDifference, setSubTimeClockDifference] = useState(100)
 
 
     // Set Time UseEffect
@@ -158,7 +157,6 @@ const SectionCart = ({...props}: SectionCartProps) => {
     };
 
     const stopTimeDifference = () => {
-        const lastStopValue = lastStopClockTime
 
         const newTimeToSeconds = () => {
             const time = newTime.split(":").map(Number);
@@ -166,22 +164,26 @@ const SectionCart = ({...props}: SectionCartProps) => {
             return (h * 3600 + m * 60 + s)
         }
 
-        setSubTimeClockDifference(newTimeToSeconds() - lastStopValue)
+        const totalDifferenceToSeconds = newTimeToSeconds() - lastStopClockTime
+
+        const differenceToClockFormate = () => {
+            const hours = Math.floor(totalDifferenceToSeconds / 3600)
+            const minutes = Math.floor((totalDifferenceToSeconds % 3600) / 60)
+            const seconds = totalDifferenceToSeconds % 60
+
+            return `${formateTime(hours)}:${formateTime(minutes)}:${formateTime(seconds)}`
+        }
 
         setLastStopClockTime(newTimeToSeconds())
 
-        return newTimeToSeconds() - lastStopValue
+        return differenceToClockFormate()
 
     }
 
 
-    console.log("Difference =>", subTimeClockDifference)
-    console.log("Last Stop Time value =>", lastStopClockTime)
-
-
     const sendTimeCheckout = async (stopTime: string) => {
         if (!props.userId) return;
-        const date = new Date();
+        const date = new Date()
 
         const userRef = doc(db, "users", props.userId);
 
@@ -223,7 +225,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
 
     const toggleTimer = () => {
         const now = new Date();
-        const formattedTime = `${now.getHours()}:${now.getMinutes()}`;
+        const formattedTime = `${formateTime(now.getHours())}:${formateTime(now.getMinutes())}`;
 
         if (!isRunning) {
             setIsRunning(true);
