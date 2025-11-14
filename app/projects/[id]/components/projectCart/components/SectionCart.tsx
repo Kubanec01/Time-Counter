@@ -2,30 +2,24 @@
 
 import {db} from "@/app/firebase/config";
 import DeleteModal from "@/components/DeleteModal";
-import {
-    arrayUnion,
-    doc,
-    getDoc,
-    onSnapshot,
-    updateDoc,
-} from "firebase/firestore";
+import {arrayUnion, doc, getDoc, onSnapshot, updateDoc,} from "firebase/firestore";
 import {useEffect, useState} from "react";
 import {useStopwatch} from "react-timer-hook";
-import {SectionCartProps, Section, TimeCheckout} from "@/types";
+import {Section, SectionCartProps, TimeCheckout} from "@/types";
 import Modal from "@/components/Modal";
+import {useFormateTime} from "@/hooks/useFormateTime";
+import {useTimeOperations} from "@/hooks/useTimeOperations";
 
 const SectionCart = ({...props}: SectionCartProps) => {
 
-    // React Timer Hook
+    // Hooks
     const {seconds, minutes, hours, start, pause, reset} = useStopwatch({
         autoStart: false,
     });
 
-    const formateTime = (num: number) => String(num).padStart(2, "0");
+    const {stringTimeToSeconds, timeSecondsToFormatedString} = useTimeOperations()
 
-    const newTime = `${formateTime(hours)}:${formateTime(minutes)}:${formateTime(
-        seconds
-    )}`;
+    const formateTime = useFormateTime()
 
 
     // States
@@ -40,6 +34,11 @@ const SectionCart = ({...props}: SectionCartProps) => {
     const isAnySections = subSections.length > 0;
     const [lastStopClockTime, setLastStopClockTime] = useState(0)
 
+
+    // Clock Time
+    const newTime = `${formateTime(hours)}:${formateTime(minutes)}:${formateTime(
+        seconds
+    )}`;
 
     // Set Time UseEffect
     useEffect(() => {
@@ -133,7 +132,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
         await updateDoc(userRef, {projectsSections: orderedSections()});
     };
 
-    const deleteProjectSectionAndCheckouts = async () => {
+    const deleteSectionAndCheckouts = async () => {
         if (!props.userId || !props.projectId) return;
 
         const userRef = doc(db, "users", props.userId);
@@ -158,28 +157,15 @@ const SectionCart = ({...props}: SectionCartProps) => {
 
     const stopTimeDifference = () => {
 
-        const newTimeToSeconds = () => {
-            const time = newTime.split(":").map(Number);
-            const [h, m, s] = time
-            return (h * 3600 + m * 60 + s)
-        }
+        const newTimeToSeconds = stringTimeToSeconds(newTime)
 
-        const totalDifferenceToSeconds = newTimeToSeconds() - lastStopClockTime
+        const totalDifferenceToSeconds = newTimeToSeconds - lastStopClockTime
 
-        const differenceToClockFormate = () => {
-            const hours = Math.floor(totalDifferenceToSeconds / 3600)
-            const minutes = Math.floor((totalDifferenceToSeconds % 3600) / 60)
-            const seconds = totalDifferenceToSeconds % 60
+        setLastStopClockTime(newTimeToSeconds)
 
-            return `${formateTime(hours)}:${formateTime(minutes)}:${formateTime(seconds)}`
-        }
-
-        setLastStopClockTime(newTimeToSeconds())
-
-        return differenceToClockFormate()
+        return timeSecondsToFormatedString(totalDifferenceToSeconds)
 
     }
-
 
     const sendTimeCheckout = async (stopTime: string) => {
         if (!props.userId) return;
@@ -199,7 +185,6 @@ const SectionCart = ({...props}: SectionCartProps) => {
 
         await updateDoc(userRef, {timeCheckouts: arrayUnion(newTimeCheckout)});
     };
-
 
     const editSectionName = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -223,8 +208,65 @@ const SectionCart = ({...props}: SectionCartProps) => {
         setIsEditModalOpen(false);
     }
 
+    // const deleteSubsection = async (subSectionId: number, sectionTime: string) => {
+    //     if (!props.userId) return
+    //
+    //     const userRef = doc(db, "users", props.userId);
+    //     const userSnap = await getDoc(userRef);
+    //
+    //     if (!userSnap.exists()) return;
+    //     const data = userSnap.data();
+    //     const sections = data.projectsSections || []
+    //     const subSections = data.timeCheckouts || []
+    //
+    //     const updatedSubSections = subSections.filter((sub: TimeCheckout) => sub.id !== subSectionId)
+    //
+    //     const newTimeToSeconds = () => {
+    //         const time = newTime.split(":").map(Number);
+    //         const [h, m, s] = time
+    //         return (h * 3600 + m * 60 + s)
+    //     }
+    //
+    //     const subSectionTimeSeconds = () => {
+    //         const time = sectionTime.split(":").map(Number);
+    //         const [h, m, s] = time
+    //         return (h * 3600 + m * 60 + s)
+    //     }
+    //
+    //     const updatedTime = newTimeToSeconds() - subSectionTimeSeconds()
+    //
+    //
+    //     const formatedUpdatedTime = () => {
+    //         const hours = Math.floor(updatedTime / 3600)
+    //         const minutes = Math.floor((updatedTime % 3600) / 60)
+    //         const seconds = updatedTime % 60
+    //
+    //         return `${formateTime(hours)}:${formateTime(minutes)}:${formateTime(seconds)}`
+    //     }
+    //
+    //
+    //     const updatedSections = sections.map((s: Section) => {
+    //         if (s.sectionId !== props.sectionId) return s;
+    //         return {...s, time: formatedUpdatedTime()}
+    //     })
+    //
+    //     const currTime = new Date()
+    //
+    //     const offset = new Date(currTime.getTime() + updatedTime * 1004);
+    //     setDataTime(offset);
+    //
+    //     reset(dataTime)
+    //     setSubSections(subSections);
+    //
+    //     await updateDoc(userRef, {timeCheckouts: updatedSubSections});
+    //     await updateDoc(userRef, {projectsSections: updatedSections});
+    //
+    //
+    // }
+
     const toggleTimer = () => {
         const now = new Date();
+
         const formattedTime = `${formateTime(now.getHours())}:${formateTime(now.getMinutes())}`;
 
         if (!isRunning) {
@@ -279,7 +321,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
                     isModalOpen={isDeleteModalOpen}
                     setIsModalOpen={setIsDeleteModalOpen}
                     title={props.title}
-                    btnFunction={deleteProjectSectionAndCheckouts}
+                    btnFunction={deleteSectionAndCheckouts}
                 />
                 <Modal
                     setIsModalOpen={() => setIsEditModalOpen(false)}
@@ -305,6 +347,12 @@ const SectionCart = ({...props}: SectionCartProps) => {
                         </span>
                         <span className="font-semibold">t: {s.clockDifference}</span>
                         <span className="font-semibold">d: {s.date}</span>
+                        <button
+                            // onClick={() => deleteSubsection(s.id, s.clockDifference)}
+                            className={"text-red-500 cursor-pointer"}
+                        >
+                            Delete
+                        </button>
                     </li>
                 ))}
             </ul>

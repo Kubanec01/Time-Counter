@@ -3,7 +3,7 @@ import {onSnapshot, updateDoc} from "firebase/firestore";
 import Link from "next/link";
 import React, {useEffect, useState} from "react";
 import Modal from "@/components/Modal";
-import {useGetUserDatabase} from "@/components/hooks/useGetUserDatabase";
+import {useGetUserDatabase} from "@/hooks/useGetUserDatabase";
 
 
 const ProjectsBars = () => {

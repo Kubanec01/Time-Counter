@@ -8,7 +8,7 @@ import {auth} from "@/app/firebase/config";
 import {useRouter} from "next/navigation";
 import {signOut} from "firebase/auth";
 import {arrayUnion, updateDoc} from "firebase/firestore";
-import {useGetUserDatabase} from "@/components/hooks/useGetUserDatabase";
+import {useGetUserDatabase} from "@/hooks/useGetUserDatabase";
 
 
 export default function Home() {
