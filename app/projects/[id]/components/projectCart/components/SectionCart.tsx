@@ -11,6 +11,7 @@ import {useFormateTime} from "@/features/hooks/useFormateTime";
 import {useTimeOperations} from "@/features/hooks/useTimeOperations";
 import {throwRandomNum} from "@/features/throwRandomNum";
 
+
 const SectionCart = ({...props}: SectionCartProps) => {
 
 
@@ -225,6 +226,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
         setLastStopClockTime(updatedClockTime)
 
         const updatedCheckouts = timeCheckouts.filter((s: TimeCheckout) => s.subSectionId !== subSectionId)
+        const validUpdatedCheckouts = updatedCheckouts.filter((s: TimeCheckout) => s.sectionId === props.sectionId)
         const updatedSections = sections.map((s: Section) => {
             if (s.sectionId !== sectionId) return s;
 
@@ -234,7 +236,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
 
         await updateDoc(userRef, {timeCheckouts: updatedCheckouts});
         await updateDoc(userRef, {projectsSections: updatedSections})
-        setSubSections(updatedCheckouts);
+        setSubSections(validUpdatedCheckouts);
 
     }
 
