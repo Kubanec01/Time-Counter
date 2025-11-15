@@ -20,6 +20,7 @@ export const useTimeOperations = () => {
     }
 
     const timeSecondsToFormatedString = (timeSeconds: number) => {
+        if (timeSeconds < 0) timeSeconds = 0
 
         const hour = Math.floor(timeSeconds / 3600)
         const minutes = Math.floor((timeSeconds % 3600) / 60)

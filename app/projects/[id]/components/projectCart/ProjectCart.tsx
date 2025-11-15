@@ -5,7 +5,7 @@ import Modal from "@/components/Modal";
 import {onAuthStateChanged} from "firebase/auth";
 import {
     arrayUnion,
-    doc, getDoc,
+    doc,
     onSnapshot,
     updateDoc,
 } from "firebase/firestore";

@@ -13,18 +13,8 @@ import {throwRandomNum} from "@/features/throwRandomNum";
 
 const SectionCart = ({...props}: SectionCartProps) => {
 
-    // Hooks
-    const {seconds, minutes, hours, start, pause, reset} = useStopwatch({
-        autoStart: false,
-    });
-
-    const {stringTimeToSeconds, timeSecondsToFormatedString} = useTimeOperations()
-
-    const formateTime = useFormateTime()
-
 
     // States
-    const [dataTime, setDataTime] = useState<Date | undefined>(undefined);
     const [isRunning, setIsRunning] = useState(false);
     const [btnTittle, setBtnTittle] = useState<"Start" | "Pause">("Start");
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -36,17 +26,30 @@ const SectionCart = ({...props}: SectionCartProps) => {
     const [lastStopClockTime, setLastStopClockTime] = useState(0)
 
 
+    // Hooks
+    const {seconds, minutes, hours, start, pause, reset, totalSeconds} = useStopwatch({
+        autoStart: false,
+    });
+
+    const {stringTimeToSeconds, timeSecondsToFormatedString} = useTimeOperations()
+
+    const formateTime = useFormateTime()
+
     // Clock Time
     const newTime = `${formateTime(hours)}:${formateTime(minutes)}:${formateTime(
         seconds
     )}`;
 
-    // Set Time UseEffect
-    useEffect(() => {
-        if (dataTime) {
-            reset(dataTime, false);
-        }
-    }, [dataTime, reset]);
+    const resetClockTime = (newClockTimeInSeconds: number) => {
+
+        const newClockTimeToMilliseconds = newClockTimeInSeconds * 1000
+
+        if (newClockTimeToMilliseconds > 0) {
+            const currDateToMilliseconds = new Date().getTime()
+            const offset = new Date(currDateToMilliseconds + newClockTimeToMilliseconds)
+            reset(offset, false)
+        } else reset(new Date(), false)
+    }
 
     // Fetch Initial ClockTime
     useEffect(() => {
@@ -64,13 +67,9 @@ const SectionCart = ({...props}: SectionCartProps) => {
             );
 
             if (section.time) {
-                const [h, m, s] = section.time.split(":").map(Number);
-                const totalSeconds = h * 3600 + m * 60 + s;
-                setLastStopClockTime(totalSeconds)
-
-                const currTime = new Date();
-                const offset = new Date(currTime.getTime() + totalSeconds * 1005);
-                setDataTime(offset);
+                const timeToSeconds = stringTimeToSeconds(section.time);
+                setLastStopClockTime(timeToSeconds)
+                resetClockTime(timeToSeconds)
             }
         };
         fetchInitialClockTime();
@@ -158,11 +157,9 @@ const SectionCart = ({...props}: SectionCartProps) => {
 
     const stopTimeDifference = () => {
 
-        const newTimeToSeconds = stringTimeToSeconds(newTime)
+        const totalDifferenceToSeconds = totalSeconds - lastStopClockTime
 
-        const totalDifferenceToSeconds = newTimeToSeconds - lastStopClockTime
-
-        setLastStopClockTime(newTimeToSeconds)
+        setLastStopClockTime(totalSeconds)
 
         return timeSecondsToFormatedString(totalDifferenceToSeconds)
 
@@ -210,7 +207,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
         setIsEditModalOpen(false);
     }
 
-    const deleteSubSection = async (subSectionId: string, difference: string) => {
+    const deleteSubSection = async (subSectionId: string, difference: string, sectionId: string) => {
 
         if (!props.userId) return
         const userRef = doc(db, "users", props.userId);
@@ -219,16 +216,24 @@ const SectionCart = ({...props}: SectionCartProps) => {
         if (!userSnap.exists()) return;
         const data = userSnap.data();
         const timeCheckouts = data.timeCheckouts || []
+        const sections = data.projectsSections || []
+
+        const updatedClockTime = totalSeconds - stringTimeToSeconds(difference)
+        const formatedUpdatedClockTime = timeSecondsToFormatedString(updatedClockTime)
+
+        resetClockTime(updatedClockTime)
+        setLastStopClockTime(updatedClockTime)
 
         const updatedCheckouts = timeCheckouts.filter((s: TimeCheckout) => s.subSectionId !== subSectionId)
+        const updatedSections = sections.map((s: Section) => {
+            if (s.sectionId !== sectionId) return s;
 
-        console.log("time", newTime)
+            return {...s, time: formatedUpdatedClockTime}
 
-        const updatedClockTime = stringTimeToSeconds(newTime) - stringTimeToSeconds(difference)
-
-        console.log(updatedClockTime)
+        })
 
         await updateDoc(userRef, {timeCheckouts: updatedCheckouts});
+        await updateDoc(userRef, {projectsSections: updatedSections})
         setSubSections(updatedCheckouts);
 
     }
@@ -252,6 +257,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
             createNewTimeCheckout(formattedTime);
         }
     };
+
 
     return (
         <li
@@ -317,7 +323,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
                         <span className="font-semibold">t: {s.clockDifference}</span>
                         <span className="font-semibold">d: {s.date}</span>
                         <button
-                            onClick={() => deleteSubSection(s.subSectionId, s.clockDifference)}
+                            onClick={() => deleteSubSection(s.subSectionId, s.clockDifference, s.sectionId)}
                             className={"text-red-500 cursor-pointer"}
                         >
                             Delete
