@@ -12,6 +12,7 @@ import {
 import React, {useEffect, useState} from "react";
 import SectionCart from "./components/SectionCart";
 import {Project, projectProps, Section} from "@/types";
+import {throwRandomNum} from "@/features/throwRandomNum";
 
 const ProjectCart = ({...props}: projectProps) => {
     // States
@@ -81,7 +82,7 @@ const ProjectCart = ({...props}: projectProps) => {
         const userRef = doc(db, "users", userId);
 
         // Random Num Variable
-        const randomNum = Math.floor(Date.now() * Math.random() % 10_000_000).toString();
+        const randomNum = throwRandomNum().toString()
 
         const newSection = {
             projectId: projectId,

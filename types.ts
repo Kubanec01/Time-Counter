@@ -3,7 +3,7 @@ export interface projectProps {
 }
 
 export interface TimeCheckout {
-    id: number;
+    subSectionId: string;
     sectionId: string;
     projectId: string;
     startTime: string;

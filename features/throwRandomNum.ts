@@ -1,0 +1,1 @@
+export const throwRandomNum = () => Math.floor((Date.now() * Math.random()) % 10_000_000_000)

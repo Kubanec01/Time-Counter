@@ -8,7 +8,8 @@ import {auth} from "@/app/firebase/config";
 import {useRouter} from "next/navigation";
 import {signOut} from "firebase/auth";
 import {arrayUnion, updateDoc} from "firebase/firestore";
-import {useGetUserDatabase} from "@/hooks/useGetUserDatabase";
+import {useGetUserDatabase} from "@/features/hooks/useGetUserDatabase";
+import {throwRandomNum} from "@/features/throwRandomNum";
 
 
 export default function Home() {
@@ -28,7 +29,7 @@ export default function Home() {
         if (!userRef) return;
 
         // Random Num Variable
-        const randomNum = Math.floor(Date.now() * Math.random() % 10_000_000).toString();
+        const randomNum = throwRandomNum().toString();
 
         const newProject = {
             projectId: `${inputValue.replace(/\s+/g, "")}_${randomNum}`,

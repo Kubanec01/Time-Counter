@@ -7,7 +7,7 @@
 //     return `${useFormateTime(hours)}:${useFormateTime(minutes)}:${useFormateTime(seconds)}`
 // }
 
-import {useFormateTime} from "@/hooks/useFormateTime";
+import {useFormateTime} from "@/features/hooks/useFormateTime";
 
 
 export const useTimeOperations = () => {

@@ -3,12 +3,13 @@
 import {db} from "@/app/firebase/config";
 import DeleteModal from "@/components/DeleteModal";
 import {arrayUnion, doc, getDoc, onSnapshot, updateDoc,} from "firebase/firestore";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useStopwatch} from "react-timer-hook";
 import {Section, SectionCartProps, TimeCheckout} from "@/types";
 import Modal from "@/components/Modal";
-import {useFormateTime} from "@/hooks/useFormateTime";
-import {useTimeOperations} from "@/hooks/useTimeOperations";
+import {useFormateTime} from "@/features/hooks/useFormateTime";
+import {useTimeOperations} from "@/features/hooks/useTimeOperations";
+import {throwRandomNum} from "@/features/throwRandomNum";
 
 const SectionCart = ({...props}: SectionCartProps) => {
 
@@ -167,16 +168,17 @@ const SectionCart = ({...props}: SectionCartProps) => {
 
     }
 
-    const sendTimeCheckout = async (stopTime: string) => {
+    const createNewTimeCheckout = async (stopTime: string) => {
         if (!props.userId) return;
         const date = new Date()
+        const randomNum = throwRandomNum().toString()
 
         const userRef = doc(db, "users", props.userId);
 
         const newTimeCheckout: TimeCheckout = {
             sectionId: props.sectionId,
             projectId: props.projectId,
-            id: subSections.length + 1,
+            subSectionId: `subSection_${randomNum}_of_${props.sectionId}`,
             startTime: startTime,
             stopTime: stopTime,
             clockDifference: stopTimeDifference(),
@@ -208,61 +210,28 @@ const SectionCart = ({...props}: SectionCartProps) => {
         setIsEditModalOpen(false);
     }
 
-    // const deleteSubsection = async (subSectionId: number, sectionTime: string) => {
-    //     if (!props.userId) return
-    //
-    //     const userRef = doc(db, "users", props.userId);
-    //     const userSnap = await getDoc(userRef);
-    //
-    //     if (!userSnap.exists()) return;
-    //     const data = userSnap.data();
-    //     const sections = data.projectsSections || []
-    //     const subSections = data.timeCheckouts || []
-    //
-    //     const updatedSubSections = subSections.filter((sub: TimeCheckout) => sub.id !== subSectionId)
-    //
-    //     const newTimeToSeconds = () => {
-    //         const time = newTime.split(":").map(Number);
-    //         const [h, m, s] = time
-    //         return (h * 3600 + m * 60 + s)
-    //     }
-    //
-    //     const subSectionTimeSeconds = () => {
-    //         const time = sectionTime.split(":").map(Number);
-    //         const [h, m, s] = time
-    //         return (h * 3600 + m * 60 + s)
-    //     }
-    //
-    //     const updatedTime = newTimeToSeconds() - subSectionTimeSeconds()
-    //
-    //
-    //     const formatedUpdatedTime = () => {
-    //         const hours = Math.floor(updatedTime / 3600)
-    //         const minutes = Math.floor((updatedTime % 3600) / 60)
-    //         const seconds = updatedTime % 60
-    //
-    //         return `${formateTime(hours)}:${formateTime(minutes)}:${formateTime(seconds)}`
-    //     }
-    //
-    //
-    //     const updatedSections = sections.map((s: Section) => {
-    //         if (s.sectionId !== props.sectionId) return s;
-    //         return {...s, time: formatedUpdatedTime()}
-    //     })
-    //
-    //     const currTime = new Date()
-    //
-    //     const offset = new Date(currTime.getTime() + updatedTime * 1004);
-    //     setDataTime(offset);
-    //
-    //     reset(dataTime)
-    //     setSubSections(subSections);
-    //
-    //     await updateDoc(userRef, {timeCheckouts: updatedSubSections});
-    //     await updateDoc(userRef, {projectsSections: updatedSections});
-    //
-    //
-    // }
+    const deleteSubSection = async (subSectionId: string, difference: string) => {
+
+        if (!props.userId) return
+        const userRef = doc(db, "users", props.userId);
+        const userSnap = await getDoc(userRef);
+
+        if (!userSnap.exists()) return;
+        const data = userSnap.data();
+        const timeCheckouts = data.timeCheckouts || []
+
+        const updatedCheckouts = timeCheckouts.filter((s: TimeCheckout) => s.subSectionId !== subSectionId)
+
+        console.log("time", newTime)
+
+        const updatedClockTime = stringTimeToSeconds(newTime) - stringTimeToSeconds(difference)
+
+        console.log(updatedClockTime)
+
+        await updateDoc(userRef, {timeCheckouts: updatedCheckouts});
+        setSubSections(updatedCheckouts);
+
+    }
 
     const toggleTimer = () => {
         const now = new Date();
@@ -280,7 +249,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
             setBtnTittle("Start");
             stopTimeDifference()
             sendTimeData();
-            sendTimeCheckout(formattedTime);
+            createNewTimeCheckout(formattedTime);
         }
     };
 
@@ -348,7 +317,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
                         <span className="font-semibold">t: {s.clockDifference}</span>
                         <span className="font-semibold">d: {s.date}</span>
                         <button
-                            // onClick={() => deleteSubsection(s.id, s.clockDifference)}
+                            onClick={() => deleteSubSection(s.subSectionId, s.clockDifference)}
                             className={"text-red-500 cursor-pointer"}
                         >
                             Delete
