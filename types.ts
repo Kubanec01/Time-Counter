@@ -17,6 +17,13 @@ export interface Section {
     sectionId: string;
     title: string;
     time: string;
+    updateDate: string
+}
+
+export interface UpdatedSectionByDate {
+    sectionId: string;
+    projectId: string;
+    date: string;
 }
 
 export interface Project {

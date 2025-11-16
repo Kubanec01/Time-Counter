@@ -5,7 +5,7 @@ import DeleteModal from "@/components/modals/DeleteModal";
 import {arrayUnion, doc, getDoc, onSnapshot, updateDoc,} from "firebase/firestore";
 import React, {useEffect, useState} from "react";
 import {useStopwatch} from "react-timer-hook";
-import {Section, SectionCartProps, TimeCheckout} from "@/types";
+import {Section, SectionCartProps, TimeCheckout, UpdatedSectionByDate} from "@/types";
 import FormModal from "@/components/modals/FormModal";
 import {useFormateTime} from "@/features/hooks/useFormateTime";
 import {useTimeOperations} from "@/features/hooks/useTimeOperations";
@@ -144,7 +144,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
         await updateDoc(userRef, {projectsSections: orderedSections()});
     };
 
-    const deleteSectionAndCheckouts = async () => {
+    const deleteAllSectionData = async () => {
         if (!props.userId || !props.projectId) return;
 
         const userRef = doc(db, "users", props.userId);
@@ -154,6 +154,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
         const data = userSnap.data();
         const sections = data.projectsSections || [];
         const TimeCheckouts = data.timeCheckouts || [];
+        const sectionsByDates = data.updatedSectionsByDates || []
 
         const updatedSections = sections.filter(
             (s: Section) => s.sectionId !== props.sectionId
@@ -163,8 +164,11 @@ const SectionCart = ({...props}: SectionCartProps) => {
             (ch: TimeCheckout) => ch.sectionId !== props.sectionId
         );
 
+        const updatedSectionsByDates = sectionsByDates.filter((s: UpdatedSectionByDate) => s.sectionId !== props.sectionId);
+
         await updateDoc(userRef, {projectsSections: updatedSections});
         await updateDoc(userRef, {timeCheckouts: updatedCheckouts});
+        await updateDoc(userRef, {updatedSectionsByDates: updatedSectionsByDates});
     };
 
     const stopTimeDifference = () => {
@@ -251,6 +255,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
 
     }
 
+
     const toggleTimer = () => {
         if (isClocktimeRunning && (activeClockTimeSectionId !== props.sectionId)) return setIsInfoModalOpen(true);
 
@@ -314,7 +319,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
                     isModalOpen={isDeleteModalOpen}
                     setIsModalOpen={setIsDeleteModalOpen}
                     title={props.title}
-                    btnFunction={deleteSectionAndCheckouts}
+                    btnFunction={deleteAllSectionData}
                 />
                 <FormModal
                     setIsModalOpen={() => setIsEditModalOpen(false)}
