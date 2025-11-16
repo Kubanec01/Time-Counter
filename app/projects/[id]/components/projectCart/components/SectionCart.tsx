@@ -1,25 +1,28 @@
 "use client";
 
 import {db} from "@/app/firebase/config";
-import DeleteModal from "@/components/DeleteModal";
+import DeleteModal from "@/components/modals/DeleteModal";
 import {arrayUnion, doc, getDoc, onSnapshot, updateDoc,} from "firebase/firestore";
 import React, {useEffect, useState} from "react";
 import {useStopwatch} from "react-timer-hook";
 import {Section, SectionCartProps, TimeCheckout} from "@/types";
-import Modal from "@/components/Modal";
+import FormModal from "@/components/modals/FormModal";
 import {useFormateTime} from "@/features/hooks/useFormateTime";
 import {useTimeOperations} from "@/features/hooks/useTimeOperations";
 import {throwRandomNum} from "@/features/throwRandomNum";
+import {useClockTimeContext} from "@/features/contexts/clockCountContext";
+import SubSectionCart from "@/app/projects/[id]/components/projectCart/components/SubSectionCart";
+import InformativeModal from "@/components/modals/InformativeModal";
 
 
 const SectionCart = ({...props}: SectionCartProps) => {
-
 
     // States
     const [isRunning, setIsRunning] = useState(false);
     const [btnTittle, setBtnTittle] = useState<"Start" | "Pause">("Start");
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
     const [startTime, setStartTime] = useState("");
     const [subSections, setSubSections] = useState<TimeCheckout[] | []>([]);
     const [inputValue, setInputValue] = useState<string>("");
@@ -33,6 +36,14 @@ const SectionCart = ({...props}: SectionCartProps) => {
     });
 
     const {stringTimeToSeconds, timeSecondsToFormatedString} = useTimeOperations()
+
+    // Context
+    const {
+        setIsClocktimeRunning,
+        isClocktimeRunning,
+        setActiveClockTimeSectionId,
+        activeClockTimeSectionId
+    } = useClockTimeContext()
 
     const formateTime = useFormateTime()
 
@@ -241,16 +252,21 @@ const SectionCart = ({...props}: SectionCartProps) => {
     }
 
     const toggleTimer = () => {
-        const now = new Date();
+        if (isClocktimeRunning && (activeClockTimeSectionId !== props.sectionId)) return setIsInfoModalOpen(true);
 
+        const now = new Date();
         const formattedTime = `${formateTime(now.getHours())}:${formateTime(now.getMinutes())}`;
 
         if (!isRunning) {
+            setIsClocktimeRunning(true)
+            setActiveClockTimeSectionId(props.sectionId)
             setIsRunning(true);
             setStartTime(formattedTime);
             start();
             setBtnTittle("Pause");
         } else {
+            setIsClocktimeRunning(false)
+            setActiveClockTimeSectionId("")
             setIsRunning(false);
             pause();
             setBtnTittle("Start");
@@ -300,13 +316,18 @@ const SectionCart = ({...props}: SectionCartProps) => {
                     title={props.title}
                     btnFunction={deleteSectionAndCheckouts}
                 />
-                <Modal
+                <FormModal
                     setIsModalOpen={() => setIsEditModalOpen(false)}
                     isModalOpen={isEditModalOpen}
                     setInputValue={setInputValue}
                     inputValue={inputValue}
                     title={"Set New Section Name"}
                     formFunction={(e) => editSectionName(e)}
+                />
+                <InformativeModal
+                    isModalOpen={isInfoModalOpen}
+                    setIsModalOpen={setIsInfoModalOpen}
+                    title={"You cannot run 2 sections at the same time."}
                 />
             </div>
             <ul
@@ -315,22 +336,15 @@ const SectionCart = ({...props}: SectionCartProps) => {
                 } w-full pt-2 pb-3 px-6 flex items-center gap-4 overflow-x-auto overflow-y-hidden`}
             >
                 {subSections.map((s, index) => (
-                    <li
-                        key={index}
-                        className="border w-[150px] h-[100px] rounded-xl shrink-0 flex flex-col justify-between items-start p-2"
-                    >
-                        <span className="font-semibold">
-                        h: {s.startTime} - {s.stopTime}
-                        </span>
-                        <span className="font-semibold">t: {s.clockDifference}</span>
-                        <span className="font-semibold">d: {s.date}</span>
-                        <button
-                            onClick={() => deleteSubSection(s.subSectionId, s.clockDifference, s.sectionId)}
-                            className={"text-red-500 cursor-pointer"}
-                        >
-                            Delete
-                        </button>
-                    </li>
+                    <SubSectionCart
+                        key={s.subSectionId}
+                        index={index}
+                        startTime={s.startTime}
+                        stopTime={s.stopTime}
+                        clockDifference={s.clockDifference}
+                        date={s.date}
+                        deleteFunction={() => deleteSubSection(s.subSectionId, s.clockDifference, s.sectionId)}
+                    />
                 ))}
             </ul>
         </li>

@@ -9,7 +9,7 @@ interface ModalProps {
     formFunction: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
-const Modal = ({...props}: ModalProps) => {
+const FormModal = ({...props}: ModalProps) => {
     const modalRef = useRef<HTMLInputElement>(null);
 
     //   Style
@@ -68,4 +68,4 @@ const Modal = ({...props}: ModalProps) => {
     );
 };
 
-export default Modal;
+export default FormModal;

@@ -1,6 +1,6 @@
 "use client";
 
-import Modal from "@/components/Modal";
+import FormModal from "@/components/modals/FormModal";
 import ProjectsBars from "@/components/ProjectsBars";
 import {useEffect, useState} from "react";
 import {useAuthState} from "react-firebase-hooks/auth";
@@ -75,7 +75,7 @@ export default function Home() {
                 </div>
                 <ProjectsBars/>
             </div>
-            <Modal
+            <FormModal
                 title="Project"
                 setIsModalOpen={setIsModalOpen}
                 isModalOpen={isModalOpen}

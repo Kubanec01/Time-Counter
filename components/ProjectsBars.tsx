@@ -2,7 +2,7 @@ import {Project, Section, TimeCheckout} from "@/types";
 import {onSnapshot, updateDoc} from "firebase/firestore";
 import Link from "next/link";
 import React, {useEffect, useState} from "react";
-import Modal from "@/components/Modal";
+import FormModal from "@/components/modals/FormModal";
 import {useGetUserDatabase} from "@/features/hooks/useGetUserDatabase";
 
 
@@ -106,7 +106,7 @@ const ProjectsBars = () => {
                                 </button>
                             </li>
                         </ul>
-                        <Modal
+                        <FormModal
                             setIsModalOpen={setIsModalOpen}
                             isModalOpen={isModalOpen}
                             setInputValue={setInputValue}
