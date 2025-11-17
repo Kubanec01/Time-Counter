@@ -1,4 +1,4 @@
-import {Project, Section, TimeCheckout} from "@/types";
+import {Project, Section, TimeCheckout, UpdatedSectionByDate} from "@/types";
 import {onSnapshot, updateDoc} from "firebase/firestore";
 import Link from "next/link";
 import React, {useEffect, useState} from "react";
@@ -38,16 +38,22 @@ const ProjectsBars = () => {
 
         if (!userRef || !userData) return
 
-        const projects = userData?.projects || []
-        const projectsSections = userData?.projectsSections || [];
-        const timeCheckouts = userData?.timeCheckouts || [];
+        // Data
+        const projects = userData.projects || []
+        const projectsSections = userData.projectsSections || [];
+        const timeCheckouts = userData.timeCheckouts || [];
+        const sectionsByDates = userData.updatedSectionsByDates || []
+
+        // Updated Data
         const updatedProjects = projects.filter((p: Project) => p.projectId !== projectId);
         const updatedProjectsSections = projectsSections.filter((s: Section) => s.projectId !== projectId);
         const updatedTimeCheckouts = timeCheckouts.filter((t: TimeCheckout) => t.projectId !== projectId);
+        const updatedSectionsByDates = sectionsByDates.filter((s: UpdatedSectionByDate) => s.projectId !== projectId);
         await updateDoc(userRef, {
             projects: updatedProjects,
             projectsSections: updatedProjectsSections,
-            timeCheckouts: updatedTimeCheckouts
+            timeCheckouts: updatedTimeCheckouts,
+            updatedSectionsByDates: updatedSectionsByDates
         });
     }
 

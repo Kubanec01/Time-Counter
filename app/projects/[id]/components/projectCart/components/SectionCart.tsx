@@ -108,7 +108,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
     }, [props.userId, props.sectionId]);
 
 
-    const sendTimeData = async () => {
+    const sendTimeData = async (date: string) => {
         if (!props.userId || !props.projectId) return;
 
         const userRef = doc(db, "users", props.userId);
@@ -117,12 +117,19 @@ const SectionCart = ({...props}: SectionCartProps) => {
         if (!userSnap.exists()) return;
         const data = userSnap.data();
         const sections = data.projectsSections || [];
+        const sectionsByDates = data.updatedSectionsByDates || []
 
         const updatedSections = sections.map((s: Section) => {
             if (s.sectionId !== props.sectionId) return s;
 
-            return {...s, time: newTime};
+            return {...s, time: newTime, updateDate: date};
         });
+
+        const updatedSectionsByDates = sectionsByDates.map((s: UpdatedSectionByDate) => {
+            if (s.sectionId !== props.sectionId) return s;
+
+            return {...s, date: date}
+        })
 
         const orderedSections = () => {
             const sections: Section[] = []
@@ -142,6 +149,8 @@ const SectionCart = ({...props}: SectionCartProps) => {
 
 
         await updateDoc(userRef, {projectsSections: orderedSections()});
+        await updateDoc(userRef, {updatedSectionsByDates: updatedSectionsByDates});
+
     };
 
     const deleteAllSectionData = async () => {
@@ -261,6 +270,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
 
         const now = new Date();
         const formattedTime = `${formateTime(now.getHours())}:${formateTime(now.getMinutes())}`;
+        const currDateString = `${now.getDate()}.${now.getMonth() + 1}.${now.getFullYear()}`;
 
         if (!isRunning) {
             setIsClocktimeRunning(true)
@@ -276,8 +286,9 @@ const SectionCart = ({...props}: SectionCartProps) => {
             pause();
             setBtnTittle("Start");
             stopTimeDifference()
-            sendTimeData();
+            sendTimeData(currDateString);
             createNewTimeCheckout(formattedTime);
+            // updateUpdatedClockDate(currDateString)
         }
     };
 
