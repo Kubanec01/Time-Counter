@@ -223,7 +223,7 @@ const ProjectCart = ({...props}: projectProps) => {
                     }
                 </ul>
                 <FormModal
-                    title="Section"
+                    title="Create New Section"
                     setIsModalOpen={setIsModalOpen}
                     isModalOpen={isModalOpen}
                     setInputValue={setInputValue}
