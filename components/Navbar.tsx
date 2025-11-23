@@ -3,28 +3,32 @@
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth} from "@/app/firebase/config";
 import {useState} from "react";
+import {FaCircleUser} from "react-icons/fa6";
+import {RxQuestionMarkCircled} from "react-icons/rx";
+import {LuMessageCircleMore} from "react-icons/lu";
 
 
 const Navbar = () => {
 
     // states
     const [isProjectsMenuOpen, setIsProjectsMenuOpen] = useState(false);
-    console.log(isProjectsMenuOpen);
 
     const [user] = useAuthState(auth)
 
     // Styles
     const visibilityStyle = user ? "flex" : "hidden"
-    const projectsMenuStyle = isProjectsMenuOpen ? "flex" : "hidden";
+    const projectsMenuStyle = isProjectsMenuOpen ? "flex" : "hidden duration-150";
+    const rightButtonsStyle = "text-custom-gray-800 hover:text-white duration-150 ease-in-out text-[24px] cursor-pointer"
 
     return (
         <div
             className={`${visibilityStyle} w-full absolute top-0 left-0 h-[72px] bg-black flex justify-between items-center`}
         >
+            {/*Left Side*/}
             <div
                 className={"h-full flex"}>
                 <div
-                    className={"w-[300px] h-full px-[50px] flex items-center justify-center border-r border-custom-gray-800"}
+                    className={"h-full flex items-center px-[50px] justify-center border-r border-custom-gray-800"}
                 >
                     <img src={"/Logo.png"} alt={"Logo image"} className={"w-auto h-auto"}/>
                 </div>
@@ -57,6 +61,33 @@ const Navbar = () => {
 
             </div>
 
+            {/*Right Side*/}
+            <ul
+                className={"h-full flex items-center justify-center gap-[30px] text-white pr-[50px]"}
+            >
+                <li>
+                    <button
+                        className={rightButtonsStyle}
+                    >
+                        <LuMessageCircleMore/>
+
+                    </button>
+                </li>
+                <li>
+                    <button
+                        className={rightButtonsStyle}
+                    >
+                        <RxQuestionMarkCircled/>
+                    </button>
+                </li>
+                <li>
+                    <button
+                        className={"text-pastel-green-700 text-[34px]"}
+                    >
+                        <FaCircleUser/>
+                    </button>
+                </li>
+            </ul>
         </div>
     )
 

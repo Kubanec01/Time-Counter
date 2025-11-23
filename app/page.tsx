@@ -56,25 +56,33 @@ export default function HomePage() {
 
     return (
         <>
-            <section className="text-4xl w-full h-screen flex flex-col justify-center items-center">
-                <button
-                    className="text-xl mb-10 mt-[200px] text-red-600 cursor-pointer"
-                    onClick={() => signOut(auth)}
-                >
-                    Log Out
-                </button>
-                <div className="w-11/12 max-w-[1300px] border-2 rounded-2xl border-[#d9d9d9] h-[800px]">
-                    <div className="h-[40%] w-full flex flex-col justify-start items-center">
-                        <h1 className="text-7xl mt-20">Projects</h1>
-                        <button
-                            onClick={() => setIsModalOpen((v) => !v)}
-                            className="mt-10 border-2 rounded-2xl text-base px-4 py-1 text-blue-600 cursor-pointer"
-                        >
-                            Add Project
-                        </button>
-                    </div>
-                    <ProjectsBars/>
+            {/*Projects Hero*/}
+            <section
+                className={"flex justify-between items-center w-[90%] max-w-[1144px] mt-[180px] mx-auto border-b-2 border-gray-200 px-[94px]"}
+            >
+                {/*Left Side*/}
+                <div
+                    className={`flex items-center justify-center`}>
+                    <h1
+                        className={"text-[48px] font-medium"}
+                    >Projects</h1>
+                    <p
+                        className={"text-base text-custom-gray-800 font-medium -mb-4 ml-4"}>
+                        See all started projects</p>
                 </div>
+                <div
+                    className={`flex items-center justify-center`}>
+                    <button
+                        onClick={() => setIsModalOpen(true)}
+                        className={"text-base px-[20px] py-3.5 text-white hover:text-black" +
+                            " bg-black hover:bg-white border-2 cursor-pointer duration-150 ease-in-out border-black rounded-[1000px] font-medium"}>
+                        Create project
+                    </button>
+                    <p
+                        className={"text-base text-custom-gray-800 font-medium -mb-4 ml-4"}>
+                        And build what moves you</p>
+                </div>
+                <ProjectsBars/>
                 <FormModal
                     title="Project"
                     setIsModalOpen={setIsModalOpen}
