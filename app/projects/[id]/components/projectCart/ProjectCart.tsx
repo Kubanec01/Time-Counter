@@ -1,7 +1,7 @@
 "use client";
 
 import {auth, db} from "@/app/firebase/config";
-import FormModal from "@/components/modals/FormModal";
+import CreateProjectModal from "@/components/modals/CreateProjectModal";
 import {onAuthStateChanged} from "firebase/auth";
 import {
     arrayUnion,
@@ -223,7 +223,7 @@ const ProjectCart = ({...props}: projectProps) => {
 
                     }
                 </ul>
-                <FormModal
+                <CreateProjectModal
                     title="Create New Section"
                     setIsModalOpen={setIsModalOpen}
                     isModalOpen={isModalOpen}

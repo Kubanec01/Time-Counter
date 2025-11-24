@@ -1,15 +1,15 @@
 "use client";
 
-import FormModal from "@/components/modals/FormModal";
+import CreateProjectModal from "@/components/modals/CreateProjectModal";
 import ProjectsBars from "@/components/ProjectsBars";
 import {useEffect, useState} from "react";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth} from "@/app/firebase/config";
 import {useRouter} from "next/navigation";
-import {signOut} from "firebase/auth";
 import {arrayUnion, updateDoc} from "firebase/firestore";
 import {useGetUserDatabase} from "@/features/hooks/useGetUserDatabase";
 import {throwRandomNum} from "@/features/throwRandomNum";
+import {Project} from "@/types";
 
 export default function HomePage() {
 
@@ -20,6 +20,7 @@ export default function HomePage() {
     //   States
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [inputValue, setInputValue] = useState<string>("");
+    const [projectbg, setProjectbg] = useState<string>("");
 
 
     const createNewProject = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -30,9 +31,11 @@ export default function HomePage() {
         // Random Num Variable
         const randomNum = throwRandomNum().toString();
 
-        const newProject = {
+        const newProject: Project = {
             projectId: `${inputValue.replace(/\s+/g, "")}_${randomNum}`,
             title: inputValue,
+            bgColor: "purple",
+            totalTime: "00:00:00"
         };
 
         setInputValue("");
@@ -82,8 +85,7 @@ export default function HomePage() {
                         className={"text-base text-custom-gray-800 font-medium -mb-4 ml-4"}>
                         And build what moves you</p>
                 </div>
-                <ProjectsBars/>
-                <FormModal
+                <CreateProjectModal
                     title="Project"
                     setIsModalOpen={setIsModalOpen}
                     isModalOpen={isModalOpen}
@@ -92,6 +94,7 @@ export default function HomePage() {
                     formFunction={createNewProject}
                 />
             </section>
+            <ProjectsBars/>
         </>
     );
 }

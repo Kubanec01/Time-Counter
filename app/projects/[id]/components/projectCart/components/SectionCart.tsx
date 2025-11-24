@@ -6,7 +6,7 @@ import {arrayUnion, doc, getDoc, onSnapshot, updateDoc,} from "firebase/firestor
 import React, {useEffect, useState} from "react";
 import {useStopwatch} from "react-timer-hook";
 import {Section, SectionCartProps, TimeCheckout, UpdatedSectionByDate} from "@/types";
-import FormModal from "@/components/modals/FormModal";
+import CreateProjectModal from "@/components/modals/CreateProjectModal";
 import {useFormateTime} from "@/features/hooks/useFormateTime";
 import {useTimeOperations} from "@/features/hooks/useTimeOperations";
 import {throwRandomNum} from "@/features/throwRandomNum";
@@ -332,7 +332,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
                     title={props.title}
                     btnFunction={deleteAllSectionData}
                 />
-                <FormModal
+                <CreateProjectModal
                     setIsModalOpen={() => setIsEditModalOpen(false)}
                     isModalOpen={isEditModalOpen}
                     setInputValue={setInputValue}

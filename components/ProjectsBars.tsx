@@ -1,9 +1,15 @@
+'use client'
+
 import {Project, Section, TimeCheckout, UpdatedSectionByDate} from "@/types";
 import {onSnapshot, updateDoc} from "firebase/firestore";
 import Link from "next/link";
 import React, {useEffect, useState} from "react";
-import FormModal from "@/components/modals/FormModal";
+import CreateProjectModal from "@/components/modals/CreateProjectModal";
 import {useGetUserDatabase} from "@/features/hooks/useGetUserDatabase";
+import {HiOutlineMenuAlt3} from "react-icons/hi";
+import {IoClose} from "react-icons/io5";
+import {MdOutlineEdit} from "react-icons/md";
+import {MdDeleteOutline} from "react-icons/md";
 
 
 const ProjectsBars = () => {
@@ -12,6 +18,7 @@ const ProjectsBars = () => {
     const [projectsData, setProjectsData] = useState<Project[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [inputValue, setInputValue] = useState("");
+    const [isProjectMenuOpen, setIsProjectMenuOpen] = useState(false);
 
     // User Data
     const {userRef, userId, userData} = useGetUserDatabase()
@@ -78,54 +85,92 @@ const ProjectsBars = () => {
 
     return (
         <>
+            <ul
+                className={"w-[90%] max-w-[856px] h-auto mx-auto mt-[64px] flex justify-center items-center flex-wrap gap-[56px]"}
+            >
+                {projectsData.length > 0 ?
+                    <>
+                        {projectsData.map((p: Project) => (
+                            <>
+                                <li
+                                    key={p.projectId}
+                                    className={"px-5 pt-10 bg-pastel-purple-500 rounded-[8px] w-[248px] h-[330px] relative"}>
+                                    <ul
+                                        className={"absolute top-0 right-0 p-[14px] text-custom-gray-800 text-xl" +
+                                            " flex items-center justify-center gap-[14px]"}
+                                    >
+                                        <li
+                                            onClick={() => {
+                                                deleteProject(p.projectId);
+                                                setIsProjectMenuOpen(false)
+                                            }}
+                                            className={`${isProjectMenuOpen ? "block" : "hidden"} cursor-pointer`}
+                                        >
+                                            <MdDeleteOutline/>
+                                        </li>
+                                        <li
+                                            onClick={() => {
+                                                setIsModalOpen(true);
+                                                setIsProjectMenuOpen(false)
+                                            }}
+                                            className={`${isProjectMenuOpen ? "block" : "hidden"} cursor-pointer`}
+                                        >
+                                            <MdOutlineEdit/>
 
+                                        </li>
+                                        <li
+                                            onClick={() => setIsProjectMenuOpen(value => !value)}
+                                            className={"cursor-pointer"}
+                                        >
+                                            {isProjectMenuOpen ?
+                                                <IoClose/>
+                                                :
+                                                <HiOutlineMenuAlt3/>
+                                            }
+                                        </li>
+                                    </ul>
+                                    <h2 className={"text-base font-medium text-black"}>
+                                        Project name:
+                                    </h2>
+                                    <h1 className={"text-[28px] leading-tight font-bold text-black w-[98%]"}>
+                                        {p.title}
+                                    </h1>
+                                    {/*Time*/}
+                                    <div
+                                        className={"mt-[28px]"}
+                                    >
+                                        <h3 className={"text-[14px] font-medium text-black -mb-1"}>
+                                            Total time:
+                                        </h3>
+                                        <span className={"text-[24px] leading-tight font-bold text-red w-[90%]"}>
+                                            {p.totalTime}
+                                        </span>
+                                    </div>
+                                    {/*Enter button*/}
+                                    <Link
+                                        href={`/projects/${p.projectId}`}
+                                        className={"px-4 py-3 hover:-translate-x-1 duration-150 ease-in bg-black text-white text-sm rounded-[100px] mt-[44px] absolute " +
+                                            "left-[20px] bottom-[40px] cursor-pointer"}>
+                                        {"Enter project >"}
+                                    </Link>
+                                </li>
+                                <CreateProjectModal
+                                    setIsModalOpen={setIsModalOpen}
+                                    isModalOpen={isModalOpen}
+                                    setInputValue={setInputValue}
+                                    inputValue={inputValue}
+                                    title={"Enter New Project Name"}
+                                    formFunction={(e) => editProjectName(e, p.projectId)}/>
+                            </>
+                        ))}
+                    </>
+                    :
+                    <>
+                        <h1 className="text-custom-gray-600 text-lg mt-[20px]">You have no projects created 0.o</h1>
+                    </>
+                }
+            </ul>
         </>
-        // <section className="w-full h-[60%] flex justify-center items-center gap-5">
-        //     {projectsData.length < 1 ? (
-        //         <h1 className="text-[#9e9e9e]">You have no projects created.</h1>
-        //     ) : (
-        //         projectsData.map((project) => (
-        //             <div
-        //                 key={project.projectId}
-        //                 className="border w-[300px] h-full rounded-2xl flex flex-col justify-center items-center"
-        //             >
-        //                 <h1 className="mb-16 text-center text-2xl">{project.title}</h1>
-        //                 <Link
-        //                     href={`/projects/${project.projectId}`}
-        //                     className=" text-base py-2 px-4 rounded-2xl cursor-pointer bg-blue-600 text-white">
-        //                     Enter Project
-        //                 </Link>
-        //                 <ul
-        //                     className={'mx-auto flex flex-col justify-between items-center gap-1 mt-2'}
-        //                 >
-        //                     <li>
-        //                         <button
-        //                             onClick={() => setIsModalOpen(true)}
-        //                             className="text-xl px-4 py-1 rounded-xl mt-4 text-black border cursor-pointer"
-        //                         >
-        //                             Edit Name
-        //                         </button>
-        //                     </li>
-        //                     <li>
-        //                         <button
-        //                             onClick={() => deleteProject(project.projectId)}
-        //                             className="text-xl px-4 py-1 rounded-xl mt-4 bg-red-500 text-[white] cursor-pointer"
-        //                         >
-        //                             Delete
-        //                         </button>
-        //                     </li>
-        //                 </ul>
-        //                 <FormModal
-        //                     setIsModalOpen={setIsModalOpen}
-        //                     isModalOpen={isModalOpen}
-        //                     setInputValue={setInputValue}
-        //                     inputValue={inputValue}
-        //                     title={"Enter New Project Name"}
-        //                     formFunction={(e) => editProjectName(e, project.projectId)}/>
-        //             </div>
-        //         ))
-        //     )}
-        // </section>
     );
 };
 
