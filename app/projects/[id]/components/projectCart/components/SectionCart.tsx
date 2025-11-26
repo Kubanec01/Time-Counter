@@ -298,7 +298,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
     return (
         <li
             key={props.sectionId}
-            className="w-full rounded-2xl flex flex-col flex-between bg-white h-[150px] px-[16px]">
+            className="w-full rounded-2xl flex flex-col flex-between bg-white h-[150px] px-[16px] mb-[8px]">
             <div
                 className={"flex justify-between gap-10 items-center px-2 h-[52px] border-b-1 border-custom-gray-600"}
             >

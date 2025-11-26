@@ -14,6 +14,7 @@ import SectionCart from "./components/SectionCart";
 import {Project, projectProps, Section, UpdatedSectionByDate} from "@/types";
 import {throwRandomNum} from "@/features/throwRandomNum";
 import {useRouter} from "next/navigation";
+import ProjectCartNavbar from "@/components/ProjectCartNavbar";
 
 const ProjectCart = ({...props}: projectProps) => {
     // States
@@ -176,6 +177,7 @@ const ProjectCart = ({...props}: projectProps) => {
 
     return (
         <>
+            <ProjectCartNavbar projectName={projectName} />
             <section
                 className={"w-[90%] max-w-[776px] mx-auto pt-[198px] border-b-2 border-custom-gray-600 pb-3 px-20"}
             >
@@ -199,14 +201,14 @@ const ProjectCart = ({...props}: projectProps) => {
             </section>
 
             <section
-                className={"w-[90%] max-w-[756px] mx-auto mt-[30]"}>
+                className={"w-[90%] max-w-[756px] mx-auto mt-[30] mb-[20]"}>
                 <ul className="w-full">
                     {updatedSectionsByDates.length > 0
                         ?
                         <>
                             {updatedSectionsByDates.map((section, index) => (
                                 <ul
-                                    className={`w-full px-[12px] py-[12px] rounded-[12px] ${setSectionColor(section)}`}
+                                    className={`w-full px-[12px] pt-[12px] pb-[4px] rounded-[12px] ${setSectionColor(section)}`}
                                     key={index}>
                                     <h1
                                         className={"text-sm text-custom-gray-800  ml-[24px] mb-[12px]"}

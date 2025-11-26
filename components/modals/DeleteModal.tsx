@@ -13,10 +13,10 @@ const DeleteModal = ({...props}: ModalProps) => {
 
     return (
         <section
-            className={`${openStyle} absolute top-0 left-0 w-full h-screen z-50 backdrop-blur-sm justify-center items-center`}
+            className={`${openStyle} fixed top-0 left-0 w-full h-screen z-50 backdrop-blur-sm justify-center items-center`}
         >
             <div
-                className="border-2 border-[#bababa] w-[500px] h-[280px] rounded-3xl bg-[white] px-6 py-8 -mt-[100px] flex flex-col justify-between">
+                className={`${openStyle} absolute border-2 border-[#bababa] w-[500px] h-[280px] rounded-3xl bg-[white] px-6 py-8 -mt-[100px] flex flex-col justify-between`}>
                 <h1 className="mx-auto w-[80%] text-lg">
                     Are you sure you want to delete the {props.title} section? <br/>
                     Once you delete it, it won't be possible to restore it.
