@@ -1,4 +1,5 @@
 import React from "react";
+import {FiTrash2} from "react-icons/fi";
 
 interface SubSectionCartProps {
     index: number;
@@ -14,19 +15,16 @@ const SubSectionCart = (props: SubSectionCartProps) => {
     return (
         <li
             key={props.index}
-            className="border w-[150px] h-[100px] rounded-xl shrink-0 flex flex-col justify-between items-start p-2"
-        >
-                        <span className="font-semibold">
-                        h: {props.startTime} - {props.stopTime}
-                        </span>
-            <span className="font-semibold">t: {props.clockDifference}</span>
-            <span className="font-semibold">d: {props.date}</span>
+            className="w-[128px] h-[80px] rounded-xl font-medium text-sm flex flex-col justify-between items-start
+             p-[8px] bg-pastel-purple-500 relative">
+            <span className="">
+                h: {props.startTime} - {props.stopTime}
+            </span>
+            <span className="">t: {props.clockDifference}</span>
+            <span className="">d: {props.date}</span>
             <button
-                onClick={props.deleteFunction}
-                className={"text-red-500 cursor-pointer"}
-            >
-                Delete
-            </button>
+                onClick={() => props.deleteFunction()}
+                className={"absolute bottom-[12px] right-[8px] text-sm cursor-pointer"}><FiTrash2/></button>
         </li>
     )
 }

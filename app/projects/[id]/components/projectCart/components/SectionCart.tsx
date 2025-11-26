@@ -13,6 +13,8 @@ import {throwRandomNum} from "@/features/throwRandomNum";
 import {useClockTimeContext} from "@/features/contexts/clockCountContext";
 import SubSectionCart from "@/app/projects/[id]/components/projectCart/components/SubSectionCart";
 import InformativeModal from "@/components/modals/InformativeModal";
+import {CiPlay1} from "react-icons/ci";
+import {FiDelete, FiEdit, FiPause, FiPlay} from "react-icons/fi";
 
 
 const SectionCart = ({...props}: SectionCartProps) => {
@@ -296,35 +298,44 @@ const SectionCart = ({...props}: SectionCartProps) => {
     return (
         <li
             key={props.sectionId}
-            className="w-full rounded-2xl flex flex-col flex-between bg-white"
-        >
-            <div className="w-full flex items-center justify-between py-4">
-                <div className="w-4/12 flex items-center justify-start text-2xl pl-6">
-                    <h1>{props.title}</h1>
-                </div>
-                <div className="w-[20%] flex items-center justify-center text-2xl">
-                    <span>{newTime}</span>
-                </div>
-                {/* Buttons */}
-                <div className="w-[50%] flex items-center justify-center gap-10">
+            className="w-full rounded-2xl flex flex-col flex-between bg-white h-[150px] px-[16px]">
+            <div
+                className={"flex justify-between gap-10 items-center px-2 h-[52px] border-b-1 border-custom-gray-600"}
+            >
+                <h1
+                    className={"text-base text-black"}
+                >{props.title}</h1>
+                <span
+                    className={"text-[20px] font-medium text-black"}
+                >{newTime}</span>
+                <div
+                    className={"flex items-center justify-center text-base text-custom-gray-600 gap-[24px]"}>
+                    <span className={"w-[1px] h-[36px] bg-custom-gray-600"}/>
                     <button
                         onClick={() => toggleTimer()}
-                        className="border px-3 py-1 rounded-2xl cursor-pointer"
-                    >
-                        {btnTittle}
+                        className={"cursor-pointer hover:text-custom-gray-800 duration-150 text-lg"}>
+                        {isRunning
+                            ?
+                            <FiPause/>
+                            :
+                            <FiPlay/>
+                        }
                     </button>
-                    <button
-                        onClick={() => setIsDeleteModalOpen(true)}
-                        className="border px-3 py-1 rounded-2xl cursor-pointer"
-                    >
-                        Delete
-                    </button>
+                    <span className={"w-[1px] h-[36px] bg-custom-gray-600"}/>
                     <button
                         onClick={() => setIsEditModalOpen(true)}
-                        className="border px-3 py-1 rounded-2xl cursor-pointer"
+                        className={"cursor-pointer hover:text-custom-gray-800 duration-150"}
                     >
-                        Edit Name
+                        <FiEdit/>
                     </button>
+                    <span className={"w-[1px] h-[36px] bg-custom-gray-600"}/>
+                    <button
+                        onClick={() => setIsDeleteModalOpen(true)}
+                        className={"cursor-pointer hover:text-custom-gray-800 duration-150"}
+                    >
+                        <FiDelete/>
+                    </button>
+                    <span className={"w-[1px] h-[36px] bg-custom-gray-600"}/>
                 </div>
                 <DeleteModal
                     isModalOpen={isDeleteModalOpen}
@@ -349,7 +360,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
             <ul
                 className={`${
                     isAnySections ? "flex-1" : "hidden"
-                } w-full pt-2 pb-3 px-6 flex items-center gap-4 overflow-x-auto overflow-y-hidden`}
+                } w-full flex items-center overflow-x-auto overflow-y-hidden gap-3`}
             >
                 {subSections.map((s, index) => (
                     <SubSectionCart
@@ -364,6 +375,76 @@ const SectionCart = ({...props}: SectionCartProps) => {
                 ))}
             </ul>
         </li>
+        // <li
+        //     key={props.sectionId}
+        //     className="w-full rounded-2xl flex flex-col flex-between bg-white"
+        // >
+        //     <div className="w-full flex items-center justify-between py-4">
+        //         <div className="w-4/12 flex items-center justify-start text-2xl pl-6">
+        //             <h1>{props.title}</h1>
+        //         </div>
+        //         <div className="w-[20%] flex items-center justify-center text-2xl">
+        //             <span>{newTime}</span>
+        //         </div>
+        //         {/* Buttons */}
+        //         <div className="w-[50%] flex items-center justify-center gap-10">
+        //             <button
+        //                 onClick={() => toggleTimer()}
+        //                 className="border px-3 py-1 rounded-2xl cursor-pointer"
+        //             >
+        //                 {btnTittle}
+        //             </button>
+        //             <button
+        //                 onClick={() => setIsDeleteModalOpen(true)}
+        //                 className="border px-3 py-1 rounded-2xl cursor-pointer"
+        //             >
+        //                 Delete
+        //             </button>
+        //             <button
+        //                 onClick={() => setIsEditModalOpen(true)}
+        //                 className="border px-3 py-1 rounded-2xl cursor-pointer"
+        //             >
+        //                 Edit Name
+        //             </button>
+        //         </div>
+        //         <DeleteModal
+        //             isModalOpen={isDeleteModalOpen}
+        //             setIsModalOpen={setIsDeleteModalOpen}
+        //             title={props.title}
+        //             btnFunction={deleteAllSectionData}
+        //         />
+        //         <CreateProjectModal
+        //             setIsModalOpen={() => setIsEditModalOpen(false)}
+        //             isModalOpen={isEditModalOpen}
+        //             setInputValue={setInputValue}
+        //             inputValue={inputValue}
+        //             title={"Set New Section Name"}
+        //             formFunction={(e) => editSectionName(e)}
+        //         />
+        //         <InformativeModal
+        //             isModalOpen={isInfoModalOpen}
+        //             setIsModalOpen={setIsInfoModalOpen}
+        //             title={"You cannot run 2 sections at the same time."}
+        //         />
+        //     </div>
+        //     <ul
+        //         className={`${
+        //             isAnySections ? "flex-1" : "hidden"
+        //         } w-full pt-2 pb-3 px-6 flex items-center gap-4 overflow-x-auto overflow-y-hidden`}
+        //     >
+        //         {subSections.map((s, index) => (
+        //             <SubSectionCart
+        //                 key={s.subSectionId}
+        //                 index={index}
+        //                 startTime={s.startTime}
+        //                 stopTime={s.stopTime}
+        //                 clockDifference={s.clockDifference}
+        //                 date={s.date}
+        //                 deleteFunction={() => deleteSubSection(s.subSectionId, s.clockDifference, s.sectionId)}
+        //             />
+        //         ))}
+        //     </ul>
+        // </li>
     );
 };
 

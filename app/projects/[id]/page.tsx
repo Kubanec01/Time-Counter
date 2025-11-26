@@ -6,7 +6,7 @@ import ProjectCart from "./components/projectCart/ProjectCart";
 const ProjectPage = () => {
   const {id} = useParams();
   return (
-    <section className="w-full h-screen">
+    <section className="w-full">
       <ProjectCart id={id!.toString()} />
     </section>
   );

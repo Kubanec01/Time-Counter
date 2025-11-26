@@ -177,7 +177,7 @@ const ProjectCart = ({...props}: projectProps) => {
     return (
         <>
             <section
-                className={"w-[90%] max-w-[776px] mx-auto mt-[198px] border-b-2 border-custom-gray-600 pb-3 px-20"}
+                className={"w-[90%] max-w-[776px] mx-auto pt-[198px] border-b-2 border-custom-gray-600 pb-3 px-20"}
             >
                 <form
                     onSubmit={createNewSection}
@@ -209,7 +209,7 @@ const ProjectCart = ({...props}: projectProps) => {
                                     className={`w-full px-[12px] py-[12px] rounded-[12px] ${setSectionColor(section)}`}
                                     key={index}>
                                     <h1
-                                        className={"text-base text-custom-gray-800  ml-[24px] mb-[12px]"}
+                                        className={"text-sm text-custom-gray-800  ml-[24px] mb-[12px]"}
                                     >
                                         {setSectionName(section)}
                                     </h1>
