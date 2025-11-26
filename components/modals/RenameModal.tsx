@@ -1,6 +1,6 @@
 'use client'
 
-import {Dispatch, SetStateAction, useEffect, useRef, useState} from "react";
+import {Dispatch, ReactNode, SetStateAction, useEffect, useRef} from "react";
 import {PiCirclesThreeFill} from "react-icons/pi";
 
 
@@ -10,10 +10,13 @@ interface ModalProps {
     setInputValue: Dispatch<SetStateAction<string>>;
     inputValue: string;
     title: string;
+    desc: string;
+    icon: ReactNode;
+    inputPlaceholder: string;
     formFunction: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
-const CreateProjectModal = ({...props}: ModalProps) => {
+const RenameModal = ({...props}: ModalProps) => {
     // States
 
     const modalRef = useRef<HTMLInputElement>(null);
@@ -40,21 +43,18 @@ const CreateProjectModal = ({...props}: ModalProps) => {
                 <span
                     className={"mx-auto text-4xl w-full flex justify-center text-pastel-purple-700"}
                 >
-                    <PiCirclesThreeFill/>
+                    {props.icon}
                 </span>
                 <div className={"mt-[18px]"}>
-                    <h1 className={"text-lg font-medium"}>Create new project?</h1>
-                    <p className={"text-sm text-custom-gray-800 w-[98%]"}>
-                        Create a new project where you can measure
-                        progress, time, performance, and simply everything
-                        that will move your work to the speed of light! (max 24 characters)</p>
+                    <h1 className={"text-lg font-medium"}>{props.title}</h1>
+                    <p className={"text-sm text-custom-gray-800 w-[98%]"}>{props.desc}</p>
                 </div>
                 <input type="text"
                        ref={modalRef}
                        onChange={(v) => props.setInputValue(v.target.value)}
                        value={props.inputValue}
                        maxLength={24}
-                       placeholder={"What are you going to work on?"}
+                       placeholder={`${props.inputPlaceholder}`}
                        className={"w-full h-[34px] text-custom-gray-800 pl-2" +
                            " border-pastel-purple-700 border-2 text-sm rounded-[100px] mt-[18px] outline-none"}/>
                 <div
@@ -77,4 +77,4 @@ const CreateProjectModal = ({...props}: ModalProps) => {
         ;
 };
 
-export default CreateProjectModal;
+export default RenameModal;

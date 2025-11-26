@@ -2,7 +2,7 @@
 
 import CreateProjectModal from "@/components/modals/CreateProjectModal";
 import ProjectsBars from "@/components/ProjectsBars";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth} from "@/app/firebase/config";
 import {useRouter} from "next/navigation";
@@ -14,14 +14,23 @@ import {Project} from "@/types";
 export default function HomePage() {
 
     // User Data
-    const {userRef} = useGetUserDatabase()
+    const {userRef, userId, userData} = useGetUserDatabase()
 
 
     //   States
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [inputValue, setInputValue] = useState<string>("");
-    const [projectbg, setProjectbg] = useState<string>("");
 
+
+    // Auth Route Function
+    const [user, loading] = useAuthState(auth);
+    const router = useRouter();
+
+    useEffect(() => {
+        if (!loading && !user) {
+            router.push("/sign-in");
+        }
+    }, [user, loading, router]);
 
     const createNewProject = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -34,7 +43,6 @@ export default function HomePage() {
         const newProject: Project = {
             projectId: `${inputValue.replace(/\s+/g, "")}_${randomNum}`,
             title: inputValue,
-            bgColor: "purple",
             totalTime: "00:00:00"
         };
 
@@ -46,16 +54,6 @@ export default function HomePage() {
         });
     };
 
-
-    // Auth Route Function
-    const [user, loading] = useAuthState(auth);
-    const router = useRouter();
-
-    useEffect(() => {
-        if (!loading && !user) {
-            router.push("/sign-in");
-        }
-    }, [user, loading, router]);
 
     return (
         <>
@@ -94,6 +92,31 @@ export default function HomePage() {
                     formFunction={createNewProject}
                 />
             </section>
+            {/*<ul*/}
+            {/*    className={"w-[90%] max-w-[856px] h-auto mx-auto mt-[64px] flex justify-center items-center flex-wrap gap-[56px]"}*/}
+            {/*>*/}
+            {/*    {projectsData.length > 0*/}
+            {/*        ?*/}
+            {/*        <>*/}
+            {/*            {*/}
+            {/*                projectsData.map((project: Project) => (*/}
+            {/*                    <ProjectBar*/}
+            {/*                        key={project.projectId}*/}
+            {/*                        projectId={project.projectId}*/}
+            {/*                        projectTitle={project.title}*/}
+            {/*                        projectTotalTime={project.totalTime}*/}
+            {/*                        onDeleteProject={deleteProject}*/}
+            {/*                        onEditProject={editProjectName}*/}
+            {/*                    />*/}
+            {/*                ))*/}
+            {/*            }*/}
+            {/*        </>*/}
+            {/*        :*/}
+            {/*        <>*/}
+            {/*            <h1 className="text-custom-gray-600 text-lg mt-[20px]">You have no projects created 0.o</h1>*/}
+            {/*        </>*/}
+            {/*    }*/}
+            {/*</ul>*/}
             <ProjectsBars/>
         </>
     );

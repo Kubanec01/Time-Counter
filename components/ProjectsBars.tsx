@@ -4,12 +4,13 @@ import {Project, Section, TimeCheckout, UpdatedSectionByDate} from "@/types";
 import {onSnapshot, updateDoc} from "firebase/firestore";
 import Link from "next/link";
 import React, {useEffect, useState} from "react";
-import CreateProjectModal from "@/components/modals/CreateProjectModal";
 import {useGetUserDatabase} from "@/features/hooks/useGetUserDatabase";
 import {HiOutlineMenuAlt3} from "react-icons/hi";
 import {IoClose} from "react-icons/io5";
 import {MdOutlineEdit} from "react-icons/md";
 import {MdDeleteOutline} from "react-icons/md";
+import RenameModal from "@/components/modals/RenameModal";
+import {RiEditBoxFill} from "react-icons/ri";
 
 
 const ProjectsBars = () => {
@@ -94,7 +95,7 @@ const ProjectsBars = () => {
                             <>
                                 <li
                                     key={p.projectId}
-                                    className={"px-5 pt-10 bg-pastel-purple-500 rounded-[8px] w-[248px] h-[330px] relative"}>
+                                    className={"px-5 pt-10 bg-pastel-pink-700 rounded-[8px] w-[248px] h-[330px] relative"}>
                                     <ul
                                         className={"absolute top-0 right-0 p-[14px] text-custom-gray-800 text-xl" +
                                             " flex items-center justify-center gap-[14px]"}
@@ -132,12 +133,12 @@ const ProjectsBars = () => {
                                     <h2 className={"text-base font-medium text-black"}>
                                         Project name:
                                     </h2>
-                                    <h1 className={"text-[28px] leading-tight font-bold text-black w-[98%]"}>
+                                    <h1 className={"text-[28px] leading-tight font-bold text-black w-[98%] -mt-1 border-b-2"}>
                                         {p.title}
                                     </h1>
                                     {/*Time*/}
                                     <div
-                                        className={"mt-[28px]"}
+                                        className={"mt-[28px] border-b-2"}
                                     >
                                         <h3 className={"text-[14px] font-medium text-black -mb-1"}>
                                             Total time:
@@ -154,12 +155,15 @@ const ProjectsBars = () => {
                                         {"Enter project >"}
                                     </Link>
                                 </li>
-                                <CreateProjectModal
+                                <RenameModal
                                     setIsModalOpen={setIsModalOpen}
                                     isModalOpen={isModalOpen}
                                     setInputValue={setInputValue}
                                     inputValue={inputValue}
-                                    title={"Enter New Project Name"}
+                                    icon={<RiEditBoxFill/>}
+                                    inputPlaceholder={"What is new project name?"}
+                                    title={"Rename project?"}
+                                    desc={"You can rename your project anytime, anywhere. But remember - the name must contain a maximum of 24 characters."}
                                     formFunction={(e) => editProjectName(e, p.projectId)}/>
                             </>
                         ))}

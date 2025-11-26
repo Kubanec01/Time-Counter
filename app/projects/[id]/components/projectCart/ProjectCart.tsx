@@ -19,7 +19,6 @@ const ProjectCart = ({...props}: projectProps) => {
     // States
     const [sections, setSections] = useState<Section[]>([]);
     const [updatedSectionsByDates, setUpdatedSectionsByDates] = useState<string[]>([]);
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [inputValue, setInputValue] = useState<string>("");
     const [userId, setUserId] = useState<string | undefined>(undefined);
     const [projectName, setProjectName] = useState<string | null>(null);
@@ -165,35 +164,52 @@ const ProjectCart = ({...props}: projectProps) => {
         return sectionValidName
     }
 
+    const setSectionColor = (sectionName: string) => {
+
+        const date = new Date()
+        const todayDateString = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`
+
+        if (sectionName === todayDateString) {
+            return "bg-pastel-pink-700"
+        } else return `bg-pastel-green-700`
+    }
 
     return (
         <>
-            <button
-                onClick={() => router.replace("/")}
-                className={"absolute top-[30px] left-[50%] -translate-x-[50%] border w-[100px] h-[34px] rounded-2xl cursor-pointer"}
+            <section
+                className={"w-[90%] max-w-[776px] mx-auto mt-[198px] border-b-2 border-custom-gray-600 pb-3 px-20"}
             >
-                Go Back
-            </button>
-            <div className="border max-w-[1200px] w-11/12 h-[700px] m-auto rounded-3xl flex flex-col overflow-hidden">
-                <div className="w-full flex justify-center items-center flex-col gap-6">
-                    <h1 className="text-center mx-auto text-4xl mt-10">{projectName}</h1>
+                <form
+                    onSubmit={createNewSection}
+                    className={"flex justify-between"}
+                >
+                    <input
+                        placeholder={"What do you want to work on?"}
+                        className={"w-[476px] h-[38px] rounded-[4px] pl-2 text-sm border border-custom-gray-800 outline-none"}
+                        type="text"
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                    />
                     <button
-                        onClick={() => setIsModalOpen(true)}
-                        className="border px-2 py-1 rounded-2xl mx-auto cursor-pointer"
-                    >
-                        Add Section
+                        type={"submit"}
+                        className={"w-[119px] h-[38px] text-base rounded-[4px] text-white bg-pastel-purple-800 cursor-pointer"}>
+                        New Timer
                     </button>
-                </div>
-                <ul className="border flex-1 mt-10 px-6 py-2 overflow-y-auto">
+                </form>
+            </section>
+
+            <section
+                className={"w-[90%] max-w-[756px] mx-auto mt-[30]"}>
+                <ul className="w-full">
                     {updatedSectionsByDates.length > 0
                         ?
                         <>
                             {updatedSectionsByDates.map((section, index) => (
                                 <ul
-                                    className={"mb-7"}
+                                    className={`w-full px-[12px] py-[12px] rounded-[12px] ${setSectionColor(section)}`}
                                     key={index}>
                                     <h1
-                                        className={"border-b-2 border-gray-600 -mb-1 text-lg text-gray-600"}
+                                        className={"text-base text-custom-gray-800  ml-[24px] mb-[12px]"}
                                     >
                                         {setSectionName(section)}
                                     </h1>
@@ -223,15 +239,57 @@ const ProjectCart = ({...props}: projectProps) => {
 
                     }
                 </ul>
-                <CreateProjectModal
-                    title="Create New Section"
-                    setIsModalOpen={setIsModalOpen}
-                    isModalOpen={isModalOpen}
-                    setInputValue={setInputValue}
-                    inputValue={inputValue}
-                    formFunction={createNewSection}
-                />
-            </div>
+            </section>
+            {/*<div className="border max-w-[1200px] w-11/12 h-[700px] m-auto rounded-3xl flex flex-col overflow-hidden">*/}
+            {/*    <div className="w-full flex justify-center items-center flex-col gap-6">*/}
+            {/*        <h1 className="text-center mx-auto text-4xl mt-10">{projectName}</h1>*/}
+            {/*        <button*/}
+            {/*            onClick={() => setIsModalOpen(true)}*/}
+            {/*            className="border px-2 py-1 rounded-2xl mx-auto cursor-pointer"*/}
+            {/*        >*/}
+            {/*            Add Section*/}
+            {/*        </button>*/}
+            {/*    </div>*/}
+            {/*    <ul className="border flex-1 mt-10 px-6 py-2 overflow-y-auto">*/}
+            {/*        {updatedSectionsByDates.length > 0*/}
+            {/*            ?*/}
+            {/*            <>*/}
+            {/*                {updatedSectionsByDates.map((section, index) => (*/}
+            {/*                    <ul*/}
+            {/*                        className={"mb-7"}*/}
+            {/*                        key={index}>*/}
+            {/*                        <h1*/}
+            {/*                            className={"border-b-2 border-gray-600 -mb-1 text-lg text-gray-600"}*/}
+            {/*                        >*/}
+            {/*                            {setSectionName(section)}*/}
+            {/*                        </h1>*/}
+            {/*                        {sections.map((i) => {*/}
+            {/*                            if (i.updateDate === section) {*/}
+            {/*                                return (*/}
+            {/*                                    <SectionCart*/}
+            {/*                                        key={i.sectionId}*/}
+            {/*                                        sectionId={i.sectionId}*/}
+            {/*                                        projectId={i.projectId}*/}
+            {/*                                        title={i.title}*/}
+            {/*                                        userId={userId}*/}
+            {/*                                    />*/}
+            {/*                                );*/}
+            {/*                            }*/}
+            {/*                            return null;*/}
+            {/*                        })}*/}
+            {/*                    </ul>*/}
+            {/*                ))}*/}
+            {/*            </>*/}
+
+            {/*            :*/}
+            {/*            <h1*/}
+            {/*                className={"w-full h-full flex justify-center items-center text-2xl text-gray-500"}>*/}
+            {/*                You have no sections created.*/}
+            {/*            </h1>*/}
+
+            {/*        }*/}
+            {/*    </ul>*/}
+            {/*</div>*/}
         </>
     );
 };

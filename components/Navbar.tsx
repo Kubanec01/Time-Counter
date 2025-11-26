@@ -82,6 +82,7 @@ const Navbar = () => {
                 </li>
                 <li>
                     <button
+                        onClick={() => auth.signOut()}
                         className={"text-pastel-green-700 text-[34px]"}
                     >
                         <FaCircleUser/>

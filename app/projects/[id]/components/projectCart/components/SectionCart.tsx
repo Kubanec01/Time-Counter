@@ -296,7 +296,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
     return (
         <li
             key={props.sectionId}
-            className="border w-full rounded-2xl flex flex-col flex-between my-4"
+            className="w-full rounded-2xl flex flex-col flex-between bg-white"
         >
             <div className="w-full flex items-center justify-between py-4">
                 <div className="w-4/12 flex items-center justify-start text-2xl pl-6">
