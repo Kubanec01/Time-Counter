@@ -18,7 +18,7 @@ const ProjectCartNavbar = ({projectName}: { projectName: string | null }) => {
 
     return (
         <div
-            className={`w-full absolute top-0 left-0 h-[72px] bg-black flex justify-between items-center`}
+            className={`w-full fixed top-0 left-0 h-[72px] bg-black flex justify-between items-center`}
         >
             {/*Left Side*/}
             <div
@@ -32,7 +32,7 @@ const ProjectCartNavbar = ({projectName}: { projectName: string | null }) => {
                     className={"h-full flex items-center justify-center"}
                 >
                     <span
-                        className={"text-white text-[20px] font-light ml-[22px] cursor-pointer"}
+                        className={"text-white text-[20px] font-light ml-[22px]"}
                     >
                         {"Now working on >"}
                     </span>
@@ -40,7 +40,7 @@ const ProjectCartNavbar = ({projectName}: { projectName: string | null }) => {
                         className={`flex items-center justify-center gap-[30px] pl-[16px] h-full w-auto`}
                     >
                         <span
-                            className={"text-custom-gray-600 hover:text-white duration-150 ease-in-out cursor-pointer text-[20px] font-light"}>
+                            className={"text-custom-gray-600 text-[20px] font-light"}>
                             {projectName}
                         </span>
                     </div>

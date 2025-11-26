@@ -87,74 +87,72 @@ const ProjectsBars = () => {
     return (
         <>
             <ul
-                className={"w-[90%] max-w-[856px] h-auto mx-auto mt-[64px] flex justify-center items-center flex-wrap gap-[56px]"}
+                className={"w-[90%] max-w-[856px] pb-[24px] h-auto mx-auto mt-[64px] flex justify-center items-center flex-wrap gap-[56px]"}
             >
                 {projectsData.length > 0 ?
                     <>
                         {projectsData.map((p: Project) => (
-                            <>
-                                <li
-                                    key={p.projectId}
-                                    className={"px-5 pt-10 bg-pastel-pink-700 rounded-[8px] w-[248px] h-[330px] relative"}>
-                                    <ul
-                                        className={"absolute top-0 right-0 p-[14px] text-custom-gray-800 text-xl" +
-                                            " flex items-center justify-center gap-[14px]"}
+                            <li
+                                key={p.projectId}
+                                className={"px-5 pt-10 bg-pastel-pink-700 rounded-[8px] w-[248px] h-[330px] relative"}>
+                                <ul
+                                    className={"absolute top-0 right-0 p-[14px] text-custom-gray-800 text-xl" +
+                                        " flex items-center justify-center gap-[14px]"}
+                                >
+                                    <li
+                                        onClick={() => {
+                                            deleteProject(p.projectId);
+                                            setIsProjectMenuOpen(false)
+                                        }}
+                                        className={`${isProjectMenuOpen ? "block" : "hidden"} cursor-pointer`}
                                     >
-                                        <li
-                                            onClick={() => {
-                                                deleteProject(p.projectId);
-                                                setIsProjectMenuOpen(false)
-                                            }}
-                                            className={`${isProjectMenuOpen ? "block" : "hidden"} cursor-pointer`}
-                                        >
-                                            <MdDeleteOutline/>
-                                        </li>
-                                        <li
-                                            onClick={() => {
-                                                setIsModalOpen(true);
-                                                setIsProjectMenuOpen(false)
-                                            }}
-                                            className={`${isProjectMenuOpen ? "block" : "hidden"} cursor-pointer`}
-                                        >
-                                            <MdOutlineEdit/>
+                                        <MdDeleteOutline/>
+                                    </li>
+                                    <li
+                                        onClick={() => {
+                                            setIsModalOpen(true);
+                                            setIsProjectMenuOpen(false)
+                                        }}
+                                        className={`${isProjectMenuOpen ? "block" : "hidden"} cursor-pointer`}
+                                    >
+                                        <MdOutlineEdit/>
 
-                                        </li>
-                                        <li
-                                            onClick={() => setIsProjectMenuOpen(value => !value)}
-                                            className={"cursor-pointer"}
-                                        >
-                                            {isProjectMenuOpen ?
-                                                <IoClose/>
-                                                :
-                                                <HiOutlineMenuAlt3/>
-                                            }
-                                        </li>
-                                    </ul>
-                                    <h2 className={"text-base font-medium text-black"}>
-                                        Project name:
-                                    </h2>
-                                    <h1 className={"text-[28px] leading-tight font-bold text-black w-[98%] -mt-1 border-b-2"}>
-                                        {p.title}
-                                    </h1>
-                                    {/*Time*/}
-                                    <div
-                                        className={"mt-[28px] border-b-2"}
+                                    </li>
+                                    <li
+                                        onClick={() => setIsProjectMenuOpen(value => !value)}
+                                        className={"cursor-pointer"}
                                     >
-                                        <h3 className={"text-[14px] font-medium text-black -mb-1"}>
-                                            Total time:
-                                        </h3>
-                                        <span className={"text-[24px] leading-tight font-bold text-red w-[90%]"}>
+                                        {isProjectMenuOpen ?
+                                            <IoClose/>
+                                            :
+                                            <HiOutlineMenuAlt3/>
+                                        }
+                                    </li>
+                                </ul>
+                                <h2 className={"text-base font-medium text-black"}>
+                                    Project name:
+                                </h2>
+                                <h1 className={"text-[28px] leading-tight font-bold text-black w-[98%] -mt-1 border-b-2"}>
+                                    {p.title}
+                                </h1>
+                                {/*Time*/}
+                                <div
+                                    className={"mt-[28px] border-b-2"}
+                                >
+                                    <h3 className={"text-[14px] font-medium text-black -mb-1"}>
+                                        Total time:
+                                    </h3>
+                                    <span className={"text-[24px] leading-tight font-bold text-red w-[90%]"}>
                                             {p.totalTime}
                                         </span>
-                                    </div>
-                                    {/*Enter button*/}
-                                    <Link
-                                        href={`/projects/${p.projectId}`}
-                                        className={"px-4 py-3 hover:-translate-x-1 duration-150 ease-in bg-black text-white text-sm rounded-[100px] mt-[44px] absolute " +
-                                            "left-[20px] bottom-[40px] cursor-pointer"}>
-                                        {"Enter project >"}
-                                    </Link>
-                                </li>
+                                </div>
+                                {/*Enter button*/}
+                                <Link
+                                    href={`/projects/${p.projectId}`}
+                                    className={"px-4 py-3 hover:-translate-x-1 duration-150 ease-in bg-black text-white text-sm rounded-[100px] mt-[44px] absolute " +
+                                        "left-[20px] bottom-[40px] cursor-pointer"}>
+                                    {"Enter project >"}
+                                </Link>
                                 <RenameModal
                                     setIsModalOpen={setIsModalOpen}
                                     isModalOpen={isModalOpen}
@@ -165,7 +163,7 @@ const ProjectsBars = () => {
                                     title={"Rename project?"}
                                     desc={"You can rename your project anytime, anywhere. But remember - the name must contain a maximum of 24 characters."}
                                     formFunction={(e) => editProjectName(e, p.projectId)}/>
-                            </>
+                            </li>
                         ))}
                     </>
                     :

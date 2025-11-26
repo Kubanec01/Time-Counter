@@ -4,9 +4,9 @@ import CreateProjectModal from "@/components/modals/CreateProjectModal";
 import ProjectsBars from "@/components/ProjectsBars";
 import React, {useEffect, useState} from "react";
 import {useAuthState} from "react-firebase-hooks/auth";
-import {auth} from "@/app/firebase/config";
+import {auth, db} from "@/app/firebase/config";
 import {useRouter} from "next/navigation";
-import {arrayUnion, updateDoc} from "firebase/firestore";
+import {arrayUnion, doc, getDoc, onSnapshot, updateDoc} from "firebase/firestore";
 import {useGetUserDatabase} from "@/features/hooks/useGetUserDatabase";
 import {throwRandomNum} from "@/features/throwRandomNum";
 import {Project} from "@/types";
@@ -21,6 +21,7 @@ export default function HomePage() {
     //   States
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [inputValue, setInputValue] = useState<string>("");
+    const [projectsTitles, setProjectsTitles] = useState<string[]>([]);
 
 
     // Auth Route Function
@@ -32,6 +33,29 @@ export default function HomePage() {
             router.push("/sign-in");
         }
     }, [user, loading, router]);
+
+    // Fetch Projects titles
+    useEffect(() => {
+        if (!userId) return
+
+        const getProjectsTitles = async () => {
+            const userRef = doc(db, "users", userId)
+            const userSnap = await getDoc(userRef)
+            if (!userSnap.exists()) return
+            const data = userSnap.data()
+            const projects: Project[] = data.projects || []
+            const projectsTitles: string[] = []
+
+            for (let i = 0; i < projects.length; i++) {
+                projectsTitles.push(projects[i].title)
+            }
+
+            setProjectsTitles(projectsTitles)
+        }
+
+        getProjectsTitles()
+
+    }, [userId]);
 
     const createNewProject = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -58,10 +82,10 @@ export default function HomePage() {
 
     return (
         <>
-            <Navbar/>
+            <Navbar projectsTitles={projectsTitles}/>
             {/*Projects Hero*/}
             <section
-                className={"flex justify-between items-center w-[90%] max-w-[1144px] mt-[180px] mx-auto border-b-2 border-gray-200 px-[94px]"}
+                className={"flex justify-between  items-center w-[90%] max-w-[1144px] mt-[180px] mx-auto border-b-2 border-gray-200 px-[94px]"}
             >
                 {/*Left Side*/}
                 <div
@@ -94,31 +118,6 @@ export default function HomePage() {
                     formFunction={createNewProject}
                 />
             </section>
-            {/*<ul*/}
-            {/*    className={"w-[90%] max-w-[856px] h-auto mx-auto mt-[64px] flex justify-center items-center flex-wrap gap-[56px]"}*/}
-            {/*>*/}
-            {/*    {projectsData.length > 0*/}
-            {/*        ?*/}
-            {/*        <>*/}
-            {/*            {*/}
-            {/*                projectsData.map((project: Project) => (*/}
-            {/*                    <ProjectBar*/}
-            {/*                        key={project.projectId}*/}
-            {/*                        projectId={project.projectId}*/}
-            {/*                        projectTitle={project.title}*/}
-            {/*                        projectTotalTime={project.totalTime}*/}
-            {/*                        onDeleteProject={deleteProject}*/}
-            {/*                        onEditProject={editProjectName}*/}
-            {/*                    />*/}
-            {/*                ))*/}
-            {/*            }*/}
-            {/*        </>*/}
-            {/*        :*/}
-            {/*        <>*/}
-            {/*            <h1 className="text-custom-gray-600 text-lg mt-[20px]">You have no projects created 0.o</h1>*/}
-            {/*        </>*/}
-            {/*    }*/}
-            {/*</ul>*/}
             <ProjectsBars/>
         </>
     );

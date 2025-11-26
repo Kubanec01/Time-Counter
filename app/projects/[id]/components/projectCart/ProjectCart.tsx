@@ -24,9 +24,6 @@ const ProjectCart = ({...props}: projectProps) => {
     const [userId, setUserId] = useState<string | undefined>(undefined);
     const [projectName, setProjectName] = useState<string | null>(null);
 
-    // Router
-    const router = useRouter();
-
     // Variables
     const projectId = props.id;
 
@@ -143,7 +140,6 @@ const ProjectCart = ({...props}: projectProps) => {
             date: currDate,
         }
 
-
         await updateDoc(userRef, {projectsSections: arrayUnion(newSection)});
         await updateDoc(userRef, {updatedSectionsByDates: arrayUnion(newSectionUpdate)})
         setInputValue("");
@@ -177,7 +173,7 @@ const ProjectCart = ({...props}: projectProps) => {
 
     return (
         <>
-            <ProjectCartNavbar projectName={projectName} />
+            <ProjectCartNavbar projectName={projectName}/>
             <section
                 className={"w-[90%] max-w-[776px] mx-auto pt-[198px] border-b-2 border-custom-gray-600 pb-3 px-20"}
             >
@@ -190,6 +186,7 @@ const ProjectCart = ({...props}: projectProps) => {
                         className={"w-[476px] h-[38px] rounded-[4px] pl-2 text-sm border border-custom-gray-800 outline-none"}
                         type="text"
                         value={inputValue}
+                        maxLength={24}
                         onChange={(e) => setInputValue(e.target.value)}
                     />
                     <button
@@ -235,63 +232,13 @@ const ProjectCart = ({...props}: projectProps) => {
 
                         :
                         <h1
-                            className={"w-full h-full flex justify-center items-center text-2xl text-gray-500"}>
-                            You have no sections created.
+                            className={"w-full h-full flex justify-center items-center text-xl text-gray-500"}>
+                            You have no sections created 0.o
                         </h1>
 
                     }
                 </ul>
             </section>
-            {/*<div className="border max-w-[1200px] w-11/12 h-[700px] m-auto rounded-3xl flex flex-col overflow-hidden">*/}
-            {/*    <div className="w-full flex justify-center items-center flex-col gap-6">*/}
-            {/*        <h1 className="text-center mx-auto text-4xl mt-10">{projectName}</h1>*/}
-            {/*        <button*/}
-            {/*            onClick={() => setIsModalOpen(true)}*/}
-            {/*            className="border px-2 py-1 rounded-2xl mx-auto cursor-pointer"*/}
-            {/*        >*/}
-            {/*            Add Section*/}
-            {/*        </button>*/}
-            {/*    </div>*/}
-            {/*    <ul className="border flex-1 mt-10 px-6 py-2 overflow-y-auto">*/}
-            {/*        {updatedSectionsByDates.length > 0*/}
-            {/*            ?*/}
-            {/*            <>*/}
-            {/*                {updatedSectionsByDates.map((section, index) => (*/}
-            {/*                    <ul*/}
-            {/*                        className={"mb-7"}*/}
-            {/*                        key={index}>*/}
-            {/*                        <h1*/}
-            {/*                            className={"border-b-2 border-gray-600 -mb-1 text-lg text-gray-600"}*/}
-            {/*                        >*/}
-            {/*                            {setSectionName(section)}*/}
-            {/*                        </h1>*/}
-            {/*                        {sections.map((i) => {*/}
-            {/*                            if (i.updateDate === section) {*/}
-            {/*                                return (*/}
-            {/*                                    <SectionCart*/}
-            {/*                                        key={i.sectionId}*/}
-            {/*                                        sectionId={i.sectionId}*/}
-            {/*                                        projectId={i.projectId}*/}
-            {/*                                        title={i.title}*/}
-            {/*                                        userId={userId}*/}
-            {/*                                    />*/}
-            {/*                                );*/}
-            {/*                            }*/}
-            {/*                            return null;*/}
-            {/*                        })}*/}
-            {/*                    </ul>*/}
-            {/*                ))}*/}
-            {/*            </>*/}
-
-            {/*            :*/}
-            {/*            <h1*/}
-            {/*                className={"w-full h-full flex justify-center items-center text-2xl text-gray-500"}>*/}
-            {/*                You have no sections created.*/}
-            {/*            </h1>*/}
-
-            {/*        }*/}
-            {/*    </ul>*/}
-            {/*</div>*/}
         </>
     );
 };

@@ -31,7 +31,7 @@ const CreateProjectModal = ({...props}: ModalProps) => {
 
     return (
         <section
-            className={`${openStyle} absolute top-0 left-0 w-full h-screen z-50 backdrop-blur-sm justify-center items-center`}
+            className={`${openStyle} fixed top-0 left-0 w-full h-screen z-50 backdrop-blur-sm justify-center items-center`}
         >
             <form
                 onSubmit={props.formFunction}

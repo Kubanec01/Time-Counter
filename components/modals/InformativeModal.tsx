@@ -15,21 +15,20 @@ const InformativeModal = ({...props}: ModalProps) => {
 
     return (
         <section
-            className={`${openStyle} absolute top-0 left-0 w-full h-screen z-50 backdrop-blur-sm justify-center items-center`}
+            className={`${openStyle} fixed top-0 left-0 w-full h-screen z-50 justify-center items-start`}
         >
             <div
-                className="border-2 border-[#bababa] w-[500px] h-[260px] rounded-3xl bg-[white] px-6 py-8 -mt-[100px] flex flex-col justify-between">
-                <h1 className="mx-auto w-[80%] text-2xl text-center">
+                className="border border-custom-gray-600 rounded-[12px] bg-[white] py-4 px-[20px] mt-[100px]">
+                <h1 className="text-start w-[80%] text-base">
                     {props.title}
                 </h1>
-                <div className="flex justify-center px-8 mb-2">
-                    <button
-                        onClick={() => props.setIsModalOpen(false)}
-                        className="text-xl px-8 py-1 rounded-xl cursor-pointer text-blue-600 border-2 border-blue-600"
-                    >
-                        Go Back
-                    </button>
-                </div>
+                <button
+                    onClick={() => props.setIsModalOpen(false)}
+                    className="text-sm mt-[12px] py-2 w-full rounded-[100px] cursor-pointer text-white bg-black
+                    "
+                >
+                    Cancel
+                </button>
             </div>
         </section>
     )

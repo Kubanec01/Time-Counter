@@ -8,7 +8,7 @@ import {RxQuestionMarkCircled} from "react-icons/rx";
 import {LuMessageCircleMore} from "react-icons/lu";
 
 
-const Navbar = () => {
+const Navbar = ({projectsTitles}: { projectsTitles: string[] }) => {
 
     // states
     const [isProjectsMenuOpen, setIsProjectsMenuOpen] = useState(false);
@@ -22,7 +22,7 @@ const Navbar = () => {
 
     return (
         <div
-            className={`${visibilityStyle} w-full absolute top-0 left-0 h-[72px] bg-black flex justify-between items-center`}
+            className={`${visibilityStyle} w-full fixed top-0 left-0 h-[72px] bg-black flex justify-between items-center`}
         >
             {/*Left Side*/}
             <div
@@ -44,18 +44,13 @@ const Navbar = () => {
                     <ul
                         className={`${projectsMenuStyle} items-center justify-center gap-[30px] border-r border-custom-gray-800 pr-[22px] pl-[32px] h-full w-auto`}
                     >
-                        <li
-                            className={"text-custom-gray-600 hover:text-white duration-150 ease-in-out cursor-pointer text-[20px] font-light"}>
-                            Time Clocker
-                        </li>
-                        <li
-                            className={"text-custom-gray-600 hover:text-white duration-150 ease-in-out cursor-pointer text-[20px] font-light"}>
-                            Shopping Cart
-                        </li>
-                        <li
-                            className={"text-custom-gray-600 hover:text-white duration-150 ease-in-out cursor-pointer text-[20px] font-light"}>
-                            React App Tutoring
-                        </li>
+                        {projectsTitles.map((title, index) => (
+                            <li
+                                key={index}
+                                className={"text-custom-gray-600 hover:text-white duration-150 ease-in-out cursor-pointer text-[20px] font-light"}>
+                                {title}
+                            </li>
+                        ))}
                     </ul>
                 </div>
 
