@@ -15,13 +15,13 @@ import Navbar from "@/components/Navbar";
 export default function HomePage() {
 
     // User Data
-    const {userRef, userId, userData} = useGetUserDatabase()
+    const {userRef, userId} = useGetUserDatabase()
 
 
     //   States
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [inputValue, setInputValue] = useState<string>("");
-    const [projectsTitles, setProjectsTitles] = useState<string[]>([]);
+    const [projectsTitles, setProjectsTitles] = useState<Project[]>([]);
 
 
     // Auth Route Function
@@ -44,13 +44,8 @@ export default function HomePage() {
             if (!userSnap.exists()) return
             const data = userSnap.data()
             const projects: Project[] = data.projects || []
-            const projectsTitles: string[] = []
 
-            for (let i = 0; i < projects.length; i++) {
-                projectsTitles.push(projects[i].title)
-            }
-
-            setProjectsTitles(projectsTitles)
+            setProjectsTitles(projects)
         }
 
         getProjectsTitles()
@@ -82,7 +77,7 @@ export default function HomePage() {
 
     return (
         <>
-            <Navbar projectsTitles={projectsTitles}/>
+            <Navbar projects={projectsTitles}/>
             {/*Projects Hero*/}
             <section
                 className={"flex justify-between  items-center w-[90%] max-w-[1144px] mt-[180px] mx-auto border-b-2 border-gray-200 px-[94px]"}

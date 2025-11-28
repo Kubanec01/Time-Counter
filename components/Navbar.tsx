@@ -6,14 +6,20 @@ import {useState} from "react";
 import {FaCircleUser} from "react-icons/fa6";
 import {RxQuestionMarkCircled} from "react-icons/rx";
 import {LuMessageCircleMore} from "react-icons/lu";
+import {Project} from "@/types";
+import Link from "next/link";
+import {useRouter} from "next/navigation";
 
 
-const Navbar = ({projectsTitles}: { projectsTitles: string[] }) => {
+const Navbar = ({projects}: { projects: Project[] }) => {
 
     // states
     const [isProjectsMenuOpen, setIsProjectsMenuOpen] = useState(false);
 
     const [user] = useAuthState(auth)
+
+    // router
+    const router = useRouter()
 
     // Styles
     const visibilityStyle = user ? "flex" : "hidden"
@@ -44,11 +50,12 @@ const Navbar = ({projectsTitles}: { projectsTitles: string[] }) => {
                     <ul
                         className={`${projectsMenuStyle} items-center justify-center gap-[30px] border-r border-custom-gray-800 pr-[22px] pl-[32px] h-full w-auto`}
                     >
-                        {projectsTitles.map((title, index) => (
+                        {projects.map((project) => (
                             <li
-                                key={index}
+                                onClick={() => router.replace(`/projects/${project.projectId}`)}
+                                key={project.projectId}
                                 className={"text-custom-gray-600 hover:text-white duration-150 ease-in-out cursor-pointer text-lg font-light"}>
-                                {title}
+                                {project.title}
                             </li>
                         ))}
                     </ul>
