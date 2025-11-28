@@ -23,7 +23,6 @@ const SectionCart = ({...props}: SectionCartProps) => {
 
     // States
     const [isRunning, setIsRunning] = useState(false);
-    const [btnTittle, setBtnTittle] = useState<"Start" | "Pause">("Start");
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
@@ -274,7 +273,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
 
         const now = new Date();
         const formattedTime = `${formateTime(now.getHours())}:${formateTime(now.getMinutes())}`;
-        const currDateString = `${now.getDate()}.${now.getMonth() + 1}.${now.getFullYear()}`;
+        const currDateString = `${now.getDate()}/${now.getMonth() + 1}/${now.getFullYear()}`;
 
         if (!isRunning) {
             setIsClocktimeRunning(true)
@@ -282,17 +281,14 @@ const SectionCart = ({...props}: SectionCartProps) => {
             setIsRunning(true);
             setStartTime(formattedTime);
             start();
-            setBtnTittle("Pause");
         } else {
             setIsClocktimeRunning(false)
             setActiveClockTimeSectionId("")
             setIsRunning(false);
             pause();
-            setBtnTittle("Start");
             stopTimeDifference()
             sendTimeData(currDateString);
             createNewTimeCheckout(formattedTime);
-            // updateUpdatedClockDate(currDateString)
         }
     };
 

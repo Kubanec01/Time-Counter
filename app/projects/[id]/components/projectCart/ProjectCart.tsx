@@ -13,8 +13,9 @@ import React, {useEffect, useState} from "react";
 import SectionCart from "./components/SectionCart";
 import {Project, projectProps, Section, UpdatedSectionByDate} from "@/types";
 import {throwRandomNum} from "@/features/throwRandomNum";
-import {useRouter} from "next/navigation";
 import ProjectCartNavbar from "@/components/ProjectCartNavbar";
+import InformativeModal from "@/components/modals/InformativeModal";
+import {sortDatesAscending} from "@/utilities/sortDates";
 
 const ProjectCart = ({...props}: projectProps) => {
     // States
@@ -23,6 +24,7 @@ const ProjectCart = ({...props}: projectProps) => {
     const [inputValue, setInputValue] = useState<string>("");
     const [userId, setUserId] = useState<string | undefined>(undefined);
     const [projectName, setProjectName] = useState<string | null>(null);
+    const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
 
     // Variables
     const projectId = props.id;
@@ -79,8 +81,10 @@ const ProjectCart = ({...props}: projectProps) => {
                     return newArr
                 }
 
+                const filteredDates = datesSections(validUpdatedSectionByDates)
+
                 setSections(validSections);
-                setUpdatedSectionsByDates(datesSections(validUpdatedSectionByDates))
+                setUpdatedSectionsByDates(sortDatesAscending(filteredDates))
 
             } else {
                 setSections([])
@@ -114,6 +118,12 @@ const ProjectCart = ({...props}: projectProps) => {
     const createNewSection = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        if (inputValue.trim().length < 1) {
+            setIsInfoModalOpen(true);
+            setInputValue("")
+            return
+        }
+
         if (!userId) return;
         const userRef = doc(db, "users", userId);
 
@@ -123,7 +133,7 @@ const ProjectCart = ({...props}: projectProps) => {
 
         // Curr Date Variable
         const date = new Date()
-        const currDate: string = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`
+        const currDate: string = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
 
 
         const newSection: Section = {
@@ -149,8 +159,8 @@ const ProjectCart = ({...props}: projectProps) => {
         let sectionValidName = ""
 
         const date = new Date()
-        const todayDateString = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`
-        const yesterdayDateString = `${date.getDate() - 1}.${date.getMonth() + 1}.${date.getFullYear()}`
+        const todayDateString = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+        const yesterdayDateString = `${date.getDate() - 1}/${date.getMonth() + 1}/${date.getFullYear()}`
 
         if (sectionName === todayDateString) {
             sectionValidName = "Today"
@@ -164,7 +174,7 @@ const ProjectCart = ({...props}: projectProps) => {
     const setSectionColor = (sectionName: string) => {
 
         const date = new Date()
-        const todayDateString = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`
+        const todayDateString = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
 
         if (sectionName === todayDateString) {
             return "bg-pastel-pink-700"
@@ -198,7 +208,7 @@ const ProjectCart = ({...props}: projectProps) => {
             </section>
             <section
                 className={"w-[90%] max-w-[756px] mx-auto mt-[30] mb-[20]"}>
-                <ul className="w-full">
+                <ul className="w-full flex flex-col gap-[20px]">
                     {updatedSectionsByDates.length > 0
                         ?
                         <>
@@ -238,6 +248,8 @@ const ProjectCart = ({...props}: projectProps) => {
                     }
                 </ul>
             </section>
+            <InformativeModal setIsModalOpen={setIsInfoModalOpen} isModalOpen={isInfoModalOpen}
+                              title={"You can't have a section without a name.\n"}/>
         </>
     );
 };

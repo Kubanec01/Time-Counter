@@ -131,7 +131,6 @@ const ProjectsBars = () => {
                                     <li
                                         onClick={() => {
                                             setEditingProjectId(prev => prev === p.projectId ? null : p.projectId)
-                                            console.log("menu is opened")
                                         }}
                                         className={"cursor-pointer"}
                                     >
