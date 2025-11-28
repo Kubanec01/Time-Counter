@@ -1,7 +1,7 @@
 'use client'
 
 import {Project, Section, TimeCheckout, UpdatedSectionByDate} from "@/types";
-import {onSnapshot, updateDoc} from "firebase/firestore";
+import {getDoc, onSnapshot, updateDoc} from "firebase/firestore";
 import Link from "next/link";
 import React, {useEffect, useState} from "react";
 import {useGetUserDatabase} from "@/features/hooks/useGetUserDatabase";
@@ -19,10 +19,12 @@ const ProjectsBars = () => {
     const [projectsData, setProjectsData] = useState<Project[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [inputValue, setInputValue] = useState("");
-    const [isProjectMenuOpen, setIsProjectMenuOpen] = useState(false);
+    const [editingProjectId, setEditingProjectId] = useState<string | null>(null);
+
+    const isCurrProjectEditing = (projectId: string) => editingProjectId === projectId
 
     // User Data
-    const {userRef, userId, userData} = useGetUserDatabase()
+    const {userRef, userId} = useGetUserDatabase()
 
     // Fetch Projects
     useEffect(() => {
@@ -44,10 +46,15 @@ const ProjectsBars = () => {
 
     const deleteProject = async (projectId: string) => {
 
-        if (!userRef || !userData) return
+        if (!userRef) return
+
+        const docSnap = await getDoc((userRef))
+        if (!docSnap.exists()) return
+        const userData = docSnap.data()
 
         // Data
-        const projects = userData.projects || []
+        const
+            projects = userData.projects || []
         const projectsSections = userData.projectsSections || [];
         const timeCheckouts = userData.timeCheckouts || [];
         const sectionsByDates = userData.updatedSectionsByDates || []
@@ -68,19 +75,20 @@ const ProjectsBars = () => {
 
     const editProjectName = async (
         e: React.FormEvent<HTMLFormElement>,
-        projectId: string) => {
+        projectId: string | null) => {
 
         e.preventDefault()
 
-        if (!userRef || !userData) return
+        if (!userRef || !projectId) return
 
-        const projects = userData.projects || [];
-
-        const updatedProjects = projects.map((p: Project) => {
+        const updatedProjects = projectsData.map((p: Project) => {
             if (p.projectId !== projectId) return p
             return {...p, title: inputValue}
         })
         await updateDoc(userRef, {projects: updatedProjects})
+        setIsModalOpen(false)
+        setInputValue("")
+        setEditingProjectId(null)
     }
 
 
@@ -99,30 +107,35 @@ const ProjectsBars = () => {
                                     className={"absolute top-0 right-0 p-[14px] text-custom-gray-800 text-xl" +
                                         " flex items-center justify-center gap-[14px]"}
                                 >
+                                    {/*Delete Button*/}
                                     <li
                                         onClick={() => {
                                             deleteProject(p.projectId);
-                                            setIsProjectMenuOpen(false)
+                                            // setIsProjectMenuOpen(false)
                                         }}
-                                        className={`${isProjectMenuOpen ? "block" : "hidden"} cursor-pointer`}
+                                        className={`${isCurrProjectEditing(p.projectId) ? "block" : "hidden"} cursor-pointer`}
                                     >
                                         <MdDeleteOutline/>
                                     </li>
+                                    {/*Edit Button*/}
                                     <li
                                         onClick={() => {
-                                            setIsModalOpen(true);
-                                            setIsProjectMenuOpen(false)
+                                            setIsModalOpen(isCurrProjectEditing(p.projectId));
                                         }}
-                                        className={`${isProjectMenuOpen ? "block" : "hidden"} cursor-pointer`}
+                                        className={`${isCurrProjectEditing((p.projectId)) ? "block" : "hidden"} cursor-pointer`}
                                     >
                                         <MdOutlineEdit/>
 
                                     </li>
+                                    {/*Close & Open Button*/}
                                     <li
-                                        onClick={() => setIsProjectMenuOpen(value => !value)}
+                                        onClick={() => {
+                                            setEditingProjectId(prev => prev === p.projectId ? null : p.projectId)
+                                            console.log("menu is opened")
+                                        }}
                                         className={"cursor-pointer"}
                                     >
-                                        {isProjectMenuOpen ?
+                                        {isCurrProjectEditing(p.projectId) ?
                                             <IoClose/>
                                             :
                                             <HiOutlineMenuAlt3/>
@@ -153,18 +166,18 @@ const ProjectsBars = () => {
                                         "left-[20px] bottom-[40px] cursor-pointer"}>
                                     {"Enter project >"}
                                 </Link>
-                                <RenameModal
-                                    setIsModalOpen={setIsModalOpen}
-                                    isModalOpen={isModalOpen}
-                                    setInputValue={setInputValue}
-                                    inputValue={inputValue}
-                                    icon={<RiEditBoxFill/>}
-                                    inputPlaceholder={"What is new project name?"}
-                                    title={"Rename project?"}
-                                    desc={"You can rename your project anytime, anywhere. But remember - the name must contain a maximum of 24 characters."}
-                                    formFunction={(e) => editProjectName(e, p.projectId)}/>
                             </li>
                         ))}
+                        <RenameModal
+                            setIsModalOpen={setIsModalOpen}
+                            isModalOpen={isModalOpen}
+                            setInputValue={setInputValue}
+                            inputValue={inputValue}
+                            icon={<RiEditBoxFill/>}
+                            inputPlaceholder={"What is new project name?"}
+                            title={"Rename project?"}
+                            desc={"You can rename your project anytime, anywhere. But remember - the name must contain a maximum of 24 characters."}
+                            formFunction={(e) => editProjectName(e, editingProjectId)}/>
                     </>
                     :
                     <>

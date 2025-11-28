@@ -17,7 +17,6 @@ interface ModalProps {
 }
 
 const RenameModal = ({...props}: ModalProps) => {
-    // States
 
     const modalRef = useRef<HTMLInputElement>(null);
 
@@ -28,9 +27,9 @@ const RenameModal = ({...props}: ModalProps) => {
     const closeModal = () => props.setIsModalOpen((v) => !v);
 
     useEffect(() => {
-
         modalRef.current?.focus();
     }, [props.isModalOpen]);
+
 
     return (
         <section

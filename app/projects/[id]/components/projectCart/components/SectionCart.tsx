@@ -299,15 +299,16 @@ const SectionCart = ({...props}: SectionCartProps) => {
     return (
         <li
             key={props.sectionId}
-            className={`w-full rounded-2xl flex flex-col flex-between bg-white ${!isAnySections && "pb-1.5"} px-[16px] mb-[8px]`}>
+            className={`w-full rounded-2xl flex flex-col flex-between bg-white ${!isAnySections && "pb-1.5"} pt-1.5 px-[16px] mb-[8px]`}>
+
             <div
                 className={"flex justify-between gap-10 items-center px-2 h-[52px] border-b-1 border-custom-gray-600"}
             >
                 <h1
-                    className={"text-base text-black"}
+                    className={"text-base text-black w-2/6"}
                 >{props.title}</h1>
                 <span
-                    className={"text-[20px] font-medium text-black"}
+                    className={"text-[20px] font-medium text-black w-2/6"}
                 >{newTime}</span>
                 <div
                     className={"flex items-center justify-center text-base text-custom-gray-600 gap-[24px]"}>

@@ -6,7 +6,6 @@ import {DocumentData, DocumentReference} from "firebase/firestore";
 
 export const useGetUserDatabase = () => {
 
-    const [userData, setUserData] = useState<DocumentData | undefined>()
     const [userRef, setUserRef] = useState<DocumentReference<DocumentData, DocumentData>>()
 
     const auth = getAuth()
@@ -19,15 +18,12 @@ export const useGetUserDatabase = () => {
 
             const userRef = doc(db, "users", userId)
             setUserRef(userRef)
-            const userSnap = await getDoc(userRef)
-            if (!userSnap) return
-            const data = userSnap.data()
-            setUserData(data)
         }
+
 
         fetchData()
     }, [userId]);
 
-    return {userData, userId, userRef}
+    return {userId, userRef}
 
 }

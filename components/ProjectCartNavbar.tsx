@@ -32,7 +32,7 @@ const ProjectCartNavbar = ({projectName}: { projectName: string | null }) => {
                     className={"h-full flex items-center justify-center"}
                 >
                     <span
-                        className={"text-white text-[20px] font-light ml-[22px]"}
+                        className={"text-white text-lg font-light ml-[22px]"}
                     >
                         {"Now working on >"}
                     </span>
@@ -40,7 +40,7 @@ const ProjectCartNavbar = ({projectName}: { projectName: string | null }) => {
                         className={`flex items-center justify-center gap-[30px] pl-[16px] h-full w-auto`}
                     >
                         <span
-                            className={"text-custom-gray-600 text-[20px] font-light"}>
+                            className={"text-custom-gray-600 text-lg font-light"}>
                             {projectName}
                         </span>
                     </div>

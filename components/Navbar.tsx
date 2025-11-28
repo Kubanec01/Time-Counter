@@ -22,7 +22,7 @@ const Navbar = ({projectsTitles}: { projectsTitles: string[] }) => {
 
     return (
         <div
-            className={`${visibilityStyle} w-full fixed top-0 left-0 h-[72px] bg-black flex justify-between items-center`}
+            className={`${visibilityStyle} w-full fixed top-0 left-0 h-[72px] z-[50] bg-black flex justify-between items-center`}
         >
             {/*Left Side*/}
             <div
@@ -37,7 +37,7 @@ const Navbar = ({projectsTitles}: { projectsTitles: string[] }) => {
                 >
                     <button
                         onClick={() => setIsProjectsMenuOpen(v => !v)}
-                        className={"text-white text-[20px] font-light ml-[22px] cursor-pointer"}
+                        className={"text-white text-lg font-light ml-[22px] cursor-pointer"}
                     >
                         {"Projects"} {">"}
                     </button>
@@ -47,7 +47,7 @@ const Navbar = ({projectsTitles}: { projectsTitles: string[] }) => {
                         {projectsTitles.map((title, index) => (
                             <li
                                 key={index}
-                                className={"text-custom-gray-600 hover:text-white duration-150 ease-in-out cursor-pointer text-[20px] font-light"}>
+                                className={"text-custom-gray-600 hover:text-white duration-150 ease-in-out cursor-pointer text-lg font-light"}>
                                 {title}
                             </li>
                         ))}
@@ -55,7 +55,6 @@ const Navbar = ({projectsTitles}: { projectsTitles: string[] }) => {
                 </div>
 
             </div>
-
             {/*Right Side*/}
             <ul
                 className={"h-full flex items-center justify-center gap-[30px] text-white pr-[50px]"}

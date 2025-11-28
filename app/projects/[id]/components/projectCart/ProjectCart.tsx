@@ -196,7 +196,6 @@ const ProjectCart = ({...props}: projectProps) => {
                     </button>
                 </form>
             </section>
-
             <section
                 className={"w-[90%] max-w-[756px] mx-auto mt-[30] mb-[20]"}>
                 <ul className="w-full">
