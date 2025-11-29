@@ -11,6 +11,7 @@ import {MdOutlineEdit} from "react-icons/md";
 import {MdDeleteOutline} from "react-icons/md";
 import RenameModal from "@/components/modals/RenameModal";
 import {RiEditBoxFill} from "react-icons/ri";
+import {useRouter} from "next/navigation";
 
 
 const ProjectsBars = () => {
@@ -22,6 +23,9 @@ const ProjectsBars = () => {
     const [editingProjectId, setEditingProjectId] = useState<string | null>(null);
 
     const isCurrProjectEditing = (projectId: string) => editingProjectId === projectId
+
+    // Route
+    const route = useRouter();
 
     // User Data
     const {userRef, userId} = useGetUserDatabase()
@@ -159,12 +163,12 @@ const ProjectsBars = () => {
                                         </span>
                                 </div>
                                 {/*Enter button*/}
-                                <Link
-                                    href={`/projects/${p.projectId}`}
+                                <button
+                                    onClick={() => route.replace(`/projects/${p.projectId}`)}
                                     className={"px-4 py-3 hover:-translate-x-1 duration-150 ease-in bg-black text-white text-sm rounded-[100px] mt-[44px] absolute " +
                                         "left-[20px] bottom-[40px] cursor-pointer"}>
                                     {"Enter project >"}
-                                </Link>
+                                </button>
                             </li>
                         ))}
                         <RenameModal

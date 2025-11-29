@@ -18,7 +18,7 @@ const ProjectCartNavbar = ({projectName}: { projectName: string | null }) => {
 
     return (
         <div
-            className={`w-full fixed top-0 left-0 h-[72px] bg-black flex justify-between items-center`}
+            className={`w-full fixed top-0 left-0 h-[72px] bg-black z-50 flex justify-between items-center`}
         >
             {/*Left Side*/}
             <div

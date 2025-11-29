@@ -18,9 +18,9 @@ const SubSectionCart = (props: SubSectionCartProps) => {
     return (
         <li
             key={props.index}
-            className="w-[130px] shrink-0 rounded-xl font-medium text-sm flex flex-col justify-between items-start
+            className="w-[132px] shrink-0 rounded-xl font-medium text-sm flex flex-col justify-between items-start
              p-[10px] bg-pastel-purple-500 relative">
-            <span className="flex items-center justify-center gap-1">
+            <span className="flex flex-nowrap items-center justify-center gap-1">
                 <FaClock className={"text-xs ml-[1.5px]"}/> {props.startTime} - {props.stopTime}
             </span>
             <span className="flex items-center justify-center gap-1">

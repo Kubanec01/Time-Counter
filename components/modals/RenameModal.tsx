@@ -1,6 +1,6 @@
 'use client'
 
-import {Dispatch, ReactNode, SetStateAction, useEffect, useRef} from "react";
+import React, {Dispatch, ReactNode, SetStateAction, useEffect, useRef} from "react";
 import {PiCirclesThreeFill} from "react-icons/pi";
 
 

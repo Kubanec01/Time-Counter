@@ -2,14 +2,12 @@
 
 import {db} from "@/app/firebase/config";
 import DeleteModal from "@/components/modals/DeleteModal";
-import {arrayUnion, doc, getDoc, onSnapshot, updateDoc,} from "firebase/firestore";
+import {doc, getDoc, onSnapshot,} from "firebase/firestore";
 import React, {useEffect, useState} from "react";
 import {useStopwatch} from "react-timer-hook";
-import {Section, SectionCartProps, TimeCheckout, UpdatedSectionByDate} from "@/types";
-import CreateProjectModal from "@/components/modals/CreateProjectModal";
+import {Section, SectionCartProps, TimeCheckout} from "@/types";
 import {useFormateTime} from "@/features/hooks/useFormateTime";
 import {useTimeOperations} from "@/features/hooks/useTimeOperations";
-import {throwRandomNum} from "@/features/throwRandomNum";
 import {useClockTimeContext} from "@/features/contexts/clockCountContext";
 import SubSectionCart from "@/app/projects/[id]/components/projectCart/components/SubSectionCart";
 import InformativeModal from "@/components/modals/InformativeModal";
@@ -17,6 +15,13 @@ import {FiDelete, FiEdit, FiPause, FiPlay} from "react-icons/fi";
 import RenameModal from "@/components/modals/RenameModal";
 import {RiEditBoxFill} from "react-icons/ri";
 import {PiSealWarningFill} from "react-icons/pi";
+import {resetClockTime} from "@/features/utilities/resetClockTime";
+import {deleteAllSectionData} from "@/features/utilities/deleteAllSectionData";
+import {createNewTimeCheckout} from "@/features/utilities/createNewTimeCheckout";
+import {sendTimeData} from "@/features/utilities/updateTimeData";
+import {editSectionName} from "@/features/utilities/editSectionName";
+import {StopTimeDifference} from "@/features/utilities/StopTimeDifference";
+import {deleteSubsectionAndTimeCheckoutsData} from "@/features/utilities/deleteSubsectionAndTimeCheckoutsData";
 
 
 const SectionCart = ({...props}: SectionCartProps) => {
@@ -55,17 +60,6 @@ const SectionCart = ({...props}: SectionCartProps) => {
         seconds
     )}`;
 
-    const resetClockTime = (newClockTimeInSeconds: number) => {
-
-        const newClockTimeToMilliseconds = newClockTimeInSeconds * 1000
-
-        if (newClockTimeToMilliseconds > 0) {
-            const currDateToMilliseconds = new Date().getTime()
-            const offset = new Date(currDateToMilliseconds + newClockTimeToMilliseconds)
-            reset(offset, false)
-        } else reset(new Date(), false)
-    }
-
     // Fetch Initial ClockTime
     useEffect(() => {
         const fetchInitialClockTime = async () => {
@@ -84,7 +78,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
             if (section.time) {
                 const timeToSeconds = stringTimeToSeconds(section.time);
                 setLastStopClockTime(timeToSeconds)
-                resetClockTime(timeToSeconds)
+                resetClockTime(timeToSeconds, reset)
             }
         };
         fetchInitialClockTime();
@@ -111,160 +105,14 @@ const SectionCart = ({...props}: SectionCartProps) => {
     }, [props.userId, props.sectionId]);
 
 
-    const sendTimeData = async (date: string) => {
-        if (!props.userId || !props.projectId) return;
-
-        const userRef = doc(db, "users", props.userId);
-        const userSnap = await getDoc(userRef);
-
-        if (!userSnap.exists()) return;
-        const data = userSnap.data();
-        const sections = data.projectsSections || [];
-        const sectionsByDates = data.updatedSectionsByDates || []
-
-        const updatedSections = sections.map((s: Section) => {
-            if (s.sectionId !== props.sectionId) return s;
-
-            return {...s, time: newTime, updateDate: date};
-        });
-
-        const updatedSectionsByDates = sectionsByDates.map((s: UpdatedSectionByDate) => {
-            if (s.sectionId !== props.sectionId) return s;
-
-            return {...s, date: date}
-        })
-
-        const orderedSections = () => {
-            const sections: Section[] = []
-
-            for (let i = 0; i < updatedSections.length; i++) {
-
-                const section = updatedSections[i];
-                const condition = section.sectionId === props.sectionId;
-                if (condition) sections.unshift(section);
-                else sections.push(section);
-
-            }
-
-            return sections
-
-        }
-
-
-        await updateDoc(userRef, {projectsSections: orderedSections()});
-        await updateDoc(userRef, {updatedSectionsByDates: updatedSectionsByDates});
-
-    };
-
-    const deleteAllSectionData = async () => {
-        if (!props.userId || !props.projectId) return;
-
-        const userRef = doc(db, "users", props.userId);
-        const userSnap = await getDoc(userRef);
-
-        if (!userSnap.exists()) return;
-        const data = userSnap.data();
-        const sections = data.projectsSections || [];
-        const TimeCheckouts = data.timeCheckouts || [];
-        const sectionsByDates = data.updatedSectionsByDates || []
-
-        const updatedSections = sections.filter(
-            (s: Section) => s.sectionId !== props.sectionId
-        );
-
-        const updatedCheckouts = TimeCheckouts.filter(
-            (ch: TimeCheckout) => ch.sectionId !== props.sectionId
-        );
-
-        const updatedSectionsByDates = sectionsByDates.filter((s: UpdatedSectionByDate) => s.sectionId !== props.sectionId);
-
-        await updateDoc(userRef, {projectsSections: updatedSections});
-        await updateDoc(userRef, {timeCheckouts: updatedCheckouts});
-        await updateDoc(userRef, {updatedSectionsByDates: updatedSectionsByDates});
-    };
-
-    const stopTimeDifference = () => {
-
-        const totalDifferenceToSeconds = totalSeconds - lastStopClockTime
-
-        setLastStopClockTime(totalSeconds)
-
-        return timeSecondsToFormatedString(totalDifferenceToSeconds)
-
-    }
-
-    const createNewTimeCheckout = async (stopTime: string) => {
-        if (!props.userId) return;
-        const date = new Date()
-        const randomNum = throwRandomNum().toString()
-
-        const userRef = doc(db, "users", props.userId);
-
-        const newTimeCheckout: TimeCheckout = {
-            sectionId: props.sectionId,
-            projectId: props.projectId,
-            subSectionId: `subSection_${randomNum}_of_${props.sectionId}`,
-            startTime: startTime,
-            stopTime: stopTime,
-            clockDifference: stopTimeDifference(),
-            date: `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`,
-        };
-
-        await updateDoc(userRef, {timeCheckouts: arrayUnion(newTimeCheckout)});
-    };
-
-    const editSectionName = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-
-        if (!props.userId) return
-
-        const userRef = doc(db, "users", props.userId);
-        const userSnap = await getDoc(userRef);
-
-        if (!userSnap.exists()) return;
-        const data = userSnap.data();
-        const sections = data.projectsSections || []
-
-        const updatedSections = sections.map((s: Section) => {
-            if (s.projectId !== props.projectId) return s;
-            if (s.sectionId !== props.sectionId) return s;
-            return {...s, title: inputValue}
-        })
-        await updateDoc(userRef, {projectsSections: updatedSections});
-        setInputValue("")
-        setIsEditModalOpen(false);
-    }
-
     const deleteSubSection = async (subSectionId: string, difference: string, sectionId: string) => {
-
-        if (!props.userId) return
-        const userRef = doc(db, "users", props.userId);
-        const userSnap = await getDoc(userRef);
-
-        if (!userSnap.exists()) return;
-        const data = userSnap.data();
-        const timeCheckouts = data.timeCheckouts || []
-        const sections = data.projectsSections || []
 
         const updatedClockTime = totalSeconds - stringTimeToSeconds(difference)
         const formatedUpdatedClockTime = timeSecondsToFormatedString(updatedClockTime)
-
-        resetClockTime(updatedClockTime)
+        resetClockTime(updatedClockTime, reset)
         setLastStopClockTime(updatedClockTime)
 
-        const updatedCheckouts = timeCheckouts.filter((s: TimeCheckout) => s.subSectionId !== subSectionId)
-        const validUpdatedCheckouts = updatedCheckouts.filter((s: TimeCheckout) => s.sectionId === props.sectionId)
-        const updatedSections = sections.map((s: Section) => {
-            if (s.sectionId !== sectionId) return s;
-
-            return {...s, time: formatedUpdatedClockTime}
-
-        })
-
-        await updateDoc(userRef, {timeCheckouts: updatedCheckouts});
-        await updateDoc(userRef, {projectsSections: updatedSections})
-        setSubSections(validUpdatedCheckouts);
-
+        deleteSubsectionAndTimeCheckoutsData(props.userId, subSectionId, sectionId, formatedUpdatedClockTime, setSubSections)
     }
 
 
@@ -286,9 +134,9 @@ const SectionCart = ({...props}: SectionCartProps) => {
             setActiveClockTimeSectionId("")
             setIsRunning(false);
             pause();
-            stopTimeDifference()
-            sendTimeData(currDateString);
-            createNewTimeCheckout(formattedTime);
+            setLastStopClockTime(totalSeconds)
+            sendTimeData(props.userId, props.sectionId, newTime, currDateString);
+            createNewTimeCheckout(props.userId, formattedTime, props.projectId, props.sectionId, startTime, StopTimeDifference(totalSeconds, lastStopClockTime));
         }
     };
 
@@ -342,7 +190,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
                     title={"Delete track?"}
                     desc={"Are you sure you want to delete this track? This step is irreversible and everything stored in this track will be deleted."}
                     deleteBtnText={"Delete Track"}
-                    btnFunction={deleteAllSectionData}
+                    btnFunction={() => deleteAllSectionData(props.userId, props.projectId, props.sectionId)}
                 />
                 <RenameModal
                     setIsModalOpen={() => setIsEditModalOpen(false)}
@@ -353,7 +201,8 @@ const SectionCart = ({...props}: SectionCartProps) => {
                     title={"Rename track?"}
                     inputPlaceholder={"What is new name?"}
                     desc={"You can rename your track anytime, anywhere. Name must contain a maximum of 24 characters."}
-                    formFunction={(e) => editSectionName(e)}
+                    formFunction={(e) =>
+                        editSectionName(e, props.userId, props.projectId, props.sectionId, inputValue, setInputValue, setIsEditModalOpen)}
                 />
                 <InformativeModal
                     isModalOpen={isInfoModalOpen}

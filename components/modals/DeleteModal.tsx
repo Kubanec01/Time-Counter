@@ -4,7 +4,7 @@ interface ModalProps {
     setIsModalOpen: Dispatch<SetStateAction<boolean>>;
     isModalOpen: boolean;
     title: string;
-    btnFunction: () => void;
+    btnFunction: () => void | Promise<void>;
     desc: string
     icon: ReactNode
     deleteBtnText: string
@@ -38,30 +38,6 @@ const DeleteModal = ({...props}: ModalProps) => {
                     </button>
                 </div>
             </div>
-            {/*    <div*/}
-            {/*        className={`${openStyle} absolute border-2 border-[#bababa] w-[500px] h-[280px] rounded-3xl bg-[white] px-6 py-8 -mt-[100px] flex flex-col justify-between`}>*/}
-            {/*        <span>{props.icon}</span>*/}
-            {/*        <h1 className="mx-auto w-[80%] text-lg">*/}
-            {/*            {props.title}*/}
-            {/*        </h1>*/}
-            {/*        <p>*/}
-            {/*            {props.desc}*/}
-            {/*        </p>*/}
-            {/*        <div className="flex flex-col justify-center gap-[10px]">*/}
-            {/*            <button*/}
-            {/*                onClick={props.btnFunction}*/}
-            {/*                className="text-xl px-8 py-1 rounded-xl cursor-pointer border-red-600 bg-red-600 text-white border-2"*/}
-            {/*            >*/}
-            {/*                {props.deleteBtnText}*/}
-            {/*            </button>*/}
-            {/*            <button*/}
-            {/*                onClick={() => props.setIsModalOpen(false)}*/}
-            {/*                className="text-xl px-8 py-1 rounded-xl cursor-pointer text-blue-600 border-2 border-blue-600"*/}
-            {/*            >*/}
-            {/*                Cancel*/}
-            {/*            </button>*/}
-            {/*        </div>*/}
-            {/*    </div>*/}
         </section>
     );
 };

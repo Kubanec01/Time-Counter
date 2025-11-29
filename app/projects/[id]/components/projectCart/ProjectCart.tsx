@@ -15,7 +15,7 @@ import {Project, projectProps, Section, UpdatedSectionByDate} from "@/types";
 import {throwRandomNum} from "@/features/throwRandomNum";
 import ProjectCartNavbar from "@/components/ProjectCartNavbar";
 import InformativeModal from "@/components/modals/InformativeModal";
-import {sortDatesAscending} from "@/utilities/sortDates";
+import {sortDatesAscending} from "@/features/utilities/sortDates";
 
 const ProjectCart = ({...props}: projectProps) => {
     // States
