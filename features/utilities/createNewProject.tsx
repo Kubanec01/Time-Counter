@@ -1,13 +1,14 @@
 import React from "react";
 import {throwRandomNum} from "@/features/utilities/throwRandomNum";
-import {Project} from "@/types";
+import {Project, ProjectType} from "@/types";
 import {arrayUnion, DocumentData, DocumentReference, updateDoc} from "firebase/firestore";
 
 
 export const createNewProject = async (
     e: React.FormEvent<HTMLFormElement>,
     userRef: DocumentReference<DocumentData, DocumentData> | undefined,
-    inputValue: string
+    inputValue: string,
+    typeOfProject: ProjectType,
 ) => {
     e.preventDefault();
 
@@ -19,7 +20,8 @@ export const createNewProject = async (
     const newProject: Project = {
         projectId: `${inputValue.replace(/\s+/g, "")}_${randomNum}`,
         title: inputValue,
-        totalTime: "00:00:00"
+        totalTime: "00:00:00",
+        type: typeOfProject,
     };
 
     await updateDoc(userRef, {

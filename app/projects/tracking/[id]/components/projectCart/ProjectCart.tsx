@@ -7,7 +7,7 @@ import {
 } from "firebase/firestore";
 import React, {useEffect, useState} from "react";
 import SectionCart from "./components/SectionCart";
-import {projectProps, Section, UpdatedSectionByDate} from "@/types";
+import {ProjectProps, Section, UpdatedSectionByDate} from "@/types";
 import ProjectCartNavbar from "@/components/ProjectCartNavbar";
 import InformativeModal from "@/components/modals/InformativeModal";
 import {sortDatesAscending} from "@/features/utilities/sortDates";
@@ -17,7 +17,7 @@ import {setNameByDate} from "@/features/utilities/setNameByDate";
 import {setColorByDate} from "@/features/utilities/setcolorByDate";
 import {getUniqueDates} from "@/features/utilities/getUniqueDates";
 
-const ProjectCart = ({...props}: projectProps) => {
+const ProjectCart = ({...props}: ProjectProps) => {
 
     // States
     const [sections, setSections] = useState<Section[]>([]);

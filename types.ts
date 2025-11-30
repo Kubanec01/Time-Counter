@@ -1,4 +1,4 @@
-export interface projectProps {
+export interface ProjectProps {
     projectId: string;
     projectName: string
 }
@@ -27,10 +27,13 @@ export interface UpdatedSectionByDate {
     date: string;
 }
 
+export type ProjectType = "tracking" | "logging"
+
 export interface Project {
     projectId: string;
     title: string;
     totalTime: string;
+    type: ProjectType
 }
 
 export interface SectionCartProps {

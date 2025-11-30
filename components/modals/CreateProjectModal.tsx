@@ -1,7 +1,8 @@
 'use client'
 
-import {Dispatch, SetStateAction, useEffect, useRef, useState} from "react";
+import {Dispatch, SetStateAction, useEffect, useRef} from "react";
 import {PiCirclesThreeFill} from "react-icons/pi";
+import {ProjectType} from "@/types";
 
 
 interface ModalProps {
@@ -10,11 +11,12 @@ interface ModalProps {
     setInputValue: Dispatch<SetStateAction<string>>;
     inputValue: string;
     title: string;
+    typeOfProject: ProjectType;
+    setTypeOfProject: Dispatch<SetStateAction<ProjectType>>;
     formFunction: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
 const CreateProjectModal = ({...props}: ModalProps) => {
-    // States
 
     const modalRef = useRef<HTMLInputElement>(null);
 
@@ -22,7 +24,10 @@ const CreateProjectModal = ({...props}: ModalProps) => {
     const openStyle = props.isModalOpen ? "flex" : "hidden";
 
     //   CloseModal Function
-    const closeModal = () => props.setIsModalOpen((v) => !v);
+    const closeModal = () => {
+        props.setIsModalOpen((v) => !v)
+        props.setTypeOfProject("tracking")
+    };
 
     useEffect(() => {
 
@@ -56,9 +61,27 @@ const CreateProjectModal = ({...props}: ModalProps) => {
                        maxLength={24}
                        placeholder={"What are you going to work on?"}
                        className={"w-full h-[34px] text-custom-gray-800 pl-2" +
-                           " border-pastel-purple-700 border-2 text-sm rounded-[100px] mt-[18px] outline-none"}/>
+                           " border-pastel-purple-700 border-2 text-sm font-medium rounded-[100px] mt-[18px] outline-none"}/>
                 <div
-                    className={"w-full flex items-center justify-between mt-[14px]"}>
+                    className={"w-full flex flex-col justify-center items-center gap-1 mt-[10px]"}
+                >
+                    {/*Tracking*/}
+                    <button
+                        type={"button"}
+                        onClick={() => props.setTypeOfProject("tracking")}
+                        className={`${props.typeOfProject === "tracking" ? "bg-pastel-purple-700 text-white" : "text-pastel-purple-700"} cursor-pointer font-medium w-full h-[34px] pl-2 border-pastel-purple-700 border-2 text-sm rounded-[100px] outline-none`}>
+                        I will track my time
+                    </button>
+                    {/*Logging*/}
+                    <button
+                        type={"button"}
+                        onClick={() => props.setTypeOfProject("logging")}
+                        className={`${props.typeOfProject === "logging" ? "bg-pastel-purple-700 text-white" : "text-pastel-purple-700"} cursor-pointer font-medium w-full h-[34px] pl-2 border-pastel-purple-700 border-2 text-sm rounded-[100px] outline-none`}>
+                        I will log my time
+                    </button>
+                </div>
+                <div
+                    className={"w-full flex items-center justify-between font-medium mt-[14px]"}>
                     <button
                         onClick={() => closeModal()}
                         type={"button"}

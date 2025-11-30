@@ -1,4 +1,5 @@
 import React, {Dispatch, ReactNode, SetStateAction} from "react";
+import {PiSealWarningFill} from "react-icons/pi";
 
 interface ModalProps {
     setIsModalOpen: Dispatch<SetStateAction<boolean>>;
@@ -6,7 +7,6 @@ interface ModalProps {
     title: string;
     btnFunction: () => void | Promise<void>;
     desc: string
-    icon: ReactNode
     deleteBtnText: string
 }
 
@@ -21,7 +21,7 @@ const DeleteModal = ({...props}: ModalProps) => {
             <div
                 className={"max-w-[298px] w-[90%] py-[28px] px-[30px] rounded-[12px] bg-white border border-custom-gray-600"}>
                 <span className={"mx-auto flex justify-center text-4xl"}>
-                    {props.icon}
+                    <PiSealWarningFill/>
                 </span>
                 <div className={"mt-[22px] w-full"}>
                     <h1 className={"text-lg font-medium"}>{props.title}</h1>

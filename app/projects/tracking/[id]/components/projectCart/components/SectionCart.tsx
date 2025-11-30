@@ -9,12 +9,10 @@ import {Section, SectionCartProps, TimeCheckout} from "@/types";
 import {useFormateTime} from "@/features/hooks/useFormateTime";
 import {useTimeOperations} from "@/features/hooks/useTimeOperations";
 import {useClockTimeContext} from "@/features/contexts/clockCountContext";
-import SubSectionCart from "@/app/projects/[id]/components/projectCart/components/SubSectionCart";
 import InformativeModal from "@/components/modals/InformativeModal";
 import {FiDelete, FiEdit, FiPause, FiPlay} from "react-icons/fi";
 import RenameModal from "@/components/modals/RenameModal";
 import {RiEditBoxFill} from "react-icons/ri";
-import {PiSealWarningFill} from "react-icons/pi";
 import {resetClockTime} from "@/features/utilities/resetClockTime";
 import {deleteAllSectionData} from "@/features/utilities/deleteAllSectionData";
 import {createNewTimeCheckout} from "@/features/utilities/createNewTimeCheckout";
@@ -22,6 +20,7 @@ import {sendTimeData} from "@/features/utilities/updateTimeData";
 import {editSectionName} from "@/features/utilities/editSectionName";
 import {StopTimeDifference} from "@/features/utilities/StopTimeDifference";
 import {deleteSubsectionAndTimeCheckoutsData} from "@/features/utilities/deleteSubsectionAndTimeCheckoutsData";
+import SubSectionCart from "@/app/projects/tracking/[id]/components/projectCart/components/SubSectionCart";
 
 
 const SectionCart = ({...props}: SectionCartProps) => {
@@ -204,7 +203,6 @@ const SectionCart = ({...props}: SectionCartProps) => {
             <DeleteModal
                 isModalOpen={isDeleteModalOpen}
                 setIsModalOpen={setIsDeleteModalOpen}
-                icon={<PiSealWarningFill/>}
                 title={"Delete track?"}
                 desc={"Are you sure you want to delete this track? This step is irreversible and everything stored in this track will be deleted."}
                 deleteBtnText={"Delete Track"}

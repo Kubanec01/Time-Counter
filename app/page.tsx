@@ -4,9 +4,9 @@ import CreateProjectModal from "@/components/modals/CreateProjectModal";
 import ProjectsBars from "@/components/ProjectsBars";
 import React, {useEffect, useState} from "react";
 import {db} from "@/app/firebase/config";
-import {doc, getDoc, onSnapshot} from "firebase/firestore";
+import {doc, onSnapshot} from "firebase/firestore";
 import {useGetUserDatabase} from "@/features/hooks/useGetUserDatabase";
-import {Project} from "@/types";
+import {Project, ProjectType} from "@/types";
 import Navbar from "@/components/Navbar";
 import {createNewProject} from "@/features/utilities/createNewProject";
 import {useAuthRedirect} from "@/features/hooks/useAuthRedirect";
@@ -24,13 +24,15 @@ export default function HomePage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [inputValue, setInputValue] = useState<string>("");
     const [allProjects, setAllProjects] = useState<Project[]>([]);
+    const [typeofProject, setTypeOfProject] = useState<ProjectType>("tracking");
 
 
     // Create New project
-    const setNewProject = (e: React.FormEvent<HTMLFormElement>) => {
-        createNewProject(e, userRef, inputValue);
+    const setNewProject = async (e: React.FormEvent<HTMLFormElement>) => {
+        await createNewProject(e, userRef, inputValue, typeofProject);
         setInputValue("");
         setIsModalOpen(false);
+        setTypeOfProject("tracking");
     }
 
     // Fetch Projects titles
@@ -86,6 +88,8 @@ export default function HomePage() {
                     isModalOpen={isModalOpen}
                     setInputValue={setInputValue}
                     inputValue={inputValue}
+                    typeOfProject={typeofProject}
+                    setTypeOfProject={setTypeOfProject}
                     formFunction={setNewProject}
                 />
             </section>

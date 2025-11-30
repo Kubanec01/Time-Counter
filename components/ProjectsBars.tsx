@@ -12,6 +12,10 @@ import {MdDeleteOutline} from "react-icons/md";
 import RenameModal from "@/components/modals/RenameModal";
 import {RiEditBoxFill} from "react-icons/ri";
 import {useRouter} from "next/navigation";
+import {editProjectName} from "@/features/utilities/editProjectName";
+import DeleteModal from "@/components/modals/DeleteModal";
+import {deleteProjectCascade} from "@/features/utilities/deleteProjectCascade";
+import {useReplaceRouteLink} from "@/features/utilities/useReplaceRouteLink";
 
 
 const ProjectsBars = () => {
@@ -19,13 +23,14 @@ const ProjectsBars = () => {
     // States
     const [projectsData, setProjectsData] = useState<Project[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [inputValue, setInputValue] = useState("");
     const [editingProjectId, setEditingProjectId] = useState<string | null>(null);
 
-    const isCurrProjectEditing = (projectId: string) => editingProjectId === projectId
+    // Replace Route
+    const {replace} = useReplaceRouteLink()
 
-    // Route
-    const route = useRouter();
+    const isCurrProjectEditing = (projectId: string) => editingProjectId === projectId
 
     // User Data
     const {userRef, userId} = useGetUserDatabase()
@@ -48,48 +53,18 @@ const ProjectsBars = () => {
     }, [userId, userRef]);
 
 
-    const deleteProject = async (projectId: string) => {
+    const deleteProject = (projectId: string | null) => {
+        deleteProjectCascade(userId, projectId);
 
-        if (!userRef) return
-
-        const docSnap = await getDoc((userRef))
-        if (!docSnap.exists()) return
-        const userData = docSnap.data()
-
-        // Data
-        const
-            projects = userData.projects || []
-        const projectsSections = userData.projectsSections || [];
-        const timeCheckouts = userData.timeCheckouts || [];
-        const sectionsByDates = userData.updatedSectionsByDates || []
-
-        // Updated Data
-        const updatedProjects = projects.filter((p: Project) => p.projectId !== projectId);
-        const updatedProjectsSections = projectsSections.filter((s: Section) => s.projectId !== projectId);
-        const updatedTimeCheckouts = timeCheckouts.filter((t: TimeCheckout) => t.projectId !== projectId);
-        const updatedSectionsByDates = sectionsByDates.filter((s: UpdatedSectionByDate) => s.projectId !== projectId);
-        await updateDoc(userRef, {
-            projects: updatedProjects,
-            projectsSections: updatedProjectsSections,
-            timeCheckouts: updatedTimeCheckouts,
-            updatedSectionsByDates: updatedSectionsByDates
-        });
+        setIsDeleteModalOpen(false);
+        setEditingProjectId(null)
     }
 
 
-    const editProjectName = async (
-        e: React.FormEvent<HTMLFormElement>,
-        projectId: string | null) => {
-
+    const setProjectName = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        if (!userRef || !projectId) return
-
-        const updatedProjects = projectsData.map((p: Project) => {
-            if (p.projectId !== projectId) return p
-            return {...p, title: inputValue}
-        })
-        await updateDoc(userRef, {projects: updatedProjects})
+        editProjectName(userId, editingProjectId, inputValue)
         setIsModalOpen(false)
         setInputValue("")
         setEditingProjectId(null)
@@ -98,9 +73,7 @@ const ProjectsBars = () => {
 
     return (
         <>
-            <ul
-                className={"w-[90%] max-w-[856px] pb-[24px] h-auto mx-auto mt-[64px] flex justify-center items-center flex-wrap gap-[56px]"}
-            >
+            <ul className={"w-[90%] max-w-[856px] pb-[24px] h-auto mx-auto mt-[64px] flex justify-center items-center flex-wrap gap-[56px]"}>
                 {projectsData.length > 0 ?
                     <>
                         {projectsData.map((p: Project) => (
@@ -114,7 +87,7 @@ const ProjectsBars = () => {
                                     {/*Delete Button*/}
                                     <li
                                         onClick={() => {
-                                            deleteProject(p.projectId);
+                                            setIsDeleteModalOpen(isCurrProjectEditing(p.projectId));
                                             // setIsProjectMenuOpen(false)
                                         }}
                                         className={`${isCurrProjectEditing(p.projectId) ? "block" : "hidden"} cursor-pointer`}
@@ -164,13 +137,21 @@ const ProjectsBars = () => {
                                 </div>
                                 {/*Enter button*/}
                                 <button
-                                    onClick={() => route.replace(`/projects/${p.projectId}`)}
+                                    onClick={() => replace(`/projects/tracking/${p.projectId}`)}
                                     className={"px-4 py-3 hover:-translate-x-1 duration-150 ease-in bg-black text-white text-sm rounded-[100px] mt-[44px] absolute " +
                                         "left-[20px] bottom-[40px] cursor-pointer"}>
                                     {"Enter project >"}
                                 </button>
                             </li>
                         ))}
+                        <DeleteModal
+                            setIsModalOpen={setIsDeleteModalOpen}
+                            isModalOpen={isDeleteModalOpen}
+                            title={"Delete project?"}
+                            desc={"Are you sure you want to delete this project? This step is irreversible and everything stored in this project will be deleted."}
+                            deleteBtnText={"Delete project"}
+                            btnFunction={() => deleteProject(editingProjectId)}
+                        />
                         <RenameModal
                             setIsModalOpen={setIsModalOpen}
                             isModalOpen={isModalOpen}
@@ -180,7 +161,7 @@ const ProjectsBars = () => {
                             inputPlaceholder={"What is new project name?"}
                             title={"Rename project?"}
                             desc={"You can rename your project anytime, anywhere. But remember - the name must contain a maximum of 24 characters."}
-                            formFunction={(e) => editProjectName(e, editingProjectId)}/>
+                            formFunction={setProjectName}/>
                     </>
                     :
                     <>

@@ -1,7 +1,5 @@
 import React from "react";
-import {FiClock, FiTrash2} from "react-icons/fi";
-import {BsStopwatch} from "react-icons/bs";
-import {TfiTime, TfiTimer} from "react-icons/tfi";
+import {FiTrash2} from "react-icons/fi";
 import {FaCalendarDay, FaClock, FaStopwatch} from "react-icons/fa";
 
 interface SubSectionCartProps {
