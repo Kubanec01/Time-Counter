@@ -1,12 +1,3 @@
-"use client"
-
-import {useAuthState} from "react-firebase-hooks/auth";
-import {auth} from "@/app/firebase/config";
-import {useState} from "react";
-import {FaCircleUser} from "react-icons/fa6";
-import {RxQuestionMarkCircled} from "react-icons/rx";
-import {LuMessageCircleMore} from "react-icons/lu";
-import Link from "next/link";
 import {useRouter} from "next/navigation";
 
 

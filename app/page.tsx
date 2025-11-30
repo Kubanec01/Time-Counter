@@ -4,7 +4,7 @@ import CreateProjectModal from "@/components/modals/CreateProjectModal";
 import ProjectsBars from "@/components/ProjectsBars";
 import React, {useEffect, useState} from "react";
 import {db} from "@/app/firebase/config";
-import {doc, getDoc} from "firebase/firestore";
+import {doc, getDoc, onSnapshot} from "firebase/firestore";
 import {useGetUserDatabase} from "@/features/hooks/useGetUserDatabase";
 import {Project} from "@/types";
 import Navbar from "@/components/Navbar";
@@ -23,7 +23,7 @@ export default function HomePage() {
     //   States
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [inputValue, setInputValue] = useState<string>("");
-    const [projectsTitles, setProjectsTitles] = useState<Project[]>([]);
+    const [allProjects, setAllProjects] = useState<Project[]>([]);
 
 
     // Create New project
@@ -36,25 +36,24 @@ export default function HomePage() {
     // Fetch Projects titles
     useEffect(() => {
         if (!userId) return
+        const userRef = doc(db, "users", userId)
 
-        const getProjectsTitles = async () => {
-            const userRef = doc(db, "users", userId)
-            const userSnap = await getDoc(userRef)
-            if (!userSnap.exists()) return
-            const data = userSnap.data()
-            const projects: Project[] = data.projects || []
+        const getProjectsTitles = onSnapshot(userRef, snap => {
+            if (!snap.exists()) return []
 
-            setProjectsTitles(projects)
-        }
+            const data = snap.data()
+            const projects: Project[] = data.projects
+            if (projects) setAllProjects(projects)
+        })
 
-        getProjectsTitles()
+        return () => getProjectsTitles()
 
     }, [userId]);
 
 
     return (
         <>
-            <Navbar projects={projectsTitles}/>
+            <Navbar projects={allProjects}/>
             {/*Projects Hero*/}
             <section
                 className={"flex justify-between  items-center w-[90%] max-w-[1144px] mt-[180px] mx-auto border-b-2 border-gray-200 px-[94px]"}

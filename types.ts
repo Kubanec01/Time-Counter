@@ -1,5 +1,6 @@
 export interface projectProps {
-    id: string;
+    projectId: string;
+    projectName: string
 }
 
 export interface TimeCheckout {

@@ -37,14 +37,6 @@ const SectionCart = ({...props}: SectionCartProps) => {
     const isAnySections = subSections.length > 0;
     const [lastStopClockTime, setLastStopClockTime] = useState(0)
 
-
-    // Hooks
-    const {seconds, minutes, hours, start, pause, reset, totalSeconds} = useStopwatch({
-        autoStart: false,
-    });
-
-    const {stringTimeToSeconds, timeSecondsToFormatedString} = useTimeOperations()
-
     // Context
     const {
         setIsClocktimeRunning,
@@ -53,58 +45,16 @@ const SectionCart = ({...props}: SectionCartProps) => {
         activeClockTimeSectionId
     } = useClockTimeContext()
 
+    // Hooks
+    const {seconds, minutes, hours, start, pause, reset, totalSeconds} = useStopwatch({autoStart: false});
+    const {stringTimeToSeconds, timeSecondsToFormatedString} = useTimeOperations()
     const formateTime = useFormateTime()
 
     // Clock Time
-    const newTime = `${formateTime(hours)}:${formateTime(minutes)}:${formateTime(
-        seconds
-    )}`;
-
-    // Fetch Initial ClockTime
-    useEffect(() => {
-        const fetchInitialClockTime = async () => {
-            if (!props.userId || !props.projectId) return;
-
-            const userRef = doc(db, "users", props.userId);
-            const userSnap = await getDoc(userRef);
-
-            if (!userSnap.exists()) return;
-
-            const data = userSnap.data();
-            const section = data.projectsSections.find(
-                (s: Section) => s.sectionId === props.sectionId
-            );
-
-            if (section.time) {
-                const timeToSeconds = stringTimeToSeconds(section.time);
-                setLastStopClockTime(timeToSeconds)
-                resetClockTime(timeToSeconds, reset)
-            }
-        };
-        fetchInitialClockTime();
-    }, [props.userId, props.projectId, props.sectionId]);
-
-    // Fetch Time Checkouts SubSections
-    useEffect(() => {
-        if (!props.userId || !props.sectionId) return;
-
-        const userRef = doc(db, "users", props.userId);
-
-        const fetchTimeCheckouts = onSnapshot(userRef, (snap) => {
-            if (!snap.exists()) return;
-
-            const data = snap.data();
-            const timeCheckoutsData = data.timeCheckouts || []
-            const timeCheckouts = timeCheckoutsData.filter(
-                (ch: TimeCheckout) => ch.sectionId === props.sectionId
-            );
-            setSubSections(timeCheckouts);
-        });
-
-        return () => fetchTimeCheckouts();
-    }, [props.userId, props.sectionId]);
+    const newTime = `${formateTime(hours)}:${formateTime(minutes)}:${formateTime(seconds)}`;
 
 
+    // Functions
     const deleteSubSection = async (subSectionId: string, difference: string, sectionId: string) => {
 
         const updatedClockTime = totalSeconds - stringTimeToSeconds(difference)
@@ -114,8 +64,6 @@ const SectionCart = ({...props}: SectionCartProps) => {
 
         deleteSubsectionAndTimeCheckoutsData(props.userId, subSectionId, sectionId, formatedUpdatedClockTime, setSubSections)
     }
-
-
     const toggleTimer = () => {
         if (isClocktimeRunning && (activeClockTimeSectionId !== props.sectionId)) return setIsInfoModalOpen(true);
 
@@ -140,6 +88,52 @@ const SectionCart = ({...props}: SectionCartProps) => {
         }
     };
 
+
+    // Fetch Initial ClockTime
+    useEffect(() => {
+        const fetchInitialClockTime = async () => {
+            if (!props.userId || !props.projectId) return;
+
+            const userRef = doc(db, "users", props.userId);
+            const userSnap = await getDoc(userRef);
+
+            if (!userSnap.exists()) return;
+
+            const data = userSnap.data();
+            const section = data.projectsSections.find(
+                (s: Section) => s.sectionId === props.sectionId
+            );
+
+            if (section.time) {
+                const timeToSeconds = stringTimeToSeconds(section.time);
+                setLastStopClockTime(timeToSeconds)
+                resetClockTime(timeToSeconds, reset)
+            }
+        };
+        fetchInitialClockTime();
+
+    }, [props.userId, props.projectId, props.sectionId]);
+
+    // Fetch Time Checkouts SubSections
+    useEffect(() => {
+        if (!props.userId || !props.sectionId) return;
+
+        const userRef = doc(db, "users", props.userId);
+
+        const fetchTimeCheckouts = onSnapshot(userRef, (snap) => {
+            if (!snap.exists()) return;
+
+            const data = snap.data();
+            const timeCheckoutsData = data.timeCheckouts || []
+            const timeCheckouts = timeCheckoutsData.filter(
+                (ch: TimeCheckout) => ch.sectionId === props.sectionId
+            );
+            setSubSections(timeCheckouts);
+        });
+
+        return () => fetchTimeCheckouts();
+    }, [props.userId, props.sectionId]);
+
     return (
         <li
             key={props.sectionId}
@@ -157,6 +151,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
                 <div
                     className={"flex items-center justify-center text-base text-custom-gray-600 gap-[24px]"}>
                     <span className={"w-[1px] h-[36px] bg-custom-gray-600"}/>
+                    {/*Start & Pause Button*/}
                     <button
                         onClick={() => toggleTimer()}
                         className={"cursor-pointer hover:text-custom-gray-800 duration-150 text-lg"}>
@@ -168,47 +163,25 @@ const SectionCart = ({...props}: SectionCartProps) => {
                         }
                     </button>
                     <span className={"w-[1px] h-[36px] bg-custom-gray-600"}/>
+                    {/*Rename Button*/}
                     <button
+                        disabled={isRunning}
                         onClick={() => setIsEditModalOpen(true)}
-                        className={"cursor-pointer hover:text-custom-gray-800 duration-150"}
+                        className={`${isRunning ? "cursor-not-allowed" : "cursor-pointer hover:text-custom-gray-800"}  duration-150`}
                     >
                         <FiEdit/>
                     </button>
                     <span className={"w-[1px] h-[36px] bg-custom-gray-600"}/>
+                    {/*Delete Button*/}
                     <button
+                        disabled={isRunning}
                         onClick={() => setIsDeleteModalOpen(true)}
-                        className={"cursor-pointer hover:text-custom-gray-800 duration-150"}
+                        className={`${isRunning ? "cursor-not-allowed" : "cursor-pointer hover:text-custom-gray-800"}  duration-150`}
                     >
                         <FiDelete/>
                     </button>
                     <span className={"w-[1px] h-[36px] bg-custom-gray-600"}/>
                 </div>
-                <DeleteModal
-                    isModalOpen={isDeleteModalOpen}
-                    setIsModalOpen={setIsDeleteModalOpen}
-                    icon={<PiSealWarningFill/>}
-                    title={"Delete track?"}
-                    desc={"Are you sure you want to delete this track? This step is irreversible and everything stored in this track will be deleted."}
-                    deleteBtnText={"Delete Track"}
-                    btnFunction={() => deleteAllSectionData(props.userId, props.projectId, props.sectionId)}
-                />
-                <RenameModal
-                    setIsModalOpen={() => setIsEditModalOpen(false)}
-                    isModalOpen={isEditModalOpen}
-                    setInputValue={setInputValue}
-                    inputValue={inputValue}
-                    icon={<RiEditBoxFill/>}
-                    title={"Rename track?"}
-                    inputPlaceholder={"What is new name?"}
-                    desc={"You can rename your track anytime, anywhere. Name must contain a maximum of 24 characters."}
-                    formFunction={(e) =>
-                        editSectionName(e, props.userId, props.projectId, props.sectionId, inputValue, setInputValue, setIsEditModalOpen)}
-                />
-                <InformativeModal
-                    isModalOpen={isInfoModalOpen}
-                    setIsModalOpen={setIsInfoModalOpen}
-                    title={"You cannot run 2 tracks at the same time."}
-                />
             </div>
             <ul
                 className={`${
@@ -227,6 +200,33 @@ const SectionCart = ({...props}: SectionCartProps) => {
                     />
                 ))}
             </ul>
+            {/*Modals*/}
+            <DeleteModal
+                isModalOpen={isDeleteModalOpen}
+                setIsModalOpen={setIsDeleteModalOpen}
+                icon={<PiSealWarningFill/>}
+                title={"Delete track?"}
+                desc={"Are you sure you want to delete this track? This step is irreversible and everything stored in this track will be deleted."}
+                deleteBtnText={"Delete Track"}
+                btnFunction={() => deleteAllSectionData(props.userId, props.projectId, props.sectionId)}
+            />
+            <RenameModal
+                setIsModalOpen={() => setIsEditModalOpen(false)}
+                isModalOpen={isEditModalOpen}
+                setInputValue={setInputValue}
+                inputValue={inputValue}
+                icon={<RiEditBoxFill/>}
+                title={"Rename track?"}
+                inputPlaceholder={"What is new name?"}
+                desc={"You can rename your track anytime, anywhere. Name must contain a maximum of 24 characters."}
+                formFunction={(e) =>
+                    editSectionName(e, props.userId, props.projectId, props.sectionId, inputValue, setInputValue, setIsEditModalOpen)}
+            />
+            <InformativeModal
+                isModalOpen={isInfoModalOpen}
+                setIsModalOpen={setIsInfoModalOpen}
+                title={"You cannot run 2 tracks at the same time."}
+            />
         </li>
     );
 };

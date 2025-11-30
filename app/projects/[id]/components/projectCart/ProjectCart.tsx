@@ -1,20 +1,21 @@
 "use client";
 
 import {auth, db} from "@/app/firebase/config";
-import {onAuthStateChanged} from "firebase/auth";
 import {
-    arrayUnion,
     doc,
     onSnapshot,
-    updateDoc,
 } from "firebase/firestore";
 import React, {useEffect, useState} from "react";
 import SectionCart from "./components/SectionCart";
-import {Project, projectProps, Section, UpdatedSectionByDate} from "@/types";
-import {throwRandomNum} from "@/features/utilities/throwRandomNum";
+import {projectProps, Section, UpdatedSectionByDate} from "@/types";
 import ProjectCartNavbar from "@/components/ProjectCartNavbar";
 import InformativeModal from "@/components/modals/InformativeModal";
 import {sortDatesAscending} from "@/features/utilities/sortDates";
+import {useAuthState} from "react-firebase-hooks/auth";
+import {createNewSection} from "@/features/utilities/createNewSection";
+import {setNameByDate} from "@/features/utilities/setNameByDate";
+import {setColorByDate} from "@/features/utilities/setcolorByDate";
+import {getUniqueDates} from "@/features/utilities/getUniqueDates";
 
 const ProjectCart = ({...props}: projectProps) => {
 
@@ -22,22 +23,13 @@ const ProjectCart = ({...props}: projectProps) => {
     const [sections, setSections] = useState<Section[]>([]);
     const [updatedSectionsByDates, setUpdatedSectionsByDates] = useState<string[]>([]);
     const [inputValue, setInputValue] = useState<string>("");
-    const [userId, setUserId] = useState<string | undefined>(undefined);
-    const [projectName, setProjectName] = useState<string | null>(null);
     const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
 
+    const [user] = useAuthState(auth)
+
     // Variables
-    const projectId = props.id;
-
-
-    // CallbackUser Function
-    useEffect(() => {
-        const unsubAuth = onAuthStateChanged(auth, (user) => {
-            setUserId(user?.uid || undefined);
-        });
-
-        return () => unsubAuth();
-    }, []);
+    const projectId = props.projectId;
+    const userId = user?.uid
 
 
     // Fetch Sections Data
@@ -57,31 +49,7 @@ const ProjectCart = ({...props}: projectProps) => {
                     (s: Section) => s.projectId === projectId
                 );
 
-                const datesSections = (arr: UpdatedSectionByDate[]) => {
-                    if (arr.length === 0) return []
-
-                    let newDate = arr[0].date
-                    const newArr = [arr[0].date]
-
-                    for (let i = 1; i < arr.length; i++) {
-                        let isUnique = true
-                        const date = arr[i].date;
-
-                        for (let j = 0; j < newArr.length; j++) {
-                            if (date === newDate || date === newArr[j]) {
-                                isUnique = false
-                                break
-                            }
-                        }
-                        if (isUnique) {
-                            newArr.push(date)
-                            newDate = date
-                        }
-                    }
-                    return newArr
-                }
-
-                const filteredDates = datesSections(validUpdatedSectionByDates)
+                const filteredDates = getUniqueDates(validUpdatedSectionByDates)
 
                 setSections(validSections);
                 setUpdatedSectionsByDates(sortDatesAscending(filteredDates))
@@ -96,99 +64,21 @@ const ProjectCart = ({...props}: projectProps) => {
         return () => getSectionsData();
     }, [userId, projectId]);
 
-    // Fetch Project Name
-    useEffect(() => {
-        if (!userId || !projectId) return;
-        const userRef = doc(db, "users", userId);
 
-        const fetchProjectName = onSnapshot(userRef, snap => {
-            if (!snap.exists()) return
-
-            const data = snap.data();
-            const projects = data.projects || []
-            const currProject = projects.find((p: Project) => p.projectId === projectId);
-
-            setProjectName(currProject.title)
-        })
-
-        return () => fetchProjectName()
-
-    }, [userId, projectId]);
-
-    const createNewSection = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
-        if (inputValue.trim().length < 1) {
-            setIsInfoModalOpen(true);
-            setInputValue("")
-            return
-        }
-
-        if (!userId) return;
-        const userRef = doc(db, "users", userId);
-
-        // Random Num Variable
-        const randomNum = throwRandomNum().toString()
-        const sectionId = `${inputValue.replace(/\s+/g, "")}_${randomNum}`
-
-        // Curr Date Variable
-        const date = new Date()
-        const currDate: string = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
-
-
-        const newSection: Section = {
-            projectId: projectId,
-            sectionId: sectionId,
-            title: inputValue,
-            time: "00:00:00",
-            updateDate: currDate
-        };
-
-        const newSectionUpdate: UpdatedSectionByDate = {
-            projectId: projectId,
-            sectionId: sectionId,
-            date: currDate,
-        }
-
-        await updateDoc(userRef, {projectsSections: arrayUnion(newSection)});
-        await updateDoc(userRef, {updatedSectionsByDates: arrayUnion(newSectionUpdate)})
-        setInputValue("");
-    };
-
-    const setSectionName = (sectionName: string) => {
-        let sectionValidName = ""
-
-        const date = new Date()
-        const todayDateString = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
-        const yesterdayDateString = `${date.getDate() - 1}/${date.getMonth() + 1}/${date.getFullYear()}`
-
-        if (sectionName === todayDateString) {
-            sectionValidName = "Today"
-        } else if (sectionName === yesterdayDateString) {
-            sectionValidName = "Yesterday"
-        } else sectionValidName = sectionName
-
-        return sectionValidName
+    // Functions
+    const createSection = (e: React.FormEvent<HTMLFormElement>) => {
+        createNewSection(e, userId, props.projectId, inputValue, setInputValue, setIsInfoModalOpen)
     }
 
-    const setSectionColor = (sectionName: string) => {
-
-        const date = new Date()
-        const todayDateString = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
-
-        if (sectionName === todayDateString) {
-            return "bg-pastel-pink-700"
-        } else return `bg-pastel-green-700`
-    }
 
     return (
         <>
-            <ProjectCartNavbar projectName={projectName}/>
+            <ProjectCartNavbar projectName={props.projectName}/>
             <section
                 className={"w-[90%] max-w-[776px] mx-auto pt-[198px] border-b-2 border-custom-gray-600 pb-3 px-20"}
             >
                 <form
-                    onSubmit={createNewSection}
+                    onSubmit={createSection}
                     className={"flex justify-between"}
                 >
                     <input
@@ -214,12 +104,12 @@ const ProjectCart = ({...props}: projectProps) => {
                         <>
                             {updatedSectionsByDates.map((section, index) => (
                                 <ul
-                                    className={`w-full px-[12px] pt-[12px] pb-[4px] rounded-[12px] ${setSectionColor(section)}`}
+                                    className={`w-full px-[12px] pt-[12px] pb-[4px] rounded-[12px] ${setColorByDate(section)}`}
                                     key={index}>
                                     <h1
                                         className={"text-sm text-custom-gray-800  ml-[24px] mb-[12px]"}
                                     >
-                                        {setSectionName(section)}
+                                        {setNameByDate(section)}
                                     </h1>
                                     {sections.map((i) => {
                                         if (i.updateDate === section) {
@@ -244,7 +134,6 @@ const ProjectCart = ({...props}: projectProps) => {
                             className={"w-full h-full flex justify-center items-center text-xl text-gray-500"}>
                             You have no sections created 0.o
                         </h1>
-
                     }
                 </ul>
             </section>

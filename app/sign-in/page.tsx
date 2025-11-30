@@ -5,13 +5,14 @@ import {useSignInWithEmailAndPassword} from "react-firebase-hooks/auth";
 import {auth} from "@/app/firebase/config";
 import {useRouter} from "next/navigation";
 import Link from "next/link";
+import {useReplaceRouteLink} from "@/features/utilities/useReplaceRouteLink";
 
 const SignInPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
-    const router = useRouter();
+    const {replace} = useReplaceRouteLink()
 
     const handleSignIn = async () => {
         try {
@@ -20,7 +21,7 @@ const SignInPage = () => {
             if (resp?.user) {
                 setEmail("");
                 setPassword("");
-                router.push("/");
+                replace("/");
             } else {
                 console.log("User Not Found")
             }
@@ -60,14 +61,9 @@ const SignInPage = () => {
                     </button>
                     <span
                         className={"text-custom-gray-800 text-base mt-[8px]"}
-                    >Or don't have an account? <Link className={"text-pastel-purple-700 hover:underline"}
-                                                     href="/sign-up">Sign up</Link></span>
-                    <Link
-                        href="/sign-up"
-                        className="cursor-pointer "
-                    >
-                        Forgot password?
-                    </Link>
+                    >Or don't have an account?
+                        <Link className={"text-pastel-purple-700 hover:underline"}
+                              href="/sign-up"> Sign up</Link></span>
                 </div>
             </div>
         </section>

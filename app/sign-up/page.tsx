@@ -5,11 +5,13 @@ import {useState} from "react";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
 import {collection, doc, getDocs, setDoc} from "firebase/firestore";
+import {useReplaceRouteLink} from "@/features/utilities/useReplaceRouteLink";
 
 const SignUpPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
+    const {replace} = useReplaceRouteLink()
 
     const router = useRouter();
 
@@ -26,7 +28,7 @@ const SignUpPage = () => {
                 });
                 setEmail("");
                 setPassword("");
-                router.push("/");
+                replace("/");
             } else {
                 console.log("Error With Sign Up User");
             }
