@@ -6,6 +6,7 @@ import {RxQuestionMarkCircled} from "react-icons/rx";
 import {LuMessageCircleMore} from "react-icons/lu";
 import {Project} from "@/types";
 import {useRouter} from "next/navigation";
+import {useReplaceRouteLink} from "@/features/utilities/useReplaceRouteLink";
 
 
 const Navbar = ({projects}: { projects: Project[] }) => {
@@ -14,9 +15,7 @@ const Navbar = ({projects}: { projects: Project[] }) => {
     const [isProjectsMenuOpen, setIsProjectsMenuOpen] = useState(false);
 
     const [user] = useAuthState(auth)
-
-    // router
-    const router = useRouter()
+    const {replace} = useReplaceRouteLink()
 
     // Styles
     const visibilityStyle = user ? "flex" : "hidden"
@@ -49,7 +48,7 @@ const Navbar = ({projects}: { projects: Project[] }) => {
                     >
                         {projects.map((project) => (
                             <li
-                                onClick={() => router.replace(`/projects/${project.projectId}`)}
+                                onClick={() => replace(`/projects/${project.type}/${project.projectId}`)}
                                 key={project.projectId}
                                 className={"text-custom-gray-600 hover:text-white duration-150 ease-in-out cursor-pointer text-lg font-light"}>
                                 {project.title}

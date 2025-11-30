@@ -1,6 +1,6 @@
 'use client'
 
-import {Project, Section, TimeCheckout, UpdatedSectionByDate} from "@/types";
+import {Project, ProjectType, Section, TimeCheckout, UpdatedSectionByDate} from "@/types";
 import {getDoc, onSnapshot, updateDoc} from "firebase/firestore";
 import Link from "next/link";
 import React, {useEffect, useState} from "react";
@@ -70,6 +70,10 @@ const ProjectsBars = () => {
         setEditingProjectId(null)
     }
 
+    const setProjectBarColor = (projectType: ProjectType) => {
+        if (projectType === "tracking") return "bg-pastel-purple-500"
+        else return "bg-pastel-blue-600"
+    }
 
     return (
         <>
@@ -79,7 +83,7 @@ const ProjectsBars = () => {
                         {projectsData.map((p: Project) => (
                             <li
                                 key={p.projectId}
-                                className={"px-5 pt-10 bg-pastel-pink-700 rounded-[8px] w-[248px] h-[330px] relative"}>
+                                className={`${setProjectBarColor(p.type)} px-5 pt-10 rounded-[8px] w-[248px] h-[330px] relative`}>
                                 <ul
                                     className={"absolute top-0 right-0 p-[14px] text-custom-gray-800 text-xl" +
                                         " flex items-center justify-center gap-[14px]"}
@@ -137,7 +141,7 @@ const ProjectsBars = () => {
                                 </div>
                                 {/*Enter button*/}
                                 <button
-                                    onClick={() => replace(`/projects/tracking/${p.projectId}`)}
+                                    onClick={() => replace(`/projects/${p.type}/${p.projectId}`)}
                                     className={"px-4 py-3 hover:-translate-x-1 duration-150 ease-in bg-black text-white text-sm rounded-[100px] mt-[44px] absolute " +
                                         "left-[20px] bottom-[40px] cursor-pointer"}>
                                     {"Enter project >"}

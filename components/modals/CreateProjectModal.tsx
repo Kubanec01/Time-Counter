@@ -27,12 +27,15 @@ const CreateProjectModal = ({...props}: ModalProps) => {
     const closeModal = () => {
         props.setIsModalOpen((v) => !v)
         props.setTypeOfProject("tracking")
+        props.setInputValue("");
     };
 
     useEffect(() => {
 
         modalRef.current?.focus();
     }, [props.isModalOpen]);
+
+    const isInputEmpty = props.inputValue.trim() === "";
 
     return (
         <section
@@ -90,7 +93,8 @@ const CreateProjectModal = ({...props}: ModalProps) => {
                     </button>
                     <button
                         type={"submit"}
-                        className={"cursor-pointer w-[100px] h-[34px] text-base rounded-[100px] text-white bg-pastel-purple-700"}>
+                        disabled={isInputEmpty}
+                        className={`w-[100px] h-[34px] text-base rounded-[100px] text-white ${isInputEmpty ? "bg-custom-gray-600" : "bg-pastel-purple-700 cursor-pointer"}`}>
                         Create
                     </button>
                 </div>
