@@ -1,7 +1,6 @@
 "use client";
 
 import {auth, db} from "@/app/firebase/config";
-import CreateProjectModal from "@/components/modals/CreateProjectModal";
 import {onAuthStateChanged} from "firebase/auth";
 import {
     arrayUnion,
@@ -12,12 +11,13 @@ import {
 import React, {useEffect, useState} from "react";
 import SectionCart from "./components/SectionCart";
 import {Project, projectProps, Section, UpdatedSectionByDate} from "@/types";
-import {throwRandomNum} from "@/features/throwRandomNum";
+import {throwRandomNum} from "@/features/utilities/throwRandomNum";
 import ProjectCartNavbar from "@/components/ProjectCartNavbar";
 import InformativeModal from "@/components/modals/InformativeModal";
 import {sortDatesAscending} from "@/features/utilities/sortDates";
 
 const ProjectCart = ({...props}: projectProps) => {
+
     // States
     const [sections, setSections] = useState<Section[]>([]);
     const [updatedSectionsByDates, setUpdatedSectionsByDates] = useState<string[]>([]);

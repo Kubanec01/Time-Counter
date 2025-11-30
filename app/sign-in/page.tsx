@@ -18,7 +18,6 @@ const SignInPage = () => {
             const resp = await signInWithEmailAndPassword(email, password);
 
             if (resp?.user) {
-                console.log(resp);
                 setEmail("");
                 setPassword("");
                 router.push("/");
@@ -61,7 +60,8 @@ const SignInPage = () => {
                     </button>
                     <span
                         className={"text-custom-gray-800 text-base mt-[8px]"}
-                    >Or don't have an account? <Link className={"text-pastel-purple-700 hover:underline"} href="/sign-up">Sign up</Link></span>
+                    >Or don't have an account? <Link className={"text-pastel-purple-700 hover:underline"}
+                                                     href="/sign-up">Sign up</Link></span>
                     <Link
                         href="/sign-up"
                         className="cursor-pointer "

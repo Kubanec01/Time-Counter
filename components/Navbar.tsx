@@ -7,7 +7,6 @@ import {FaCircleUser} from "react-icons/fa6";
 import {RxQuestionMarkCircled} from "react-icons/rx";
 import {LuMessageCircleMore} from "react-icons/lu";
 import {Project} from "@/types";
-import Link from "next/link";
 import {useRouter} from "next/navigation";
 
 

@@ -3,16 +3,18 @@
 import CreateProjectModal from "@/components/modals/CreateProjectModal";
 import ProjectsBars from "@/components/ProjectsBars";
 import React, {useEffect, useState} from "react";
-import {useAuthState} from "react-firebase-hooks/auth";
-import {auth, db} from "@/app/firebase/config";
-import {useRouter} from "next/navigation";
-import {arrayUnion, doc, getDoc, onSnapshot, updateDoc} from "firebase/firestore";
+import {db} from "@/app/firebase/config";
+import {doc, getDoc} from "firebase/firestore";
 import {useGetUserDatabase} from "@/features/hooks/useGetUserDatabase";
-import {throwRandomNum} from "@/features/throwRandomNum";
 import {Project} from "@/types";
 import Navbar from "@/components/Navbar";
+import {createNewProject} from "@/features/utilities/createNewProject";
+import {useAuthRedirect} from "@/features/hooks/useAuthRedirect";
 
 export default function HomePage() {
+
+    // User Auth Redirect
+    useAuthRedirect()
 
     // User Data
     const {userRef, userId} = useGetUserDatabase()
@@ -24,15 +26,12 @@ export default function HomePage() {
     const [projectsTitles, setProjectsTitles] = useState<Project[]>([]);
 
 
-    // Auth Route Function
-    const [user, loading] = useAuthState(auth);
-    const router = useRouter();
-
-    useEffect(() => {
-        if (!loading && !user) {
-            router.push("/sign-in");
-        }
-    }, [user, loading, router]);
+    // Create New project
+    const setNewProject = (e: React.FormEvent<HTMLFormElement>) => {
+        createNewProject(e, userRef, inputValue);
+        setInputValue("");
+        setIsModalOpen(false);
+    }
 
     // Fetch Projects titles
     useEffect(() => {
@@ -51,28 +50,6 @@ export default function HomePage() {
         getProjectsTitles()
 
     }, [userId]);
-
-    const createNewProject = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
-        if (!userRef) return;
-
-        // Random Num Variable
-        const randomNum = throwRandomNum().toString();
-
-        const newProject: Project = {
-            projectId: `${inputValue.replace(/\s+/g, "")}_${randomNum}`,
-            title: inputValue,
-            totalTime: "00:00:00"
-        };
-
-        setInputValue("");
-        setIsModalOpen(false);
-
-        await updateDoc(userRef, {
-            projects: arrayUnion(newProject),
-        });
-    };
 
 
     return (
@@ -110,7 +87,7 @@ export default function HomePage() {
                     isModalOpen={isModalOpen}
                     setInputValue={setInputValue}
                     inputValue={inputValue}
-                    formFunction={createNewProject}
+                    formFunction={setNewProject}
                 />
             </section>
             <ProjectsBars/>

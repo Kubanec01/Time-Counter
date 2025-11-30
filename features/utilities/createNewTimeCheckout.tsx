@@ -1,4 +1,4 @@
-import {throwRandomNum} from "@/features/throwRandomNum";
+import {throwRandomNum} from "@/features/utilities/throwRandomNum";
 import {arrayUnion, doc, updateDoc} from "firebase/firestore";
 import {db} from "@/app/firebase/config";
 import {TimeCheckout} from "@/types";
