@@ -17,7 +17,7 @@ import {setNameByDate} from "@/features/utilities/setNameByDate";
 import {setColorByDate} from "@/features/utilities/setcolorByDate";
 import {getUniqueDates} from "@/features/utilities/getUniqueDates";
 
-const ProjectCart = ({...props}: ProjectProps) => {
+const TrackingProjectCart = ({...props}: ProjectProps) => {
 
     // States
     const [sections, setSections] = useState<Section[]>([]);
@@ -104,7 +104,7 @@ const ProjectCart = ({...props}: ProjectProps) => {
                         <>
                             {updatedSectionsByDates.map((section, index) => (
                                 <ul
-                                    className={`w-full px-[12px] pt-[12px] pb-[4px] rounded-[12px] ${setColorByDate(section)}`}
+                                    className={`w-full px-[12px] pt-[12px] pb-[4px] rounded-[12px] shadow-lg ${setColorByDate(section)}`}
                                     key={index}>
                                     <h1
                                         className={"text-sm text-custom-gray-800  ml-[24px] mb-[12px]"}
@@ -143,4 +143,4 @@ const ProjectCart = ({...props}: ProjectProps) => {
     );
 };
 
-export default ProjectCart;
+export default TrackingProjectCart;

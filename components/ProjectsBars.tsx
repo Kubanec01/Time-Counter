@@ -83,7 +83,7 @@ const ProjectsBars = () => {
                         {projectsData.map((p: Project) => (
                             <li
                                 key={p.projectId}
-                                className={`${setProjectBarColor(p.type)} px-5 pt-10 rounded-[8px] w-[248px] h-[330px] relative`}>
+                                className={`${setProjectBarColor(p.type)} shadow-lg px-5 pt-10 rounded-[8px] w-[248px] h-[330px] relative`}>
                                 <ul
                                     className={"absolute top-0 right-0 p-[14px] text-custom-gray-800 text-xl" +
                                         " flex items-center justify-center gap-[14px]"}
@@ -92,7 +92,6 @@ const ProjectsBars = () => {
                                     <li
                                         onClick={() => {
                                             setIsDeleteModalOpen(isCurrProjectEditing(p.projectId));
-                                            // setIsProjectMenuOpen(false)
                                         }}
                                         className={`${isCurrProjectEditing(p.projectId) ? "block" : "hidden"} cursor-pointer`}
                                     >

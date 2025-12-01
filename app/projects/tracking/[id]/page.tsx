@@ -1,11 +1,11 @@
 "use client";
 
 import {useParams} from "next/navigation";
-import ProjectCart from "./components/projectCart/ProjectCart";
+import ProjectCart from "./components/projectCart/TrackingProjectCart";
 import {useGetProjectName} from "@/features/utilities/useGetProjectName";
 
 
-const ProjectPage = () => {
+const TrackingProjectPage = () => {
     const {id} = useParams();
     if (id === undefined) {
         throw new Error("No project id found.");
@@ -19,4 +19,4 @@ const ProjectPage = () => {
     );
 };
 
-export default ProjectPage;
+export default TrackingProjectPage;

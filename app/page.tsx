@@ -58,7 +58,7 @@ export default function HomePage() {
             <Navbar projects={allProjects}/>
             {/*Projects Hero*/}
             <section
-                className={"flex justify-between  items-center w-[90%] max-w-[1144px] mt-[180px] mx-auto border-b-2 border-gray-200 px-[94px]"}
+                className={"flex justify-between items-center w-[90%] max-w-[1144px] mt-[180px] mx-auto border-b-2 border-gray-200 px-[94px]"}
             >
                 {/*Left Side*/}
                 <div
