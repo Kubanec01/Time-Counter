@@ -2,7 +2,7 @@ import React from "react";
 import {arrayUnion, doc, updateDoc} from "firebase/firestore";
 import {db} from "@/app/firebase/config";
 import {throwRandomNum} from "@/features/utilities/throwRandomNum";
-import {Section, UpdatedSectionByDate} from "@/types";
+import {LoggingType, Section, UpdatedSectionByDate} from "@/types";
 
 export const createNewSection = async (
     e: React.FormEvent<HTMLFormElement>,
@@ -11,6 +11,7 @@ export const createNewSection = async (
     inputValue: string,
     setInputValue: (value: React.SetStateAction<string>) => void,
     setIsInfoModalOpen: (value: React.SetStateAction<boolean>) => void,
+    category: LoggingType,
 ) => {
     e.preventDefault();
 
@@ -37,7 +38,8 @@ export const createNewSection = async (
         sectionId: sectionId,
         title: inputValue,
         time: "00:00:00",
-        updateDate: currDate
+        updateDate: currDate,
+        category: category
     };
 
     const newSectionUpdate: UpdatedSectionByDate = {

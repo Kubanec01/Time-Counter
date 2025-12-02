@@ -18,8 +18,17 @@ export interface Section {
     sectionId: string;
     title: string;
     time: string;
-    updateDate: string
+    updateDate?: string
+    category?: LoggingType
 }
+
+// export interface LoggingSection {
+//     projectId: string;
+//     sectionId: string;
+//     title: string;
+//     category: string;
+//     time: string;
+// }
 
 export interface UpdatedSectionByDate {
     sectionId: string;
@@ -42,3 +51,5 @@ export interface SectionCartProps {
     title: string;
     userId: string | undefined;
 }
+
+export type LoggingType = "Work" | "Research" | "Study" | "Coding" | "Deep Work" | "Custom" | string | null

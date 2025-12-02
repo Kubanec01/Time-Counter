@@ -67,7 +67,7 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
 
     // Functions
     const createSection = (e: React.FormEvent<HTMLFormElement>) => {
-        createNewSection(e, userId, props.projectId, inputValue, setInputValue, setIsInfoModalOpen)
+        createNewSection(e, userId, props.projectId, inputValue, setInputValue, setIsInfoModalOpen, "unset")
     }
 
 
