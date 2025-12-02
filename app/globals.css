@@ -3,7 +3,9 @@
 
 @theme {
     --color-custom-gray-800: #6E6E6E;
+    --color-custom-gray-700: #919191;
     --color-custom-gray-600: #C7C7C7;
+    --color-custom-dark-gray-800: #262626;
     --color-pastel-purple-800: #7C87CF;
     --color-pastel-purple-700: #817CCF;
     --color-pastel-purple-500: #D3D8F5;

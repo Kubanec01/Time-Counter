@@ -2,6 +2,8 @@
 
 import {ProjectProps} from "@/types";
 import ProjectCartNavbar from "@/components/ProjectCartNavbar";
+import CreateLoggingModal from "@/app/projects/logging/[id]/components/createLoggingModal/CreateLoggingModal";
+
 
 
 export const LoggingProjectCart = ({...props}: ProjectProps) => {
@@ -15,6 +17,7 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
                     What do you want to work on?
                 </button>
             </section>
+            <CreateLoggingModal title={"Create new logging?"} desc={"Choose a task type and name your log."}/>
         </>
     )
 }
