@@ -9,6 +9,7 @@ export const createNewSection = async (
     userId: string | undefined,
     projectId: string,
     inputValue: string,
+    time: string,
     setInputValue: (value: React.SetStateAction<string>) => void,
     setIsInfoModalOpen: (value: React.SetStateAction<boolean>) => void,
     category: LoggingType,
@@ -37,7 +38,7 @@ export const createNewSection = async (
         projectId: projectId,
         sectionId: sectionId,
         title: inputValue,
-        time: "00:00:00",
+        time: time,
         updateDate: currDate,
         category: category
     };

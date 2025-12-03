@@ -14,6 +14,10 @@ interface LoggingModalProps {
     setLoggingType: Dispatch<SetStateAction<LoggingType>>;
     inputValue: string;
     setInputValue: Dispatch<SetStateAction<string>>;
+    hoursInputValue: string;
+    setHoursInputValue: React.Dispatch<React.SetStateAction<string>>;
+    minutesInputValue: string;
+    setMinutesInputValue: React.Dispatch<React.SetStateAction<string>>;
     formFunction: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
@@ -127,8 +131,28 @@ const CreateLoggingModal = ({...props}: LoggingModalProps) => {
                         placeholder={"What are you going to work on?"}
                         className={"w-full h-[32px] text-pastel-pink-700 pl-2" +
                             " border-pastel-pink-700 border text-sm rounded-[100px] outline-none"}/>
+                    <div
+                        className={"flex justify-center gap-10 mt-6 w-full"}>
+                        <input
+                            min={1}
+                            max={900}
+                            value={props.hoursInputValue}
+                            onChange={(e) => props.setHoursInputValue(e.target.value)}
+                            type={"number"}
+                            placeholder={"0"}
+                            className={"h-[34px] w-[80px] text-white px-3 border-white border rounded-[100px] outline-none"}/>
+                        <input
+                            min={1}
+                            max={900}
+                            value={props.minutesInputValue}
+                            onChange={(e) => props.setMinutesInputValue(e.target.value)}
+                            type={"number"}
+                            placeholder={"0"}
+                            className={"h-[34px] w-[80px] text-white px-3 border-white border rounded-[100px] outline-none"}/>
+                    </div>
                     <button
                         type="submit"
+                        onClick={() => setLoggingType(null)}
                         className={"w-full py-1 cursor-pointer rounded-[100px] bg-pastel-pink-700 text-black font-medium mt-3"}>
                         Create
                     </button>
