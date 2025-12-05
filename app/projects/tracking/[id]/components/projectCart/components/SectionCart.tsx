@@ -6,8 +6,6 @@ import {doc, getDoc, onSnapshot,} from "firebase/firestore";
 import React, {useEffect, useState} from "react";
 import {useStopwatch} from "react-timer-hook";
 import {Section, SectionCartProps, TimeCheckout} from "@/types";
-import {useFormateTime} from "@/features/hooks/useFormateTime";
-import {useTimeOperations} from "@/features/hooks/useTimeOperations";
 import {useClockTimeContext} from "@/features/contexts/clockCountContext";
 import InformativeModal from "@/components/modals/InformativeModal";
 import {FiDelete, FiEdit, FiPause, FiPlay} from "react-icons/fi";
@@ -21,6 +19,8 @@ import {editSectionName} from "@/features/utilities/editSectionName";
 import {StopTimeDifference} from "@/features/utilities/StopTimeDifference";
 import {deleteSubsectionAndTimeCheckoutsData} from "@/features/utilities/deleteSubsectionAndTimeCheckoutsData";
 import SubSectionCart from "@/app/projects/tracking/[id]/components/projectCart/components/SubSectionCart";
+import {formatSecondsToTimeString, formatTimeUnit, parseTimeStringToSeconds} from "@/features/hooks/timeOperations";
+import {setProjectTotalTime, subtractProjectTotalTime} from "@/features/utilities/totalTime";
 
 
 const SectionCart = ({...props}: SectionCartProps) => {
@@ -46,28 +46,28 @@ const SectionCart = ({...props}: SectionCartProps) => {
 
     // Hooks
     const {seconds, minutes, hours, start, pause, reset, totalSeconds} = useStopwatch({autoStart: false});
-    const {stringTimeToSeconds, timeSecondsToFormatedString} = useTimeOperations()
-    const formateTime = useFormateTime()
 
     // Clock Time
-    const newTime = `${formateTime(hours)}:${formateTime(minutes)}:${formateTime(seconds)}`;
+    const newTime = `${formatTimeUnit(hours)}:${formatTimeUnit(minutes)}:${formatTimeUnit(seconds)}`;
 
 
     // Functions
     const deleteSubSection = async (subSectionId: string, difference: string, sectionId: string) => {
 
-        const updatedClockTime = totalSeconds - stringTimeToSeconds(difference)
-        const formatedUpdatedClockTime = timeSecondsToFormatedString(updatedClockTime)
+        const updatedClockTime = totalSeconds - parseTimeStringToSeconds(difference)
+        const formatedUpdatedClockTime = formatSecondsToTimeString(updatedClockTime)
         resetClockTime(updatedClockTime, reset)
         setLastStopClockTime(updatedClockTime)
 
-        deleteSubsectionAndTimeCheckoutsData(props.userId, subSectionId, sectionId, formatedUpdatedClockTime, setSubSections)
+        await deleteSubsectionAndTimeCheckoutsData(props.userId, subSectionId, sectionId, formatedUpdatedClockTime, setSubSections)
+        await subtractProjectTotalTime(props.userId, props.projectId, difference)
     }
+
     const toggleTimer = () => {
         if (isClocktimeRunning && (activeClockTimeSectionId !== props.sectionId)) return setIsInfoModalOpen(true);
 
         const now = new Date();
-        const formattedTime = `${formateTime(now.getHours())}:${formateTime(now.getMinutes())}`;
+        const formattedTime = `${formatTimeUnit(now.getHours())}:${formatTimeUnit(now.getMinutes())}`;
         const currDateString = `${now.getDate()}/${now.getMonth() + 1}/${now.getFullYear()}`;
 
         if (!isRunning) {
@@ -82,6 +82,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
             setIsRunning(false);
             pause();
             setLastStopClockTime(totalSeconds)
+            setProjectTotalTime(props.userId, props.sectionId, props.projectId, newTime)
             sendTimeData(props.userId, props.sectionId, newTime, currDateString);
             createNewTimeCheckout(props.userId, formattedTime, props.projectId, props.sectionId, startTime, StopTimeDifference(totalSeconds, lastStopClockTime));
         }
@@ -104,7 +105,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
             );
 
             if (section.time) {
-                const timeToSeconds = stringTimeToSeconds(section.time);
+                const timeToSeconds = parseTimeStringToSeconds(section.time);
                 setLastStopClockTime(timeToSeconds)
                 resetClockTime(timeToSeconds, reset)
             }

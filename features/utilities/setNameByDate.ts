@@ -1,4 +1,3 @@
-
 export const setNameByDate = (sectionName: string) => {
     let sectionValidName = ""
 
