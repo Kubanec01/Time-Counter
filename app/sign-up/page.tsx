@@ -1,30 +1,36 @@
 "use client";
 import {useCreateUserWithEmailAndPassword} from "react-firebase-hooks/auth";
 import {auth, db} from "@/app/firebase/config";
-import {useState} from "react";
+import {FormEvent, useState} from "react";
 import Link from "next/link";
-import {useRouter} from "next/navigation";
-import {collection, doc, getDocs, setDoc} from "firebase/firestore";
+import {doc, setDoc} from "firebase/firestore";
 import {useReplaceRouteLink} from "@/features/utilities/useReplaceRouteLink";
 
 const SignUpPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
+    const [name, setName] = useState("");
+    const [surname, setSurname] = useState("");
     const {replace} = useReplaceRouteLink()
-
-    const router = useRouter();
 
     const [createUserWithEmailAndPassword] =
         useCreateUserWithEmailAndPassword(auth);
 
-    const handleSignUp = async () => {
+    const handleSignUp = async (e: FormEvent<HTMLFormElement>) => {
+
+        e.preventDefault();
+
+        if (password !== passwordConfirm || name.length === 0 || surname.length === 0) return
+
         try {
             const resp = await createUserWithEmailAndPassword(email, password);
 
-            if (resp?.user) {
+            if (resp) {
                 await setDoc(doc(db, "users", resp.user.uid), {
                     email: resp.user.email,
+                    name: name,
+                    surname: surname,
                 });
                 setEmail("");
                 setPassword("");
@@ -44,8 +50,25 @@ const SignUpPage = () => {
                     Sign up to track your time and <br/>
                     keep your projects in
                     line.</h1>
-                <div className="w-full flex flex-col justify-center items-center flex-1 gap-[8px] mt-[22px]">
+                <form
+                    onSubmit={handleSignUp}
+                    className="w-full flex flex-col justify-center items-center flex-1 gap-2 mt-[22px]">
                     {/* Email Input */}
+                    <div
+                        className={"flex gap-2"}>
+                        <input
+                            onChange={(e) => setName(e.target.value)}
+                            placeholder="Your name..."
+                            className="w-full h-[46px] border border-custom-gray-800 text-custom-gray-600 rounded-[4px] text-base px-3"
+                            type="text"
+                        /> <input
+                        onChange={(e) => setSurname(e.target.value)}
+                        placeholder="Your surname..."
+                        className="w-full h-[46px] border border-custom-gray-800 text-custom-gray-600 rounded-[4px] text-base px-3"
+                        type="text"
+                    />
+
+                    </div>
                     <input
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Your email..."
@@ -59,20 +82,15 @@ const SignUpPage = () => {
                         className="w-full h-[46px] border border-custom-gray-800 text-custom-gray-600 rounded-[4px] text-base px-3"
                         type="password"
                     />
+                    {/* Confirm Password Input */}
                     <input
-                        // onChange={}
+                        onChange={(e) => setPasswordConfirm(e.target.value)}
                         placeholder="Confirm password..."
                         className="w-full h-[46px] border border-custom-gray-800 text-custom-gray-600 rounded-[4px] text-base px-3"
                         type="password"
                     />
-                    <input
-                        // onChange={}
-                        placeholder="Your name of nickname..."
-                        className="w-full h-[46px] border border-custom-gray-800 text-custom-gray-600 rounded-[4px] text-base px-3"
-                        type="text"
-                    />
                     <button
-                        onClick={handleSignUp}
+                        type={"submit"}
                         className="text-base font-semibold bg-pastel-purple-700 cursor-pointer text-white rounded-[8px] w-full h-[42px] mt-[8px]"
                     >
                         Sign Up
@@ -85,7 +103,7 @@ const SignUpPage = () => {
                             href="/sign-in"
                             className={"text-pastel-purple-700 hover:underline"}>Sign In</Link>
                     </span>
-                </div>
+                </form>
             </div>
         </section>
     );

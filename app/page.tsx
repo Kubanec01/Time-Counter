@@ -7,7 +7,7 @@ import {db} from "@/app/firebase/config";
 import {doc, onSnapshot} from "firebase/firestore";
 import {useGetUserDatabase} from "@/features/hooks/useGetUserDatabase";
 import {Project, ProjectType} from "@/types";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/mainNavbar/Navbar";
 import {createNewProject} from "@/features/utilities/createNewProject";
 import {useAuthRedirect} from "@/features/hooks/useAuthRedirect";
 

@@ -1,18 +1,21 @@
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth} from "@/app/firebase/config";
-import {useState} from "react";
-import {FaCircleUser} from "react-icons/fa6";
+import {useEffect, useState} from "react";
 import {RxQuestionMarkCircled} from "react-icons/rx";
 import {LuMessageCircleMore} from "react-icons/lu";
 import {Project} from "@/types";
-import {useRouter} from "next/navigation";
 import {useReplaceRouteLink} from "@/features/utilities/useReplaceRouteLink";
+import userBgImg from "@/public/gradient-bg.jpg"
+import {getUserNameData} from "@/features/utilities/getUserNameData";
+import {UserMenu} from "@/components/mainNavbar/components/UserMenu";
 
 
 const Navbar = ({projects}: { projects: Project[] }) => {
 
     // states
     const [isProjectsMenuOpen, setIsProjectsMenuOpen] = useState(false);
+    const [userNameData, setUserNameData] = useState<{ name: string, surname: string } | null>(null);
+    const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
     const [user] = useAuthState(auth)
     const {replace} = useReplaceRouteLink()
@@ -22,9 +25,34 @@ const Navbar = ({projects}: { projects: Project[] }) => {
     const projectsMenuStyle = isProjectsMenuOpen ? "flex" : "hidden duration-150";
     const rightButtonsStyle = "text-custom-gray-800 hover:text-white duration-150 ease-in-out text-[24px] cursor-pointer"
 
+    // Functions
+    const getUserInitials = () => {
+        if (userNameData?.name && userNameData?.surname) {
+            return `${userNameData.name.charAt(0)}${userNameData.surname.charAt(0)}`
+        }
+    }
+
+    const getUserFullName = () => {
+        if (userNameData?.name && userNameData?.surname) {
+            return `${userNameData.name} ${userNameData.surname}`
+        }
+    }
+
+    // Fetch User Name
+    useEffect(() => {
+        if (!user?.uid) return
+
+        getUserNameData(user.uid).then((data) => {
+            if (data) setUserNameData(data)
+        }).catch((err) => {
+            console.log(err)
+            setUserNameData(null)
+        })
+    }, [user]);
+
     return (
         <div
-            className={`${visibilityStyle} w-full fixed top-0 left-0 h-[72px] z-[50] bg-black flex justify-between items-center`}
+            className={`${visibilityStyle} w-full fixed top-0 left-0 h-[72px] z-[40] bg-black flex justify-between items-center`}
         >
             {/*Left Side*/}
             <div
@@ -39,7 +67,12 @@ const Navbar = ({projects}: { projects: Project[] }) => {
                 >
                     <button
                         onClick={() => setIsProjectsMenuOpen(v => !v)}
-                        className={"text-white text-lg font-light ml-[22px] cursor-pointer"}
+                        disabled={projects.length < 1}
+                        style={{
+                            cursor: projects.length > 0 ? "pointer" : "default",
+                            color: projects.length > 0 ? "white" : "",
+                        }}
+                        className={"text-custom-gray-700 text-lg font-light ml-[22px] cursor-pointer"}
                     >
                         {"Projects"} {">"}
                     </button>
@@ -79,13 +112,23 @@ const Navbar = ({projects}: { projects: Project[] }) => {
                 </li>
                 <li>
                     <button
-                        onClick={() => auth.signOut()}
-                        className={"text-pastel-green-700 text-[34px]"}
+                        onClick={() => setIsUserMenuOpen(v => !v)}
+                        style={{
+                            backgroundImage: `url(${userBgImg.src})`,
+                            backgroundSize: "cover",
+                            backgroundRepeat: "no-repeat",
+                        }}
+                        className={`cursor-pointer aspect-square w-[36px] rounded-[100px]
+                         overflow-hidden flex justify-center items-center text-white text-lg`}
                     >
-                        <FaCircleUser/>
+                        {getUserInitials()}
                     </button>
                 </li>
             </ul>
+            <UserMenu getUserInitials={getUserInitials()}
+                      userName={getUserFullName()}
+                      isUserMenuOpen={isUserMenuOpen}
+                      setIsUserMenuOpen={setIsUserMenuOpen}/>
         </div>
     )
 

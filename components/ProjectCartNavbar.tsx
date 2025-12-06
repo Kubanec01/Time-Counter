@@ -1,11 +1,22 @@
 import {useRouter} from "next/navigation";
+import {useClockTimeContext} from "@/features/contexts/clockCountContext";
+import {useState} from "react";
+import InformativeModal from "@/components/modals/InformativeModal";
 
 
 const ProjectCartNavbar = ({projectName}: { projectName: string | null }) => {
 
+    // state
+    const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
 
     // Navigate Routing
     const router = useRouter()
+    const {isClocktimeRunning} = useClockTimeContext()
+
+    const goToHomePage = () => {
+        if (isClocktimeRunning) setIsInfoModalOpen(true);
+        else router.replace("/");
+    }
 
     return (
         <div
@@ -45,13 +56,17 @@ const ProjectCartNavbar = ({projectName}: { projectName: string | null }) => {
             >
                 <li>
                     <button
-                        onClick={() => router.replace("/")}
+                        onClick={() => goToHomePage()}
                         className={"flex justify-center items-center cursor-pointer text-base rounded-sm px-[18px] h-[38px] bg-pastel-purple-800 text-white"}
                     >
                         Go back
                     </button>
                 </li>
             </ul>
+            <InformativeModal
+                setIsModalOpen={setIsInfoModalOpen}
+                isModalOpen={isInfoModalOpen}
+                title={"Do not leave the page while time tracking is active."}/>
         </div>
     )
 
