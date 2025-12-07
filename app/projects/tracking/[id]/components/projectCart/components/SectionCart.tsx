@@ -63,7 +63,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
         await subtractProjectTotalTime(props.userId, props.projectId, difference)
     }
 
-    const toggleTimer = () => {
+    const toggleTimer = async () => {
         if (isClocktimeRunning && (activeClockTimeSectionId !== props.sectionId)) return setIsInfoModalOpen(true);
 
         const now = new Date();
@@ -82,9 +82,9 @@ const SectionCart = ({...props}: SectionCartProps) => {
             setIsRunning(false);
             pause();
             setLastStopClockTime(totalSeconds)
-            setProjectTotalTime(props.userId, props.sectionId, props.projectId, newTime)
-            sendTimeData(props.userId, props.sectionId, newTime, currDateString);
-            createNewTimeCheckout(props.userId, formattedTime, props.projectId, props.sectionId, startTime, StopTimeDifference(totalSeconds, lastStopClockTime));
+            await setProjectTotalTime(props.userId, props.sectionId, props.projectId, newTime)
+            await sendTimeData(props.userId, props.sectionId, newTime, currDateString);
+            await createNewTimeCheckout(props.userId, formattedTime, props.projectId, props.sectionId, startTime, StopTimeDifference(totalSeconds, lastStopClockTime));
         }
     };
 

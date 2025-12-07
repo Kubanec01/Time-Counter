@@ -60,6 +60,35 @@ export const setProjectTotalTime = async (
 
 }
 
+export const setProjectTotalTimeWithoutSectionId = async (
+    userId: string | undefined,
+    projectId: string,
+    time: string
+) => {
+
+    if (!userId) throw new Error(invalidUserId)
+    const userRef = doc(db, "users", userId)
+    const docSnap = await getDoc(userRef)
+
+    if (!docSnap.exists()) throw new Error(documentNotFound)
+    const data = docSnap.data()
+    const projects: Project[] = data.projects || []
+
+    const projectTime = parseTimeStringToSeconds(await getProjectTotalTime(userId, projectId))
+    const newTime = parseTimeStringToSeconds(time)
+
+    const newTotalTime = formatSecondsToTimeString(projectTime + newTime)
+
+    const updatedProjects = projects.map(p => {
+        if (p.projectId !== projectId) return p
+
+        return {...p, totalTime: newTotalTime}
+    })
+
+    await updateDoc(userRef, {projects: updatedProjects})
+
+}
+
 export const subtractProjectTotalTime = async (
     userId: string | undefined,
     projectId: string,
@@ -73,6 +102,9 @@ export const subtractProjectTotalTime = async (
     const projects: Project[] = data.projects || []
 
     const projectTime = parseTimeStringToSeconds(await getProjectTotalTime(userId, projectId))
+    console.log(projectTime)
+    console.log(time)
+
     const newTime = parseTimeStringToSeconds(time)
 
     const newTotalTime = formatSecondsToTimeString(projectTime - newTime)

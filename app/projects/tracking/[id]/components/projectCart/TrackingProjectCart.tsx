@@ -66,9 +66,9 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
 
 
     // Functions
-    const createSection = (e: React.FormEvent<HTMLFormElement>) => {
+    const createSection = async (e: React.FormEvent<HTMLFormElement>) => {
         const time = "00:00:00";
-        createNewSection(e, userId, props.projectId, inputValue, time, setInputValue, setIsInfoModalOpen, "unset")
+        await createNewSection(e, userId, props.projectId, inputValue, time, setInputValue, setIsInfoModalOpen, "unset")
     }
 
 

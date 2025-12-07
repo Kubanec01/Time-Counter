@@ -1,6 +1,6 @@
 import userBgImg from "@/public/gradient-bg.jpg";
 import {RiListSettingsLine} from "react-icons/ri";
-import {MdOutlineLogout} from "react-icons/md";
+import {MdLockReset, MdOutlineLogout} from "react-icons/md";
 import {Dispatch, SetStateAction} from "react";
 import {auth} from "@/app/firebase/config";
 
@@ -42,6 +42,10 @@ export const UserMenu = ({...props}: Props) => {
             <button
                 className={"flex items-center gap-2 text-white text-sm bg-black p-2 rounded-md cursor-pointer"}>
                 <RiListSettingsLine className={"text-custom-gray-700"}/> Settings
+            </button>
+            <button
+                className={"flex items-center gap-2 text-white text-sm bg-black p-2 rounded-md cursor-pointer"}>
+                <MdLockReset className={"text-custom-gray-700"}/> Change Password
             </button>
             <button
                 onClick={() => auth.signOut()}

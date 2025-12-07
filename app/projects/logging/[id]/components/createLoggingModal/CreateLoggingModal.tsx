@@ -3,7 +3,7 @@
 
 import {PiCirclesThreeFill} from "react-icons/pi";
 import {LoggingTypeButton} from "@/app/projects/logging/[id]/components/createLoggingModal/LoggingTypeButton";
-import {Dispatch, SetStateAction, useState} from "react";
+import {Dispatch, FormEvent, SetStateAction, useState} from "react";
 import {LoggingType} from "@/types";
 
 interface LoggingModalProps {
@@ -14,16 +14,15 @@ interface LoggingModalProps {
     setLoggingType: Dispatch<SetStateAction<LoggingType>>;
     inputValue: string;
     setInputValue: Dispatch<SetStateAction<string>>;
-    hoursInputValue: string;
-    setHoursInputValue: React.Dispatch<React.SetStateAction<string>>;
-    minutesInputValue: string;
-    setMinutesInputValue: React.Dispatch<React.SetStateAction<string>>;
-    formFunction: (e: React.FormEvent<HTMLFormElement>) => void;
+    timeInputValue: string;
+    setTimeInputValue: Dispatch<SetStateAction<string>>;
+    formFunction: (e: FormEvent<HTMLFormElement>) => void;
 }
 
 const CreateLoggingModal = ({...props}: LoggingModalProps) => {
 
-    const [loggingType, setLoggingType] = useState<LoggingType>(null);
+    // States
+    const [loggingType, setLoggingType] = useState<LoggingType>("Work");
 
     const setVisibility = props.isModalOpen ? "block" : "hidden";
     const setCustomInputVisibility = loggingType === "Custom" ? "block" : "hidden";
@@ -32,7 +31,12 @@ const CreateLoggingModal = ({...props}: LoggingModalProps) => {
         props.setIsModalOpen(false)
         props.setInputValue("")
         props.setLoggingType(null)
+        props.setTimeInputValue("0.25")
         setLoggingType(null)
+    }
+
+    const areLogInputsInvalid = () => {
+        return (loggingType === null || props.inputValue.trim() === "" || props.timeInputValue.trim() === "");
     }
 
     return (
@@ -46,13 +50,13 @@ const CreateLoggingModal = ({...props}: LoggingModalProps) => {
                     <PiCirclesThreeFill/>
             </span>
                 <div
-                    className={"mt-4 w-[80%] mx-auto"}>
+                    className={"mt-4 w-[84%] mx-auto"}>
                     <h1
                         className={"text-lg font-medium text-white"}>
                         {props.title}
                     </h1>
                     <p
-                        className={"text-custom-gray-700 text-sm w-[90%] font-medium"}>
+                        className={"text-custom-gray-700 text-sm font-medium"}>
                         {props.desc}
                     </p>
                 </div>
@@ -131,29 +135,23 @@ const CreateLoggingModal = ({...props}: LoggingModalProps) => {
                         placeholder={"What are you going to work on?"}
                         className={"w-full h-[32px] text-pastel-pink-700 pl-2" +
                             " border-pastel-pink-700 border text-sm rounded-[100px] outline-none"}/>
-                    <div
-                        className={"flex justify-center gap-10 mt-6 w-full"}>
-                        <input
-                            min={1}
-                            max={900}
-                            value={props.hoursInputValue}
-                            onChange={(e) => props.setHoursInputValue(e.target.value)}
-                            type={"number"}
-                            placeholder={"0"}
-                            className={"h-[34px] w-[80px] text-white px-3 border-white border rounded-[100px] outline-none"}/>
-                        <input
-                            min={1}
-                            max={900}
-                            value={props.minutesInputValue}
-                            onChange={(e) => props.setMinutesInputValue(e.target.value)}
-                            type={"number"}
-                            placeholder={"0"}
-                            className={"h-[34px] w-[80px] text-white px-3 border-white border rounded-[100px] outline-none"}/>
-                    </div>
+                    <input
+                        min={0.25}
+                        max={900}
+                        step={0.25}
+                        value={props.timeInputValue}
+                        onChange={(e) => props.setTimeInputValue(e.target.value)}
+                        type={"number"}
+                        placeholder={"0.25"}
+                        className={"h-[34px] w-full text-white px-3 border-white mt-4 border rounded-[100px] outline-none"}/>
                     <button
                         type="submit"
-                        onClick={() => setLoggingType(null)}
-                        className={"w-full py-1 cursor-pointer rounded-[100px] bg-pastel-pink-700 text-black font-medium mt-3"}>
+                        disabled={areLogInputsInvalid()}
+                        style={{
+                            cursor: areLogInputsInvalid() ? "default" : "pointer",
+                            background: areLogInputsInvalid() ? "#6E6E6E" : ""
+                        }}
+                        className={"w-full py-1 rounded-[100px] bg-pastel-pink-700 text-black font-medium mt-3"}>
                         Create
                     </button>
                     <button

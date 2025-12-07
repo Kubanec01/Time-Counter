@@ -9,32 +9,35 @@ import {useAuthState} from "react-firebase-hooks/auth";
 import {auth, db} from "@/app/firebase/config";
 import {doc, onSnapshot} from "firebase/firestore";
 import {deleteAllSectionData} from "@/features/utilities/deleteAllSectionData";
+import {formatSecondsToTimeString} from "@/features/hooks/timeOperations";
+import {setProjectTotalTime, setProjectTotalTimeWithoutSectionId} from "@/features/utilities/totalTime";
 
 
 export const LoggingProjectCart = ({...props}: ProjectProps) => {
 
     // States
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-    const [loggingCategory, setLoggingCategory] = useState<LoggingType>(null)
+    const [loggingCategory, setLoggingCategory] = useState<LoggingType>("Work")
     const [isInfoModalOpen, setIsInfoModalOpen] = useState(false)
     const [inputValue, setInputValue] = useState("");
-    const [hoursInputValue, setHoursInputValue] = useState("");
-    const [minutesInputValue, setMinutesInputValue] = useState("");
+    const [timeInputValue, setTimeInputValue] = useState("0.25");
     const [sections, setSections] = useState<Section[]>([]);
 
     // User Auth
     const [user] = useAuthState(auth)
     const userId = user?.uid
 
-    const createSection = (e: React.FormEvent<HTMLFormElement>) => {
+    const createSection = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        const time = `${hoursInputValue}:${minutesInputValue}`
 
-        createNewSection(e, userId, props.projectId, inputValue, time, setInputValue, setIsInfoModalOpen, loggingCategory)
+        const time = formatSecondsToTimeString(Number(timeInputValue) * 3600)
+        console.log(time)
+
+        await createNewSection(e, userId, props.projectId, inputValue, time, setInputValue, setIsInfoModalOpen, loggingCategory)
+        await setProjectTotalTimeWithoutSectionId(userId, props.projectId, time)
         setIsCreateModalOpen(false)
-        setLoggingCategory(null)
-        setHoursInputValue("")
-        setMinutesInputValue("")
+        setLoggingCategory("Work")
+        setTimeInputValue("0.25")
     }
 
     useEffect(() => {
@@ -79,24 +82,23 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
                         <h2>{s.category}</h2>
                         <span>{s.time}</span>
                         <button
-                            onClick={() => deleteAllSectionData(userId, props.projectId, s.sectionId)}>Delete
+                            onClick={() => deleteAllSectionData(userId, props.projectId, s.sectionId)}>
+                            Delete
                         </button>
                     </div>
                 ))}
             </section>
             <CreateLoggingModal
                 title={"Create new logging?"}
-                desc={"Choose a task type and name your log."}
+                desc={"Select a task type, name, and enter the time in decimal notation."}
                 isModalOpen={isCreateModalOpen}
                 setIsModalOpen={setIsCreateModalOpen}
                 setLoggingType={setLoggingCategory}
                 inputValue={inputValue}
                 setInputValue={setInputValue}
                 formFunction={createSection}
-                hoursInputValue={hoursInputValue}
-                setHoursInputValue={setHoursInputValue}
-                minutesInputValue={minutesInputValue}
-                setMinutesInputValue={setMinutesInputValue}
+                timeInputValue={timeInputValue}
+                setTimeInputValue={setTimeInputValue}
             />
         </>
     )
