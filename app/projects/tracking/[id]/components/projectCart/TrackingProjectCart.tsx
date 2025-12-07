@@ -35,7 +35,7 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
     // Fetch Sections Data
     useEffect(() => {
         if (!userId || !projectId) return;
-        const userRef = doc(db, "users", userId);
+        const userRef = doc(db, "realms", userId);
 
         const getSectionsData = onSnapshot(userRef, (snap) => {
             if (snap.exists()) {

@@ -3,11 +3,12 @@ import {auth} from "@/app/firebase/config";
 import {useEffect, useState} from "react";
 import {RxQuestionMarkCircled} from "react-icons/rx";
 import {LuMessageCircleMore} from "react-icons/lu";
-import {Project} from "@/types";
-import {useReplaceRouteLink} from "@/features/utilities/useReplaceRouteLink";
+import {Project, Role} from "@/types";
+import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 import userBgImg from "@/public/gradient-bg.jpg"
 import {getUserNameData} from "@/features/utilities/getUserNameData";
 import {UserMenu} from "@/components/mainNavbar/components/UserMenu";
+import {getUserRole} from "@/features/utilities/getUserRole";
 
 
 const Navbar = ({projects}: { projects: Project[] }) => {
@@ -15,6 +16,7 @@ const Navbar = ({projects}: { projects: Project[] }) => {
     // states
     const [isProjectsMenuOpen, setIsProjectsMenuOpen] = useState(false);
     const [userNameData, setUserNameData] = useState<{ name: string, surname: string } | null>(null);
+    const [userRole, setUserRole] = useState<Role | null>(null)
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
     const [user] = useAuthState(auth)
@@ -48,6 +50,13 @@ const Navbar = ({projects}: { projects: Project[] }) => {
             console.log(err)
             setUserNameData(null)
         })
+        getUserRole(user.uid).then((data) => {
+            if (data) setUserRole(data)
+        }).catch((err) => {
+            console.log(err)
+            setUserRole(null)
+        })
+
     }, [user]);
 
     return (
@@ -127,6 +136,7 @@ const Navbar = ({projects}: { projects: Project[] }) => {
             </ul>
             <UserMenu getUserInitials={getUserInitials()}
                       userName={getUserFullName()}
+                      userRole={userRole}
                       isUserMenuOpen={isUserMenuOpen}
                       setIsUserMenuOpen={setIsUserMenuOpen}/>
         </div>

@@ -8,7 +8,7 @@ import {sectionNotFound} from "@/messages/errors";
 export const deleteAllSectionData = async (userId: string | undefined, projectId: string, sectionId: string) => {
     if (!userId || !projectId) return;
 
-    const userRef = doc(db, "users", userId);
+    const userRef = doc(db, "realms", userId);
     const userSnap = await getDoc(userRef);
 
     if (!userSnap.exists()) return;

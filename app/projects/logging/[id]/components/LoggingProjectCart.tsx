@@ -10,7 +10,7 @@ import {auth, db} from "@/app/firebase/config";
 import {doc, onSnapshot} from "firebase/firestore";
 import {deleteAllSectionData} from "@/features/utilities/deleteAllSectionData";
 import {formatSecondsToTimeString} from "@/features/hooks/timeOperations";
-import {setProjectTotalTime, setProjectTotalTimeWithoutSectionId} from "@/features/utilities/totalTime";
+import {setProjectTotalTimeWithoutSectionId} from "@/features/utilities/totalTime";
 
 
 export const LoggingProjectCart = ({...props}: ProjectProps) => {
@@ -43,7 +43,7 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
     useEffect(() => {
         if (!userId) return
 
-        const userRef = doc(db, "users", userId)
+        const userRef = doc(db, "realms", userId)
 
         const fetchSectionsData = onSnapshot(userRef, snap => {
             if (!snap.exists()) return
@@ -78,10 +78,11 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
                 {sections.map((s, index) => (
                     <div key={index}
                          className={"w-full h-[60px] rounded-[100] border flex justify-between items-center px-4"}>
-                        <h1>{s.title}</h1>
-                        <h2>{s.category}</h2>
-                        <span>{s.time}</span>
+                        <h1 className={"w-[25%]"}>{s.title}</h1>
+                        <h2 className={"w-[25%]"}>{s.category}</h2>
+                        <span className={"w-[25%]"}>{s.time}</span>
                         <button
+                            className={"w-[25%]"}
                             onClick={() => deleteAllSectionData(userId, props.projectId, s.sectionId)}>
                             Delete
                         </button>

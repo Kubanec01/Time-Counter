@@ -13,7 +13,7 @@ export const deleteSubsectionAndTimeCheckoutsData = async (
 ) => {
 
     if (!userId) return
-    const userRef = doc(db, "users", userId);
+    const userRef = doc(db, "realms", userId);
     const userSnap = await getDoc(userRef);
 
     if (!userSnap.exists()) return;

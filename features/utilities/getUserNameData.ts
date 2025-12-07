@@ -6,7 +6,7 @@ import {doc, getDoc} from "firebase/firestore";
 export const getUserNameData = async (userId: string | undefined) => {
 
     if (!userId) throw new Error(invalidUserId)
-    const userRef = doc(db, "users", userId);
+    const userRef = doc(db, "realms", userId);
     const docSnap = await getDoc(userRef);
     if (!docSnap.exists()) throw new Error(documentNotFound)
     const data = docSnap.data();

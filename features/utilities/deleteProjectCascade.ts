@@ -10,7 +10,7 @@ export const deleteProjectCascade = async (
 
 
     if (!userId) return
-    const userRef = doc(db, "users", userId)
+    const userRef = doc(db, "realms", userId)
 
     const docSnap = await getDoc(userRef)
 

@@ -2,7 +2,7 @@
 
 import {LoggingProjectCart} from "@/app/projects/logging/[id]/components/LoggingProjectCart";
 import {useParams} from "next/navigation";
-import {useGetProjectName} from "@/features/utilities/useGetProjectName";
+import {useGetProjectName} from "@/features/hooks/useGetProjectName";
 
 
 const LoggingProjectPage = () => {

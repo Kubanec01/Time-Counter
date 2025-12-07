@@ -16,7 +16,7 @@ export const useGetProjectName = (
 
     useEffect(() => {
         if (!userId || !projectId) return
-        const userRef = doc(db, "users", userId);
+        const userRef = doc(db, "realms", userId);
 
         const fetchProjectName = onSnapshot(userRef, snap => {
             if (!snap.exists()) return

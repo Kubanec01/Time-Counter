@@ -10,7 +10,7 @@ export const editProjectName = async (
 
     if (!userId || !projectId) return
 
-    const userRef = doc(db, "users", userId);
+    const userRef = doc(db, "realms", userId);
     const userSnap = await getDoc(userRef)
     if (!userSnap.exists()) return
 

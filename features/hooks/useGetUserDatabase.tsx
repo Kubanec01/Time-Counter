@@ -16,7 +16,7 @@ export const useGetUserDatabase = () => {
         const fetchData = async () => {
             if (!userId) return
 
-            const userRef = doc(db, "users", userId)
+            const userRef = doc(db, "realms", userId)
             setUserRef(userRef)
         }
 

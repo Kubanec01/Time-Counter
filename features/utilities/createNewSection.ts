@@ -23,7 +23,7 @@ export const createNewSection = async (
     }
 
     if (!userId) return;
-    const userRef = doc(db, "users", userId);
+    const userRef = doc(db, "realms", userId);
 
     // Random Num Variable
     const randomNum = throwRandomNum().toString()

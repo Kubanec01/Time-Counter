@@ -11,7 +11,7 @@ export const getProjectTotalTime = async (
 
     if (!userId) throw new Error(invalidUserId)
 
-    const userRef = doc(db, "users", userId)
+    const userRef = doc(db, "realms", userId)
     const docSnap = await getDoc(userRef)
 
     if (!docSnap.exists()) throw new Error(documentNotFound)
@@ -33,7 +33,7 @@ export const setProjectTotalTime = async (
 ) => {
 
     if (!userId) throw new Error(invalidUserId)
-    const userRef = doc(db, "users", userId)
+    const userRef = doc(db, "realms", userId)
     const docSnap = await getDoc(userRef)
 
     if (!docSnap.exists()) throw new Error(documentNotFound)
@@ -67,7 +67,7 @@ export const setProjectTotalTimeWithoutSectionId = async (
 ) => {
 
     if (!userId) throw new Error(invalidUserId)
-    const userRef = doc(db, "users", userId)
+    const userRef = doc(db, "realms", userId)
     const docSnap = await getDoc(userRef)
 
     if (!docSnap.exists()) throw new Error(documentNotFound)
@@ -95,7 +95,7 @@ export const subtractProjectTotalTime = async (
     time: string
 ) => {
     if (!userId) throw new Error(invalidUserId)
-    const userRef = doc(db, "users", userId)
+    const userRef = doc(db, "realms", userId)
     const docSnap = await getDoc(userRef)
     if (!docSnap.exists()) throw new Error(documentNotFound)
     const data = docSnap.data()

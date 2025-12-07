@@ -22,19 +22,13 @@ export interface Section {
     category?: LoggingType
 }
 
-// export interface LoggingSection {
-//     projectId: string;
-//     sectionId: string;
-//     title: string;
-//     category: string;
-//     time: string;
-// }
-
 export interface UpdatedSectionByDate {
     sectionId: string;
     projectId: string;
     date: string;
 }
+
+export type Role = "Admin" | "Member"
 
 export type ProjectType = "tracking" | "logging"
 

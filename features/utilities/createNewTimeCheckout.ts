@@ -17,7 +17,7 @@ export const createNewTimeCheckout = async (
     const date = new Date()
     const randomNum = throwRandomNum().toString()
 
-    const userRef = doc(db, "users", userId);
+    const userRef = doc(db, "realms", userId);
 
     const newTimeCheckout: TimeCheckout = {
         sectionId: sectionId,

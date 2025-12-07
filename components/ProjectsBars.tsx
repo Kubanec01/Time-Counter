@@ -15,7 +15,7 @@ import {useRouter} from "next/navigation";
 import {editProjectName} from "@/features/utilities/editProjectName";
 import DeleteModal from "@/components/modals/DeleteModal";
 import {deleteProjectCascade} from "@/features/utilities/deleteProjectCascade";
-import {useReplaceRouteLink} from "@/features/utilities/useReplaceRouteLink";
+import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 
 
 const ProjectsBars = () => {
