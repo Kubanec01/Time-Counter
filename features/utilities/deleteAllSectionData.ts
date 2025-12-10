@@ -1,14 +1,19 @@
-import {doc, getDoc, updateDoc} from "firebase/firestore";
-import {db} from "@/app/firebase/config";
-import {Section, TimeCheckout, UpdatedSectionByDate} from "@/types";
+import {getDoc, updateDoc} from "firebase/firestore";
+import {Section, TimeCheckout, UpdatedSectionByDate, UserMode, WorkspaceId} from "@/types";
 import {subtractProjectTotalTime} from "@/features/utilities/totalTime";
 import {sectionNotFound} from "@/messages/errors";
+import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 
 
-export const deleteAllSectionData = async (userId: string | undefined, projectId: string, sectionId: string) => {
+export const deleteAllSectionData = async (
+    userId: string | undefined,
+    projectId: string,
+    sectionId: string,
+    mode: UserMode,
+    workspaceId: WorkspaceId,) => {
     if (!userId || !projectId) return;
 
-    const userRef = doc(db, "users", userId);
+    const userRef = getFirestoreTargetRef(userId, mode, workspaceId);
     const userSnap = await getDoc(userRef);
 
     if (!userSnap.exists()) return;

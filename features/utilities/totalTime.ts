@@ -1,17 +1,19 @@
 import {documentNotFound, invalidUserId, sectionNotFound} from "@/messages/errors";
-import {db} from "@/app/firebase/config";
-import {doc, getDoc, updateDoc} from "firebase/firestore";
-import {Project, Section} from "@/types";
+import {getDoc, updateDoc} from "firebase/firestore";
+import {Project, Section, UserMode, WorkspaceId} from "@/types";
 import {formatSecondsToTimeString, parseTimeStringToSeconds} from "@/features/hooks/timeOperations";
+import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 
 export const getProjectTotalTime = async (
     userId: string | undefined,
-    projectId: string
+    projectId: string,
+    mode: UserMode,
+    workspaceId: WorkspaceId,
 ): Promise<string> => {
 
     if (!userId) throw new Error(invalidUserId)
 
-    const userRef = doc(db, "users", userId)
+    const userRef = getFirestoreTargetRef(userId, mode, workspaceId)
     const docSnap = await getDoc(userRef)
 
     if (!docSnap.exists()) throw new Error(documentNotFound)
@@ -29,11 +31,13 @@ export const setProjectTotalTime = async (
     userId: string | undefined,
     sectionId: string,
     projectId: string,
-    time: string
+    time: string,
+    mode: UserMode,
+    workspaceId: WorkspaceId,
 ) => {
 
     if (!userId) throw new Error(invalidUserId)
-    const userRef = doc(db, "users", userId)
+    const userRef = getFirestoreTargetRef(userId, mode, workspaceId)
     const docSnap = await getDoc(userRef)
 
     if (!docSnap.exists()) throw new Error(documentNotFound)
@@ -44,7 +48,7 @@ export const setProjectTotalTime = async (
     const sectionTime = sections.find(s => s.sectionId === sectionId)
     if (!sectionTime) throw new Error(sectionNotFound)
 
-    const projectTime = parseTimeStringToSeconds(await getProjectTotalTime(userId, projectId))
+    const projectTime = parseTimeStringToSeconds(await getProjectTotalTime(userId, projectId, mode, workspaceId))
     const projectTotalTime = projectTime - parseTimeStringToSeconds(sectionTime.time)
     const newTime = parseTimeStringToSeconds(time)
 
@@ -63,18 +67,20 @@ export const setProjectTotalTime = async (
 export const setProjectTotalTimeWithoutSectionId = async (
     userId: string | undefined,
     projectId: string,
-    time: string
+    time: string,
+    mode: UserMode,
+    workspaceId: WorkspaceId,
 ) => {
 
     if (!userId) throw new Error(invalidUserId)
-    const userRef = doc(db, "users", userId)
+    const userRef = getFirestoreTargetRef(userId, mode, workspaceId)
     const docSnap = await getDoc(userRef)
 
     if (!docSnap.exists()) throw new Error(documentNotFound)
     const data = docSnap.data()
     const projects: Project[] = data.projects || []
 
-    const projectTime = parseTimeStringToSeconds(await getProjectTotalTime(userId, projectId))
+    const projectTime = parseTimeStringToSeconds(await getProjectTotalTime(userId, projectId, mode, workspaceId))
     const newTime = parseTimeStringToSeconds(time)
 
     const newTotalTime = formatSecondsToTimeString(projectTime + newTime)
@@ -92,18 +98,18 @@ export const setProjectTotalTimeWithoutSectionId = async (
 export const subtractProjectTotalTime = async (
     userId: string | undefined,
     projectId: string,
-    time: string
+    time: string,
+    mode: UserMode,
+    workspaceId: WorkspaceId,
 ) => {
     if (!userId) throw new Error(invalidUserId)
-    const userRef = doc(db, "users", userId)
+    const userRef = getFirestoreTargetRef(userId, mode, workspaceId)
     const docSnap = await getDoc(userRef)
     if (!docSnap.exists()) throw new Error(documentNotFound)
     const data = docSnap.data()
     const projects: Project[] = data.projects || []
 
-    const projectTime = parseTimeStringToSeconds(await getProjectTotalTime(userId, projectId))
-    console.log(projectTime)
-    console.log(time)
+    const projectTime = parseTimeStringToSeconds(await getProjectTotalTime(userId, projectId, mode, workspaceId))
 
     const newTime = parseTimeStringToSeconds(time)
 
@@ -118,39 +124,3 @@ export const subtractProjectTotalTime = async (
     await updateDoc(userRef, {projects: updatedProjects})
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

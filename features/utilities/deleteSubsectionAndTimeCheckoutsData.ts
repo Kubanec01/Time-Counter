@@ -1,7 +1,7 @@
-import {doc, getDoc, updateDoc} from "firebase/firestore";
-import {db} from "@/app/firebase/config";
-import {Section, TimeCheckout} from "@/types";
+import {getDoc, updateDoc} from "firebase/firestore";
+import {Section, TimeCheckout, UserMode, WorkspaceId} from "@/types";
 import React from "react";
+import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 
 
 export const deleteSubsectionAndTimeCheckoutsData = async (
@@ -9,11 +9,13 @@ export const deleteSubsectionAndTimeCheckoutsData = async (
     subSectionId: string,
     sectionId: string,
     updatedClockTime: string,
-    setSubSections: React.Dispatch<React.SetStateAction<[] | TimeCheckout[]>>
+    setSubSections: React.Dispatch<React.SetStateAction<[] | TimeCheckout[]>>,
+    mode: UserMode,
+    workspaceId: WorkspaceId,
 ) => {
 
     if (!userId) return
-    const userRef = doc(db, "users", userId);
+    const userRef = getFirestoreTargetRef(userId, mode, workspaceId);
     const userSnap = await getDoc(userRef);
 
     if (!userSnap.exists()) return;

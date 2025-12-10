@@ -1,16 +1,19 @@
 import {doc, getDoc, updateDoc} from "firebase/firestore";
-import {Project, Section, TimeCheckout, UpdatedSectionByDate} from "@/types";
+import {Project, Section, TimeCheckout, UpdatedSectionByDate, UserMode, WorkspaceId} from "@/types";
 import {db} from "@/app/firebase/config";
+import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 
 
 export const deleteProjectCascade = async (
     userId: string | undefined,
-    projectId: string | null
+    projectId: string | null,
+    mode: UserMode,
+    workspaceId: WorkspaceId,
 ) => {
 
 
     if (!userId) return
-    const userRef = doc(db, "users", userId)
+    const userRef = getFirestoreTargetRef(userId, mode, workspaceId)
 
     const docSnap = await getDoc(userRef)
 

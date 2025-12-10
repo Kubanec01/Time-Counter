@@ -21,6 +21,7 @@ import {deleteSubsectionAndTimeCheckoutsData} from "@/features/utilities/deleteS
 import SubSectionCart from "@/app/projects/tracking/[id]/components/projectCart/components/SubSectionCart";
 import {formatSecondsToTimeString, formatTimeUnit, parseTimeStringToSeconds} from "@/features/hooks/timeOperations";
 import {setProjectTotalTime, subtractProjectTotalTime} from "@/features/utilities/totalTime";
+import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 
 
 const SectionCart = ({...props}: SectionCartProps) => {
@@ -43,6 +44,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
         setActiveClockTimeSectionId,
         activeClockTimeSectionId
     } = useClockTimeContext()
+    const {mode, workspaceId} = useWorkSpaceContext()
 
     // Hooks
     const {seconds, minutes, hours, start, pause, reset, totalSeconds} = useStopwatch({autoStart: false});
@@ -59,8 +61,8 @@ const SectionCart = ({...props}: SectionCartProps) => {
         resetClockTime(updatedClockTime, reset)
         setLastStopClockTime(updatedClockTime)
 
-        await deleteSubsectionAndTimeCheckoutsData(props.userId, subSectionId, sectionId, formatedUpdatedClockTime, setSubSections)
-        await subtractProjectTotalTime(props.userId, props.projectId, difference)
+        await deleteSubsectionAndTimeCheckoutsData(props.userId, subSectionId, sectionId, formatedUpdatedClockTime, setSubSections, mode, workspaceId)
+        await subtractProjectTotalTime(props.userId, props.projectId, difference, mode, workspaceId)
     }
 
     const toggleTimer = async () => {
@@ -82,9 +84,9 @@ const SectionCart = ({...props}: SectionCartProps) => {
             setIsRunning(false);
             pause();
             setLastStopClockTime(totalSeconds)
-            await setProjectTotalTime(props.userId, props.sectionId, props.projectId, newTime)
-            await sendTimeData(props.userId, props.sectionId, newTime, currDateString);
-            await createNewTimeCheckout(props.userId, formattedTime, props.projectId, props.sectionId, startTime, StopTimeDifference(totalSeconds, lastStopClockTime));
+            await setProjectTotalTime(props.userId, props.sectionId, props.projectId, newTime, mode, workspaceId)
+            await sendTimeData(props.userId, props.sectionId, newTime, currDateString, mode, workspaceId);
+            await createNewTimeCheckout(props.userId, formattedTime, props.projectId, props.sectionId, startTime, StopTimeDifference(totalSeconds, lastStopClockTime), mode, workspaceId);
         }
     };
 
@@ -207,7 +209,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
                 title={"Delete track?"}
                 desc={"Are you sure you want to delete this track? This step is irreversible and everything stored in this track will be deleted."}
                 deleteBtnText={"Delete Track"}
-                btnFunction={() => deleteAllSectionData(props.userId, props.projectId, props.sectionId)}
+                btnFunction={() => deleteAllSectionData(props.userId, props.projectId, props.sectionId, mode, workspaceId)}
             />
             <RenameModal
                 setIsModalOpen={() => setIsEditModalOpen(false)}
@@ -219,7 +221,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
                 inputPlaceholder={"What is new name?"}
                 desc={"You can rename your track anytime, anywhere. Name must contain a maximum of 24 characters."}
                 formFunction={(e) =>
-                    editSectionName(e, props.userId, props.projectId, props.sectionId, inputValue, setInputValue, setIsEditModalOpen)}
+                    editSectionName(e, props.userId, props.projectId, props.sectionId, inputValue, setInputValue, setIsEditModalOpen, mode, workspaceId)}
             />
             <InformativeModal
                 isModalOpen={isInfoModalOpen}

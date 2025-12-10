@@ -1,17 +1,19 @@
-import {doc, getDoc, updateDoc} from "firebase/firestore";
-import {db} from "@/app/firebase/config";
-import {Section, UpdatedSectionByDate} from "@/types";
+import {getDoc, updateDoc} from "firebase/firestore";
+import {Section, UpdatedSectionByDate, UserMode, WorkspaceId} from "@/types";
+import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 
 
 export const sendTimeData = async (
     userId: string | undefined,
     sectionId: string,
     newTime: string,
-    date: string
+    date: string,
+    mode: UserMode,
+    workspaceId: WorkspaceId,
 ) => {
     if (!userId) return;
 
-    const userRef = doc(db, "users", userId);
+    const userRef = getFirestoreTargetRef(userId, mode, workspaceId);
     const userSnap = await getDoc(userRef);
 
     if (!userSnap.exists()) return;

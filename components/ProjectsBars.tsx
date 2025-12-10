@@ -16,6 +16,10 @@ import {editProjectName} from "@/features/utilities/editProjectName";
 import DeleteModal from "@/components/modals/DeleteModal";
 import {deleteProjectCascade} from "@/features/utilities/deleteProjectCascade";
 import {useReplaceRouteLink} from "@/features/utilities/useReplaceRouteLink";
+import {useAuthState} from "react-firebase-hooks/auth";
+import {auth} from "@/app/firebase/config";
+import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
+import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 
 
 const ProjectsBars = () => {
@@ -29,16 +33,19 @@ const ProjectsBars = () => {
 
     // Replace Route
     const {replace} = useReplaceRouteLink()
+    const {mode, workspaceId} = useWorkSpaceContext()
 
     const isCurrProjectEditing = (projectId: string) => editingProjectId === projectId
 
     // User Data
-    const {userRef, userId} = useGetUserDatabase()
+    const [user] = useAuthState(auth)
+    const userId = user?.uid
 
     // Fetch Projects
     useEffect(() => {
 
-        if (!userRef) return;
+        if (!userId) return;
+        const userRef = getFirestoreTargetRef(userId, mode, workspaceId);
 
         const fetchProjects = onSnapshot(userRef, (snap) => {
             if (snap.exists()) {
@@ -50,21 +57,21 @@ const ProjectsBars = () => {
         });
 
         return () => fetchProjects();
-    }, [userId, userRef]);
+    }, [mode, userId, workspaceId]);
 
 
-    const deleteProject = (projectId: string | null) => {
-        deleteProjectCascade(userId, projectId);
+    const deleteProject = async (projectId: string | null) => {
+        await deleteProjectCascade(userId, projectId, mode, workspaceId);
 
         setIsDeleteModalOpen(false);
         setEditingProjectId(null)
     }
 
 
-    const setProjectName = (e: React.FormEvent<HTMLFormElement>) => {
+    const setProjectName = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        editProjectName(userId, editingProjectId, inputValue)
+        await editProjectName(userId, editingProjectId, inputValue, mode, workspaceId);
         setIsModalOpen(false)
         setInputValue("")
         setEditingProjectId(null)

@@ -1,12 +1,15 @@
 import {useEffect, useState} from "react";
-import {doc, onSnapshot} from "firebase/firestore";
-import {auth, db} from "@/app/firebase/config";
-import {Project} from "@/types";
+import {onSnapshot} from "firebase/firestore";
+import {auth} from "@/app/firebase/config";
+import {Project, UserMode, WorkspaceId} from "@/types";
 import {useAuthState} from "react-firebase-hooks/auth";
+import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 
 
 export const useGetProjectName = (
     projectId: string,
+    mode: UserMode,
+    workspaceId: WorkspaceId,
 ) => {
 
     const [projectName, setProjectName] = useState("");
@@ -16,7 +19,7 @@ export const useGetProjectName = (
 
     useEffect(() => {
         if (!userId || !projectId) return
-        const userRef = doc(db, "users", userId);
+        const userRef = getFirestoreTargetRef(userId, mode, workspaceId);
 
         const fetchProjectName = onSnapshot(userRef, snap => {
             if (!snap.exists()) return
@@ -29,7 +32,7 @@ export const useGetProjectName = (
 
         return () => fetchProjectName()
 
-    }, [projectId, userId]);
+    }, [mode, projectId, userId, workspaceId]);
 
     return {projectName}
 

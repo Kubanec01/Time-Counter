@@ -1,16 +1,18 @@
-import {doc, getDoc, updateDoc} from "firebase/firestore";
-import {db} from "@/app/firebase/config";
-import {Project} from "@/types";
+import {getDoc, updateDoc} from "firebase/firestore";
+import {Project, UserMode, WorkspaceId} from "@/types";
+import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 
 export const editProjectName = async (
     userId: string | undefined,
     projectId: string | null,
-    inputValue: string
+    inputValue: string,
+    mode: UserMode,
+    workspaceId: WorkspaceId,
 ) => {
 
     if (!userId || !projectId) return
 
-    const userRef = doc(db, "users", userId);
+    const userRef = getFirestoreTargetRef(userId, mode, workspaceId);
     const userSnap = await getDoc(userRef)
     if (!userSnap.exists()) return
 

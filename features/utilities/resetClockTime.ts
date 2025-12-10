@@ -1,8 +1,3 @@
-interface ResetClockTimeProps {
-    newClockTimeInSeconds: number
-    reset: (offset?: Date, newAutoStart?: boolean) => void;
-}
-
 export const resetClockTime = (newClockTimeInSeconds: number, reset: (offset?: Date, newAutoStart?: boolean) => void
 ) => {
 

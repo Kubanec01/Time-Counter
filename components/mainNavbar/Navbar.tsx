@@ -8,6 +8,7 @@ import {useReplaceRouteLink} from "@/features/utilities/useReplaceRouteLink";
 import userBgImg from "@/public/gradient-bg.jpg"
 import {getUserNameData} from "@/features/utilities/getUserNameData";
 import {UserMenu} from "@/components/mainNavbar/components/UserMenu";
+import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 
 
 const Navbar = ({projects}: { projects: Project[] }) => {
@@ -19,6 +20,7 @@ const Navbar = ({projects}: { projects: Project[] }) => {
 
     const [user] = useAuthState(auth)
     const {replace} = useReplaceRouteLink()
+    const {mode, workspaceId} = useWorkSpaceContext()
 
     // Styles
     const visibilityStyle = user ? "flex" : "hidden"
@@ -42,7 +44,7 @@ const Navbar = ({projects}: { projects: Project[] }) => {
     useEffect(() => {
         if (!user?.uid) return
 
-        getUserNameData(user.uid).then((data) => {
+        getUserNameData(user.uid, mode, workspaceId).then((data) => {
             if (data) setUserNameData(data)
         }).catch((err) => {
             console.log(err)
