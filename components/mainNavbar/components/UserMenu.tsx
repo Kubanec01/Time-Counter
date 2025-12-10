@@ -1,9 +1,9 @@
 import userBgImg from "@/public/gradient-bg.jpg";
-import {RiListSettingsLine} from "react-icons/ri";
+import {RiListSettingsLine, RiTeamFill} from "react-icons/ri";
 import {MdLockReset, MdOutlineLogout} from "react-icons/md";
 import {Dispatch, SetStateAction} from "react";
 import {auth} from "@/app/firebase/config";
-import {useRouter} from "next/navigation";
+import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 
 interface Props {
     getUserInitials: string | undefined
@@ -15,8 +15,7 @@ interface Props {
 export const UserMenu = ({...props}: Props) => {
 
     const setVisibility = props.isUserMenuOpen ? "flex" : "hidden";
-
-    // const router = useRouter()
+    const {replace} = useReplaceRouteLink()
 
     return (
         <div
@@ -40,6 +39,11 @@ export const UserMenu = ({...props}: Props) => {
                     <h1 className={"text-sm font-medium"}>{props.userName}</h1>
                 </div>
             </div>
+            <button
+                onClick={() => replace("/workplaces")}
+                className={"flex items-center gap-2 text-white text-sm bg-pastel-purple-800 p-2 rounded-md cursor-pointer"}>
+                <RiTeamFill/> Workplaces
+            </button>
             <button
                 className={"flex items-center gap-2 text-white text-sm bg-black p-2 rounded-md cursor-pointer"}>
                 <RiListSettingsLine className={"text-custom-gray-700"}/> Settings

@@ -11,6 +11,8 @@ import {doc, onSnapshot} from "firebase/firestore";
 import {deleteAllSectionData} from "@/features/utilities/deleteAllSectionData";
 import {formatSecondsToTimeString} from "@/features/hooks/timeOperations";
 import {setProjectTotalTimeWithoutSectionId} from "@/features/utilities/totalTime";
+import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 
 
 export const LoggingProjectCart = ({...props}: ProjectProps) => {
@@ -26,6 +28,7 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
     // User Auth
     const [user] = useAuthState(auth)
     const userId = user?.uid
+    const {mode, workspaceId} = useWorkSpaceContext()
 
     const createSection = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -33,8 +36,8 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
         const time = formatSecondsToTimeString(Number(timeInputValue) * 3600)
         console.log(time)
 
-        await createNewSection(e, userId, props.projectId, inputValue, time, setInputValue, setIsInfoModalOpen, loggingCategory)
-        await setProjectTotalTimeWithoutSectionId(userId, props.projectId, time)
+        await createNewSection(e, userId, props.projectId, inputValue, time, setInputValue, setIsInfoModalOpen, loggingCategory, mode, workspaceId)
+        await setProjectTotalTimeWithoutSectionId(userId, props.projectId, time, mode, workspaceId)
         setIsCreateModalOpen(false)
         setLoggingCategory("Work")
         setTimeInputValue("0.25")
@@ -43,7 +46,7 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
     useEffect(() => {
         if (!userId) return
 
-        const userRef = doc(db, "realms", userId)
+        const userRef = getFirestoreTargetRef(userId, mode, workspaceId)
 
         const fetchSectionsData = onSnapshot(userRef, snap => {
             if (!snap.exists()) return
@@ -83,7 +86,7 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
                         <span className={"w-[25%]"}>{s.time}</span>
                         <button
                             className={"w-[25%]"}
-                            onClick={() => deleteAllSectionData(userId, props.projectId, s.sectionId)}>
+                            onClick={() => deleteAllSectionData(userId, props.projectId, s.sectionId, mode, workspaceId)}>
                             Delete
                         </button>
                     </div>
