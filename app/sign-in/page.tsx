@@ -5,7 +5,7 @@ import {useSignInWithEmailAndPassword} from "react-firebase-hooks/auth";
 import {auth} from "@/app/firebase/config";
 import {useRouter} from "next/navigation";
 import Link from "next/link";
-import {useReplaceRouteLink} from "@/features/utilities/useReplaceRouteLink";
+import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 
 const SignInPage = () => {
     const [email, setEmail] = useState("");

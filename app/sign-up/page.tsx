@@ -4,7 +4,7 @@ import {auth, db} from "@/app/firebase/config";
 import {FormEvent, useState} from "react";
 import Link from "next/link";
 import {doc, setDoc} from "firebase/firestore";
-import {useReplaceRouteLink} from "@/features/utilities/useReplaceRouteLink";
+import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 
 const SignUpPage = () => {
     const [email, setEmail] = useState("");
@@ -27,10 +27,14 @@ const SignUpPage = () => {
             const resp = await createUserWithEmailAndPassword(email, password);
 
             if (resp) {
-                await setDoc(doc(db, "users", resp.user.uid), {
+                await setDoc(doc(db, "realms", resp.user.uid), {
                     email: resp.user.email,
+                    userId: resp.user.uid,
                     name: name,
                     surname: surname,
+                    role: "Admin",
+                    projects: [],
+                    members: []
                 });
                 setEmail("");
                 setPassword("");

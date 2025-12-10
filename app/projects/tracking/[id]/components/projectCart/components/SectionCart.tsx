@@ -96,7 +96,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
         const fetchInitialClockTime = async () => {
             if (!props.userId || !props.projectId) return;
 
-            const userRef = doc(db, "users", props.userId);
+            const userRef = doc(db, "realms", props.userId);
             const userSnap = await getDoc(userRef);
 
             if (!userSnap.exists()) return;
@@ -120,7 +120,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
     useEffect(() => {
         if (!props.userId || !props.sectionId) return;
 
-        const userRef = doc(db, "users", props.userId);
+        const userRef = doc(db, "realms", props.userId);
 
         const fetchTimeCheckouts = onSnapshot(userRef, (snap) => {
             if (!snap.exists()) return;

@@ -38,7 +38,7 @@ export default function HomePage() {
     // Fetch Projects titles
     useEffect(() => {
         if (!userId) return
-        const userRef = doc(db, "users", userId)
+        const userRef = doc(db, "realms", userId)
 
         const getProjectsTitles = onSnapshot(userRef, snap => {
             if (!snap.exists()) return []

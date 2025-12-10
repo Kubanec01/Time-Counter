@@ -143,7 +143,7 @@ const CreateLoggingModal = ({...props}: LoggingModalProps) => {
                         onChange={(e) => props.setTimeInputValue(e.target.value)}
                         type={"number"}
                         placeholder={"0.25"}
-                        className={"h-[34px] w-full text-white px-3 border-white mt-4 border rounded-[100px] outline-none"}/>
+                        className={"h-[34px] w-full text-white px-3 border-white mt-4 text-sm border rounded-[100px] outline-none"}/>
                     <button
                         type="submit"
                         disabled={areLogInputsInvalid()}

@@ -2,7 +2,7 @@
 
 import {useParams} from "next/navigation";
 import ProjectCart from "./components/projectCart/TrackingProjectCart";
-import {useGetProjectName} from "@/features/utilities/useGetProjectName";
+import {useGetProjectName} from "@/features/hooks/useGetProjectName";
 
 
 const TrackingProjectPage = () => {

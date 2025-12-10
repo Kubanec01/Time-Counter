@@ -1,27 +1,3 @@
-// export const ascendingDatesSort = (arr: string[]) => {
-//
-//     const newArr = arr.map(d => d.split(".").map(Number))
-//
-//     for (let i = 0; i < newArr.length - 1; i++) {
-//         for (let j = 0; j < newArr.length - 1 - i; j++) {
-//             let isOlder = false
-//             const currDate = newArr[j]
-//             const anotherDate = newArr[j + 1]
-//             if (currDate[2] < anotherDate[2] ||
-//                 currDate[2] === anotherDate[2] && currDate[1] < anotherDate[1] ||
-//                 currDate[2] === anotherDate[2] && currDate[1] === anotherDate[1] && currDate[0] < anotherDate[0]) {
-//                 isOlder = true
-//             }
-//             if (isOlder) {
-//                 const mid = newArr[j]
-//                 newArr[j] = newArr[j + 1]
-//                 newArr[j + 1] = mid
-//             }
-//         }
-//     }
-//     return newArr
-// }
-
 export const sortDatesAscending = (arr: string[]): string[] => {
 
     if (arr.length === 0) return []
