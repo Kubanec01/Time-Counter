@@ -1,10 +1,7 @@
 "use client";
 
-import {auth, db} from "@/app/firebase/config";
-import {
-    doc,
-    onSnapshot,
-} from "firebase/firestore";
+import {auth} from "@/app/firebase/config";
+import {onSnapshot} from "firebase/firestore";
 import React, {useEffect, useState} from "react";
 import SectionCart from "./components/SectionCart";
 import {ProjectProps, Section, UpdatedSectionByDate} from "@/types";
@@ -16,6 +13,8 @@ import {createNewSection} from "@/features/utilities/createNewSection";
 import {setNameByDate} from "@/features/utilities/setNameByDate";
 import {setColorByDate} from "@/features/utilities/setcolorByDate";
 import {getUniqueDates} from "@/features/utilities/getUniqueDates";
+import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 
 const TrackingProjectCart = ({...props}: ProjectProps) => {
 
@@ -26,6 +25,7 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
     const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
 
     const [user] = useAuthState(auth)
+    const {mode, workspaceId} = useWorkSpaceContext()
 
     // Variables
     const projectId = props.projectId;
@@ -35,7 +35,7 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
     // Fetch Sections Data
     useEffect(() => {
         if (!userId || !projectId) return;
-        const userRef = doc(db, "users", userId);
+        const userRef = getFirestoreTargetRef(userId, mode, workspaceId);
 
         const getSectionsData = onSnapshot(userRef, (snap) => {
             if (snap.exists()) {
@@ -68,7 +68,15 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
     // Functions
     const createSection = async (e: React.FormEvent<HTMLFormElement>) => {
         const time = "00:00:00";
-        await createNewSection(e, userId, props.projectId, inputValue, time, setInputValue, setIsInfoModalOpen, "unset")
+        await createNewSection(e, userId,
+            props.projectId,
+            inputValue,
+            time,
+            setInputValue,
+            setIsInfoModalOpen,
+            "unset",
+            mode,
+            workspaceId)
     }
 
 

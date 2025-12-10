@@ -1,8 +1,8 @@
 import React from "react";
-import {arrayUnion, doc, updateDoc} from "firebase/firestore";
-import {db} from "@/app/firebase/config";
+import {arrayUnion, updateDoc} from "firebase/firestore";
 import {throwRandomNum} from "@/features/utilities/throwRandomNum";
-import {LoggingType, Section, UpdatedSectionByDate} from "@/types";
+import {LoggingType, Section, UpdatedSectionByDate, UserMode, WorkspaceId} from "@/types";
+import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 
 export const createNewSection = async (
     e: React.FormEvent<HTMLFormElement>,
@@ -13,6 +13,8 @@ export const createNewSection = async (
     setInputValue: (value: React.SetStateAction<string>) => void,
     setIsInfoModalOpen: (value: React.SetStateAction<boolean>) => void,
     category: LoggingType,
+    mode: UserMode,
+    workspaceId: WorkspaceId,
 ) => {
     e.preventDefault();
 
@@ -23,7 +25,7 @@ export const createNewSection = async (
     }
 
     if (!userId) return;
-    const userRef = doc(db, "users", userId);
+    const userRef = getFirestoreTargetRef(userId, mode, workspaceId);
 
     // Random Num Variable
     const randomNum = throwRandomNum().toString()

@@ -22,19 +22,14 @@ export interface Section {
     category?: LoggingType
 }
 
-// export interface LoggingSection {
-//     projectId: string;
-//     sectionId: string;
-//     title: string;
-//     category: string;
-//     time: string;
-// }
-
 export interface UpdatedSectionByDate {
     sectionId: string;
     projectId: string;
     date: string;
 }
+
+export type UserMode = "solo" | "workspace"
+export type WorkspaceId = string | null
 
 export type ProjectType = "tracking" | "logging"
 

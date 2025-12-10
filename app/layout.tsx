@@ -1,5 +1,6 @@
 import "./globals.css";
 import {ClockTimeContextProvider} from "@/features/contexts/clockCountContext";
+import {WorkSpaceContextProvider} from "@/features/contexts/workspaceContext";
 
 export default function RootLayout({
                                        children,
@@ -9,9 +10,11 @@ export default function RootLayout({
     return (
         <html lang="en">
         <body>
-        <ClockTimeContextProvider>
-            {children}
-        </ClockTimeContextProvider>
+        <WorkSpaceContextProvider>
+            <ClockTimeContextProvider>
+                {children}
+            </ClockTimeContextProvider>
+        </WorkSpaceContextProvider>
         </body>
         </html>
     );
