@@ -1,30 +1,32 @@
-import React from "react";
 import {throwRandomNum} from "@/features/utilities/throwRandomNum";
-import {Project, ProjectType} from "@/types";
-import {arrayUnion, DocumentData, DocumentReference, updateDoc} from "firebase/firestore";
+import {Project, ProjectType, UserMode, WorkspaceId} from "@/types";
+import {arrayUnion, updateDoc} from "firebase/firestore";
+import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 
 
 export const createNewProject = async (
-    e: React.FormEvent<HTMLFormElement>,
-    userRef: DocumentReference<DocumentData, DocumentData> | undefined,
-    inputValue: string,
-    typeOfProject: ProjectType,
-) => {
-    e.preventDefault();
+        userId: string | undefined,
+        inputValue: string,
+        typeOfProject: ProjectType,
+        mode: UserMode,
+        workspaceId: WorkspaceId,
+    ) => {
 
-    if (!userRef) return;
+        if (!userId) return;
+        const userRef = getFirestoreTargetRef(userId, mode, workspaceId);
 
-    // Random Num Variable
-    const randomNum = throwRandomNum().toString();
+        // Random Num Variable
+        const randomNum = throwRandomNum().toString();
 
-    const newProject: Project = {
-        projectId: `${inputValue.replace(/\s+/g, "")}_${randomNum}`,
-        title: inputValue,
-        totalTime: "00:00:00",
-        type: typeOfProject,
-    };
+        const newProject: Project = {
+            projectId: `${inputValue.replace(/\s+/g, "")}_${randomNum}`,
+            title: inputValue,
+            totalTime: "00:00:00",
+            type: typeOfProject,
+        };
 
-    await updateDoc(userRef, {
-        projects: arrayUnion(newProject),
-    });
-};
+        await updateDoc(userRef, {
+            projects: arrayUnion(newProject),
+        });
+    }
+;

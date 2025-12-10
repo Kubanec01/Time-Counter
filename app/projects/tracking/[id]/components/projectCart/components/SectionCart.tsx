@@ -1,8 +1,7 @@
 "use client";
 
-import {db} from "@/app/firebase/config";
 import DeleteModal from "@/components/modals/DeleteModal";
-import {doc, getDoc, onSnapshot,} from "firebase/firestore";
+import {getDoc, onSnapshot,} from "firebase/firestore";
 import React, {useEffect, useState} from "react";
 import {useStopwatch} from "react-timer-hook";
 import {Section, SectionCartProps, TimeCheckout} from "@/types";
@@ -22,6 +21,7 @@ import SubSectionCart from "@/app/projects/tracking/[id]/components/projectCart/
 import {formatSecondsToTimeString, formatTimeUnit, parseTimeStringToSeconds} from "@/features/hooks/timeOperations";
 import {setProjectTotalTime, subtractProjectTotalTime} from "@/features/utilities/totalTime";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 
 
 const SectionCart = ({...props}: SectionCartProps) => {
@@ -96,7 +96,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
         const fetchInitialClockTime = async () => {
             if (!props.userId || !props.projectId) return;
 
-            const userRef = doc(db, "realms", props.userId);
+            const userRef = getFirestoreTargetRef(props.userId, mode, workspaceId);
             const userSnap = await getDoc(userRef);
 
             if (!userSnap.exists()) return;
@@ -120,7 +120,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
     useEffect(() => {
         if (!props.userId || !props.sectionId) return;
 
-        const userRef = doc(db, "realms", props.userId);
+        const userRef = getFirestoreTargetRef(props.userId, mode, workspaceId);
 
         const fetchTimeCheckouts = onSnapshot(userRef, (snap) => {
             if (!snap.exists()) return;

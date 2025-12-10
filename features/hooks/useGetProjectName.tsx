@@ -1,24 +1,24 @@
 import {useEffect, useState} from "react";
 import {onSnapshot} from "firebase/firestore";
 import {auth} from "@/app/firebase/config";
-import {Project, UserMode, WorkspaceId} from "@/types";
+import {Project} from "@/types";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
+import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 
 
 export const useGetProjectName = (
     projectId: string,
-    mode: UserMode,
-    workspaceId: WorkspaceId,
 ) => {
 
     const [projectName, setProjectName] = useState("");
     const [user] = useAuthState(auth)
     const userId = user?.uid
+    const {mode, workspaceId} = useWorkSpaceContext()
 
 
     useEffect(() => {
-        if (!userId || !projectId) return
+        if (!userId) return
         const userRef = getFirestoreTargetRef(userId, mode, workspaceId);
 
         const fetchProjectName = onSnapshot(userRef, snap => {

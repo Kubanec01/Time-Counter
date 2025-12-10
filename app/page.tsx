@@ -3,13 +3,16 @@
 import CreateProjectModal from "@/components/modals/CreateProjectModal";
 import ProjectsBars from "@/components/ProjectsBars";
 import React, {useEffect, useState} from "react";
-import {db} from "@/app/firebase/config";
+import {auth, db} from "@/app/firebase/config";
 import {doc, onSnapshot} from "firebase/firestore";
 import {useGetUserDatabase} from "@/features/hooks/useGetUserDatabase";
 import {Project, ProjectType} from "@/types";
 import Navbar from "@/components/mainNavbar/Navbar";
 import {createNewProject} from "@/features/utilities/createNewProject";
 import {useAuthRedirect} from "@/features/hooks/useAuthRedirect";
+import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {useAuthState} from "react-firebase-hooks/auth";
+import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 
 export default function HomePage() {
 
@@ -17,8 +20,9 @@ export default function HomePage() {
     useAuthRedirect()
 
     // User Data
-    const {userRef, userId} = useGetUserDatabase()
-
+    const [user] = useAuthState(auth)
+    const userId = user?.uid
+    const {mode, workspaceId} = useWorkSpaceContext()
 
     //   States
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -29,7 +33,8 @@ export default function HomePage() {
 
     // Create New project
     const setNewProject = async (e: React.FormEvent<HTMLFormElement>) => {
-        await createNewProject(e, userRef, inputValue, typeofProject);
+        e.preventDefault()
+        await createNewProject(userId, inputValue, typeofProject, mode, workspaceId);
         setInputValue("");
         setIsModalOpen(false);
         setTypeOfProject("tracking");
@@ -38,7 +43,7 @@ export default function HomePage() {
     // Fetch Projects titles
     useEffect(() => {
         if (!userId) return
-        const userRef = doc(db, "realms", userId)
+        const userRef = getFirestoreTargetRef(userId, mode, workspaceId)
 
         const getProjectsTitles = onSnapshot(userRef, snap => {
             if (!snap.exists()) return []

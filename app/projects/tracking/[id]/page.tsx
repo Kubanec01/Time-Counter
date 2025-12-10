@@ -11,6 +11,8 @@ const TrackingProjectPage = () => {
         throw new Error("No project id found.");
     }
 
+
+
     const projectId = id.toString()
     const {projectName} = useGetProjectName(projectId)
 

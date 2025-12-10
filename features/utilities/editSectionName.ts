@@ -1,6 +1,5 @@
 import React from "react";
-import {doc, getDoc, updateDoc} from "firebase/firestore";
-import {db} from "@/app/firebase/config";
+import {getDoc, updateDoc} from "firebase/firestore";
 import {Section, UserMode, WorkspaceId} from "@/types";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 

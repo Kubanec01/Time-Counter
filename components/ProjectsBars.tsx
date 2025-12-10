@@ -1,25 +1,22 @@
 'use client'
 
-import {Project, ProjectType, Section, TimeCheckout, UpdatedSectionByDate} from "@/types";
-import {getDoc, onSnapshot, updateDoc} from "firebase/firestore";
-import Link from "next/link";
+import {Project, ProjectType} from "@/types";
+import {onSnapshot} from "firebase/firestore";
 import React, {useEffect, useState} from "react";
-import {useGetUserDatabase} from "@/features/hooks/useGetUserDatabase";
 import {HiOutlineMenuAlt3} from "react-icons/hi";
 import {IoClose} from "react-icons/io5";
 import {MdOutlineEdit} from "react-icons/md";
 import {MdDeleteOutline} from "react-icons/md";
 import RenameModal from "@/components/modals/RenameModal";
 import {RiEditBoxFill} from "react-icons/ri";
-import {useRouter} from "next/navigation";
 import {editProjectName} from "@/features/utilities/editProjectName";
 import DeleteModal from "@/components/modals/DeleteModal";
 import {deleteProjectCascade} from "@/features/utilities/deleteProjectCascade";
-import {useReplaceRouteLink} from "@/features/utilities/useReplaceRouteLink";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth} from "@/app/firebase/config";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 
 
 const ProjectsBars = () => {

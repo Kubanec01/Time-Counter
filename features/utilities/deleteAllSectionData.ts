@@ -43,5 +43,5 @@ export const deleteAllSectionData = async (
         timeCheckouts: updatedCheckouts,
         updatedSectionsByDates: updatedSectionsByDates
     });
-    await subtractProjectTotalTime(userId, projectId, sectionTime)
+    await subtractProjectTotalTime(userId, projectId, sectionTime, mode, workspaceId);
 };
