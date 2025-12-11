@@ -27,14 +27,13 @@ const SignUpPage = () => {
             const resp = await createUserWithEmailAndPassword(email, password);
 
             if (resp) {
-                await setDoc(doc(db, "realms", resp.user.uid), {
+                await setDoc(doc(db, "users", resp.user.uid), {
                     email: resp.user.email,
                     userId: resp.user.uid,
                     name: name,
                     surname: surname,
                     role: "Admin",
                     projects: [],
-                    members: []
                 });
                 setEmail("");
                 setPassword("");

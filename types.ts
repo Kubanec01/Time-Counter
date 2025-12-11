@@ -48,3 +48,18 @@ export interface SectionCartProps {
 }
 
 export type LoggingType = "Work" | "Research" | "Study" | "Coding" | "Deep Work" | "Custom" | string | null
+export type Role = "Admin" | "Member"
+export type Member = {
+    userId: string;
+    username: string;
+    role: Role;
+}
+
+export interface WorkSpace {
+    adminId: string;
+    workSpaceId: string;
+    workspaceName: string;
+    password: string;
+    members: Member[];
+    projects: Project[];
+}

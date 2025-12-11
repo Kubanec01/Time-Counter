@@ -14,7 +14,7 @@ import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 const Navbar = ({projects}: { projects: Project[] }) => {
 
     // states
-    const [isProjectsMenuOpen, setIsProjectsMenuOpen] = useState(false);
+    const [isProjectsMenuOpen, setIsProjectsMenuOpen] = useState(true);
     const [userNameData, setUserNameData] = useState<{ name: string, surname: string } | null>(null);
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
