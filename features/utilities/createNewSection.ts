@@ -28,7 +28,7 @@ export const createNewSection = async (
     const userRef = getFirestoreTargetRef(userId, mode, workspaceId);
 
     // Random Num Variable
-    const randomNum = throwRandomNum().toString()
+    const randomNum = throwRandomNum(10_000_000).toString()
     const sectionId = `${inputValue.replace(/\s+/g, "")}_${randomNum}`
 
     // Curr Date Variable

@@ -5,6 +5,8 @@ import {FormEvent, useState} from "react";
 import {auth} from "@/app/firebase/config";
 import {createNewWorkspace} from "@/features/utilities/createNewWorkspace";
 import {useAuthState} from "react-firebase-hooks/auth";
+import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {throwRandomNum} from "@/features/utilities/throwRandomNum";
 
 export const CreateWorkspace = () => {
 
@@ -12,17 +14,23 @@ export const CreateWorkspace = () => {
     const [workspaceName, setWorkspaceName] = useState("")
     const [password, setPassword] = useState("")
 
+    const {setWorkspaceId, setMode, userName} = useWorkSpaceContext()
     const {replace} = useReplaceRouteLink()
     const [user] = useAuthState(auth)
     const userId = user?.uid
 
     const createWorkspace = async (e: FormEvent) => {
         e.preventDefault()
+        const workspaceId = `@${workspaceName.replace(/\s/g, "")}${throwRandomNum(1000)}`
 
-        await createNewWorkspace(userId, workspaceName, password)
+
+        await createNewWorkspace(userId, userName, workspaceName, workspaceId, password)
 
         setWorkspaceName("")
         setPassword("")
+        setMode("workspace")
+        setWorkspaceId(workspaceId)
+        replace("/")
     }
 
     return (

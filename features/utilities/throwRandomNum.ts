@@ -1,1 +1,1 @@
-export const throwRandomNum = () => Math.floor((Date.now() * Math.random()) % 10_000_000_000)
+export const throwRandomNum = (numLimit: number) => Math.floor((Date.now() * Math.random()) % numLimit)

@@ -1,11 +1,10 @@
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth} from "@/app/firebase/config";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {RxQuestionMarkCircled} from "react-icons/rx";
 import {LuMessageCircleMore} from "react-icons/lu";
 import {Project} from "@/types";
 import userBgImg from "@/public/gradient-bg.jpg"
-import {getUserNameData} from "@/features/utilities/getUserNameData";
 import {UserMenu} from "@/components/mainNavbar/components/UserMenu";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
@@ -15,42 +14,16 @@ const Navbar = ({projects}: { projects: Project[] }) => {
 
     // states
     const [isProjectsMenuOpen, setIsProjectsMenuOpen] = useState(true);
-    const [userNameData, setUserNameData] = useState<{ name: string, surname: string } | null>(null);
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
     const [user] = useAuthState(auth)
     const {replace} = useReplaceRouteLink()
-    const {mode, workspaceId} = useWorkSpaceContext()
+    const {userInitials} = useWorkSpaceContext()
 
     // Styles
     const visibilityStyle = user ? "flex" : "hidden"
     const projectsMenuStyle = isProjectsMenuOpen ? "flex" : "hidden duration-150";
     const rightButtonsStyle = "text-custom-gray-800 hover:text-white duration-150 ease-in-out text-[24px] cursor-pointer"
-
-    // Functions
-    const getUserInitials = () => {
-        if (userNameData?.name && userNameData?.surname) {
-            return `${userNameData.name.charAt(0)}${userNameData.surname.charAt(0)}`
-        }
-    }
-
-    const getUserFullName = () => {
-        if (userNameData?.name && userNameData?.surname) {
-            return `${userNameData.name} ${userNameData.surname}`
-        }
-    }
-
-    // Fetch User Name
-    useEffect(() => {
-        if (!user?.uid) return
-
-        getUserNameData(user.uid, mode, workspaceId).then((data) => {
-            if (data) setUserNameData(data)
-        }).catch((err) => {
-            console.log(err)
-            setUserNameData(null)
-        })
-    }, [mode, user, workspaceId]);
 
     return (
         <div
@@ -123,19 +96,14 @@ const Navbar = ({projects}: { projects: Project[] }) => {
                         className={`cursor-pointer aspect-square w-[36px] rounded-[100px]
                          overflow-hidden flex justify-center items-center text-white text-lg`}
                     >
-                        {getUserInitials()}
+                        {userInitials}
                     </button>
                 </li>
             </ul>
-            <UserMenu getUserInitials={getUserInitials()}
-                      userName={getUserFullName()}
-                      isUserMenuOpen={isUserMenuOpen}
-                      setIsUserMenuOpen={setIsUserMenuOpen}/>
+            <UserMenu
+                isUserMenuOpen={isUserMenuOpen}
+                setIsUserMenuOpen={setIsUserMenuOpen}/>
         </div>
     )
-
-
 }
-
-
 export default Navbar;

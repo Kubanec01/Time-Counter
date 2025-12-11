@@ -4,10 +4,9 @@ import {MdLockReset, MdOutlineLogout} from "react-icons/md";
 import {Dispatch, SetStateAction} from "react";
 import {auth} from "@/app/firebase/config";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
+import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 
 interface Props {
-    getUserInitials: string | undefined
-    userName: string | undefined
     isUserMenuOpen: boolean
     setIsUserMenuOpen: Dispatch<SetStateAction<boolean>>
 }
@@ -16,6 +15,7 @@ export const UserMenu = ({...props}: Props) => {
 
     const setVisibility = props.isUserMenuOpen ? "flex" : "hidden";
     const {replace} = useReplaceRouteLink()
+    const {userName, userInitials} = useWorkSpaceContext()
 
     return (
         <div
@@ -32,11 +32,11 @@ export const UserMenu = ({...props}: Props) => {
                     className={`aspect-square w-[44px] rounded-[100px]
                          overflow-hidden flex justify-center items-center text-white text-lg`}
                 >
-                    {props.getUserInitials}
+                    {userInitials}
                 </span>
                 <div
                     className={"text-white"}>
-                    <h1 className={"text-sm font-medium"}>{props.userName}</h1>
+                    <h1 className={"text-sm font-medium"}>{userName}</h1>
                 </div>
             </div>
             <button

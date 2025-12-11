@@ -1,30 +1,34 @@
 import {invalidUserId} from "@/messages/errors";
-import {throwRandomNum} from "@/features/utilities/throwRandomNum";
 import {doc, setDoc} from "firebase/firestore";
 import {db} from "@/app/firebase/config";
-import {WorkSpace} from "@/types";
+import {Member} from "@/types";
 
 
 export const createNewWorkspace = async (
     userId: string | undefined,
+    userName: string,
     workspaceName: string,
+    workspaceId: string,
     password: string,
 ) => {
     if (!userId) throw new Error(invalidUserId)
-    const workspaceId = `${workspaceName.replace(/\s/g, "")}_${throwRandomNum()}`
 
     const docRef = doc(db, "realms", workspaceId)
 
-    const newWorkspace: WorkSpace = {
+    const member: Member = {
+        userId: userId,
+        userName: userName,
+        role: "Admin",
+    }
+
+    await setDoc(docRef, {
         adminId: userId,
         workSpaceId: workspaceId,
         workspaceName: workspaceName,
         password: password,
-        members: [],
+        members: [member],
         projects: [],
-    }
-
-    await setDoc(docRef, {newWorkspace})
+    })
 
 
 }

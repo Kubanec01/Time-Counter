@@ -3,9 +3,8 @@
 import CreateProjectModal from "@/components/modals/CreateProjectModal";
 import ProjectsBars from "@/components/ProjectsBars";
 import React, {useEffect, useState} from "react";
-import {auth, db} from "@/app/firebase/config";
-import {doc, onSnapshot} from "firebase/firestore";
-import {useGetUserDatabase} from "@/features/hooks/useGetUserDatabase";
+import {auth} from "@/app/firebase/config";
+import {onSnapshot} from "firebase/firestore";
 import {Project, ProjectType} from "@/types";
 import Navbar from "@/components/mainNavbar/Navbar";
 import {createNewProject} from "@/features/utilities/createNewProject";

@@ -31,7 +31,6 @@ const CreateProjectModal = ({...props}: ModalProps) => {
     };
 
     useEffect(() => {
-
         modalRef.current?.focus();
     }, [props.isModalOpen]);
 

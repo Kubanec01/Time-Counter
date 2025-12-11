@@ -17,7 +17,7 @@ export const createNewTimeCheckout = async (
 
     if (!userId) return;
     const date = new Date()
-    const randomNum = throwRandomNum().toString()
+    const randomNum = throwRandomNum(10_000_000).toString()
 
     const userRef = getFirestoreTargetRef(userId, mode, workspaceId);
 
