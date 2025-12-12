@@ -7,7 +7,6 @@ import {auth, db} from "@/app/firebase/config";
 import {documentNotFound, invalidUserId} from "@/messages/errors";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {doc, getDoc} from "firebase/firestore";
-import {WorkSpace} from "@/types";
 
 export const JoinWorkspace = () => {
     const [workspaceInputId, setWorkspaceInputId] = useState("")
@@ -28,7 +27,7 @@ export const JoinWorkspace = () => {
         if (!docRef) return console.error("Could not find docRef")
 
         const docSnap = await getDoc(docRef)
-        if (!docSnap.exists()) throw new Error(documentNotFound)
+        if (!docSnap.exists()) return console.error(documentNotFound)
         const data = docSnap.data()
         const correctPassword = data.password
         if (password === correctPassword) {
@@ -73,7 +72,7 @@ export const JoinWorkspace = () => {
                 onClick={() => replace("/")}
                 className="cursor-pointer w-full h-[43px] font-medium text-base text-pastel-purple-700 border-2 border-pastel-purple-700 rounded-[8px]"
             >
-                Cancel
+                Go back
             </button>
         </form>
     )

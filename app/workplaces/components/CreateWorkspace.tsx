@@ -68,7 +68,7 @@ export const CreateWorkspace = () => {
                 onClick={() => replace("/")}
                 className="cursor-pointer w-full h-[43px] font-medium text-base text-pastel-purple-700 border-2 border-pastel-purple-700 rounded-[8px]"
             >
-                Cancel
+                Go back
             </button>
         </form>
     )
