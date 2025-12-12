@@ -15,7 +15,7 @@ export const UserMenu = ({...props}: Props) => {
 
     const setVisibility = props.isUserMenuOpen ? "flex" : "hidden";
     const {replace} = useReplaceRouteLink()
-    const {userName, userInitials} = useWorkSpaceContext()
+    const {userName, userInitials, userRole} = useWorkSpaceContext()
 
     return (
         <div
@@ -37,6 +37,9 @@ export const UserMenu = ({...props}: Props) => {
                 <div
                     className={"text-white"}>
                     <h1 className={"text-sm font-medium"}>{userName}</h1>
+                    <p
+                        className={"text-xs"}>
+                        {userRole}</p>
                 </div>
             </div>
             <button

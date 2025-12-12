@@ -48,7 +48,7 @@ export interface SectionCartProps {
 }
 
 export type LoggingType = "Work" | "Research" | "Study" | "Coding" | "Deep Work" | "Custom" | string | null
-export type Role = "Admin" | "Member"
+export type Role = "Admin" | "Member" | null
 export type Member = {
     userId: string;
     name: string;

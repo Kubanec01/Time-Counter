@@ -13,16 +13,17 @@ import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 const Navbar = ({projects}: { projects: Project[] }) => {
 
     // states
-    const [isProjectsMenuOpen, setIsProjectsMenuOpen] = useState(true);
+    const [isProjectsMenuOpen, setIsProjectsMenuOpen] = useState(false);
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
     const [user] = useAuthState(auth)
     const {replace} = useReplaceRouteLink()
     const {userInitials} = useWorkSpaceContext()
 
+
     // Styles
     const visibilityStyle = user ? "flex" : "hidden"
-    const projectsMenuStyle = isProjectsMenuOpen ? "flex" : "hidden duration-150";
+    const projectsMenuStyle = isProjectsMenuOpen ? "flex border-r-1" : "hidden border-r-0";
     const rightButtonsStyle = "text-custom-gray-800 hover:text-white duration-150 ease-in-out text-[24px] cursor-pointer"
 
     return (
@@ -52,7 +53,7 @@ const Navbar = ({projects}: { projects: Project[] }) => {
                         {"Projects"} {">"}
                     </button>
                     <ul
-                        className={`${projectsMenuStyle} items-center justify-center gap-[30px] border-r border-custom-gray-800 pr-[22px] pl-[32px] h-full w-auto`}
+                        className={`${projectsMenuStyle} items-center justify-center gap-[30px] border-custom-gray-800 pr-[22px] pl-[32px] h-full w-auto`}
                     >
                         {projects.map((project) => (
                             <li
