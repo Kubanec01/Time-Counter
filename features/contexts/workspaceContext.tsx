@@ -12,6 +12,7 @@ interface Context {
     workspaceId: WorkspaceId;
     setWorkspaceId: Dispatch<SetStateAction<WorkspaceId>>;
     userName: string;
+    userSurname: string;
     userInitials: string;
     userRole: Role;
 }
@@ -23,6 +24,7 @@ export const WorkSpaceContextProvider = ({children}: { children: ReactNode }) =>
     const [mode, setMode] = useState<UserMode>("solo")
     const [workspaceId, setWorkspaceId] = useState<WorkspaceId>(null)
     const [userName, setUserName] = useState("")
+    const [userSurname, setUserSurname] = useState("")
     const [userInitials, setUserInitials] = useState("")
     const [userRole, setUserRole] = useState<Role>("Admin")
 
@@ -33,10 +35,12 @@ export const WorkSpaceContextProvider = ({children}: { children: ReactNode }) =>
     useEffect(() => {
         getUserNameData(userId, mode, workspaceId).then(resp => {
             if (resp) {
-                setUserName(`${resp.name} ${resp.surname}`)
+                setUserName(resp.name)
+                setUserSurname(resp.surname)
                 setUserInitials(`${resp.name.charAt(0).toUpperCase()}${resp.surname.charAt(0).toUpperCase()}`)
             } else {
                 setUserName("")
+                setUserSurname("")
                 console.error("Error fetching user name!")
             }
         }).catch(err => console.log(err))
@@ -52,7 +56,7 @@ export const WorkSpaceContextProvider = ({children}: { children: ReactNode }) =>
 
     return (
         <workSpaceContext.Provider
-            value={{mode, setMode, workspaceId, setWorkspaceId, userName, userInitials, userRole}}>
+            value={{mode, setMode, workspaceId, setWorkspaceId, userName, userSurname, userInitials, userRole}}>
             {children}
         </workSpaceContext.Provider>
     )

@@ -6,13 +6,14 @@ import {useAuthState} from "react-firebase-hooks/auth";
 import {auth, db} from "@/app/firebase/config";
 import {documentNotFound, invalidUserId} from "@/messages/errors";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
-import {doc, getDoc} from "firebase/firestore";
+import {arrayUnion, doc, getDoc, updateDoc} from "firebase/firestore";
+import {Member} from "@/types";
 
 export const JoinWorkspace = () => {
     const [workspaceInputId, setWorkspaceInputId] = useState("")
     const [password, setPassword] = useState("")
 
-    const {setMode, setWorkspaceId} = useWorkSpaceContext()
+    const {setMode, setWorkspaceId, userName, userSurname} = useWorkSpaceContext()
     const {replace} = useReplaceRouteLink()
     const [user] = useAuthState(auth)
     const userId = user?.uid
@@ -27,16 +28,35 @@ export const JoinWorkspace = () => {
         if (!docRef) return console.error("Could not find docRef")
 
         const docSnap = await getDoc(docRef)
+
         if (!docSnap.exists()) return console.error(documentNotFound)
         const data = docSnap.data()
         const correctPassword = data.password
-        if (password === correctPassword) {
+        const members: Member[] = data.members
+
+        if (password !== correctPassword) return console.log("Wrong password or Id")
+
+        const setStatesAndReplace = () => {
             setMode("workspace")
             setWorkspaceId(workspaceInputId)
             setWorkspaceInputId("")
             setPassword("")
             replace("/")
         }
+
+        const isMember = members.some(member => member.userId === userId)
+
+        if (!isMember) {
+            const newMember: Member = {
+                userId: userId,
+                name: userName,
+                surname: userSurname,
+                role: "Member"
+            }
+            await updateDoc(docRef, {members: arrayUnion(newMember)})
+            setStatesAndReplace()
+        } else setStatesAndReplace()
+
     }
 
     return (
@@ -64,11 +84,13 @@ export const JoinWorkspace = () => {
                 type="password"
             />
             <button
+                type="submit"
                 className="cursor-pointer w-full h-[43px] mt-[8px] font-medium text-base text-white bg-pastel-purple-700 rounded-[8px]"
             >
                 Join
             </button>
             <button
+                type={"button"}
                 onClick={() => replace("/")}
                 className="cursor-pointer w-full h-[43px] font-medium text-base text-pastel-purple-700 border-2 border-pastel-purple-700 rounded-[8px]"
             >
