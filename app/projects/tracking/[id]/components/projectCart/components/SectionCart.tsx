@@ -142,13 +142,11 @@ const SectionCart = ({...props}: SectionCartProps) => {
             className={`w-full rounded-2xl flex flex-col flex-between bg-white relative ${!isAnySections && "pb-1.5"}
              ${(mode === "solo" || !isWorkspaceRoleAdmin) ? "pt-1.5" : "pt-3"} px-[16px] mb-[8px]`}>
             {/*User Name*/}
-            {isWorkspaceRoleAdmin &&
-                <span
-                    className={"text-xs font-semibold absolute top-2 left-2.5 flex items-center text-custom-gray-800"}>
+            <span
+                className={`${isWorkspaceRoleAdmin ? "flex" : "hidden"} items-center text-xs font-semibold absolute top-2 left-2.5 text-custom-gray-800`}>
                     <HiMiniUserCircle className={"text-sm"}/>
-                    {props.userName}
+                {props.userName}
                 </span>
-            }
             <div
                 className={"flex justify-between gap-10 items-center px-2 h-[52px] border-b-1 border-custom-gray-600"}
             >

@@ -1,11 +1,15 @@
+'use client'
+
+
 import userBgImg from "@/public/gradient-bg.jpg";
-import {RiListSettingsLine, RiTeamFill} from "react-icons/ri";
+import {RiListSettingsLine} from "react-icons/ri";
 import {MdLockReset, MdOutlineLogout, MdSupervisedUserCircle} from "react-icons/md";
 import {Dispatch, SetStateAction} from "react";
 import {auth} from "@/app/firebase/config";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {WorkspaceButton} from "@/components/mainNavbar/components/WorkspaceButton";
+import {useRouter} from "next/navigation";
 
 interface Props {
     isUserMenuOpen: boolean
@@ -15,8 +19,10 @@ interface Props {
 export const UserMenu = ({...props}: Props) => {
 
     const setVisibility = props.isUserMenuOpen ? "flex" : "hidden";
-    const {replace} = useReplaceRouteLink()
-    const {userName, userSurname, userInitials, userRole} = useWorkSpaceContext()
+    const {userName, userSurname, userInitials, userRole, mode} = useWorkSpaceContext()
+    const router = useRouter();
+
+    const canAccessAdminFeatures = mode === "workspace" && userRole !== "Member"
 
     return (
         <div
@@ -46,7 +52,8 @@ export const UserMenu = ({...props}: Props) => {
             {/*Workspaces Button*/}
             <WorkspaceButton/>
             <button
-                className={"flex items-center gap-2 text-white text-sm bg-black p-2 rounded-md cursor-pointer"}>
+                onClick={() => router.push("/workplaces/users")}
+                className={`${canAccessAdminFeatures ? "flex" : "hidden"} items-center gap-2 text-white text-sm bg-black p-2 rounded-md cursor-pointer`}>
                 <MdSupervisedUserCircle className={"text-custom-gray-700"}/> Users
             </button>
             <button
