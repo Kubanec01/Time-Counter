@@ -1,6 +1,6 @@
 import userBgImg from "@/public/gradient-bg.jpg";
 import {RiListSettingsLine, RiTeamFill} from "react-icons/ri";
-import {MdLockReset, MdOutlineLogout} from "react-icons/md";
+import {MdLockReset, MdOutlineLogout, MdSupervisedUserCircle} from "react-icons/md";
 import {Dispatch, SetStateAction} from "react";
 import {auth} from "@/app/firebase/config";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
@@ -47,22 +47,21 @@ export const UserMenu = ({...props}: Props) => {
             <WorkspaceButton/>
             <button
                 className={"flex items-center gap-2 text-white text-sm bg-black p-2 rounded-md cursor-pointer"}>
+                <MdSupervisedUserCircle className={"text-custom-gray-700"}/> Users
+            </button>
+            <button
+                className={"flex items-center gap-2 text-white text-sm bg-black p-2 rounded-md cursor-pointer"}>
                 <RiListSettingsLine className={"text-custom-gray-700"}/> Settings
             </button>
             <button
                 className={"flex items-center gap-2 text-white text-sm bg-black p-2 rounded-md cursor-pointer"}>
                 <MdLockReset className={"text-custom-gray-700"}/> Change Password
             </button>
-            {/*<button*/}
-            {/*    onClick={() => router.push("/sign-up/create-new-user")}*/}
-            {/*    className={"flex items-center gap-2 text-white text-sm bg-black p-2 rounded-md cursor-pointer"}>*/}
-            {/*    <MdSupervisedUserCircle className={"text-custom-gray-700"}/> Create User*/}
-            {/*</button>*/}
             <button
                 onClick={() => auth.signOut()}
                 className={"flex items-center gap-2 text-white text-sm bg-black p-2 rounded-md cursor-pointer"}>
                 <MdOutlineLogout className={"text-custom-gray-700"}/> Log Out
             </button>
         </div>
-    )
+    );
 }

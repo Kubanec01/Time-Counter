@@ -5,8 +5,8 @@ import {LoggingType, Section, UpdatedSectionByDate, UserMode, WorkspaceId} from 
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 
 export const createNewSection = async (
-    e: React.FormEvent<HTMLFormElement>,
     userId: string | undefined,
+    userName: string,
     projectId: string,
     inputValue: string,
     time: string,
@@ -16,7 +16,6 @@ export const createNewSection = async (
     mode: UserMode,
     workspaceId: WorkspaceId,
 ) => {
-    e.preventDefault();
 
     if (inputValue.trim().length < 1) {
         setIsInfoModalOpen(true);
@@ -39,6 +38,7 @@ export const createNewSection = async (
     const newSection: Section = {
         projectId: projectId,
         sectionId: sectionId,
+        userName: userName,
         title: inputValue,
         time: time,
         updateDate: currDate,

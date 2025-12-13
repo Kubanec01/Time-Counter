@@ -25,7 +25,7 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
     const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
 
     const [user] = useAuthState(auth)
-    const {mode, workspaceId} = useWorkSpaceContext()
+    const {mode, workspaceId, userName, userSurname} = useWorkSpaceContext()
 
     // Variables
     const projectId = props.projectId;
@@ -67,8 +67,13 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
 
     // Functions
     const createSection = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+
+        const userFullName = `${userName} ${userSurname}`
         const time = "00:00:00";
-        await createNewSection(e, userId,
+        await createNewSection(
+            userId,
+            userFullName,
             props.projectId,
             inputValue,
             time,
@@ -125,6 +130,7 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
                                             return (
                                                 <SectionCart
                                                     key={i.sectionId}
+                                                    userName={i.userName}
                                                     sectionId={i.sectionId}
                                                     projectId={i.projectId}
                                                     title={i.title}

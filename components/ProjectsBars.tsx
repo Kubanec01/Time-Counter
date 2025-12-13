@@ -30,7 +30,7 @@ const ProjectsBars = () => {
 
     // Replace Route
     const {replace} = useReplaceRouteLink()
-    const {mode, workspaceId} = useWorkSpaceContext()
+    const {mode, workspaceId, userRole} = useWorkSpaceContext()
 
     const isCurrProjectEditing = (projectId: string) => editingProjectId === projectId
 
@@ -88,43 +88,45 @@ const ProjectsBars = () => {
                             <li
                                 key={p.projectId}
                                 className={`${setProjectBarColor(p.type)} shadow-lg px-5 pt-10 rounded-[8px] w-[248px] h-[330px] relative`}>
-                                <ul
-                                    className={"absolute top-0 right-0 p-[14px] text-custom-gray-800 text-xl" +
-                                        " flex items-center justify-center gap-[14px]"}
-                                >
-                                    {/*Delete Button*/}
-                                    <li
-                                        onClick={() => {
-                                            setIsDeleteModalOpen(isCurrProjectEditing(p.projectId));
-                                        }}
-                                        className={`${isCurrProjectEditing(p.projectId) ? "block" : "hidden"} cursor-pointer`}
+                                {(userRole === "Admin" || userRole === "Manager") &&
+                                    <ul
+                                        className={"absolute top-0 right-0 p-[14px] text-custom-gray-800 text-xl" +
+                                            " flex items-center justify-center gap-[14px]"}
                                     >
-                                        <MdDeleteOutline/>
-                                    </li>
-                                    {/*Edit Button*/}
-                                    <li
-                                        onClick={() => {
-                                            setIsModalOpen(isCurrProjectEditing(p.projectId));
-                                        }}
-                                        className={`${isCurrProjectEditing((p.projectId)) ? "block" : "hidden"} cursor-pointer`}
-                                    >
-                                        <MdOutlineEdit/>
+                                        {/*Delete Button*/}
+                                        <li
+                                            onClick={() => {
+                                                setIsDeleteModalOpen(isCurrProjectEditing(p.projectId));
+                                            }}
+                                            className={`${isCurrProjectEditing(p.projectId) ? "block" : "hidden"} cursor-pointer`}
+                                        >
+                                            <MdDeleteOutline/>
+                                        </li>
+                                        {/*Edit Button*/}
+                                        <li
+                                            onClick={() => {
+                                                setIsModalOpen(isCurrProjectEditing(p.projectId));
+                                            }}
+                                            className={`${isCurrProjectEditing((p.projectId)) ? "block" : "hidden"} cursor-pointer`}
+                                        >
+                                            <MdOutlineEdit/>
 
-                                    </li>
-                                    {/*Close & Open Button*/}
-                                    <li
-                                        onClick={() => {
-                                            setEditingProjectId(prev => prev === p.projectId ? null : p.projectId)
-                                        }}
-                                        className={"cursor-pointer"}
-                                    >
-                                        {isCurrProjectEditing(p.projectId) ?
-                                            <IoClose/>
-                                            :
-                                            <HiOutlineMenuAlt3/>
-                                        }
-                                    </li>
-                                </ul>
+                                        </li>
+                                        {/*Close & Open Button*/}
+                                        <li
+                                            onClick={() => {
+                                                setEditingProjectId(prev => prev === p.projectId ? null : p.projectId)
+                                            }}
+                                            className={"cursor-pointer"}
+                                        >
+                                            {isCurrProjectEditing(p.projectId) ?
+                                                <IoClose/>
+                                                :
+                                                <HiOutlineMenuAlt3/>
+                                            }
+                                        </li>
+                                    </ul>
+                                }
                                 <h2 className={"text-base font-medium text-black"}>
                                     Project name:
                                 </h2>

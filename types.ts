@@ -16,6 +16,7 @@ export interface TimeCheckout {
 export interface Section {
     projectId: string;
     sectionId: string;
+    userName: string;
     title: string;
     time: string;
     updateDate?: string
@@ -43,12 +44,13 @@ export interface Project {
 export interface SectionCartProps {
     sectionId: string;
     projectId: string;
+    userName: string;
     title: string;
     userId: string | undefined;
 }
 
 export type LoggingType = "Work" | "Research" | "Study" | "Coding" | "Deep Work" | "Custom" | string | null
-export type Role = "Admin" | "Member" | null
+export type Role = "Admin" | "Member" | "Manager" | null
 export type Member = {
     userId: string;
     name: string;

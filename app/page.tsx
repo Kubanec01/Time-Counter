@@ -21,7 +21,7 @@ export default function HomePage() {
     // User Data
     const [user] = useAuthState(auth)
     const userId = user?.uid
-    const {mode, workspaceId} = useWorkSpaceContext()
+    const {mode, workspaceId, userRole} = useWorkSpaceContext()
 
     //   States
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -74,18 +74,21 @@ export default function HomePage() {
                         className={"text-base text-custom-gray-800 font-medium -mb-4 ml-4"}>
                         See all started projects</p>
                 </div>
-                <div
-                    className={`flex items-center justify-center`}>
-                    <button
-                        onClick={() => setIsModalOpen(true)}
-                        className={"text-base px-[20px] py-3.5 text-white hover:text-black" +
-                            " bg-black hover:bg-white border-2 cursor-pointer duration-150 ease-in-out border-black rounded-[1000px] font-medium"}>
-                        Create project
-                    </button>
-                    <p
-                        className={"text-base text-custom-gray-800 font-medium -mb-4 ml-4"}>
-                        And build what moves you</p>
-                </div>
+                {(userRole === "Admin" || userRole === "Manager") &&
+                    < div
+                        className={`flex items-center justify-center`}>
+                        <button
+                            onClick={() => setIsModalOpen(true)}
+                            className={"text-base px-[20px] py-3.5 text-white hover:text-black" +
+                                " bg-black hover:bg-white border-2 cursor-pointer duration-150 ease-in-out border-black rounded-[1000px] font-medium"}>
+                            Create project
+                        </button>
+                        <p
+                            className={"text-base text-custom-gray-800 font-medium -mb-4 ml-4"}>
+                            And build what moves you
+                        </p>
+                    </div>
+                }
                 <CreateProjectModal
                     title="Project"
                     setIsModalOpen={setIsModalOpen}
@@ -99,5 +102,6 @@ export default function HomePage() {
             </section>
             <ProjectsBars/>
         </>
-    );
+    )
+        ;
 }

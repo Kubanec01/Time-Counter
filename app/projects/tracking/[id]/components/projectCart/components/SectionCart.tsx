@@ -22,6 +22,7 @@ import {formatSecondsToTimeString, formatTimeUnit, parseTimeStringToSeconds} fro
 import {setProjectTotalTime, subtractProjectTotalTime} from "@/features/utilities/totalTime";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
+import {HiMiniUserCircle} from "react-icons/hi2";
 
 
 const SectionCart = ({...props}: SectionCartProps) => {
@@ -44,7 +45,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
         setActiveClockTimeSectionId,
         activeClockTimeSectionId
     } = useClockTimeContext()
-    const {mode, workspaceId} = useWorkSpaceContext()
+    const {mode, workspaceId, userRole} = useWorkSpaceContext()
 
     // Hooks
     const {seconds, minutes, hours, start, pause, reset, totalSeconds} = useStopwatch({autoStart: false});
@@ -64,7 +65,6 @@ const SectionCart = ({...props}: SectionCartProps) => {
         await deleteSubsectionAndTimeCheckoutsData(props.userId, subSectionId, sectionId, formatedUpdatedClockTime, setSubSections, mode, workspaceId)
         await subtractProjectTotalTime(props.userId, props.projectId, difference, mode, workspaceId)
     }
-
     const toggleTimer = async () => {
         if (isClocktimeRunning && (activeClockTimeSectionId !== props.sectionId)) return setIsInfoModalOpen(true);
 
@@ -89,6 +89,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
             await createNewTimeCheckout(props.userId, formattedTime, props.projectId, props.sectionId, startTime, StopTimeDifference(totalSeconds, lastStopClockTime), mode, workspaceId);
         }
     };
+    const isWorkspaceRoleAdmin = mode === "workspace" && (userRole === "Admin" || userRole === "Manager");
 
 
     // Fetch Initial ClockTime
@@ -116,7 +117,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
 
     }, [props.userId, props.projectId, props.sectionId]);
 
-    // Fetch Time Checkouts SubSections
+    // Fetch Time Checkouts
     useEffect(() => {
         if (!props.userId || !props.sectionId) return;
 
@@ -132,15 +133,22 @@ const SectionCart = ({...props}: SectionCartProps) => {
             );
             setSubSections(timeCheckouts);
         });
-
         return () => fetchTimeCheckouts();
     }, [props.userId, props.sectionId]);
 
     return (
         <li
             key={props.sectionId}
-            className={`w-full rounded-2xl flex flex-col flex-between bg-white ${!isAnySections && "pb-1.5"} pt-1.5 px-[16px] mb-[8px]`}>
-
+            className={`w-full rounded-2xl flex flex-col flex-between bg-white relative ${!isAnySections && "pb-1.5"}
+             ${(mode === "solo" || !isWorkspaceRoleAdmin) ? "pt-1.5" : "pt-3"} px-[16px] mb-[8px]`}>
+            {/*User Name*/}
+            {isWorkspaceRoleAdmin &&
+                <span
+                    className={"text-xs font-semibold absolute top-2 left-2.5 flex items-center text-custom-gray-800"}>
+                    <HiMiniUserCircle className={"text-sm"}/>
+                    {props.userName}
+                </span>
+            }
             <div
                 className={"flex justify-between gap-10 items-center px-2 h-[52px] border-b-1 border-custom-gray-600"}
             >
@@ -153,18 +161,22 @@ const SectionCart = ({...props}: SectionCartProps) => {
                 <div
                     className={"flex items-center justify-center text-base text-custom-gray-600 gap-[24px]"}>
                     <span className={"w-[1px] h-[36px] bg-custom-gray-600"}/>
-                    {/*Start & Pause Button*/}
-                    <button
-                        onClick={() => toggleTimer()}
-                        className={"cursor-pointer hover:text-custom-gray-800 duration-150 text-lg"}>
-                        {isRunning
-                            ?
-                            <FiPause/>
-                            :
-                            <FiPlay/>
-                        }
-                    </button>
-                    <span className={"w-[1px] h-[36px] bg-custom-gray-600"}/>
+                    {(mode === "solo" || userRole === "Member") &&
+                        <>
+                            {/*Start & Pause Button*/}
+                            <button
+                                onClick={() => toggleTimer()}
+                                className={"cursor-pointer hover:text-custom-gray-800 duration-150 text-lg"}>
+                                {isRunning
+                                    ?
+                                    <FiPause/>
+                                    :
+                                    <FiPlay/>
+                                }
+                            </button>
+                            <span className={"w-[1px] h-[36px] bg-custom-gray-600"}/>
+                        </>
+                    }
                     {/*Rename Button*/}
                     <button
                         disabled={isRunning}
@@ -202,7 +214,8 @@ const SectionCart = ({...props}: SectionCartProps) => {
                     />
                 ))}
             </ul>
-            {/*Modals*/}
+            {/*Modals*/
+            }
             <DeleteModal
                 isModalOpen={isDeleteModalOpen}
                 setIsModalOpen={setIsDeleteModalOpen}
@@ -229,7 +242,8 @@ const SectionCart = ({...props}: SectionCartProps) => {
                 title={"You cannot run 2 tracks at the same time."}
             />
         </li>
-    );
+    )
+        ;
 };
 
 export default SectionCart;
