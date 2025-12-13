@@ -5,6 +5,7 @@ import {Role, UserMode, WorkspaceId} from "@/types";
 import {getUserNameData, getUserRoleData} from "@/features/utilities/userInfoData";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth} from "@/app/firebase/config";
+import {getWorkspaceName} from "@/features/utilities/const getWorkspaceName";
 
 interface Context {
     mode: UserMode
@@ -15,6 +16,7 @@ interface Context {
     userSurname: string;
     userInitials: string;
     userRole: Role;
+    workspaceName: string | null;
 }
 
 const workSpaceContext = createContext<Context | undefined>(undefined)
@@ -23,6 +25,7 @@ export const WorkSpaceContextProvider = ({children}: { children: ReactNode }) =>
 
     const [mode, setMode] = useState<UserMode>("solo")
     const [workspaceId, setWorkspaceId] = useState<WorkspaceId>(null)
+    const [workspaceName, setWorkspaceName] = useState<string | null>("")
     const [userName, setUserName] = useState("")
     const [userSurname, setUserSurname] = useState("")
     const [userInitials, setUserInitials] = useState("")
@@ -52,11 +55,28 @@ export const WorkSpaceContextProvider = ({children}: { children: ReactNode }) =>
                 console.error("Error fetching user role!")
             }
         }).catch(err => console.log(err))
+        getWorkspaceName(workspaceId).then(workspaceName => {
+            if (workspaceName) {
+                setWorkspaceName(workspaceName)
+            } else {
+                setWorkspaceName(null)
+            }
+        }).catch(err => console.log(err))
     }, [mode, userId, workspaceId]);
 
     return (
         <workSpaceContext.Provider
-            value={{mode, setMode, workspaceId, setWorkspaceId, userName, userSurname, userInitials, userRole}}>
+            value={{
+                mode,
+                setMode,
+                workspaceId,
+                setWorkspaceId,
+                userName,
+                userSurname,
+                userInitials,
+                userRole,
+                workspaceName
+            }}>
             {children}
         </workSpaceContext.Provider>
     )

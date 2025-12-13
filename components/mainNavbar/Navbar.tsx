@@ -18,7 +18,7 @@ const Navbar = ({projects}: { projects: Project[] }) => {
 
     const [user] = useAuthState(auth)
     const {replace} = useReplaceRouteLink()
-    const {userInitials} = useWorkSpaceContext()
+    const {userInitials, workspaceName, mode} = useWorkSpaceContext()
 
 
     // Styles
@@ -41,31 +41,47 @@ const Navbar = ({projects}: { projects: Project[] }) => {
                 <div
                     className={"h-full flex items-center justify-center"}
                 >
-                    <button
-                        onClick={() => setIsProjectsMenuOpen(v => !v)}
-                        disabled={projects.length < 1}
-                        style={{
-                            cursor: projects.length > 0 ? "pointer" : "default",
-                            color: projects.length > 0 ? "white" : "",
-                        }}
-                        className={"text-custom-gray-700 text-lg font-light ml-[22px] cursor-pointer"}
-                    >
-                        {"Projects"} {">"}
-                    </button>
-                    <ul
-                        className={`${projectsMenuStyle} items-center justify-center gap-[30px] border-custom-gray-800 pr-[22px] pl-[32px] h-full w-auto`}
-                    >
-                        {projects.map((project) => (
-                            <li
-                                onClick={() => replace(`/projects/${project.type}/${project.projectId}`)}
-                                key={project.projectId}
-                                className={"text-custom-gray-600 hover:text-white duration-150 ease-in-out cursor-pointer text-lg font-light"}>
-                                {project.title}
-                            </li>
-                        ))}
-                    </ul>
+                    {mode === "solo"
+                        ?
+                        <>
+                            <button
+                                onClick={() => setIsProjectsMenuOpen(v => !v)}
+                                disabled={projects.length < 1}
+                                style={{
+                                    cursor: projects.length > 0 ? "pointer" : "default",
+                                    color: projects.length > 0 ? "white" : "",
+                                }}
+                                className={"text-custom-gray-700 text-lg font-light ml-[22px] cursor-pointer"}
+                            >
+                                {"Projects"} {">"}
+                            </button>
+                            <ul
+                                className={`${projectsMenuStyle} items-center justify-center gap-[30px] border-custom-gray-800 pr-[22px] pl-[22px] h-full w-auto`}
+                            >
+                                {projects.map((project) => (
+                                    <li
+                                        onClick={() => replace(`/projects/${project.type}/${project.projectId}`)}
+                                        key={project.projectId}
+                                        className={"text-custom-gray-600 hover:text-white duration-150 ease-in-out cursor-pointer text-lg font-light"}>
+                                        {project.title}
+                                    </li>
+                                ))}
+                            </ul>
+                        </>
+                        :
+                        <>
+                            <span className={"text-white text-lg font-light ml-[22px]"}>
+                                {"Now in workspace >"}
+                            </span>
+                            <div className={`flex items-center justify-center gap-[30px] pl-[16px] h-full w-auto`}>
+                            <span
+                                className={"text-custom-gray-600 text-lg font-light"}>
+                            {workspaceName}
+                            </span>
+                            </div>
+                        </>
+                    }
                 </div>
-
             </div>
             {/*Right Side*/}
             <ul

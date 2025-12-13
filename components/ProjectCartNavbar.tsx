@@ -47,7 +47,6 @@ const ProjectCartNavbar = ({projectName}: { projectName: string | null }) => {
                         </span>
                     </div>
                 </div>
-
             </div>
 
             {/*Right Side*/}

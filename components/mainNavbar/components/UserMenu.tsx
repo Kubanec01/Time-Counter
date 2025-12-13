@@ -5,6 +5,7 @@ import {Dispatch, SetStateAction} from "react";
 import {auth} from "@/app/firebase/config";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {WorkspaceButton} from "@/components/mainNavbar/components/WorkspaceButton";
 
 interface Props {
     isUserMenuOpen: boolean
@@ -42,11 +43,8 @@ export const UserMenu = ({...props}: Props) => {
                         {userRole}</p>
                 </div>
             </div>
-            <button
-                onClick={() => replace("/workplaces")}
-                className={"flex items-center gap-2 text-white text-sm bg-pastel-purple-800 p-2 rounded-md cursor-pointer"}>
-                <RiTeamFill/> Workplaces
-            </button>
+            {/*Workspaces Button*/}
+            <WorkspaceButton/>
             <button
                 className={"flex items-center gap-2 text-white text-sm bg-black p-2 rounded-md cursor-pointer"}>
                 <RiListSettingsLine className={"text-custom-gray-700"}/> Settings
