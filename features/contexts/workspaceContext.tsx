@@ -14,6 +14,7 @@ interface Context {
     setWorkspaceId: Dispatch<SetStateAction<WorkspaceId>>;
     userName: string;
     userSurname: string;
+    userMail: string;
     userInitials: string;
     userRole: Role;
     workspaceName: string | null;
@@ -28,6 +29,7 @@ export const WorkSpaceContextProvider = ({children}: { children: ReactNode }) =>
     const [workspaceName, setWorkspaceName] = useState<string | null>("")
     const [userName, setUserName] = useState("")
     const [userSurname, setUserSurname] = useState("")
+    const [userMail, setUserMail] = useState("")
     const [userInitials, setUserInitials] = useState("")
     const [userRole, setUserRole] = useState<Role>("Admin")
 
@@ -40,6 +42,7 @@ export const WorkSpaceContextProvider = ({children}: { children: ReactNode }) =>
             if (resp) {
                 setUserName(resp.name)
                 setUserSurname(resp.surname)
+                setUserMail(resp.email)
                 setUserInitials(`${resp.name.charAt(0).toUpperCase()}${resp.surname.charAt(0).toUpperCase()}`)
             } else {
                 setUserName("")
@@ -75,7 +78,8 @@ export const WorkSpaceContextProvider = ({children}: { children: ReactNode }) =>
                 userSurname,
                 userInitials,
                 userRole,
-                workspaceName
+                workspaceName,
+                userMail
             }}>
             {children}
         </workSpaceContext.Provider>

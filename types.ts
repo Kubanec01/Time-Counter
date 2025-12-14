@@ -53,6 +53,7 @@ export type LoggingType = "Work" | "Research" | "Study" | "Coding" | "Deep Work"
 export type Role = "Admin" | "Member" | "Manager" | null
 export type Member = {
     userId: string;
+    email: string;
     name: string;
     surname: string;
     role: Role;

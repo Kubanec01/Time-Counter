@@ -14,7 +14,7 @@ export const CreateWorkspace = () => {
     const [workspaceName, setWorkspaceName] = useState("")
     const [password, setPassword] = useState("")
 
-    const {setWorkspaceId, setMode, userName} = useWorkSpaceContext()
+    const {setWorkspaceId, setMode} = useWorkSpaceContext()
     const {replace} = useReplaceRouteLink()
     const [user] = useAuthState(auth)
     const userId = user?.uid
@@ -24,7 +24,7 @@ export const CreateWorkspace = () => {
         const workspaceId = `@${workspaceName.replace(/\s/g, "")}${throwRandomNum(1000)}`
 
 
-        await createNewWorkspace(userId, userName, workspaceName, workspaceId, password)
+        await createNewWorkspace(userId, workspaceName, workspaceId, password)
 
         setWorkspaceName("")
         setPassword("")

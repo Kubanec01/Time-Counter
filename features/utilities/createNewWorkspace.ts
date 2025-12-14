@@ -6,7 +6,6 @@ import {Member} from "@/types";
 
 export const createNewWorkspace = async (
     userId: string | undefined,
-    userName: string,
     workspaceName: string,
     workspaceId: string,
     password: string,
@@ -18,10 +17,12 @@ export const createNewWorkspace = async (
     const data = userSnap.data()
     const name: string = data.name
     const surname: string = data.surname
+    const email: string = data.email
 
 
     const member: Member = {
         userId: userId,
+        email: email,
         name: name,
         surname: surname,
         role: "Admin",

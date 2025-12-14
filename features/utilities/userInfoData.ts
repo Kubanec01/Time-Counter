@@ -19,8 +19,9 @@ export const getUserNameData = async (
     if (mode === "solo") {
         const name = data.name
         const surname = data.surname
+        const email = data.email
 
-        if (name && surname) return {name, surname}
+        if (name && surname && email) return {name, surname, email}
     }
 
     const matchedUser: Member = data.members.find((member: Member) => member.userId === userId)
@@ -28,8 +29,9 @@ export const getUserNameData = async (
 
     const name = matchedUser.name
     const surname = matchedUser.surname
+    const email = matchedUser.email
 
-    if (name && surname) return {name, surname}
+    if (name && surname && email) return {name, surname, email}
 }
 
 export const getUserRoleData = async (

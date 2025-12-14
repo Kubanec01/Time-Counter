@@ -13,7 +13,7 @@ export const JoinWorkspace = () => {
     const [workspaceInputId, setWorkspaceInputId] = useState("")
     const [password, setPassword] = useState("")
 
-    const {setMode, setWorkspaceId, userName, userSurname} = useWorkSpaceContext()
+    const {setMode, setWorkspaceId, userName, userSurname, userMail} = useWorkSpaceContext()
     const {replace} = useReplaceRouteLink()
     const [user] = useAuthState(auth)
     const userId = user?.uid
@@ -49,6 +49,7 @@ export const JoinWorkspace = () => {
         if (!isMember) {
             const newMember: Member = {
                 userId: userId,
+                email: userMail,
                 name: userName,
                 surname: userSurname,
                 role: "Member"
