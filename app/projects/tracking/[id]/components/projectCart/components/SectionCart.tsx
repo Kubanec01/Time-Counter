@@ -159,7 +159,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
                 <div
                     className={"flex items-center justify-center text-base text-custom-gray-600 gap-[24px]"}>
                     <span className={"w-[1px] h-[36px] bg-custom-gray-600"}/>
-                    {(mode === "solo" || userRole === "Member") &&
+                    {(mode === "solo" || userRole !== "Admin") &&
                         <>
                             {/*Start & Pause Button*/}
                             <button

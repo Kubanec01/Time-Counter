@@ -4,8 +4,9 @@ import {useEffect, useState} from "react";
 import {Member, Role} from "@/types";
 import {IoSearch} from "react-icons/io5";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
-import {db} from "@/app/firebase/config";
-import {doc, getDoc, onSnapshot, updateDoc} from "firebase/firestore";
+import {auth, db} from "@/app/firebase/config";
+import {arrayUnion, doc, getDoc, onSnapshot, updateDoc} from "firebase/firestore";
+import {useAuthState} from "react-firebase-hooks/auth";
 
 
 const UsersHomePage = () => {
@@ -13,10 +14,12 @@ const UsersHomePage = () => {
     const [members, setMembers,] = useState<Member[]>([])
 
     const {workspaceId, mode, userRole} = useWorkSpaceContext()
+    const [user] = useAuthState(auth)
+    const userId = user?.uid
 
     // Functions
     const setUserRole = async (
-        userId: string,
+        memberId: string,
         role: Role,
     ) => {
         if (!workspaceId) return
@@ -26,9 +29,24 @@ const UsersHomePage = () => {
         const data = docSnap.data()
         const members: Member[] = data.members || []
         const updatedMembers = members.map((member: Member) => {
-            if (member.userId !== userId) return member
+            if (member.userId !== memberId) return member
             return {...member, role: role}
         })
+
+        await updateDoc(docRef, {members: updatedMembers})
+    }
+
+    const removeUser = async (
+        memberId: string,
+        workspaceId: string | null
+    ) => {
+        if (!workspaceId || !userId) return
+        const docRef = doc(db, "realms", workspaceId)
+        const docSnap = await getDoc(docRef)
+        if (!docSnap.exists()) return
+        const data = docSnap.data()
+        const members: Member[] = data.members
+        const updatedMembers = members.filter(member => member.userId !== memberId)
 
         await updateDoc(docRef, {members: updatedMembers})
     }
@@ -36,19 +54,23 @@ const UsersHomePage = () => {
 
     // Fetch Workspace Members
     useEffect(() => {
-        if (!workspaceId) return
+        if (!workspaceId || !userId) return
         const docRef = doc(db, "realms", workspaceId)
 
         const getWorkspaceUsers = onSnapshot(docRef, docSnap => {
             if (!docSnap.exists()) return
             const data = docSnap.data()
-            const members: Member[] = data.members || []
-            setMembers(members)
+            const adminId: string = data.adminId
+            const members: Member[] = data.members
+
+            if (userId === adminId) {
+                setMembers(members)
+            } else setMembers(members.filter((member: Member) => member.userId !== adminId))
         })
 
         return () => getWorkspaceUsers()
 
-    }, [workspaceId, mode]);
+    }, [workspaceId, mode, userId]);
 
     return (
         <>
@@ -99,6 +121,7 @@ const UsersHomePage = () => {
                                     Make Member
                                 </button>
                                 <button
+                                    onClick={() => removeUser(member.userId, workspaceId)}
                                     className={"px-3 py-2 cursor-pointer text-sm text-white bg-red-500 rounded-md"}>
                                     Remove Member
                                 </button>
