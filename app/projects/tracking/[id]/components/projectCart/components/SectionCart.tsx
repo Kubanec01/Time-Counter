@@ -159,22 +159,17 @@ const SectionCart = ({...props}: SectionCartProps) => {
                 <div
                     className={"flex items-center justify-center text-base text-custom-gray-600 gap-[24px]"}>
                     <span className={"w-[1px] h-[36px] bg-custom-gray-600"}/>
-                    {(mode === "solo" || userRole !== "Admin") &&
-                        <>
-                            {/*Start & Pause Button*/}
-                            <button
-                                onClick={() => toggleTimer()}
-                                className={"cursor-pointer hover:text-custom-gray-800 duration-150 text-lg"}>
-                                {isRunning
-                                    ?
-                                    <FiPause/>
-                                    :
-                                    <FiPlay/>
-                                }
-                            </button>
-                            <span className={"w-[1px] h-[36px] bg-custom-gray-600"}/>
-                        </>
-                    }
+                    <>
+                        {/*Start & Pause Button*/}
+                        <button
+                            onClick={() => toggleTimer()}
+                            className={`${(mode === "solo" || userRole !== "Admin") ? "block" : "hidden"}
+                            cursor-pointer hover:text-custom-gray-800 duration-150 text-lg`}>
+                            {isRunning ? <FiPause/> : <FiPlay/>}
+                        </button>
+                        <span className={`${(mode === "solo" || userRole !== "Admin") ? "block" : "hidden"}
+                         w-[1px] h-[36px] bg-custom-gray-600`}/>
+                    </>
                     {/*Rename Button*/}
                     <button
                         disabled={isRunning}

@@ -16,19 +16,17 @@ const Navbar = ({projects}: { projects: Project[] }) => {
     const [isProjectsMenuOpen, setIsProjectsMenuOpen] = useState(false);
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
-    const [user] = useAuthState(auth)
     const {replace} = useReplaceRouteLink()
     const {userInitials, workspaceName, mode} = useWorkSpaceContext()
 
 
     // Styles
-    const visibilityStyle = user ? "flex" : "hidden"
     const projectsMenuStyle = isProjectsMenuOpen ? "flex border-r-1" : "hidden border-r-0";
     const rightButtonsStyle = "text-custom-gray-800 hover:text-white duration-150 ease-in-out text-[24px] cursor-pointer"
 
     return (
         <div
-            className={`${visibilityStyle} w-full fixed top-0 left-0 h-[72px] z-[40] bg-black flex justify-between items-center`}
+            className={`w-full fixed top-0 left-0 h-[72px] z-[40] bg-black flex justify-between items-center`}
         >
             {/*Left Side*/}
             <div

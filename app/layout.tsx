@@ -1,10 +1,19 @@
 import "./globals.css";
 import {ClockTimeContextProvider} from "@/features/contexts/clockCountContext";
 import {WorkSpaceContextProvider} from "@/features/contexts/workspaceContext";
+import React from "react";
+import {Metadata} from "next";
 
-export default function RootLayout({
-                                       children,
-                                   }: Readonly<{
+export const metadata: Metadata = {
+    formatDetection: {
+        telephone: false,
+        date: false,
+        email: false,
+        address: false,
+    },
+};
+
+export default function RootLayout({children}: Readonly<{
     children: React.ReactNode;
 }>) {
     return (
