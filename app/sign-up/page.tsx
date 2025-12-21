@@ -1,10 +1,12 @@
 "use client";
-import {useCreateUserWithEmailAndPassword} from "react-firebase-hooks/auth";
+
 import {auth, db} from "@/app/firebase/config";
 import {FormEvent, useState} from "react";
 import Link from "next/link";
 import {doc, setDoc} from "firebase/firestore";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
+import {createUserWithEmailAndPassword} from "@firebase/auth";
+import {FirebaseError} from "@firebase/app";
 
 const SignUpPage = () => {
     const [email, setEmail] = useState("");
@@ -12,19 +14,21 @@ const SignUpPage = () => {
     const [passwordConfirm, setPasswordConfirm] = useState("");
     const [name, setName] = useState("");
     const [surname, setSurname] = useState("");
+    const [errMess, setErrMess] = useState("");
     const {replace} = useReplaceRouteLink()
 
-    const [createUserWithEmailAndPassword] =
-        useCreateUserWithEmailAndPassword(auth);
 
-    const handleSignUp = async (e: FormEvent<HTMLFormElement>) => {
-
+    const handleSignUp = async (e: FormEvent) => {
         e.preventDefault();
 
-        if (password !== passwordConfirm || name.length === 0 || surname.length === 0) return
+        if (password !== passwordConfirm) {
+            return setErrMess("Passwords do not match");
+        } else if (name.trim().length === 0 || surname.trim().length === 0) {
+            return setErrMess("Please fill in all fields.");
+        }
 
         try {
-            const resp = await createUserWithEmailAndPassword(email, password);
+            const resp = await createUserWithEmailAndPassword(auth, email, password);
 
             if (resp) {
                 await setDoc(doc(db, "users", resp.user.uid), {
@@ -38,11 +42,21 @@ const SignUpPage = () => {
                 setEmail("");
                 setPassword("");
                 replace("/");
-            } else {
-                console.log("Error With Sign Up User");
             }
         } catch (err) {
-            console.error("Error Create User With Email Or Password.", err);
+            if (err instanceof FirebaseError) {
+                switch (err.code) {
+                    case "auth/weak-password":
+                        setErrMess("The password is too weak")
+                        break;
+                    case "auth/email-already-in-use":
+                        setErrMess("This email is already in use.")
+                        break;
+                    default:
+                        setErrMess("Something went wrong. Please try again.")
+                        break;
+                }
+            }
         }
     };
 
@@ -92,6 +106,9 @@ const SignUpPage = () => {
                         className="w-full h-[46px] border border-custom-gray-800 text-custom-gray-600 rounded-[4px] text-base px-3"
                         type="password"
                     />
+                    <h1
+                        className={"text-red-500"}>
+                        {errMess}</h1>
                     <button
                         type={"submit"}
                         className="text-base font-semibold bg-pastel-purple-700 cursor-pointer text-white rounded-[8px] w-full h-[42px] mt-[8px]"

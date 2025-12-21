@@ -6,12 +6,10 @@ import React, {useState} from "react";
 import {auth} from "@/app/firebase/config";
 import {ProjectType} from "@/types";
 import Navbar from "@/components/mainNavbar/Navbar";
-import {createNewProject} from "@/features/utilities/createNewProject";
+import {createNewProject} from "@/features/utilities/create/createNewProject";
 import {useAuthRedirect} from "@/features/hooks/useAuthRedirect";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {useAuthState} from "react-firebase-hooks/auth";
-import LogOutModal from "@/features/utilities/ConfirmExitModal";
-import {signOut} from "@firebase/auth";
 
 export default function HomePage() {
 
