@@ -4,12 +4,14 @@
 import userBgImg from "@/public/gradient-bg.jpg";
 import {RiListSettingsLine} from "react-icons/ri";
 import {MdLockReset, MdOutlineLogout, MdSupervisedUserCircle} from "react-icons/md";
-import {Dispatch, SetStateAction} from "react";
+import React, {Dispatch, SetStateAction, useState} from "react";
 import {auth} from "@/app/firebase/config";
-import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {WorkspaceButton} from "@/components/mainNavbar/components/WorkspaceButton";
 import {useRouter} from "next/navigation";
+import {signOut} from "@firebase/auth";
+import ConfirmExitModal from "@/features/utilities/ConfirmExitModal";
+import {TbPasswordUser} from "react-icons/tb";
 
 interface Props {
     isUserMenuOpen: boolean
@@ -18,11 +20,23 @@ interface Props {
 
 export const UserMenu = ({...props}: Props) => {
 
+    const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+    const [isLeaveWorkspaceModalOpen, setIsLeaveWorkspaceModalOpen] = useState(false);
+    const {setMode, setWorkspaceId} = useWorkSpaceContext()
+
+
     const setVisibility = props.isUserMenuOpen ? "flex" : "hidden";
     const {userName, userSurname, userInitials, userRole, mode} = useWorkSpaceContext()
     const router = useRouter();
 
     const canAccessAdminFeatures = mode === "workspace" && userRole !== "Member"
+    const canAccessAdminOnlyFeatures = mode === "workspace" && userRole === "Admin"
+
+    const handleLeaveWorkspace = () => {
+        setMode("solo")
+        setWorkspaceId(null)
+        setIsLeaveWorkspaceModalOpen(false);
+    }
 
     return (
         <div
@@ -50,12 +64,20 @@ export const UserMenu = ({...props}: Props) => {
                 </div>
             </div>
             {/*Workspaces Button*/}
-            <WorkspaceButton/>
+            <WorkspaceButton
+                setIsModalOpen={setIsLeaveWorkspaceModalOpen}
+            />
             <button
                 onClick={() => router.push("/workplaces/users")}
                 className={`${canAccessAdminFeatures ? "flex" : "hidden"} items-center gap-2 text-white text-sm bg-black p-2 rounded-md cursor-pointer`}>
                 <MdSupervisedUserCircle className={"text-custom-gray-700"}/> Users
             </button>
+            <button
+                onClick={() => router.push("/workplaces/password")}
+                className={`${canAccessAdminOnlyFeatures ? "flex" : "hidden"} items-center gap-2 text-white text-sm bg-black p-2 rounded-md cursor-pointer`}>
+                <TbPasswordUser className={"text-custom-gray-700"}/> Workspace Password
+            </button>
+
             <button
                 className={"flex items-center gap-2 text-white text-sm bg-black p-2 rounded-md cursor-pointer"}>
                 <RiListSettingsLine className={"text-custom-gray-700"}/> Settings
@@ -65,10 +87,29 @@ export const UserMenu = ({...props}: Props) => {
                 <MdLockReset className={"text-custom-gray-700"}/> Change Password
             </button>
             <button
-                onClick={() => auth.signOut()}
+                onClick={() => setIsLogoutModalOpen(!isLogoutModalOpen)}
                 className={"flex items-center gap-2 text-white text-sm bg-black p-2 rounded-md cursor-pointer"}>
                 <MdOutlineLogout className={"text-custom-gray-700"}/> Log Out
             </button>
+            {/*Modals*/}
+            {/*Log out modal*/}
+            <ConfirmExitModal
+                title={"Log Out of Trackio?"}
+                setIsModalOpen={setIsLogoutModalOpen}
+                isModalOpen={isLogoutModalOpen}
+                btnText={"Log Out"}
+                btnFunction={() => signOut(auth)}
+                desc={"You can always log back in anywhere, anytime. Your progress will be saved without any worries."}
+            />
+            {/* Leave workspace modal */}
+            <ConfirmExitModal
+                title={"Leave Workspace?"}
+                setIsModalOpen={setIsLeaveWorkspaceModalOpen}
+                isModalOpen={isLeaveWorkspaceModalOpen}
+                btnText={"Leave"}
+                btnFunction={() => handleLeaveWorkspace()}
+                desc={"You can always join back anywhere, anytime. Your progress will be saved without any worries."}
+            />
         </div>
     );
 }

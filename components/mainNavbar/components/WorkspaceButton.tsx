@@ -3,18 +3,17 @@ import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 import {RiTeamFill, RiUserReceived2Fill} from "react-icons/ri";
 
 
-export const WorkspaceButton = () => {
+export const WorkspaceButton = (
+    {setIsModalOpen}: { setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>> }
+) => {
 
-    const {mode, setMode, setWorkspaceId} = useWorkSpaceContext()
+    const {mode} = useWorkSpaceContext()
     const {replace} = useReplaceRouteLink()
 
     const handleClick = () => {
         if (mode === "solo") {
             replace("/workplaces")
-        } else {
-            setMode("solo")
-            setWorkspaceId(null)
-        }
+        } else setIsModalOpen(true)
     }
 
     return (

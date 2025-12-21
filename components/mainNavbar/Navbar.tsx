@@ -11,7 +11,7 @@ const Navbar = () => {
     // states
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
-    const {userInitials, workspaceName, mode} = useWorkSpaceContext()
+    const {userInitials, workspaceName, workspaceId, mode} = useWorkSpaceContext()
 
 
     // Styles
@@ -44,12 +44,12 @@ const Navbar = () => {
                         :
                         <>
                             <span className={"text-white text-lg font-light ml-[22px]"}>
-                                {"Now in workspace >"}
+                                {"Workspace >"}
                             </span>
                             <div className={`flex items-center justify-center gap-[30px] pl-[16px] h-full w-auto`}>
                             <span
                                 className={"text-custom-gray-600 text-lg font-light"}>
-                            {workspaceName}
+                            {workspaceName} / <span className={"text-sm"}>{workspaceId}</span>
                             </span>
                             </div>
                         </>

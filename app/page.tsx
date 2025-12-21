@@ -10,6 +10,8 @@ import {createNewProject} from "@/features/utilities/createNewProject";
 import {useAuthRedirect} from "@/features/hooks/useAuthRedirect";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {useAuthState} from "react-firebase-hooks/auth";
+import LogOutModal from "@/features/utilities/ConfirmExitModal";
+import {signOut} from "@firebase/auth";
 
 export default function HomePage() {
 
@@ -69,7 +71,7 @@ export default function HomePage() {
                         And build what moves you
                     </p>
                 </div>
-
+                {/*Modals*/}
                 <CreateProjectModal
                     title="Project"
                     setIsModalOpen={setIsModalOpen}
