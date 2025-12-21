@@ -28,7 +28,7 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
     // User Auth
     const [user] = useAuthState(auth)
     const userId = user?.uid
-    const {mode, workspaceId} = useWorkSpaceContext()
+    const {mode, workspaceId, userName} = useWorkSpaceContext()
 
     const createSection = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -36,7 +36,7 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
         const time = formatSecondsToTimeString(Number(timeInputValue) * 3600)
         console.log(time)
 
-        await createNewSection(e, userId, props.projectId, inputValue, time, setInputValue, setIsInfoModalOpen, loggingCategory, mode, workspaceId)
+        await createNewSection(userId, userName, props.projectId, inputValue, time, setInputValue, setIsInfoModalOpen, loggingCategory, mode, workspaceId)
         await setProjectTotalTimeWithoutSectionId(userId, props.projectId, time, mode, workspaceId)
         setIsCreateModalOpen(false)
         setLoggingCategory("Work")

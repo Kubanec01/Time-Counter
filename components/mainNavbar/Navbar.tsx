@@ -1,27 +1,20 @@
-import {useAuthState} from "react-firebase-hooks/auth";
-import {auth} from "@/app/firebase/config";
 import {useState} from "react";
 import {RxQuestionMarkCircled} from "react-icons/rx";
 import {LuMessageCircleMore} from "react-icons/lu";
-import {Project} from "@/types";
 import userBgImg from "@/public/gradient-bg.jpg"
 import {UserMenu} from "@/components/mainNavbar/components/UserMenu";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
-import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 
 
-const Navbar = ({projects}: { projects: Project[] }) => {
+const Navbar = () => {
 
     // states
-    const [isProjectsMenuOpen, setIsProjectsMenuOpen] = useState(false);
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
-    const {replace} = useReplaceRouteLink()
     const {userInitials, workspaceName, mode} = useWorkSpaceContext()
 
 
     // Styles
-    const projectsMenuStyle = isProjectsMenuOpen ? "flex border-r-1" : "hidden border-r-0";
     const rightButtonsStyle = "text-custom-gray-800 hover:text-white duration-150 ease-in-out text-[24px] cursor-pointer"
 
     return (
@@ -30,41 +23,23 @@ const Navbar = ({projects}: { projects: Project[] }) => {
         >
             {/*Left Side*/}
             <div
-                className={"h-full flex"}>
+                className={"h-full flex justify-start items-center w-[75%]"}>
                 <div
-                    className={"h-full flex items-center px-[50px] justify-center border-r border-custom-gray-800"}
+                    className={"h-full flex items-center px-[50px] justify-center border-r border-custom-gray-800 flex-shrink-0"}
                 >
                     <img src={"/Logo.png"} alt={"Logo image"} className={"w-auto h-auto"}/>
                 </div>
                 <div
-                    className={"h-full flex items-center justify-center"}
+                    className={"h-full flex items-center justify-start overflow-hidden text-nowrap"}
                 >
                     {mode === "solo"
                         ?
                         <>
-                            <button
-                                onClick={() => setIsProjectsMenuOpen(v => !v)}
-                                disabled={projects.length < 1}
-                                style={{
-                                    cursor: projects.length > 0 ? "pointer" : "default",
-                                    color: projects.length > 0 ? "white" : "",
-                                }}
-                                className={"text-custom-gray-700 text-lg font-light ml-[22px] cursor-pointer"}
+                            <h1
+                                className={"text-white text-lg font-light ml-[22px]"}
                             >
                                 {"Projects"} {">"}
-                            </button>
-                            <ul
-                                className={`${projectsMenuStyle} items-center justify-center gap-[30px] border-custom-gray-800 pr-[22px] pl-[22px] h-full w-auto`}
-                            >
-                                {projects.map((project) => (
-                                    <li
-                                        onClick={() => replace(`/projects/${project.type}/${project.projectId}`)}
-                                        key={project.projectId}
-                                        className={"text-custom-gray-600 hover:text-white duration-150 ease-in-out cursor-pointer text-lg font-light"}>
-                                        {project.title}
-                                    </li>
-                                ))}
-                            </ul>
+                            </h1>
                         </>
                         :
                         <>
@@ -83,7 +58,7 @@ const Navbar = ({projects}: { projects: Project[] }) => {
             </div>
             {/*Right Side*/}
             <ul
-                className={"h-full flex items-center justify-center gap-[30px] text-white pr-[50px]"}
+                className={"h-full w-[25%] flex items-center justify-end gap-[30px] text-white pr-[50px] pl-10 overflow-hidden"}
             >
                 <li>
                     <button

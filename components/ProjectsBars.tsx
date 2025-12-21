@@ -129,7 +129,7 @@ const ProjectsBars = () => {
                                 <h2 className={"text-base font-medium text-black"}>
                                     Project name:
                                 </h2>
-                                <h1 className={"text-[28px] leading-tight font-bold text-black w-[98%] -mt-1 border-b-2"}>
+                                <h1 className={"text-[28px] leading-tight font-bold text-black w-[98%] -mt-1 border-b-2 break-words"}>
                                     {p.title}
                                 </h1>
                                 {/*Time*/}

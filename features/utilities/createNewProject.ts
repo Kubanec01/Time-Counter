@@ -16,7 +16,7 @@ export const createNewProject = async (
         const userRef = getFirestoreTargetRef(userId, mode, workspaceId);
 
         // Random Num Variable
-        const randomNum = throwRandomNum().toString();
+        const randomNum = throwRandomNum(10_000_000).toString();
 
         const newProject: Project = {
             projectId: `${inputValue.replace(/\s+/g, "")}_${randomNum}`,

@@ -2,16 +2,14 @@
 
 import CreateProjectModal from "@/components/modals/CreateProjectModal";
 import ProjectsBars from "@/components/ProjectsBars";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {auth} from "@/app/firebase/config";
-import {onSnapshot} from "firebase/firestore";
-import {Project, ProjectType} from "@/types";
+import {ProjectType} from "@/types";
 import Navbar from "@/components/mainNavbar/Navbar";
 import {createNewProject} from "@/features/utilities/createNewProject";
 import {useAuthRedirect} from "@/features/hooks/useAuthRedirect";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {useAuthState} from "react-firebase-hooks/auth";
-import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 
 export default function HomePage() {
 
@@ -26,7 +24,6 @@ export default function HomePage() {
     //   States
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [inputValue, setInputValue] = useState<string>("");
-    const [allProjects, setAllProjects] = useState<Project[]>([]);
     const [typeofProject, setTypeOfProject] = useState<ProjectType>("tracking");
 
 
@@ -41,27 +38,10 @@ export default function HomePage() {
 
     const isUserMember = userRole === "Member"
 
-    // Fetch Projects titles
-    useEffect(() => {
-        if (!userId) return
-        const userRef = getFirestoreTargetRef(userId, mode, workspaceId)
-
-        const getProjectsTitles = onSnapshot(userRef, snap => {
-            if (!snap.exists()) return []
-
-            const data = snap.data()
-            const projects: Project[] = data.projects
-            if (projects) setAllProjects(projects)
-        })
-
-        return () => getProjectsTitles()
-
-    }, [mode, userId, workspaceId]);
-
 
     return (
         <>
-            <Navbar projects={allProjects}/>
+            <Navbar/>
             {/*Projects Hero*/}
             <section
                 className={"flex justify-between items-center w-[90%] max-w-[1144px] mt-[180px] mx-auto border-b-2 border-gray-200 px-[94px]"}
