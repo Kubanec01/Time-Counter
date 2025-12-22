@@ -35,11 +35,11 @@ export const JoinWorkspace = () => {
         if (!docSnap.exists()) return console.error(documentNotFound)
         const data = docSnap.data()
         const correctPassword = data.password
-        const blackList: string[] = data.blackList
+        const blackList: Member[] = data.blackList
         const members: Member[] = data.members
 
         if (password !== correctPassword) return setErrMess("Wrong password or Id.")
-        if (blackList.some(blackId => blackId === userId)) return setErrMess("You do not have permission to join this workspace.")
+        if (blackList.some(member => member.userId === userId)) return setErrMess("You do not have permission to join this workspace.")
 
         const setStatesAndReplace = () => {
             setMode("workspace")
