@@ -3,7 +3,7 @@
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 import {FormEvent, useState} from "react";
 import {auth} from "@/app/firebase/config";
-import {createNewWorkspace} from "@/features/utilities/createNewWorkspace";
+import {createNewWorkspace} from "@/features/utilities/create/createNewWorkspace";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {throwRandomNum} from "@/features/utilities/throwRandomNum";

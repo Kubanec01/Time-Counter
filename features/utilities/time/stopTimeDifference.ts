@@ -1,7 +1,7 @@
 import {formatSecondsToTimeString} from "@/features/hooks/timeOperations";
 
 
-export const StopTimeDifference = (
+export const stopTimeDifference = (
     totalSeconds: number,
     lastStopClockTime: number,) => {
 
@@ -11,3 +11,4 @@ export const StopTimeDifference = (
     return formatSecondsToTimeString(totalDifferenceToSeconds)
 
 }
+

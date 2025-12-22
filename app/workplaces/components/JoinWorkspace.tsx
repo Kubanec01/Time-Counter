@@ -12,6 +12,7 @@ import {Member} from "@/types";
 export const JoinWorkspace = () => {
     const [workspaceInputId, setWorkspaceInputId] = useState("")
     const [password, setPassword] = useState("")
+    const [errMess, setErrMess] = useState("")
 
     const {setMode, setWorkspaceId, userName, userSurname, userMail} = useWorkSpaceContext()
     const {replace} = useReplaceRouteLink()
@@ -21,6 +22,8 @@ export const JoinWorkspace = () => {
 
     const joinWorkspace = async (e: FormEvent) => {
         e.preventDefault();
+
+        if (workspaceInputId.trim() === "") return setErrMess("Wrong password or Id.")
 
         if (!userId) throw new Error(invalidUserId)
         const docRef = doc(db, "realms", workspaceInputId)
@@ -32,9 +35,11 @@ export const JoinWorkspace = () => {
         if (!docSnap.exists()) return console.error(documentNotFound)
         const data = docSnap.data()
         const correctPassword = data.password
+        const blackList: string[] = data.blackList
         const members: Member[] = data.members
 
-        if (password !== correctPassword) return console.log("Wrong password or Id")
+        if (password !== correctPassword) return setErrMess("Wrong password or Id.")
+        if (blackList.some(blackId => blackId === userId)) return setErrMess("You do not have permission to join this workspace.")
 
         const setStatesAndReplace = () => {
             setMode("workspace")
@@ -84,6 +89,10 @@ export const JoinWorkspace = () => {
                 className="w-full h-[46px] border border-custom-gray-800  rounded-[4px] text-base px-3"
                 type="password"
             />
+            <h1
+                className={"text-red-500 font-semibold text-center"}>
+                {errMess}
+            </h1>
             <button
                 type="submit"
                 className="cursor-pointer w-full h-[43px] mt-[8px] font-medium text-base text-white bg-pastel-purple-700 rounded-[8px]"

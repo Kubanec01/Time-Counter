@@ -1,6 +1,6 @@
 import {getDoc, updateDoc} from "firebase/firestore";
 import {Section, TimeCheckout, UpdatedSectionByDate, UserMode, WorkspaceId} from "@/types";
-import {subtractProjectTotalTime} from "@/features/utilities/totalTime";
+import {subtractProjectTotalTime} from "@/features/utilities/time/totalTime";
 import {sectionNotFound} from "@/messages/errors";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 

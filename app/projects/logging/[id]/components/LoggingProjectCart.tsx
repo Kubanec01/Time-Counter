@@ -4,13 +4,13 @@ import {LoggingType, ProjectProps, Section} from "@/types";
 import ProjectCartNavbar from "@/components/ProjectCartNavbar";
 import CreateLoggingModal from "@/app/projects/logging/[id]/components/createLoggingModal/CreateLoggingModal";
 import React, {useEffect, useState} from "react";
-import {createNewSection} from "@/features/utilities/createNewSection";
+import {createNewSection} from "@/features/utilities/create/createNewSection";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth, db} from "@/app/firebase/config";
 import {doc, onSnapshot} from "firebase/firestore";
-import {deleteAllSectionData} from "@/features/utilities/deleteAllSectionData";
+import {deleteAllSectionData} from "@/features/utilities/delete/deleteAllSectionData";
 import {formatSecondsToTimeString} from "@/features/hooks/timeOperations";
-import {setProjectTotalTimeWithoutSectionId} from "@/features/utilities/totalTime";
+import {setProjectTotalTimeWithoutSectionId} from "@/features/utilities/time/totalTime";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 

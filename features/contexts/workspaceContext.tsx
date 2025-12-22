@@ -5,7 +5,7 @@ import {Role, UserMode, WorkspaceId} from "@/types";
 import {getUserNameData, getUserRoleData} from "@/features/utilities/userInfoData";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth} from "@/app/firebase/config";
-import {getWorkspaceName} from "@/features/utilities/const getWorkspaceName";
+import {getWorkspaceName} from "@/features/utilities/getWorkspaceName";
 
 interface Context {
     mode: UserMode

@@ -10,7 +10,7 @@ import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {WorkspaceButton} from "@/components/mainNavbar/components/WorkspaceButton";
 import {useRouter} from "next/navigation";
 import {signOut} from "@firebase/auth";
-import ConfirmExitModal from "@/features/utilities/ConfirmExitModal";
+import ConfirmExitModal from "@/components/modals/ConfirmExitModal";
 import {TbPasswordUser} from "react-icons/tb";
 
 interface Props {

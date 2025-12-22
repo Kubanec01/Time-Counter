@@ -7,12 +7,12 @@ import SectionCart from "./components/SectionCart";
 import {ProjectProps, Section, UpdatedSectionByDate} from "@/types";
 import ProjectCartNavbar from "@/components/ProjectCartNavbar";
 import InformativeModal from "@/components/modals/InformativeModal";
-import {sortDatesAscending} from "@/features/utilities/sortDates";
+import {sortDatesAscending} from "@/features/utilities/date/sortDates";
 import {useAuthState} from "react-firebase-hooks/auth";
-import {createNewSection} from "@/features/utilities/createNewSection";
-import {setNameByDate} from "@/features/utilities/setNameByDate";
-import {setColorByDate} from "@/features/utilities/setcolorByDate";
-import {getUniqueDates} from "@/features/utilities/getUniqueDates";
+import {createNewSection} from "@/features/utilities/create/createNewSection";
+import {setNameByDate} from "@/features/utilities/date/setNameByDate";
+import {setColorByDate} from "@/features/utilities/date/setcolorByDate";
+import {getUniqueDates} from "@/features/utilities/date/getUniqueDates";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 

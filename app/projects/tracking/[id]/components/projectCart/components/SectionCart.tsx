@@ -10,16 +10,16 @@ import InformativeModal from "@/components/modals/InformativeModal";
 import {FiDelete, FiEdit, FiPause, FiPlay} from "react-icons/fi";
 import RenameModal from "@/components/modals/RenameModal";
 import {RiEditBoxFill} from "react-icons/ri";
-import {resetClockTime} from "@/features/utilities/resetClockTime";
-import {deleteAllSectionData} from "@/features/utilities/deleteAllSectionData";
-import {createNewTimeCheckout} from "@/features/utilities/createNewTimeCheckout";
-import {sendTimeData} from "@/features/utilities/updateTimeData";
-import {editSectionName} from "@/features/utilities/editSectionName";
-import {StopTimeDifference} from "@/features/utilities/StopTimeDifference";
-import {deleteSubsectionAndTimeCheckoutsData} from "@/features/utilities/deleteSubsectionAndTimeCheckoutsData";
+import {resetClockTime} from "@/features/utilities/time/resetClockTime";
+import {deleteAllSectionData} from "@/features/utilities/delete/deleteAllSectionData";
+import {createNewTimeCheckout} from "@/features/utilities/create/createNewTimeCheckout";
+import {sendTimeData} from "@/features/utilities/time/updateTimeData";
+import {editSectionName} from "@/features/utilities/edit/editSectionName";
+import {stopTimeDifference} from "@/features/utilities/time/stopTimeDifference";
+import {deleteSubsectionAndTimeCheckoutsData} from "@/features/utilities/delete/deleteSubsectionAndTimeCheckoutsData";
 import SubSectionCart from "@/app/projects/tracking/[id]/components/projectCart/components/SubSectionCart";
 import {formatSecondsToTimeString, formatTimeUnit, parseTimeStringToSeconds} from "@/features/hooks/timeOperations";
-import {setProjectTotalTime, subtractProjectTotalTime} from "@/features/utilities/totalTime";
+import {setProjectTotalTime, subtractProjectTotalTime} from "@/features/utilities/time/totalTime";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 import {HiMiniUserCircle} from "react-icons/hi2";
@@ -86,7 +86,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
             setLastStopClockTime(totalSeconds)
             await setProjectTotalTime(props.userId, props.sectionId, props.projectId, newTime, mode, workspaceId)
             await sendTimeData(props.userId, props.sectionId, newTime, currDateString, mode, workspaceId);
-            await createNewTimeCheckout(props.userId, formattedTime, props.projectId, props.sectionId, startTime, StopTimeDifference(totalSeconds, lastStopClockTime), mode, workspaceId);
+            await createNewTimeCheckout(props.userId, formattedTime, props.projectId, props.sectionId, startTime, stopTimeDifference(totalSeconds, lastStopClockTime), mode, workspaceId);
         }
     };
     const isWorkspaceRoleAdmin = mode === "workspace" && (userRole === "Admin" || userRole === "Manager");

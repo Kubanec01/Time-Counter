@@ -11,7 +11,8 @@ import {useAuthState} from "react-firebase-hooks/auth";
 
 const UsersHomePage = () => {
 
-    const [members, setMembers,] = useState<Member[]>([])
+    const [mem, setMem] = useState<Member[]>([])
+    const [members, setMembers] = useState<Member[]>([])
 
     const {workspaceId, mode, userRole} = useWorkSpaceContext()
     const [user] = useAuthState(auth)
@@ -48,9 +49,21 @@ const UsersHomePage = () => {
         const members: Member[] = data.members
         const updatedMembers = members.filter(member => member.userId !== memberId)
 
-        await updateDoc(docRef, {members: updatedMembers})
+        await updateDoc(docRef, {members: updatedMembers, blackList: arrayUnion(memberId)})
     }
 
+    const findUser = (text: string) => {
+        if (text.trim() === "") {
+            setMembers(mem)
+            return
+        }
+
+        const filtered = mem.filter(member =>
+            `${member.name}${member.surname}`.toLowerCase().includes(text.toLowerCase())
+        )
+
+        setMembers(filtered)
+    }
 
     // Fetch Workspace Members
     useEffect(() => {
@@ -65,7 +78,11 @@ const UsersHomePage = () => {
 
             if (userId === adminId) {
                 setMembers(members)
-            } else setMembers(members.filter((member: Member) => member.userId !== adminId))
+                setMem(members)
+            } else {
+                setMembers(members.filter((member: Member) => member.userId !== adminId))
+                setMem(members.filter((member: Member) => member.userId !== adminId))
+            }
         })
 
         return () => getWorkspaceUsers()
@@ -82,6 +99,7 @@ const UsersHomePage = () => {
                 <div
                     className={"relative w-[340px]"}>
                     <input
+                        onChange={(e) => findUser(e.target.value)}
                         className={"border rounded-sm w-full h-[38px] pl-4 pr-8.5"}
                         placeholder={"Search for members..."}
                         type="text"/>

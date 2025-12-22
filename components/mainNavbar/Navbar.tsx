@@ -34,13 +34,11 @@ const Navbar = () => {
                 >
                     {mode === "solo"
                         ?
-                        <>
-                            <h1
-                                className={"text-white text-lg font-light ml-[22px]"}
-                            >
-                                {"Projects"} {">"}
-                            </h1>
-                        </>
+                        <h1
+                            className={"text-white text-lg font-light ml-[22px]"}
+                        >
+                            {"Projects"} {">"}
+                        </h1>
                         :
                         <>
                             <span className={"text-white text-lg font-light ml-[22px]"}>
