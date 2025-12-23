@@ -17,6 +17,7 @@ import {auth} from "@/app/firebase/config";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
+import {useMounted} from "@/features/hooks/useMounted";
 
 
 const ProjectsBars = () => {
@@ -28,15 +29,16 @@ const ProjectsBars = () => {
     const [inputValue, setInputValue] = useState("");
     const [editingProjectId, setEditingProjectId] = useState<string | null>(null);
 
-    // Replace Route
     const {replace} = useReplaceRouteLink()
     const {mode, workspaceId, userRole} = useWorkSpaceContext()
+    const mounted = useMounted()
 
     const isCurrProjectEditing = (projectId: string) => editingProjectId === projectId
 
     // User Data
     const [user] = useAuthState(auth)
     const userId = user?.uid
+
 
     // Fetch Projects
     useEffect(() => {
@@ -78,6 +80,8 @@ const ProjectsBars = () => {
         if (projectType === "tracking") return "bg-pastel-purple-500"
         else return "bg-pastel-blue-600"
     }
+
+    if (!mounted) return null;
 
     return (
         <>
@@ -139,7 +143,8 @@ const ProjectsBars = () => {
                                     <h3 className={"text-[14px] font-medium text-black -mb-1"}>
                                         Total time:
                                     </h3>
-                                    <span className={"text-[24px] leading-tight font-bold text-red w-[90%]"}>
+                                    <span
+                                        className={"text-[24px] leading-tight font-bold text-red w-[90%]"}>
                                             {p.totalTime}
                                         </span>
                                 </div>
@@ -173,10 +178,12 @@ const ProjectsBars = () => {
                     </>
                     :
                     <>
-                        <h1 className="text-custom-gray-600 text-lg mt-[20px]">You have no projects created 0.o</h1>
+                        <h1 className="text-custom-gray-600 text-lg mt-[20px]">You have no projects created
+                            0.o</h1>
                     </>
                 }
             </ul>
+
         </>
     );
 };

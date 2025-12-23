@@ -10,6 +10,7 @@ import {createNewProject} from "@/features/utilities/create/createNewProject";
 import {useAuthRedirect} from "@/features/hooks/useAuthRedirect";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {useAuthState} from "react-firebase-hooks/auth";
+import {useMounted} from "@/features/hooks/useMounted";
 
 export default function HomePage() {
 
@@ -20,6 +21,7 @@ export default function HomePage() {
     const [user] = useAuthState(auth)
     const userId = user?.uid
     const {mode, workspaceId, userRole} = useWorkSpaceContext()
+    const mounted = useMounted()
 
     //   States
     const [isModalOpen, setIsModalOpen] = useState(false);

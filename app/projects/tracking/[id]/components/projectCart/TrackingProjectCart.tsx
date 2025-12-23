@@ -15,6 +15,7 @@ import {setColorByDate} from "@/features/utilities/date/setcolorByDate";
 import {getUniqueDates} from "@/features/utilities/date/getUniqueDates";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
+import {useMounted} from "@/features/hooks/useMounted";
 
 const TrackingProjectCart = ({...props}: ProjectProps) => {
 
@@ -30,6 +31,8 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
     // Variables
     const projectId = props.projectId;
     const userId = user?.uid
+
+    const mounted = useMounted()
 
 
     // Fetch Sections Data
@@ -84,6 +87,7 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
             workspaceId)
     }
 
+    if (!mounted) return null;
 
     return (
         <>
@@ -153,7 +157,7 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
                 </ul>
             </section>
             <InformativeModal setIsModalOpen={setIsInfoModalOpen} isModalOpen={isInfoModalOpen}
-                              title={"You can't have a section without a name.\n"}/>
+                              title={"You can't have a section without a name."}/>
         </>
     );
 };

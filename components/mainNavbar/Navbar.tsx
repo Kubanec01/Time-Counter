@@ -4,12 +4,16 @@ import {LuMessageCircleMore} from "react-icons/lu";
 import userBgImg from "@/public/gradient-bg.jpg"
 import {UserMenu} from "@/components/mainNavbar/components/UserMenu";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {useAuthState} from "react-firebase-hooks/auth";
+import {auth} from "@/app/firebase/config";
+import {OrbitProgress, ThreeDot} from "react-loading-indicators";
 
 
 const Navbar = () => {
 
     // states
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+    const [loading] = useAuthState(auth)
 
     const {userInitials, workspaceName, workspaceId, mode} = useWorkSpaceContext()
 
@@ -84,7 +88,22 @@ const Navbar = () => {
                         className={`cursor-pointer aspect-square w-[36px] rounded-[100px]
                          overflow-hidden flex justify-center items-center text-white text-lg`}
                     >
-                        {userInitials}
+                        {
+                            loading ?
+                                <>
+                                    {userInitials}
+                                </>
+                                :
+                                <>
+                                    <div
+                                        className={"flex items-center justify-center"}
+                                    >
+                                        <OrbitProgress variant={"spokes"} color="white" style={{
+                                            fontSize: "5px",
+                                        }}/>
+                                    </div>
+                                </>
+                        }
                     </button>
                 </li>
             </ul>
