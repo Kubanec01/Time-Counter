@@ -87,7 +87,6 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
             workspaceId)
     }
 
-    if (!mounted) return null;
 
     return (
         <>

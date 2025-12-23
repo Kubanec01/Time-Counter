@@ -47,6 +47,9 @@ export const JoinWorkspace = () => {
             setWorkspaceInputId("")
             setPassword("")
             replace("/")
+            localStorage.setItem("workingMode", "workspace")
+            localStorage.setItem("workspaceId", workspaceInputId)
+            console.log("this should be error", localStorage.getItem(("somethingInTheWay")))
         }
 
         const isMember = members.some(member => member.userId === userId)

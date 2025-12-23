@@ -16,5 +16,5 @@ export const getFirestoreTargetRef = (
         if (!workspaceId) throw new Error(missingWorkspaceId);
         return doc(db, "realms", workspaceId);
     }
-    throw new Error(`Invalid mode: ${mode}`);
+    throw new Error(`Invalid mode:`);
 }

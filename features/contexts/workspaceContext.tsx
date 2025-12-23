@@ -6,6 +6,7 @@ import {getUserNameData, getUserRoleData} from "@/features/utilities/userInfoDat
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth} from "@/app/firebase/config";
 import {getWorkspaceName} from "@/features/utilities/getWorkspaceName";
+import {Mode} from "node:fs";
 
 interface Context {
     mode: UserMode
@@ -37,7 +38,22 @@ export const WorkSpaceContextProvider = ({children}: { children: ReactNode }) =>
     const userId = user?.uid
     console.log(mode, workspaceId)
 
+    // Fetch Mode and WorkspaceId
     useEffect(() => {
+        const storageMode = localStorage.getItem("workingMode") as UserMode | null
+        const storageWorkingId: string | null = localStorage.getItem("workspaceId")
+
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setMode(storageMode ?? "solo")
+        setWorkspaceId(storageWorkingId ?? null)
+
+    }, []);
+
+    // Fetch User Info
+    useEffect(() => {
+
+        if (!userId || !mode) return
+
         getUserNameData(userId, mode, workspaceId).then(resp => {
             if (resp) {
                 setUserName(resp.name)
