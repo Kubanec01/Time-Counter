@@ -14,12 +14,12 @@ const WorkspacePassword = () => {
 
     const router = useRouter();
 
-    const handleChangeOPassword = async (e: FormEvent) => {
+    const handleChangePassword = async (e: FormEvent) => {
         e.preventDefault();
         if (password !== confirmPassword || password.trim() === "" || confirmPassword.trim() === "") {
             setPassword("")
             setConfirmPassword("")
-            console.log("something is wrong");
+            return console.log("something is wrong");
         }
         if (!workspaceId) return
         const docRef = doc(db, "realms", workspaceId)
@@ -33,7 +33,7 @@ const WorkspacePassword = () => {
         <section className="w-full h-screen flex flex-col justify-center items-center">
             <div className="h-[300px] flex flex-col">
                 <form
-                    onSubmit={handleChangeOPassword}
+                    onSubmit={handleChangePassword}
                     className="w-[312px] flex flex-col justify-center items-center flex-1 gap-[8px]">
                     <h1
                         className={"mb-2 text-lg"}>Change Workspace password</h1>

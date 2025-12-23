@@ -36,6 +36,8 @@ export const UserMenu = ({...props}: Props) => {
         setMode("solo")
         setWorkspaceId(null)
         setIsLeaveWorkspaceModalOpen(false);
+        localStorage.removeItem("workingMode")
+        localStorage.removeItem("workspaceId")
     }
 
     return (

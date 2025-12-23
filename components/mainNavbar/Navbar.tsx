@@ -6,7 +6,7 @@ import {UserMenu} from "@/components/mainNavbar/components/UserMenu";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth} from "@/app/firebase/config";
-import {OrbitProgress, ThreeDot} from "react-loading-indicators";
+import {OrbitProgress} from "react-loading-indicators";
 
 
 const Navbar = () => {
@@ -88,22 +88,7 @@ const Navbar = () => {
                         className={`cursor-pointer aspect-square w-[36px] rounded-[100px]
                          overflow-hidden flex justify-center items-center text-white text-lg`}
                     >
-                        {
-                            loading ?
-                                <>
-                                    {userInitials}
-                                </>
-                                :
-                                <>
-                                    <div
-                                        className={"flex items-center justify-center"}
-                                    >
-                                        <OrbitProgress variant={"spokes"} color="white" style={{
-                                            fontSize: "5px",
-                                        }}/>
-                                    </div>
-                                </>
-                        }
+                        {userInitials}
                     </button>
                 </li>
             </ul>
