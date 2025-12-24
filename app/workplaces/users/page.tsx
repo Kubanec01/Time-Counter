@@ -45,7 +45,7 @@ const UsersHomePage = () => {
             const data = docSnap.data()
             const adminId: string = data.adminId
             const members: Member[] = data.members
-            const bannedMembers: Member[] = data.blackList
+            const bannedMembers: Member[] = data.blackList || []
 
             setBannedMembers(bannedMembers)
             if (userId === adminId) {

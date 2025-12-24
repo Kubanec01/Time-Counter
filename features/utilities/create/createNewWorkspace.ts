@@ -1,7 +1,8 @@
 import {documentNotFound, invalidUserId} from "@/messages/errors";
-import {doc, getDoc, setDoc} from "firebase/firestore";
+import {arrayUnion, doc, getDoc, setDoc, updateDoc} from "firebase/firestore";
 import {db} from "@/app/firebase/config";
 import {Member} from "@/types";
+import {setLocalStorageUserMode, setLocalStorageWorkspaceId} from "@/features/utilities/localStorage";
 
 
 export const createNewWorkspace = async (
@@ -39,6 +40,7 @@ export const createNewWorkspace = async (
         members: [member],
         projects: [],
     })
-
-
+    await updateDoc(userRef, {workspacesList: arrayUnion(workspaceId)})
+    setLocalStorageUserMode("workspace")
+    setLocalStorageWorkspaceId(workspaceId)
 }

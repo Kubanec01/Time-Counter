@@ -12,6 +12,7 @@ import {useRouter} from "next/navigation";
 import {signOut} from "@firebase/auth";
 import ConfirmExitModal from "@/components/modals/ConfirmExitModal";
 import {TbPasswordUser} from "react-icons/tb";
+import {removeLocalStorageWorkspaceIdAndUserMode} from "@/features/utilities/localStorage";
 
 interface Props {
     isUserMenuOpen: boolean
@@ -34,10 +35,9 @@ export const UserMenu = ({...props}: Props) => {
 
     const handleLeaveWorkspace = () => {
         setMode("solo")
-        setWorkspaceId(null)
+        setWorkspaceId("unused")
         setIsLeaveWorkspaceModalOpen(false);
-        localStorage.removeItem("workingMode")
-        localStorage.removeItem("workspaceId")
+        removeLocalStorageWorkspaceIdAndUserMode()
     }
 
     return (

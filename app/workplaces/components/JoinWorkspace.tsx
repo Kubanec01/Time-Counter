@@ -9,6 +9,7 @@ import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {arrayUnion, doc, getDoc, onSnapshot, updateDoc} from "firebase/firestore";
 import {Member} from "@/types";
 import {WorkspacesListModal} from "@/components/modals/WorkspacesListModal";
+import {setLocalStorageUserMode, setLocalStorageWorkspaceId} from "@/features/utilities/localStorage";
 
 export const JoinWorkspace = () => {
     const [workspaceInputId, setWorkspaceInputId] = useState("")
@@ -51,9 +52,8 @@ export const JoinWorkspace = () => {
             setWorkspaceInputId("")
             setPassword("")
             replace("/")
-            localStorage.setItem("workingMode", "workspace")
-            localStorage.setItem("workspaceId", workspaceInputId)
-            console.log("this should be error", localStorage.getItem(("somethingInTheWay")))
+            setLocalStorageUserMode("workspace")
+            setLocalStorageWorkspaceId(workspaceInputId)
         }
 
         const isMember = members.some(member => member.userId === userId)
@@ -102,9 +102,10 @@ export const JoinWorkspace = () => {
                     </h1>
                     <span className={"text-3xl"}>/</span>
                     <button
+                        disabled={workspacesList.length === 0}
                         type={"button"}
                         onClick={() => setIsModalOpen(true)}
-                        className={"px-3 py-1 border rounded-full cursor-pointer"}>
+                        className={`${workspacesList.length === 0 ? "text-gray-500 cursor-default" : "cursor-pointer"} px-3 py-1 border rounded-full`}>
                         My Work
                     </button>
                 </div>
