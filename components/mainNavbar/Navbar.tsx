@@ -4,16 +4,12 @@ import {LuMessageCircleMore} from "react-icons/lu";
 import userBgImg from "@/public/gradient-bg.jpg"
 import {UserMenu} from "@/components/mainNavbar/components/UserMenu";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
-import {useAuthState} from "react-firebase-hooks/auth";
-import {auth} from "@/app/firebase/config";
-import {OrbitProgress} from "react-loading-indicators";
 
 
 const Navbar = () => {
 
     // states
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-    const [loading] = useAuthState(auth)
 
     const {userInitials, workspaceName, workspaceId, mode} = useWorkSpaceContext()
 

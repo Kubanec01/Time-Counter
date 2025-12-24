@@ -6,7 +6,6 @@ import {getUserNameData, getUserRoleData} from "@/features/utilities/userInfoDat
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth} from "@/app/firebase/config";
 import {getWorkspaceName} from "@/features/utilities/getWorkspaceName";
-import {Mode} from "node:fs";
 
 interface Context {
     mode: UserMode
@@ -26,8 +25,9 @@ const workSpaceContext = createContext<Context | undefined>(undefined)
 export const WorkSpaceContextProvider = ({children}: { children: ReactNode }) => {
 
     const [mode, setMode] = useState<UserMode>("solo")
-    const [workspaceId, setWorkspaceId] = useState<WorkspaceId>(null)
+    const [workspaceId, setWorkspaceId] = useState<WorkspaceId>("unused")
     const [workspaceName, setWorkspaceName] = useState<string | null>("")
+    const [isMatched, setIsMatched] = useState<boolean>(false)
     const [userName, setUserName] = useState("")
     const [userSurname, setUserSurname] = useState("")
     const [userMail, setUserMail] = useState("")
@@ -37,6 +37,7 @@ export const WorkSpaceContextProvider = ({children}: { children: ReactNode }) =>
     const [user] = useAuthState(auth)
     const userId = user?.uid
     console.log(mode, workspaceId)
+    console.log("isMatched", isMatched)
 
     // Fetch Mode and WorkspaceId
     useEffect(() => {
@@ -45,14 +46,15 @@ export const WorkSpaceContextProvider = ({children}: { children: ReactNode }) =>
 
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setMode(storageMode ?? "solo")
-        setWorkspaceId(storageWorkingId ?? null)
+        setWorkspaceId(storageWorkingId ?? "unused")
+        setIsMatched(true)
 
     }, []);
 
     // Fetch User Info
     useEffect(() => {
 
-        if (!userId || !mode) return
+        if (!userId || !mode || !isMatched || !workspaceId) return console.log("i stoped it")
 
         getUserNameData(userId, mode, workspaceId).then(resp => {
             if (resp) {

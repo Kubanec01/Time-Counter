@@ -30,7 +30,7 @@ export interface UpdatedSectionByDate {
 }
 
 export type UserMode = "solo" | "workspace"
-export type WorkspaceId = string | null
+export type WorkspaceId = string | "unused"
 
 export type ProjectType = "tracking" | "logging"
 
