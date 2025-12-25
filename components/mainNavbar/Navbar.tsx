@@ -2,7 +2,7 @@ import {useState} from "react";
 import {RxQuestionMarkCircled} from "react-icons/rx";
 import {LuMessageCircleMore} from "react-icons/lu";
 import userBgImg from "@/public/gradient-bg.jpg"
-import {UserMenu} from "@/components/mainNavbar/components/UserMenu";
+import {UserMenu} from "@/components/mainNavbar/components/userMenu/UserMenu";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 
 
