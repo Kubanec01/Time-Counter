@@ -21,9 +21,10 @@ export const CreateWorkspace = () => {
 
     const createWorkspace = async (e: FormEvent) => {
         e.preventDefault()
+
+        if (password.trim() === "" || workspaceName.trim() === "") return console.log('Missing password or name')
+
         const workspaceId = `@${workspaceName.replace(/\s/g, "")}${throwRandomNum(1000)}`
-
-
         await createNewWorkspace(userId, workspaceName, workspaceId, password)
 
         setWorkspaceName("")

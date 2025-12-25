@@ -144,6 +144,7 @@ export const JoinWorkspace = () => {
                 </button>
             </form>
             <WorkspacesListModal
+                userId={userId}
                 setIsModalOpen={setIsModalOpen}
                 isModalOpen={isModalOpen}
                 workspacesList={workspacesList}
