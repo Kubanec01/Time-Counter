@@ -139,7 +139,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
     return (
         <li
             key={props.sectionId}
-            className={`w-full rounded-2xl flex flex-col flex-between bg-white relative ${!isAnySections && "pb-1.5"}
+            className={`w-full rounded-2xl flex flex-col flex-between bg-white shadow-sm relative ${!isAnySections && "pb-1.5"}
              ${(mode === "solo" || !isWorkspaceRoleAdmin) ? "pt-1.5" : "pt-3"} px-[16px] mb-[8px]`}>
             {/*User Name*/}
             <span

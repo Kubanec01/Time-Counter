@@ -32,8 +32,6 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
     const projectId = props.projectId;
     const userId = user?.uid
 
-    const mounted = useMounted()
-
 
     // Fetch Sections Data
     useEffect(() => {
@@ -92,7 +90,7 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
         <>
             <ProjectCartNavbar projectName={props.projectName}/>
             <section
-                className={"w-[90%] max-w-[776px] mx-auto pt-[198px] border-b-2 border-custom-gray-600 pb-3 px-20"}
+                className={"w-[90%] max-w-[776px] mx-auto pt-[198px] border-b-2 border-custom-gray-600/50 pb-3 px-20"}
             >
                 <form
                     onSubmit={createSection}
@@ -100,7 +98,7 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
                 >
                     <input
                         placeholder={"What do you want to work on?"}
-                        className={"w-[476px] h-[38px] rounded-[4px] pl-2 text-sm border border-custom-gray-800 outline-none"}
+                        className={"w-[476px] h-[38px] rounded-full pl-3 text-sm bg-white border border-black/15 outline-none"}
                         type="text"
                         value={inputValue}
                         maxLength={24}
@@ -108,7 +106,7 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
                     />
                     <button
                         type={"submit"}
-                        className={"w-[119px] h-[38px] text-base rounded-[4px] text-white bg-pastel-purple-800 cursor-pointer"}>
+                        className={"px-5 py-1 text-sm font-semibold rounded-full text-white bg-pastel-purple-600 cursor-pointer"}>
                         New Timer
                     </button>
                 </form>
@@ -124,7 +122,7 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
                                     className={`w-full px-[12px] pt-[12px] pb-[4px] rounded-[12px] shadow-lg ${setColorByDate(section)}`}
                                     key={index}>
                                     <h1
-                                        className={"text-sm text-custom-gray-800  ml-[24px] mb-[12px]"}
+                                        className={"text-sm text-black/50 font-semibold  ml-[24px] mb-[12px]"}
                                     >
                                         {setNameByDate(section)}
                                     </h1>

@@ -18,6 +18,8 @@ interface Context {
     userInitials: string;
     userRole: Role;
     workspaceName: string | null;
+    isUserMenuOpen: boolean;
+    setIsUserMenuOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 const workSpaceContext = createContext<Context | undefined>(undefined)
@@ -33,6 +35,7 @@ export const WorkSpaceContextProvider = ({children}: { children: ReactNode }) =>
     const [userMail, setUserMail] = useState("")
     const [userInitials, setUserInitials] = useState("")
     const [userRole, setUserRole] = useState<Role>("Admin")
+    const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
 
     const [user] = useAuthState(auth)
     const userId = user?.uid
@@ -97,7 +100,9 @@ export const WorkSpaceContextProvider = ({children}: { children: ReactNode }) =>
                 userInitials,
                 userRole,
                 workspaceName,
-                userMail
+                userMail,
+                isUserMenuOpen,
+                setIsUserMenuOpen
             }}>
             {children}
         </workSpaceContext.Provider>

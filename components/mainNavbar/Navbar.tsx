@@ -19,7 +19,7 @@ const Navbar = () => {
 
     return (
         <div
-            className={`w-full fixed top-0 left-0 h-[72px] z-[40] bg-black flex justify-between items-center`}
+            className={`w-full fixed top-0 left-0 h-[72px] z-[40] bg-black/85 backdrop-blur-sm flex justify-between items-center`}
         >
             {/*Left Side*/}
             <div
