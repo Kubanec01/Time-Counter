@@ -10,7 +10,6 @@ import {createNewProject} from "@/features/utilities/create/createNewProject";
 import {useAuthRedirect} from "@/features/hooks/useAuthRedirect";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {useAuthState} from "react-firebase-hooks/auth";
-import {useMounted} from "@/features/hooks/useMounted";
 
 export default function HomePage() {
 
@@ -21,7 +20,6 @@ export default function HomePage() {
     const [user] = useAuthState(auth)
     const userId = user?.uid
     const {mode, workspaceId, userRole} = useWorkSpaceContext()
-    const mounted = useMounted()
 
     //   States
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -62,8 +60,8 @@ export default function HomePage() {
                     className={`${isUserMember ? "hidden" : "flex"} items-center justify-center`}>
                     <button
                         onClick={() => setIsModalOpen(true)}
-                        className={"text-base px-[20px] py-3.5 text-white hover:text-black" +
-                            " bg-black hover:bg-white border-2 cursor-pointer duration-150 ease-in-out border-black rounded-[1000px] font-medium"}>
+                        className={"text-base px-4 py-3 text-white hover:text-black" +
+                            " bg-black hover:bg-white border-2 cursor-pointer duration-150 ease-in-out border-black rounded-full font-medium"}>
                         Create project
                     </button>
                     <p

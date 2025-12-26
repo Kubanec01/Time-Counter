@@ -77,8 +77,8 @@ const ProjectsBars = () => {
     }
 
     const setProjectBarColor = (projectType: ProjectType) => {
-        if (projectType === "tracking") return "bg-pastel-purple-500"
-        else return "bg-pastel-blue-600"
+        if (projectType === "tracking") return "bg-linear-to-br from-pastel-purple-600 to-pastel-purple-500"
+        else return "bg-linear-to-br from-pastel-blue-700 to-pastel-blue-600"
     }
 
     if (!mounted) return null;
@@ -91,70 +91,61 @@ const ProjectsBars = () => {
                         {projectsData.map((p: Project) => (
                             <li
                                 key={p.projectId}
-                                className={`${setProjectBarColor(p.type)} shadow-lg px-5 pt-10 rounded-[8px] w-[248px] h-[330px] relative`}>
+                                className={`${setProjectBarColor(p.type)} hover:-translate-y-2 duration-150 ease-in shadow-xl shadow-custom-gray-600/80 pt-13 px-3 pb-3 rounded-2xl w-[248px] h-[300px] relative`}>
                                 <ul
-                                    className={`${(userRole === "Admin" || userRole === "Manager") ? "flex" : "hidden"}
-                                    absolute top-0 right-0 p-[14px] text-custom-gray-800 text-xl"
-                                    "items-center justify-center gap-[14px]`}
+                                    className={`
+                                    ${(userRole === "Admin" || userRole === "Manager") ? "flex" : "hidden"} absolute top-3 right-3 px-3 py-2 
+                                    rounded-full bg-black/20 backdrop-blur-md items-center gap-3 text-white/80 shadow-sm`}
                                 >
-                                    {/*Delete Button*/}
                                     <li
-                                        onClick={() => {
-                                            setIsDeleteModalOpen(isCurrProjectEditing(p.projectId));
-                                        }}
-                                        className={`${isCurrProjectEditing(p.projectId) ? "block" : "hidden"} cursor-pointer`}
+                                        onClick={() => setIsDeleteModalOpen(isCurrProjectEditing(p.projectId))}
+                                        className={`${isCurrProjectEditing(p.projectId) ? "block" : "hidden"} cursor-pointer hover:text-red-300 transition`}
                                     >
                                         <MdDeleteOutline/>
                                     </li>
-                                    {/*Edit Button*/}
+
                                     <li
-                                        onClick={() => {
-                                            setIsModalOpen(isCurrProjectEditing(p.projectId));
-                                        }}
-                                        className={`${isCurrProjectEditing((p.projectId)) ? "block" : "hidden"} cursor-pointer`}
+                                        onClick={() => setIsModalOpen(isCurrProjectEditing(p.projectId))}
+                                        className={`${isCurrProjectEditing(p.projectId) ? "block" : "hidden"} cursor-pointer hover:text-white transition`}
                                     >
                                         <MdOutlineEdit/>
-
                                     </li>
-                                    {/*Close & Open Button*/}
+
                                     <li
-                                        onClick={() => {
-                                            setEditingProjectId(prev => prev === p.projectId ? null : p.projectId)
-                                        }}
-                                        className={"cursor-pointer"}
-                                    >
-                                        {isCurrProjectEditing(p.projectId) ?
-                                            <IoClose/>
-                                            :
-                                            <HiOutlineMenuAlt3/>
+                                        onClick={() =>
+                                            setEditingProjectId(prev => (prev === p.projectId ? null : p.projectId))
                                         }
+                                        className="cursor-pointer hover:text-white transition"
+                                    >
+                                        {isCurrProjectEditing(p.projectId) ? <IoClose/> : <HiOutlineMenuAlt3/>}
                                     </li>
                                 </ul>
-                                <h2 className={"text-base font-medium text-black"}>
-                                    Project name:
-                                </h2>
-                                <h1 className={"text-[28px] leading-tight font-bold text-black w-[98%] -mt-1 border-b-2 break-words"}>
-                                    {p.title}
-                                </h1>
-                                {/*Time*/}
-                                <div
-                                    className={"mt-[28px] border-b-2"}
-                                >
-                                    <h3 className={"text-[14px] font-medium text-black -mb-1"}>
-                                        Total time:
-                                    </h3>
-                                    <span
-                                        className={"text-[24px] leading-tight font-bold text-red w-[90%]"}>
-                                            {p.totalTime}
+                                {/* Body */}
+                                <div className="h-full w-full rounded-2xl p-5 bg-black/85 flex flex-col items-start">
+                                    <div className="flex-0 w-full border-b border-white/20">
+                                        <h2 className="text-sm text-white/70 font-light -mb-0.5">
+                                            Project name
+                                        </h2>
+                                        <h1 className="text-xl leading-tight font-semibold text-white break-words line-clamp-2">
+                                            {p.title}
+                                        </h1>
+                                    </div>
+                                    <div className="flex-1"/>
+                                    <div className="flex-0 mb-3 w-full border-b border-white/20">
+                                        <h3 className="text-sm text-white/70 font-light -mb-0.5">
+                                            Total time
+                                        </h3>
+                                        <span className="text-xl font-semibold text-white">
+                                    {p.totalTime}
                                         </span>
+                                    </div>
+                                    <button
+                                        onClick={() => replace(`/projects/${p.type}/${p.projectId}`)}
+                                        className="mt-4 text-white text-sm hover:translate-x-0.5 transition mb-2 cursor-pointer"
+                                    >
+                                        {"Enter project >"}
+                                    </button>
                                 </div>
-                                {/*Enter button*/}
-                                <button
-                                    onClick={() => replace(`/projects/${p.type}/${p.projectId}`)}
-                                    className={"px-4 py-3 hover:-translate-x-1 duration-150 ease-in bg-black text-white text-sm rounded-[100px] mt-[44px] absolute " +
-                                        "left-[20px] bottom-[40px] cursor-pointer"}>
-                                    {"Enter project >"}
-                                </button>
                             </li>
                         ))}
                         <DeleteModal

@@ -20,7 +20,7 @@ const ProjectCartNavbar = ({projectName}: { projectName: string | null }) => {
 
     return (
         <div
-            className={`w-full fixed top-0 left-0 h-[72px] bg-black z-50 flex justify-between items-center`}
+            className={`w-full fixed top-0 left-0 h-[72px] bg-black/90 backdrop-blur-sm z-50 flex justify-between items-center`}
         >
             {/*Left Side*/}
             <div
@@ -56,7 +56,8 @@ const ProjectCartNavbar = ({projectName}: { projectName: string | null }) => {
                 <li>
                     <button
                         onClick={() => goToHomePage()}
-                        className={"flex justify-center items-center cursor-pointer text-base rounded-sm px-[18px] h-[38px] bg-pastel-purple-800 text-white"}
+                        className={"flex justify-center items-center cursor-pointer text-sm rounded-full px-[18px] h-[38px] " +
+                            "bg-white/10 text-white/60 hover:bg-white/90 hover:text-black"}
                     >
                         Go back
                     </button>

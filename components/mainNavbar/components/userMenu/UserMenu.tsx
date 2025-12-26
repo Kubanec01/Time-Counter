@@ -54,7 +54,7 @@ export const UserMenu = ({...props}: Props) => {
     return (
         <div
             onMouseLeave={() => props.setIsUserMenuOpen(false)}
-            className={`${setVisibility} fixed top-15 right-12.5 rounded-md z-[50] bg-[#1e1e20] flex flex-col gap-4 w-[230px] p-3`}>
+            className={`${setVisibility} fixed top-15 right-12.5 rounded-md z-[50] bg-black/90 backdrop-blur-sm flex flex-col gap-4 w-[230px] p-3`}>
             <div
                 className={"flex items-center gap-2 mb-2"}>
                 <span
