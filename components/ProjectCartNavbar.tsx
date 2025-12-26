@@ -28,7 +28,7 @@ const ProjectCartNavbar = ({projectName}: { projectName: string | null }) => {
                 <div
                     className={"h-full flex items-center px-[50px] justify-center border-r border-custom-gray-800"}
                 >
-                    <img src={"/Logo.png"} alt={"Logo image"} className={"w-auto h-auto"}/>
+                    <img src={"/Logo.png"} alt={"Logo image"} className={"w-[94%] h-auto"}/>
                 </div>
                 <div
                     className={"h-full flex items-center justify-center"}
@@ -57,9 +57,9 @@ const ProjectCartNavbar = ({projectName}: { projectName: string | null }) => {
                     <button
                         onClick={() => goToHomePage()}
                         className={"flex justify-center items-center cursor-pointer text-sm rounded-full px-[18px] h-[38px] " +
-                            "bg-white/10 text-white/60 hover:bg-white/90 hover:text-black"}
+                            "bg-white/10 text-white/60 hover:bg-blue-500 hover:text-white"}
                     >
-                        Go back
+                        {"Go back >"}
                     </button>
                 </li>
             </ul>

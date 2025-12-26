@@ -18,13 +18,13 @@ const InformativeModal = ({...props}: ModalProps) => {
             className={`${openStyle} fixed top-0 left-0 w-full h-screen z-50 justify-center items-start`}
         >
             <div
-                className="max-w-[360px] border-2 border-custom-gray-600/30 shadow-lg rounded-[12px] bg-[white] py-3 px-[18px] mt-[100px]">
+                className="max-w-[360px] border-2 border-black/10 shadow-lg rounded-[12px] bg-white py-3 px-[18px] mt-[100px]">
                 <h1 className="text-start w-[80%] text-base font-medium">
                     {props.title}
                 </h1>
                 <button
                     onClick={() => props.setIsModalOpen(false)}
-                    className="text-sm mt-[12px] py-2 w-full rounded-[100px] cursor-pointer text-white bg-black
+                    className="text-sm mt-[12px] py-2 w-full rounded-[100px] cursor-pointer text-white bg-black hover:bg-gray-800
                     "
                 >
                     Cancel

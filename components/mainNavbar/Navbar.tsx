@@ -15,11 +15,11 @@ const Navbar = () => {
 
 
     // Styles
-    const rightButtonsStyle = "text-custom-gray-800 hover:text-white duration-150 ease-in-out text-[24px] cursor-pointer"
+    const rightButtonsStyle = "text-custom-gray-800 hover:text-blue-500 duration-150 ease-in-out text-[24px] cursor-pointer"
 
     return (
         <div
-            className={`w-full fixed top-0 left-0 h-[72px] z-[40] bg-black/85 backdrop-blur-sm flex justify-between items-center`}
+            className={`w-full fixed top-0 left-0 h-[72px] z-[40] bg-black/95 backdrop-blur-sm flex justify-between items-center`}
         >
             {/*Left Side*/}
             <div
@@ -27,7 +27,7 @@ const Navbar = () => {
                 <div
                     className={"h-full flex items-center px-[50px] justify-center border-r border-custom-gray-800 flex-shrink-0"}
                 >
-                    <img src={"/Logo.png"} alt={"Logo image"} className={"w-auto h-auto"}/>
+                    <img src={"/Logo.png"} alt={"Logo image"} className={"w-[94%] h-auto"}/>
                 </div>
                 <div
                     className={"h-full flex items-center justify-start overflow-hidden text-nowrap"}

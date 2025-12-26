@@ -19,7 +19,7 @@ export const WorkspaceButton = (
     return (
         <button
             onClick={() => handleClick()}
-            className={"w-full flex items-center gap-2 text-white text-sm bg-linear-to-bl from-pastel-purple-700 to-pastel-purple-800 p-2 rounded-md cursor-pointer"}>
+            className={"w-full flex items-center gap-2 text-white text-sm bg-linear-to-bl from-blue-400 to-blue-600 p-2 rounded-md cursor-pointer"}>
             {
                 mode === "solo"
                     ?

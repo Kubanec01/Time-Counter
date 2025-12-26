@@ -60,8 +60,7 @@ export default function HomePage() {
                     className={`${isUserMember ? "hidden" : "flex"} items-center justify-center`}>
                     <button
                         onClick={() => setIsModalOpen(true)}
-                        className={"text-base px-4 py-3 text-white hover:text-black" +
-                            " bg-black hover:bg-white border-2 cursor-pointer duration-150 ease-in-out border-black rounded-full font-medium"}>
+                        className={"text-base px-4 py-3 text-white bg-black hover:bg-blue-500 cursor-pointer duration-150 ease-in-out rounded-full font-medium"}>
                         Create project
                     </button>
                     <p

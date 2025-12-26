@@ -98,7 +98,7 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
                 >
                     <input
                         placeholder={"What do you want to work on?"}
-                        className={"w-[476px] h-[38px] rounded-full pl-3 text-sm bg-white border border-black/15 outline-none"}
+                        className={"w-[476px] h-[38px] rounded-full pl-3 text-sm bg-white border border-black/10 outline-black "}
                         type="text"
                         value={inputValue}
                         maxLength={24}
@@ -106,7 +106,7 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
                     />
                     <button
                         type={"submit"}
-                        className={"px-5 py-1 text-sm font-semibold rounded-full text-white bg-pastel-purple-600 cursor-pointer"}>
+                        className={"px-5 py-1 text-sm font-semibold rounded-full text-white bg-black hover:bg-blue-500 duration-100 cursor-pointer"}>
                         New Timer
                     </button>
                 </form>
