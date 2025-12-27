@@ -57,7 +57,7 @@ export const WorkSpaceContextProvider = ({children}: { children: ReactNode }) =>
     // Fetch User Info
     useEffect(() => {
 
-        if (!userId || !mode || !isMatched || !workspaceId) return console.log("i stoped it")
+        if (!userId || !mode || !isMatched || !workspaceId) return
 
         getUserNameData(userId, mode, workspaceId).then(resp => {
             if (resp) {

@@ -7,7 +7,6 @@ import {doc, setDoc} from "firebase/firestore";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 import {createUserWithEmailAndPassword} from "@firebase/auth";
 import {FirebaseError} from "@firebase/app";
-import {useAuthState} from "react-firebase-hooks/auth";
 
 const SignUpPage = () => {
     const [email, setEmail] = useState("");

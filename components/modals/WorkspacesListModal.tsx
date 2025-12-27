@@ -10,11 +10,24 @@ interface WorkspacesListModalProps {
     setIsModalOpen: Dispatch<SetStateAction<boolean>>;
     workspacesList: string[];
     setWorkspaceInputId: Dispatch<SetStateAction<string>>;
+    userId: string | undefined;
 }
 
 export const WorkspacesListModal = ({...props}: WorkspacesListModalProps) => {
 
-    const openStyle = props.isModalOpen ? "flex" : "hidden";
+    const openStyle = props.isModalOpen ? "block" : "hidden";
+
+    const removeWorkspaceFromList = async (workspaceName: string) => {
+        if (!props.userId) return;
+        const userRef = doc(db, "users", props.userId)
+        const userSnap = await getDoc(userRef)
+        if (!userSnap.exists()) return;
+        const data = userSnap.data();
+        const updatedWorkspacesList: string[] = data.workspacesList.filter((workspace: string) => workspace !== workspaceName);
+
+        await updateDoc(userRef, {workspacesList: updatedWorkspacesList});
+    }
+
 
     const removeWorkspaceFromList = async (workspaceName: string) => {
         if (!props.userId) return;

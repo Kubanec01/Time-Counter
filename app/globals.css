@@ -35,6 +35,13 @@ body {
     font-family: 'Pacifico', cursive;
 }
 
+.glass-effect {
+    border-left: 1px solid rgba(255, 255, 255, 0.6);
+    border-top: 1px solid rgba(255, 255, 255, 0.6);
+    border-right: 1px solid rgba(255, 255, 255, 0.6);
+    border-bottom: none;
+}
+
 
 /* :root {
   --background: #ffffff;

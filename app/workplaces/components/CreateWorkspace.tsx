@@ -37,40 +37,47 @@ export const CreateWorkspace = () => {
     return (
         <form
             onSubmit={createWorkspace}
-            className="w-[312px] flex flex-col justify-center items-center gap-[8px]">
-            <h1
-                className={"text-lg font-semibold mb-4"}>
-                Create Workspace
-            </h1>
-            {/* Name Input */}
+            className="w-[280px] py-4 rounded-2xl flex flex-col justify-center items-center gap-[8px]"
+        >
+            <div className="flex gap-3 items-center mb-4">
+                <h1 className="text-lg text-black/60 font-bold">
+                    Create Workspace
+                </h1>
+            </div>
+
+            {/* Workspace Name Input */}
             <input
                 onChange={e => setWorkspaceName(e.target.value)}
                 value={workspaceName}
                 placeholder="Workspace Name"
-                className="w-full h-[46px] border border-custom-gray-800 rounded-[4px] text-base px-3"
+                className="w-full h-[38px] bg-white rounded-full text-base px-3 outline-none"
                 type="text"
             />
+
             {/* Password Input */}
             <input
                 onChange={e => setPassword(e.target.value)}
                 value={password}
                 placeholder="Workspace Password"
-                className="w-full h-[46px] border border-custom-gray-800 rounded-[4px] text-base px-3"
+                className="w-full h-[38px] bg-white rounded-full text-base px-3 outline-none"
                 type="password"
             />
+
             <button
-                type={"submit"}
-                className="cursor-pointer w-full h-[43px] mt-[8px] font-medium text-base text-white bg-pastel-purple-700 rounded-[8px]"
+                type="submit"
+                className="cursor-pointer w-full py-1.5 mt-4 font-medium text-base text-white bg-black/80 hover:bg-black/75 rounded-full"
             >
                 Create
             </button>
+
             <button
-                type={"button"}
+                type="button"
                 onClick={() => replace("/")}
-                className="cursor-pointer w-full h-[43px] font-medium text-base text-pastel-purple-700 border-2 border-pastel-purple-700 rounded-[8px]"
+                className="cursor-pointer w-full py-1 font-medium text-base text-black/80 border border-black/40 hover:bg-gray-700/5 rounded-full"
             >
                 Go back
             </button>
         </form>
+
     )
 }
