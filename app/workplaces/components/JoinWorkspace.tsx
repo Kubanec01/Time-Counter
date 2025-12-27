@@ -37,13 +37,13 @@ export const JoinWorkspace = () => {
 
         const docSnap = await getDoc(docRef)
 
-        if (!docSnap.exists()) return console.error(documentNotFound)
+        if (!docSnap.exists()) return setErrMess("Wrong password or Id")
         const data = docSnap.data()
         const correctPassword = data.password
         const blackList: Member[] = data.blackList || []
         const members: Member[] = data.members
 
-        if (password !== correctPassword) return setErrMess("Wrong password or Id.")
+        if (password !== correctPassword) return setErrMess("Wrong password or Id")
         if (blackList.some(member => member.userId === userId)) return setErrMess("You do not have permission to join this workspace.")
 
         const setStatesAndReplace = () => {
@@ -83,7 +83,6 @@ export const JoinWorkspace = () => {
             const data = snap.data()
             const workspacesList = data.workspacesList || []
             setWorkspacesList(workspacesList)
-            console.log("helloooo")
         })
 
         return () => fetchWorkspacesList()
@@ -93,52 +92,61 @@ export const JoinWorkspace = () => {
         <>
             <form
                 onSubmit={joinWorkspace}
-                className="w-[312px] flex flex-col justify-center items-center gap-[8px]">
+                className="w-[280px] py-4 rounded-2xl flex flex-col justify-center items-center gap-[8px]">
                 <div
-                    className={"flex gap-4 items-center mb-4"}>
+                    className={"flex gap-3 items-center mb-4"}>
                     <h1
-                        className={"text-lg font-semibold"}>
+                        className={"text-lg text-black/60 font-bold"}>
                         Join Workspace
                     </h1>
-                    <span className={"text-3xl"}>/</span>
+                    <span
+                        className={"text-2xl text-black/55 font-bold"}
+                    >/</span>
                     <button
                         disabled={workspacesList.length === 0}
                         type={"button"}
                         onClick={() => setIsModalOpen(true)}
-                        className={`${workspacesList.length === 0 ? "text-gray-500 cursor-default" : "cursor-pointer"} px-3 py-1 border rounded-full`}>
+                        className={`${workspacesList.length === 0 ? "text-gray-500 cursor-default" : "cursor-pointer"} 
+                          bg-black/30 text-white text-sm px-3 py-1 rounded-full hover:scale-110 active:scale-95 duration-100 ease-in`}>
                         My Work
                     </button>
                 </div>
                 {/* WorkspaceId Input */}
                 <input
-                    onChange={e => setWorkspaceInputId(e.target.value)}
+                    onChange={e => {
+                        setWorkspaceInputId(e.target.value)
+                        setErrMess("")
+                    }}
                     value={workspaceInputId}
                     placeholder="Workspace Id"
-                    className="w-full h-[46px] border border-custom-gray-800  rounded-[4px] text-base px-3"
+                    className="w-full h-[38px] bg-white/95  rounded-full text-base px-3 outline-none"
                     type="text"
                 />
                 {/* Password Input */}
                 <input
-                    onChange={e => setPassword(e.target.value)}
+                    onChange={e => {
+                        setErrMess("")
+                        setPassword(e.target.value)
+                    }}
                     value={password}
                     placeholder="Workspace Password"
-                    className="w-full h-[46px] border border-custom-gray-800  rounded-[4px] text-base px-3"
+                    className="w-full h-[38px] bg-white/95  rounded-full text-base px-3 outline-none"
                     type="password"
                 />
                 <h1
-                    className={"text-red-500 font-semibold text-center"}>
+                    className={`text-red-500 text-sm font-semibold text-center ${errMess !== "" ? "bg-black/70 border border-white/60 px-3 py-1.5 rounded-full" : ""}`}>
                     {errMess}
                 </h1>
                 <button
                     type="submit"
-                    className="cursor-pointer w-full h-[43px] mt-[8px] font-medium text-base text-white bg-pastel-purple-700 rounded-[8px]"
+                    className="cursor-pointer w-full py-1.5 mt-[8px] font-medium text-base text-white bg-black/80 hover:bg-black/75 rounded-full"
                 >
                     Join
                 </button>
                 <button
                     type={"button"}
                     onClick={() => replace("/")}
-                    className="cursor-pointer w-full h-[43px] font-medium text-base text-pastel-purple-700 border-2 border-pastel-purple-700 rounded-[8px]"
+                    className="cursor-pointer w-full py-1 font-medium text-base text-black/80 border border-black/40 hover:bg-gray-700/5 rounded-full"
                 >
                     Go back
                 </button>
