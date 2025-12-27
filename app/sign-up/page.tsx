@@ -7,6 +7,7 @@ import {doc, setDoc} from "firebase/firestore";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 import {createUserWithEmailAndPassword} from "@firebase/auth";
 import {FirebaseError} from "@firebase/app";
+import {useAuthState} from "react-firebase-hooks/auth";
 
 const SignUpPage = () => {
     const [email, setEmail] = useState("");
@@ -15,16 +16,22 @@ const SignUpPage = () => {
     const [name, setName] = useState("");
     const [surname, setSurname] = useState("");
     const [errMess, setErrMess] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+
+
     const {replace} = useReplaceRouteLink()
 
 
     const handleSignUp = async (e: FormEvent) => {
         e.preventDefault();
+        setIsLoading(true)
 
         if (password !== passwordConfirm) {
-            return setErrMess("Passwords do not match");
+            setIsLoading(false);
+            return setErrMess("Passwords do not match (≥o≤)");
         } else if (name.trim().length === 0 || surname.trim().length === 0) {
-            return setErrMess("Please fill in all fields.");
+            setIsLoading(false);
+            return setErrMess("Please fill in all fields 0.o");
         }
 
         try {
@@ -42,28 +49,30 @@ const SignUpPage = () => {
                 setEmail("");
                 setPassword("");
                 replace("/");
+                setIsLoading(false)
             }
         } catch (err) {
             if (err instanceof FirebaseError) {
                 switch (err.code) {
                     case "auth/weak-password":
-                        setErrMess("The password is too weak")
+                        setErrMess("The password is too weak :(")
                         break;
                     case "auth/email-already-in-use":
-                        setErrMess("This email is already in use.")
+                        setErrMess("This email is already in use (≥o≤)")
                         break;
                     default:
                         setErrMess("Something went wrong. Please try again.")
                         break;
                 }
             }
+            setIsLoading(false)
         }
     };
 
     return (
         <section className="w-full bg-black h-screen flex flex-col justify-center items-center">
-            <div className="border border-custom-gray-800 max-w-[350px] w-[90%] rounded-[8px] flex flex-col px-5">
-                <h1 className="text-[16px] font-semibold text-custom-gray-800 text-center mt-9">
+            <div className="border border-custom-gray-800 max-w-[350px] w-[90%] rounded-[8px] flex flex-col py-9 px-5">
+                <h1 className="text-[16px] font-semibold text-white/90 text-center">
                     Sign up to track your time and <br/>
                     keep your projects in
                     line.</h1>
@@ -107,16 +116,17 @@ const SignUpPage = () => {
                         type="password"
                     />
                     <h1
-                        className={"text-red-500"}>
+                        className={"text-red-500/90"}>
                         {errMess}</h1>
                     <button
                         type={"submit"}
-                        className="text-base font-semibold bg-pastel-purple-700 cursor-pointer text-white rounded-[8px] w-full h-[42px] mt-[8px]"
+                        className={`${isLoading ? "bg-white/25 text-white/60 cursor-base" : "cursor-pointer text-white bg-linear-to-t from-pastel-purple-800 to-pastel-purple-700 hover:from-pastel-purple-700"}
+                         w-full h-[43px] mt-[8px] font-medium text-base  rounded-[8px]`}
                     >
                         Sign Up
                     </button>
                     <span
-                        className="mt-[32px] text-center text-base text-white mb-9"
+                        className="mt-[32px] text-center text-base text-custom-gray-800"
                     >
                         Already have account? <br/>
                         <Link

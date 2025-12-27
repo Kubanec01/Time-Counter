@@ -50,7 +50,7 @@ export default function HomePage() {
                 <div
                     className={`flex items-center justify-center`}>
                     <h1
-                        className={"text-[48px] font-medium"}
+                        className={"text-[48px] font-semibold"}
                     >Projects</h1>
                     <p
                         className={"text-base text-custom-gray-800 font-medium -mb-4 ml-4"}>

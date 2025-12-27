@@ -154,7 +154,7 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
                 </ul>
             </section>
             <InformativeModal setIsModalOpen={setIsInfoModalOpen} isModalOpen={isInfoModalOpen}
-                              title={"You can't have a section without a name."}/>
+                              title={"You can’t track time without naming it."}/>
         </>
     );
 };

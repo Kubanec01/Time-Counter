@@ -82,7 +82,7 @@ const Navbar = () => {
                             backgroundRepeat: "no-repeat",
                         }}
                         className={`cursor-pointer aspect-square w-[36px] rounded-[100px]
-                         overflow-hidden flex justify-center items-center text-white text-lg`}
+                         overflow-hidden flex justify-center items-center text-white`}
                     >
                         {userInitials}
                     </button>

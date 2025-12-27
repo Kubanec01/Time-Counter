@@ -77,8 +77,8 @@ const ProjectsBars = () => {
     }
 
     const setProjectBarColor = (projectType: ProjectType) => {
-        if (projectType === "tracking") return "bg-linear-to-br from-pastel-purple-600 to-pastel-purple-500"
-        else return "bg-linear-to-br from-pastel-blue-700 to-pastel-blue-600"
+        if (projectType === "tracking") return "bg-linear-to-br from-pastel-purple-600/80 to-pastel-purple-500/80"
+        else return "bg-linear-to-br from-pastel-blue-700/80 to-pastel-blue-600/80"
     }
 
     if (!mounted) return null;
@@ -95,7 +95,7 @@ const ProjectsBars = () => {
                                 <ul
                                     className={`
                                     ${(userRole === "Admin" || userRole === "Manager") ? "flex" : "hidden"} absolute top-3 right-3 px-3 py-2 
-                                    rounded-full bg-black/20 backdrop-blur-md items-center gap-3 text-white/80 shadow-sm`}
+                                    rounded-full bg-black/60 backdrop-blur-md items-center gap-3 text-white/80 shadow-sm`}
                                 >
                                     <li
                                         onClick={() => setIsDeleteModalOpen(isCurrProjectEditing(p.projectId))}

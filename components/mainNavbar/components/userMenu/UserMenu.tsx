@@ -110,7 +110,7 @@ export const UserMenu = ({...props}: Props) => {
                         <MdLockReset className={"text-custom-gray-700"}/> Change Password
                     </button>
                     <button
-                        onClick={() => setIsLogoutModalOpen(!isLogoutModalOpen)}
+                        onClick={() => setIsLogoutModalOpen(true)}
                         className={"flex items-center gap-2 text-white hover:text-red-500 text-sm bg-black p-2 rounded-md cursor-pointer"}>
                         <MdOutlineLogout className={"text-custom-gray-700"}/> Log Out
                     </button>
