@@ -52,11 +52,12 @@ export const UserMenu = ({...props}: Props) => {
     }
 
     return (
-        <div
-            onMouseLeave={() => props.setIsUserMenuOpen(false)}
-            className={`${setVisibility} fixed top-15 right-12.5 rounded-md z-[50] bg-black/90 backdrop-blur-sm flex flex-col gap-4 w-[230px] p-3`}>
+        <>
             <div
-                className={"flex items-center gap-2 mb-2"}>
+                onMouseLeave={() => props.setIsUserMenuOpen(false)}
+                className={`${setVisibility} fixed top-15 right-12.5 rounded-md z-[50] bg-black/90 backdrop-blur-sm flex flex-col gap-4 w-[230px] p-3`}>
+                <div
+                    className={"flex items-center gap-2 mb-2"}>
                 <span
                     style={{
                         backgroundImage: `url(${userBgImg.src})`,
@@ -68,52 +69,53 @@ export const UserMenu = ({...props}: Props) => {
                 >
                     {userInitials}
                 </span>
-                <div
-                    className={"text-white"}>
-                    <h1 className={"text-sm font-medium"}>{userName} {userSurname}</h1>
-                    <p
-                        className={"text-xs"}>
-                        {userRole}</p>
+                    <div
+                        className={"text-white"}>
+                        <h1 className={"text-sm font-medium"}>{userName} {userSurname}</h1>
+                        <p
+                            className={"text-xs"}>
+                            {userRole}</p>
+                    </div>
                 </div>
+                {/*Workspaces Button*/}
+                <NavSection
+                    title={'Workspace'}>
+                    <WorkspaceButton
+                        setIsModalOpen={setIsLeaveWorkspaceModalOpen}
+                    />
+                    <button
+                        onClick={() => router.push("/workplaces/users")}
+                        className={`${canAccessAdminFeatures ? "flex" : "hidden"} items-center gap-2 text-white hover:text-blue-500 text-sm bg-black p-2 rounded-md cursor-pointer`}>
+                        <MdSupervisedUserCircle className={"text-custom-gray-700"}/> Users
+                    </button>
+                    <button
+                        onClick={() => router.push("/workplaces/password")}
+                        className={`${canAccessAdminOnlyFeatures ? "flex" : "hidden"} w-full items-center gap-2 text-white hover:text-blue-500 text-sm bg-black p-2 rounded-md cursor-pointer`}>
+                        <TbPasswordUser className={"text-custom-gray-700"}/> Workspace Password
+                    </button>
+                    <button
+                        onClick={() => setIsDeleteWorkspaceModalOpen(true)}
+                        className={`${canAccessAdminOnlyFeatures ? "flex" : "hidden"} w-full items-center gap-2 text-white hover:text-red-500 text-sm bg-black p-2 rounded-md cursor-pointer`}>
+                        <RiSkullFill className={"text-custom-gray-700"}/> Delete workspace
+                    </button>
+                </NavSection>
+                <NavSection
+                    title={'Account'}>
+                    <button
+                        className={"flex items-center gap-2 text-white hover:text-blue-500 text-sm bg-black p-2 rounded-md cursor-pointer"}>
+                        <RiListSettingsLine className={"text-custom-gray-700"}/> Settings
+                    </button>
+                    <button
+                        className={"flex items-center gap-2 text-white hover:text-blue-500 text-sm bg-black p-2 rounded-md cursor-pointer"}>
+                        <MdLockReset className={"text-custom-gray-700"}/> Change Password
+                    </button>
+                    <button
+                        onClick={() => setIsLogoutModalOpen(true)}
+                        className={"flex items-center gap-2 text-white hover:text-red-500 text-sm bg-black p-2 rounded-md cursor-pointer"}>
+                        <MdOutlineLogout className={"text-custom-gray-700"}/> Log Out
+                    </button>
+                </NavSection>
             </div>
-            {/*Workspaces Button*/}
-            <NavSection
-                title={'Workspace'}>
-                <WorkspaceButton
-                    setIsModalOpen={setIsLeaveWorkspaceModalOpen}
-                />
-                <button
-                    onClick={() => router.push("/workplaces/users")}
-                    className={`${canAccessAdminFeatures ? "flex" : "hidden"} items-center gap-2 text-white text-sm bg-black p-2 rounded-md cursor-pointer`}>
-                    <MdSupervisedUserCircle className={"text-custom-gray-700"}/> Users
-                </button>
-                <button
-                    onClick={() => router.push("/workplaces/password")}
-                    className={`${canAccessAdminOnlyFeatures ? "flex" : "hidden"} w-full items-center gap-2 text-white text-sm bg-black p-2 rounded-md cursor-pointer`}>
-                    <TbPasswordUser className={"text-custom-gray-700"}/> Workspace Password
-                </button>
-                <button
-                    onClick={() => setIsDeleteWorkspaceModalOpen(true)}
-                    className={`${canAccessAdminOnlyFeatures ? "flex" : "hidden"} w-full items-center gap-2 text-white text-sm bg-black p-2 rounded-md cursor-pointer`}>
-                    <RiSkullFill className={"text-custom-gray-700"}/> Delete workspace
-                </button>
-            </NavSection>
-            <NavSection
-                title={'Account'}>
-                <button
-                    className={"flex items-center gap-2 text-white text-sm bg-black p-2 rounded-md cursor-pointer"}>
-                    <RiListSettingsLine className={"text-custom-gray-700"}/> Settings
-                </button>
-                <button
-                    className={"flex items-center gap-2 text-white text-sm bg-black p-2 rounded-md cursor-pointer"}>
-                    <MdLockReset className={"text-custom-gray-700"}/> Change Password
-                </button>
-                <button
-                    onClick={() => setIsLogoutModalOpen(!isLogoutModalOpen)}
-                    className={"flex items-center gap-2 text-white text-sm bg-black p-2 rounded-md cursor-pointer"}>
-                    <MdOutlineLogout className={"text-custom-gray-700"}/> Log Out
-                </button>
-            </NavSection>
             {/*Modals*/}
             {/*Log out modal*/}
             <ConfirmExitModal
@@ -141,6 +143,6 @@ export const UserMenu = ({...props}: Props) => {
                 deleteBtnText={"Delete workspace"}
                 btnFunction={() => handleDeleteWorkspace()}
             />
-        </div>
+        </>
     );
 }

@@ -10,11 +10,14 @@ const SignInPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMess, setErrorMess] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     const {replace} = useReplaceRouteLink()
 
+
     const handleSignIn = async (e: FormEvent) => {
         e.preventDefault()
+        setIsLoading(true)
 
         try {
             const resp = await signInWithEmailAndPassword(auth, email, password);
@@ -23,16 +26,25 @@ const SignInPage = () => {
                 setEmail("");
                 setPassword("");
                 replace("/");
+                setIsLoading(false)
             }
 
         } catch {
-            setErrorMess("Incorrect email or password.")
+            setIsLoading(false)
+            setErrorMess("Incorrect email or password (≥o≤)")
         }
     };
 
     return (
         <section className="w-full h-screen bg-black flex flex-col justify-center items-center">
-            <div className="h-[300px] flex flex-col">
+            <div className="flex flex-col">
+                <div
+                    className={"flex items-center justify-center mb-4"}
+                >
+                    <h1
+                        className={"font-pacifico text-3xl text-gray-200"}
+                    >Welcome back</h1>
+                </div>
                 <form
                     onSubmit={handleSignIn}
                     className="w-[312px] flex flex-col justify-center items-center flex-1 gap-[8px]">
@@ -51,11 +63,13 @@ const SignInPage = () => {
                         type="password"
                     />
                     <h1
-                        className={"text-red-500"}>
+                        className={"text-red-500/90"}>
                         {errorMess}</h1>
                     <button
                         type={"submit"}
-                        className="w-full h-[43px] mt-[8px] font-medium text-base text-white bg-pastel-purple-700 rounded-[8px] cursor-pointer"
+                        disabled={isLoading}
+                        className={`${isLoading ? "bg-white/25 text-white/60 cursor-base" : "cursor-pointer text-white bg-linear-to-t from-pastel-purple-800 to-pastel-purple-700 hover:from-pastel-purple-700"}
+                         w-full h-[43px] mt-[8px] font-medium text-base  rounded-[8px]`}
                     >
                         Log in
                     </button>

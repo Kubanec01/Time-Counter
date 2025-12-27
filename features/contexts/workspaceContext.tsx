@@ -39,8 +39,8 @@ export const WorkSpaceContextProvider = ({children}: { children: ReactNode }) =>
 
     const [user] = useAuthState(auth)
     const userId = user?.uid
-    console.log(mode, workspaceId)
-    console.log("isMatched", isMatched)
+    // console.log(mode, workspaceId)
+    // console.log("isMatched", isMatched)
 
     // Fetch Mode and WorkspaceId
     useEffect(() => {

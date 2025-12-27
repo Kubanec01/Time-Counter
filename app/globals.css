@@ -1,5 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 @import "tailwindcss";
-
 
 @theme {
     --color-custom-gray-800: #6E6E6E;
@@ -24,8 +25,14 @@
     --color-pastel-green-400: #F4FBF8;
 }
 
+
 body {
     background: #f5f5f7;
+    font-family: "Nunito", sans-serif;
+}
+
+.font-pacifico {
+    font-family: 'Pacifico', cursive;
 }
 
 
