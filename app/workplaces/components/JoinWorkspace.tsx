@@ -4,7 +4,7 @@ import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 import {FormEvent, useEffect, useState} from "react";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth, db} from "@/app/firebase/config";
-import {documentNotFound, invalidUserId} from "@/messages/errors";
+import {invalidUserId} from "@/messages/errors";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {arrayUnion, doc, getDoc, onSnapshot, updateDoc} from "firebase/firestore";
 import {Member} from "@/types";
@@ -18,7 +18,7 @@ export const JoinWorkspace = () => {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [workspacesList, setWorkspacesList] = useState<string[]>([])
 
-    const {setMode, setWorkspaceId, userName, userSurname, userMail} = useWorkSpaceContext()
+    const {setMode, setWorkspaceId, userName, userSurname, userMail, workspaceId} = useWorkSpaceContext()
     const {replace} = useReplaceRouteLink()
     const [user] = useAuthState(auth)
     const userId = user?.uid
@@ -106,8 +106,8 @@ export const JoinWorkspace = () => {
                         disabled={workspacesList.length === 0}
                         type={"button"}
                         onClick={() => setIsModalOpen(true)}
-                        className={`${workspacesList.length === 0 ? "text-gray-500 cursor-default" : "cursor-pointer"} 
-                          bg-black/30 text-white text-sm px-3 py-1 rounded-full hover:scale-110 active:scale-95 duration-100 ease-in`}>
+                        className={`${workspacesList.length === 0 ? "text-white/40 bg-black/20 cursor-default" : "cursor-pointer bg-black/30 text-white hover:scale-110 active:scale-95 duration-100 ease-in"} 
+                           text-sm px-3 py-1 rounded-full`}>
                         My Work
                     </button>
                 </div>
@@ -119,7 +119,7 @@ export const JoinWorkspace = () => {
                     }}
                     value={workspaceInputId}
                     placeholder="Workspace Id"
-                    className="w-full h-[38px] bg-white/95  rounded-full text-base px-3 outline-none"
+                    className="w-full h-[38px] bg-white  rounded-full text-base px-3 outline-none"
                     type="text"
                 />
                 {/* Password Input */}
@@ -130,11 +130,11 @@ export const JoinWorkspace = () => {
                     }}
                     value={password}
                     placeholder="Workspace Password"
-                    className="w-full h-[38px] bg-white/95  rounded-full text-base px-3 outline-none"
+                    className="w-full h-[38px] bg-white  rounded-full text-base px-3 outline-none"
                     type="password"
                 />
                 <h1
-                    className={`text-red-500 text-sm font-semibold text-center ${errMess !== "" ? "bg-black/70 border border-white/60 px-3 py-1.5 rounded-full" : ""}`}>
+                    className={`text-red-500 text-sm font-semibold text-center ${errMess !== "" ? "bg-black/70 border border-white/60 px-4 py-1.5 rounded-full" : ""}`}>
                     {errMess}
                 </h1>
                 <button
@@ -156,6 +156,7 @@ export const JoinWorkspace = () => {
                 isModalOpen={isModalOpen}
                 workspacesList={workspacesList}
                 setWorkspaceInputId={setWorkspaceInputId}
+                userId={userId}
             />
         </>
     )

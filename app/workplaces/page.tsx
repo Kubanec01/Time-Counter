@@ -3,7 +3,6 @@
 import {useState} from "react";
 import {JoinWorkspace} from "@/app/workplaces/components/JoinWorkspace";
 import {CreateWorkspace} from "@/app/workplaces/components/CreateWorkspace";
-import backgroundImg from "@/public/background_forest_img.jpg"
 import backgroundImg2 from "@/public/background_team_img.jpg"
 
 const WorkPlacesPage = () => {
@@ -17,7 +16,7 @@ const WorkPlacesPage = () => {
                 backgroundSize: "cover",
                 backgroundRepeat: "no-repeat",
             }}
-            className={"w-full h-screen flex flex-col justify-center items-center gap-10"}>
+            className={"w-full h-screen overflow-hidden flex flex-col justify-center items-center gap-10"}>
             <div
                 className={"flex flex-col justify-center items-center bg-white/30 backdrop-blur-xl border-white/50 border shadow-lg ease-in px-12 rounded-2xl py-8 gap-10"}
             >

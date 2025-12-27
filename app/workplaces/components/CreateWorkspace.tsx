@@ -49,7 +49,7 @@ export const CreateWorkspace = () => {
                 onChange={e => setWorkspaceName(e.target.value)}
                 value={workspaceName}
                 placeholder="Workspace Name"
-                className="w-full h-[38px] bg-white/95 rounded-full text-base px-3 outline-none"
+                className="w-full h-[38px] bg-white rounded-full text-base px-3 outline-none"
                 type="text"
             />
 
@@ -58,7 +58,7 @@ export const CreateWorkspace = () => {
                 onChange={e => setPassword(e.target.value)}
                 value={password}
                 placeholder="Workspace Password"
-                className="w-full h-[38px] bg-white/95 rounded-full text-base px-3 outline-none"
+                className="w-full h-[38px] bg-white rounded-full text-base px-3 outline-none"
                 type="password"
             />
 
