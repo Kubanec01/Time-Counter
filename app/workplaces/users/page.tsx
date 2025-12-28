@@ -9,6 +9,8 @@ import {doc, onSnapshot} from "firebase/firestore";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {UserBar} from "@/app/workplaces/users/components/UserBar";
 import {BannedMembersModal} from "@/app/workplaces/users/components/BannedMembersModal";
+import {RiArrowGoBackLine} from "react-icons/ri";
+import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 
 
 const UsersHomePage = () => {
@@ -21,6 +23,7 @@ const UsersHomePage = () => {
     const {workspaceId, mode} = useWorkSpaceContext()
     const [user] = useAuthState(auth)
     const userId = user?.uid
+    const {replace} = useReplaceRouteLink()
 
     const findUser = (text: string) => {
         if (text.trim() === "") {
@@ -64,45 +67,68 @@ const UsersHomePage = () => {
     return (
         <>
             <section
-                className={"mx-auto w-[90%] max-w-[1200px] pt-[100px] flex flex-col gap-2 justify-center items-center"}>
-                <h1 className={"text-xl"}>All Members</h1>
-                <button
-                    onClick={() => setIsBannedMembersModalOpen(true)}
-                >Banned Members
-                </button>
-                <div
-                    className={"relative w-[340px]"}>
-                    <input
-                        onChange={(e) => findUser(e.target.value)}
-                        className={"border rounded-sm w-full h-[38px] pl-4 pr-8.5"}
-                        placeholder={"Search for members..."}
-                        type="text"/>
-                    <IoSearch className={"absolute top-1/2 -translate-y-1/2 right-3 text-xl"}/>
-                </div>
-            </section>
-            <section
-                className={"mx-auto w-[90%] max-w-[800px]"}>
-                <ul
-                    className={"w-full flex flex-col gap-8 mt-8 justify-center items-center"}>
-                    {members.map((member: Member) => (
-                        <UserBar
-                            key={member.userId}
-                            userId={member.userId}
-                            name={member.name}
-                            surname={member.surname}
-                            email={member.email}
-                            role={member.role}
-                        />
-                    ))}
-                </ul>
-                <BannedMembersModal
-                    bannedMembers={bannedMembers}
-                    isModalOpen={isBannedMembersModalOpen}
-                    setIsModalOpen={setIsBannedMembersModalOpen}
-                />
+                className={"w-full h-screen flex flex-col justify-start items-center"}
+            >
+                <section
+                    className={"mx-auto w-11/12 max-w-[900px] mt-[130px] flex flex-col gap-2 my-2 justify-center items-center"}>
+                    <h1 className={"text-xl text-black/70 font-semibold w-full text-start px-4"}>Workspace members</h1>
+                    <section
+                        className={"w-full shadow-lg flex flex-col justify-start items-start p-4 rounded-xl bg-black/8"}
+                    >
+                        <div
+                            className={"w-full flex items-center justify-between"}>
+                            <div
+                                className={"relative w-[340px]"}>
+                                <input
+                                    onChange={(e) => findUser(e.target.value)}
+                                    className={"rounded-lg w-full h-[38px] pl-4 pr-8.5 bg-white/90 " +
+                                        " border border-black/20 outline-none"}
+                                    placeholder={"Search for members..."}
+                                    type="text"/>
+                                <IoSearch
+                                    className={"absolute top-1/2 -translate-y-1/2 right-3 text-xl text-black/40"}/>
+                            </div>
+                            <button
+                                onClick={() => replace("/")}
+                                className={`cursor-pointer hover:scale-105 duration-100 ease-in
+                                bg-black/18 text-white rounded-md py-1.5 px-2.5`}>
+                                <RiArrowGoBackLine/>
+                            </button>
+                        </div>
+                        <section
+                            className={"mx-auto w-full"}>
+                            <ul
+                                className={"w-full flex flex-col gap-2 mt-8 justify-center items-center bg-white" +
+                                    " rounded-lg px-4 py-2 border border-black/10"}>
+                                {members.map((member: Member) => (
+                                    <UserBar
+                                        key={member.userId}
+                                        userId={member.userId}
+                                        name={member.name}
+                                        surname={member.surname}
+                                        email={member.email}
+                                        role={member.role}
+                                    />
+                                ))}
+                            </ul>
+                        </section>
+                    </section>
+                </section>
             </section>
         </>
     )
 }
 
 export default UsersHomePage;
+
+
+{/*<BannedMembersModal*/
+}
+{/*    bannedMembers={bannedMembers}*/
+}
+{/*    isModalOpen={isBannedMembersModalOpen}*/
+}
+{/*    setIsModalOpen={setIsBannedMembersModalOpen}*/
+}
+{/*/>*/
+}

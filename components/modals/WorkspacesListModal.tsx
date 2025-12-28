@@ -28,7 +28,7 @@ export const WorkspacesListModal = ({...props}: WorkspacesListModalProps) => {
 
     return (
         <div
-            className={`${openStyle} fixed top-6 left-[50%] -translate-x-[50%] w-[90%] h-[70%] p-4 rounded-[12px] bg-black/80 backdrop-blur-2xl`}>
+            className={`${openStyle} fixed top-6 left-[50%] -translate-x-[50%] w-[90%] h-[70%] p-4 rounded-[12px] bg-black/85 backdrop-blur-2xl`}>
             <ul
                 className={"w-full h-[70%] overflow-y-auto p-2 rounded-md"}
             >

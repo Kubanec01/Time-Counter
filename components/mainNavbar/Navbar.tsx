@@ -1,3 +1,6 @@
+'use client'
+
+
 import {useState} from "react";
 import {RxQuestionMarkCircled} from "react-icons/rx";
 import {LuMessageCircleMore} from "react-icons/lu";
