@@ -28,7 +28,7 @@ export const WorkspacesListModal = ({...props}: WorkspacesListModalProps) => {
 
     return (
         <div
-            className={`${openStyle} fixed top-6 left-[50%] -translate-x-[50%] w-[90%] h-[70%] p-4 rounded-[12px] bg-black/85 backdrop-blur-2xl`}>
+            className={`${openStyle} fixed top-6 left-[50%] -translate-x-[50%] w-[90%] h-[70%] p-4 rounded-[12px] glass-effect bg-black/80 backdrop-blur-3xl`}>
             <ul
                 className={"w-full h-[70%] overflow-y-auto p-2 rounded-md"}
             >
@@ -45,12 +45,12 @@ export const WorkspacesListModal = ({...props}: WorkspacesListModalProps) => {
                                     props.setWorkspaceInputId(workspace)
                                     props.setIsModalOpen(false)
                                 }}
-                                className={"font-bold py-1 px-1.5 bg-blue-500 text-white rounded-full cursor-pointer"}>
+                                className={"font-bold py-1 px-1.5 bg-blue-500/90 text-white rounded-full cursor-pointer"}>
                                 <GoArrowUpRight/>
                             </button>
                             <button
                                 onClick={() => removeWorkspaceFromList(workspace)}
-                                className={"font-bold py-1 px-2 bg-red-500 text-white rounded-full cursor-pointer"}>
+                                className={"font-bold py-1 px-2 bg-red-500/90 text-white rounded-full cursor-pointer"}>
                                 <GoTrash className={"text-sm"}/>
                             </button>
                         </div>

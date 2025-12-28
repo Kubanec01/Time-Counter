@@ -16,6 +16,7 @@ import {NavSection} from "@/components/mainNavbar/components/userMenu/components
 import DeleteModal from "@/components/modals/DeleteModal";
 import {deleteWorkspaceData} from "@/features/utilities/delete/deleteWorkspaceData";
 import {useAuthState} from "react-firebase-hooks/auth";
+import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 
 interface Props {
     isUserMenuOpen: boolean
@@ -34,6 +35,7 @@ export const UserMenu = ({...props}: Props) => {
     const router = useRouter();
     const [user] = useAuthState(auth)
     const userId = user?.uid
+    const {replace} = useReplaceRouteLink()
 
     const canAccessAdminFeatures = mode === "workspace" && userRole !== "Member"
     const canAccessAdminOnlyFeatures = mode === "workspace" && userRole === "Admin"
@@ -43,12 +45,14 @@ export const UserMenu = ({...props}: Props) => {
         setWorkspaceId("unused")
         setIsLeaveWorkspaceModalOpen(false);
         removeLocalStorageWorkspaceIdAndUserMode()
+        replace("/")
     }
 
     const handleDeleteWorkspace = async () => {
         await deleteWorkspaceData(userId, workspaceId)
         handleLeaveWorkspace()
         setIsDeleteWorkspaceModalOpen(false);
+        replace("/")
     }
 
     return (
@@ -123,7 +127,10 @@ export const UserMenu = ({...props}: Props) => {
                 setIsModalOpen={setIsLogoutModalOpen}
                 isModalOpen={isLogoutModalOpen}
                 btnText={"Log Out"}
-                btnFunction={() => signOut(auth)}
+                btnFunction={() => {
+                    setIsLogoutModalOpen(false);
+                    signOut(auth)
+                }}
                 desc={"You can always log back in anywhere, anytime. Your progress will be saved without any worries."}
             />
             {/* Leave workspace modal */}
@@ -142,6 +149,7 @@ export const UserMenu = ({...props}: Props) => {
                 desc={"Deleting the workspace will permanently remove all your data and your team’s progress. This action is irreversible."}
                 deleteBtnText={"Delete workspace"}
                 btnFunction={() => handleDeleteWorkspace()}
+                topDistance={"540%"}
             />
         </>
     );

@@ -7,6 +7,8 @@ import {LuMessageCircleMore} from "react-icons/lu";
 import userBgImg from "@/public/gradient-bg.jpg"
 import {UserMenu} from "@/components/mainNavbar/components/userMenu/UserMenu";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {useAuthState} from "react-firebase-hooks/auth";
+import {auth} from "@/app/firebase/config";
 
 
 const Navbar = () => {
@@ -15,6 +17,7 @@ const Navbar = () => {
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
     const {userInitials, workspaceName, workspaceId, mode} = useWorkSpaceContext()
+    const [user] = useAuthState(auth)
 
 
     // Styles
@@ -22,7 +25,7 @@ const Navbar = () => {
 
     return (
         <div
-            className={`w-full fixed top-0 left-0 h-[72px] z-[40] bg-black/95 backdrop-blur-sm flex justify-between items-center`}
+            className={`${user === null ? "hidden" : "block"} w-full fixed top-0 left-0 h-[72px] z-[40] bg-black/95 backdrop-blur-sm flex justify-between items-center`}
         >
             {/*Left Side*/}
             <div

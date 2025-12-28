@@ -73,7 +73,7 @@ const UsersHomePage = () => {
                     className={"mx-auto w-11/12 max-w-[900px] mt-[130px] flex flex-col gap-2 my-2 justify-center items-center"}>
                     <h1 className={"text-xl text-black/70 font-semibold w-full text-start px-4"}>Workspace members</h1>
                     <section
-                        className={"w-full shadow-lg flex flex-col justify-start items-start p-4 rounded-xl bg-black/8"}
+                        className={"w-full shadow-lg flex flex-col justify-start items-start p-4 rounded-xl bg-black/12"}
                     >
                         <div
                             className={"w-full flex items-center justify-between"}>
