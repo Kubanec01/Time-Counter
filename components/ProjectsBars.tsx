@@ -95,7 +95,7 @@ const ProjectsBars = () => {
                                 <ul
                                     className={`
                                     ${(userRole === "Admin" || userRole === "Manager") ? "flex" : "hidden"} absolute top-3 right-3 px-3 py-2 
-                                    rounded-full bg-black/60 backdrop-blur-md items-center gap-3 text-white/80 shadow-sm`}
+                                    rounded-full bg-black/75 backdrop-blur-md items-center gap-3 text-white/80 shadow-sm`}
                                 >
                                     <li
                                         onClick={() => setIsDeleteModalOpen(isCurrProjectEditing(p.projectId))}
@@ -155,6 +155,7 @@ const ProjectsBars = () => {
                             desc={"Are you sure you want to delete this project? This step is irreversible and everything stored in this project will be deleted."}
                             deleteBtnText={"Delete project"}
                             btnFunction={() => deleteProject(editingProjectId)}
+                            topDistance={"45%"}
                         />
                         <RenameModal
                             setIsModalOpen={setIsModalOpen}

@@ -13,11 +13,11 @@ interface ModalProps {
 const ConfirmExitModal = ({...props}: ModalProps) => {
     //   Style
     const openStyle = props.isModalOpen ? "block" : "hidden";
-    
+
     return (
         <div
             className={`${openStyle} fixed top-[300%] left-[50%] -translate-x-[50%] max-w-[298px] w-[90%] py-[28px] px-[30px]
-             rounded-[12px] bg-white/96 border border-black/10`}>
+             rounded-[12px] bg-white/98 backdrop-blur-xl border border-black/10`}>
                 <span className={"mx-auto flex justify-center text-4xl"}>
                     <FaUser/>
                 </span>

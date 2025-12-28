@@ -23,7 +23,7 @@ const CreateProjectModal = ({...props}: ModalProps) => {
     //   Style
     const openStyle = props.isModalOpen ? "flex" : "hidden";
 
-    //   CloseModal Function
+    //   CloseModal Functions
     const closeModal = () => {
         props.setIsModalOpen((v) => !v)
         props.setTypeOfProject("tracking")
@@ -42,16 +42,16 @@ const CreateProjectModal = ({...props}: ModalProps) => {
         >
             <form
                 onSubmit={props.formFunction}
-                className={"w-[90%] max-w-[298px] rounded-xl border border-custom-gray-600 bg-white p-7"}
+                className={"w-[90%] max-w-[360px] rounded-xl border border-black/14 bg-white/84 p-7"}
             >
                 <span
-                    className={"mx-auto text-4xl w-full flex justify-center text-pastel-purple-700"}
+                    className={"mx-auto text-4xl w-full flex justify-center text-blue-500"}
                 >
                     <PiCirclesThreeFill/>
                 </span>
                 <div className={"mt-[18px]"}>
-                    <h1 className={"text-lg font-medium"}>Create new project?</h1>
-                    <p className={"text-sm text-custom-gray-800 w-[98%]"}>
+                    <h1 className={"text-lg font-semibold text-black"}>Create new project?</h1>
+                    <p className={"text-sm text-black/60 font-semibold w-[98%]"}>
                         Create a new project where you can measure
                         progress, time, performance, and simply everything
                         that will move your work to the speed of light! (max 24 characters)</p>
@@ -62,8 +62,8 @@ const CreateProjectModal = ({...props}: ModalProps) => {
                        value={props.inputValue}
                        maxLength={24}
                        placeholder={"What are you going to work on?"}
-                       className={"w-full h-[34px] text-custom-gray-800 pl-2" +
-                           " border-pastel-purple-700 border-2 text-sm font-medium rounded-[100px] mt-[18px] outline-none"}/>
+                       className={"w-full h-[34px] pl-2" +
+                           " border border-black/60 text-sm font-medium rounded-[100px] mt-[18px] outline-none"}/>
                 <div
                     className={"w-full flex flex-col justify-center items-center gap-1 mt-[10px]"}
                 >
@@ -71,14 +71,14 @@ const CreateProjectModal = ({...props}: ModalProps) => {
                     <button
                         type={"button"}
                         onClick={() => props.setTypeOfProject("tracking")}
-                        className={`${props.typeOfProject === "tracking" ? "bg-pastel-purple-700 text-white" : "text-pastel-purple-700"} cursor-pointer font-medium w-full h-[34px] pl-2 border-pastel-purple-700 border-2 text-sm rounded-[100px] outline-none`}>
+                        className={`${props.typeOfProject === "tracking" ? "bg-blue-500 text-white" : "text-black/70 bg-black/4"} cursor-pointer font-medium w-full h-[34px] pl-2 text-sm rounded-[100px] outline-none`}>
                         I will track my time
                     </button>
                     {/*Logging*/}
                     <button
                         type={"button"}
                         onClick={() => props.setTypeOfProject("logging")}
-                        className={`${props.typeOfProject === "logging" ? "bg-pastel-purple-700 text-white" : "text-pastel-purple-700"} cursor-pointer font-medium w-full h-[34px] pl-2 border-pastel-purple-700 border-2 text-sm rounded-[100px] outline-none`}>
+                        className={`${props.typeOfProject === "logging" ? "bg-blue-500 text-white" : "text-black/70 bg-black/4"} cursor-pointer font-medium w-full h-[34px] pl-2 text-sm rounded-[100px] outline-none`}>
                         I will log my time
                     </button>
                 </div>
@@ -87,13 +87,13 @@ const CreateProjectModal = ({...props}: ModalProps) => {
                     <button
                         onClick={() => closeModal()}
                         type={"button"}
-                        className={"cursor-pointer w-[100px] h-[34px] text-base rounded-[100px] text-custom-gray-800 border border-custom-gray-800"}>
+                        className={"cursor-pointer w-[100px] h-[34px] text-base rounded-[100px] text-custom-gray-800 hover:bg-black/2 border border-custom-gray-800"}>
                         Cancel
                     </button>
                     <button
                         type={"submit"}
                         disabled={isInputEmpty}
-                        className={`w-[100px] h-[34px] text-base rounded-[100px] text-white ${isInputEmpty ? "bg-custom-gray-600" : "bg-pastel-purple-700 cursor-pointer"}`}>
+                        className={`w-[100px] h-[34px] text-base rounded-[100px] text-white ${isInputEmpty ? "bg-custom-gray-600" : "bg-blue-500 hover:bg-blue-400 cursor-pointer"}`}>
                         Create
                     </button>
                 </div>

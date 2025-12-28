@@ -8,6 +8,7 @@ interface ModalProps {
     btnFunction: () => void | Promise<void>;
     desc: string
     deleteBtnText: string
+    topDistance: string
 }
 
 const DeleteModal = ({...props}: ModalProps) => {
@@ -16,13 +17,14 @@ const DeleteModal = ({...props}: ModalProps) => {
 
     return (
         <div
-            className={`${openStyle} fixed top-[300%] left-[50%] -translate-x-[50%] max-w-[298px] w-[90%] py-[28px] px-[30px] rounded-[12px] bg-white/96 border border-black/10`}>
+            style={{top: props.topDistance}}
+            className={`${openStyle} fixed left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-[298px] w-[90%] py-[28px] px-[30px] rounded-[12px] bg-white/70 backdrop-blur-sm border border-black/10`}>
                 <span className={"mx-auto flex justify-center text-4xl"}>
                     <PiSealWarningFill/>
                 </span>
             <div className={"mt-[22px] w-full"}>
-                <h1 className={"text-lg font-medium"}>{props.title}</h1>
-                <p className={"text-sm w-[94%] text-custom-gray-800"}>{props.desc}</p>
+                <h1 className={"text-lg font-semibold"}>{props.title}</h1>
+                <p className={"text-sm w-[94%] text-black/60 font-semibold"}>{props.desc}</p>
             </div>
             <div
                 className={"mt-[26px] w-full flex flex-col justify-center gap-[10px]"}>
