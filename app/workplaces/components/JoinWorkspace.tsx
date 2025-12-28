@@ -157,7 +157,6 @@ export const JoinWorkspace = () => {
                 isModalOpen={isModalOpen}
                 workspacesList={workspacesList}
                 setWorkspaceInputId={setWorkspaceInputId}
-                userId={userId}
             />
         </>
     )

@@ -3,7 +3,7 @@ import {ClockTimeContextProvider} from "@/features/contexts/clockCountContext";
 import {WorkSpaceContextProvider} from "@/features/contexts/workspaceContext";
 import React from "react";
 import {Metadata} from "next";
-import {useMounted} from "@/features/hooks/useMounted";
+import Navbar from "@/components/mainNavbar/Navbar";
 
 export const metadata: Metadata = {
     formatDetection: {
@@ -23,6 +23,7 @@ export default function RootLayout({children}: Readonly<{
         <body>
         <WorkSpaceContextProvider>
             <ClockTimeContextProvider>
+                <Navbar/>
                 {children}
             </ClockTimeContextProvider>
         </WorkSpaceContextProvider>

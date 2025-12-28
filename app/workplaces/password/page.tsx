@@ -6,8 +6,6 @@ import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {db} from "@/app/firebase/config";
 import {doc, updateDoc} from "firebase/firestore";
 import checkmarkImg from "@/public/blue_checkmark_img.png"
-import checkmarkImg2 from "@/public/blue_checkmark.png"
-import checkmarkImg3 from "@/public/square_checkmark.png"
 
 const WorkspacePassword = () => {
 
@@ -52,7 +50,7 @@ const WorkspacePassword = () => {
                     className="w-[320px] px-6 pb-6 pt-7 flex flex-col justify-center items-center border border-white/30
                      rounded-xl bg-white/2 gap-[8px]">
                     <h1
-                        className={"mb-2 text-white/60 text-center"}>Change Workspace <br/> password</h1>
+                        className={"mb-2 text-white/70 text-center"}>Change Workspace <br/> password</h1>
                     {/* Password Input */}
                     {
                         isChanged
