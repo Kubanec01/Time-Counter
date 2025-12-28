@@ -5,63 +5,110 @@ import {useRouter} from "next/navigation";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {db} from "@/app/firebase/config";
 import {doc, updateDoc} from "firebase/firestore";
+import checkmarkImg from "@/public/blue_checkmark_img.png"
+import checkmarkImg2 from "@/public/blue_checkmark.png"
+import checkmarkImg3 from "@/public/square_checkmark.png"
 
 const WorkspacePassword = () => {
 
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [errMessage, setErrMessage] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const [isChanged, setIsChanged] = useState(false);
+
     const {workspaceId} = useWorkSpaceContext()
 
     const router = useRouter();
 
     const handleChangePassword = async (e: FormEvent) => {
         e.preventDefault();
-        if (password !== confirmPassword || password.trim() === "" || confirmPassword.trim() === "") {
-            setPassword("")
-            setConfirmPassword("")
-            return console.log("something is wrong");
+
+        setIsLoading(true);
+
+        if (password !== confirmPassword) {
+            setIsLoading(false)
+            return setErrMessage("Passwords do not match");
         }
+        if (password.trim() === "" || confirmPassword.trim() === "") {
+            setIsLoading(false)
+            return setErrMessage("Something went wrong.");
+        }
+
         if (!workspaceId) return
         const docRef = doc(db, "realms", workspaceId)
         await updateDoc(docRef, {password: password})
         setPassword("")
         setConfirmPassword("")
-        router.push("/")
+        setIsLoading(false);
+        setIsChanged(true)
     }
 
     return (
-        <section className="w-full h-screen flex flex-col justify-center items-center">
+        <section className="w-full h-screen bg-black/90 flex flex-col justify-center items-center">
             <div className="h-[300px] flex flex-col">
                 <form
                     onSubmit={handleChangePassword}
-                    className="w-[312px] flex flex-col justify-center items-center flex-1 gap-[8px]">
+                    className="w-[320px] px-6 pb-6 pt-7 flex flex-col justify-center items-center border border-white/30
+                     rounded-xl bg-white/2 gap-[8px]">
                     <h1
-                        className={"mb-2 text-lg"}>Change Workspace password</h1>
+                        className={"mb-2 text-white/60 text-center"}>Change Workspace <br/> password</h1>
                     {/* Password Input */}
-                    <input
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="New password..."
-                        className="w-full h-[46px] border border-custom-gray-800 text-black rounded-[4px] text-base px-3"
-                        type="password"
-                    />
-                    <input
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        placeholder="Confirm password..."
-                        className="w-full h-[46px] border border-custom-gray-800 text-black rounded-[4px] text-base px-3"
-                        type="password"
-                    />
-                    <button
-                        type="submit"
-                        className="w-full h-[43px] mt-[8px] font-medium text-base text-white bg-pastel-purple-700 rounded-[8px]"
-                    >
-                        Change password
-                    </button>
+                    {
+                        isChanged
+                            ?
+                            <>
+                                <div
+                                    className={"my-7"}>
+                                    <img src={checkmarkImg.src} alt="checkmark image"
+                                         className={"w-[24%] mx-auto"}/>
+                                    <h1
+                                        className={"text-white text-center mt-4"}>
+                                        Password was changed.</h1>
+                                </div>
+                            </>
+                            :
+                            <>
+
+                                <input
+                                    value={password}
+                                    onChange={(e) => {
+                                        setErrMessage("")
+                                        setPassword(e.target.value)
+                                    }}
+                                    placeholder="New password..."
+                                    className="w-full h-[40px] border border-custom-gray-800 text-white/80 rounded-lg outline-none text-sm px-3"
+                                    type="password"
+                                />
+                                <input
+                                    value={confirmPassword}
+                                    onChange={(e) => {
+                                        setErrMessage("")
+                                        setConfirmPassword(e.target.value)
+                                    }}
+                                    placeholder="Confirm password..."
+                                    className="w-full h-[40px] border border-custom-gray-800 text-white/80 rounded-lg outline-none text-sm px-3"
+                                    type="password"
+                                />
+                                <h1
+                                    className={"text-red-600/90 text-sm -mb-2"}
+                                >
+                                    {errMessage}
+                                </h1>
+                                <button
+                                    type="submit"
+                                    disabled={isLoading}
+                                    className={`${isLoading ? "bg-white/20 text-white/50" : "bg-blue-600 hover:bg-blue-500 cursor-pointer "} 
+                        w-full h-[34px] mt-6 text-sm font-semibold text-white rounded-full`}
+                                >
+                                    Change password
+                                </button>
+                            </>
+                    }
                     <button
                         type="button"
                         onClick={() => router.push("/")}
-                        className="w-full h-[43px] mt-[2px] font-medium text-base text-white bg-pastel-purple-700 rounded-[8px]"
+                        className="w-full h-[34px] mt-1 text-sm font-semibold text-white bg-white/30 hover:bg-white/25 cursor-pointer rounded-full"
                     >
                         Cancel
                     </button>
