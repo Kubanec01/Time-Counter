@@ -26,40 +26,56 @@ export const WorkspacesListModal = ({...props}: WorkspacesListModalProps) => {
         await updateDoc(userRef, {workspacesList: updatedWorkspacesList});
     }
 
+    const Splitter = () => {
+        return <span className={"w-[1px] h-[22px] bg-black/30"}/>
+    }
+
+
     return (
         <div
-            className={`${openStyle} fixed top-6 left-[50%] -translate-x-[50%] w-[90%] h-[70%] p-4 rounded-[12px] glass-effect bg-black/80 backdrop-blur-3xl`}>
-            <ul
-                className={"w-full h-[70%] overflow-y-auto p-2 rounded-md"}
-            >
-                {props.workspacesList.map((workspace) => (
-                    <li
-                        key={workspace}
-                        className={"w-full glass-effect bg-black rounded-xl flex items-center justify-between px-4 py-2 mb-3"}
-                    >
-                        <h1 className={"text-white/95 text-sm w-[66%] break-all"}>{workspace}</h1>
-                        <div
-                            className={"flex gap-2 justify-end"}>
-                            <button
-                                onClick={() => {
-                                    props.setWorkspaceInputId(workspace)
-                                    props.setIsModalOpen(false)
-                                }}
-                                className={"font-bold py-1 px-1.5 bg-blue-500/90 text-white rounded-full cursor-pointer"}>
-                                <GoArrowUpRight/>
-                            </button>
-                            <button
-                                onClick={() => removeWorkspaceFromList(workspace)}
-                                className={"font-bold py-1 px-2 bg-red-500/90 text-white rounded-full cursor-pointer"}>
-                                <GoTrash className={"text-sm"}/>
-                            </button>
-                        </div>
-                    </li>
-                ))}
-            </ul>
+            className={`${openStyle} fixed top-6 left-[50%] -translate-x-[50%] w-[90%] h-[70%] py-4 px-3 rounded-[12px] 
+            bg-white backdrop-blur-3xl border border-black/10`}>
+            <div
+                className={"w-full h-[75%] relative"}>
+                <span
+                    className={"block w-[94%] h-[20px] bg-linear-to-b from-white to-transparent absolute top-0 left-0"}/>
+                <ul
+                    className={"w-full h-full overflow-y-auto p-2 rounded-md"}
+                >
+                    {props.workspacesList.map((workspace) => (
+                        <li
+                            key={workspace}
+                            className={"w-full border-b border-black/30 flex items-center justify-between px-2 py-2 mb-3"}
+                        >
+                            <h1 className={"text-sm w-[50%] break-all font-semibold text-black/80"}>{workspace}</h1>
+                            <div
+                                className={"flex gap-2.5 justify-end"}>
+                                <Splitter/>
+                                <button
+                                    onClick={() => {
+                                        props.setWorkspaceInputId(workspace)
+                                        props.setIsModalOpen(false)
+                                    }}
+                                    className={"py-1 px-1.5 rounded-full cursor-pointer text-black/50 hover:text-blue-600"}>
+                                    <GoArrowUpRight/>
+                                </button>
+                                <Splitter/>
+                                <button
+                                    onClick={() => removeWorkspaceFromList(workspace)}
+                                    className={"py-1 px-2 rounded-full cursor-pointer text-black/50 hover:text-red-600"}>
+                                    <GoTrash className={"text-sm"}/>
+                                </button>
+                                <Splitter/>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+                <span
+                    className={"block w-[94%] h-[30px] bg-linear-to-t from-white to-transparent absolute bottom-0 left-0"}/>
+            </div>
             <button
                 onClick={() => props.setIsModalOpen(v => !v)}
-                className={"w-full rounded-full py-1 mt-5 text-white bg-white/40 hover:bg-white/30 duration-100 backdrop-blur-sm glass-effect cursor-pointer"}>
+                className={"w-full rounded-full py-1 mt-4 text-white bg-black hover:bg-black/80 duration-100 backdrop-blur-sm glass-effect cursor-pointer"}>
                 Cancel
             </button>
         </div>
