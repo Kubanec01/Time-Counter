@@ -18,7 +18,7 @@ const InformativeModal = ({...props}: ModalProps) => {
             className={`${openStyle} fixed top-0 left-0 w-full h-screen z-50 justify-center items-start`}
         >
             <div
-                className="max-w-[360px] border-2 border-white/40 shadow-lg rounded-[12px] bg-black/40 backdrop-blur-sm text-white py-3 px-[18px] mt-[100px]">
+                className="max-w-[360px] border-2 border-white/40 shadow-lg rounded-[12px] bg-black/70 backdrop-blur-sm text-white py-3 px-[18px] mt-[100px]">
                 <h1 className="text-start w-[80%] text-base">
                     {props.title}
                 </h1>

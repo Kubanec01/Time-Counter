@@ -39,7 +39,7 @@ const RenameModal = ({...props}: ModalProps) => {
                 className={"w-[90%] max-w-[298px] rounded-xl border border-custom-gray-600 bg-white/84 p-7"}
             >
                 <span
-                    className={"mx-auto text-4xl w-full flex justify-center text-blue-500"}
+                    className={"mx-auto text-4xl w-full flex justify-center text-vibrant-purple-600"}
                 >
                     {props.icon}
                 </span>
@@ -66,7 +66,7 @@ const RenameModal = ({...props}: ModalProps) => {
                     </button>
                     <button
                         type={"submit"}
-                        className={"cursor-pointer w-[100px] h-[34px] rounded-[100px] text-white bg-blue-500 hover:bg-blue-600" +
+                        className={"cursor-pointer w-[100px] h-[34px] rounded-[100px] text-white bg-vibrant-purple-600 hover:bg-vibrant-purple-700" +
                             " duration-100 ease-in"}>
                         Create
                     </button>

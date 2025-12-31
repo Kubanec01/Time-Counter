@@ -45,7 +45,7 @@ const CreateProjectModal = ({...props}: ModalProps) => {
                 className={"w-[90%] max-w-[360px] rounded-xl border border-black/14 bg-white/90 p-7"}
             >
                 <span
-                    className={"mx-auto text-4xl w-full flex justify-center text-blue-500"}
+                    className={"mx-auto text-4xl w-full flex justify-center text-vibrant-purple-600"}
                 >
                     <PiCirclesThreeFill/>
                 </span>
@@ -71,14 +71,14 @@ const CreateProjectModal = ({...props}: ModalProps) => {
                     <button
                         type={"button"}
                         onClick={() => props.setTypeOfProject("tracking")}
-                        className={`${props.typeOfProject === "tracking" ? "bg-blue-500 text-white" : "text-black/70 bg-black/4"} cursor-pointer font-medium w-full h-[34px] pl-2 text-sm rounded-[100px] outline-none`}>
+                        className={`${props.typeOfProject === "tracking" ? "bg-vibrant-purple-600 text-white" : "text-black/70 bg-black/4"} cursor-pointer font-medium w-full h-[34px] pl-2 text-sm rounded-[100px] outline-none`}>
                         I will track my time
                     </button>
                     {/*Logging*/}
                     <button
                         type={"button"}
                         onClick={() => props.setTypeOfProject("logging")}
-                        className={`${props.typeOfProject === "logging" ? "bg-blue-500 text-white" : "text-black/70 bg-black/4"} cursor-pointer font-medium w-full h-[34px] pl-2 text-sm rounded-[100px] outline-none`}>
+                        className={`${props.typeOfProject === "logging" ? "bg-vibrant-purple-600 text-white" : "text-black/70 bg-black/4"} cursor-pointer font-medium w-full h-[34px] pl-2 text-sm rounded-[100px] outline-none`}>
                         I will log my time
                     </button>
                 </div>
@@ -93,7 +93,7 @@ const CreateProjectModal = ({...props}: ModalProps) => {
                     <button
                         type={"submit"}
                         disabled={isInputEmpty}
-                        className={`w-[100px] h-[34px] text-base rounded-[100px] text-white ${isInputEmpty ? "bg-custom-gray-600" : "bg-blue-500 hover:bg-blue-500/90 cursor-pointer"}`}>
+                        className={`w-[100px] h-[34px] text-base rounded-[100px] text-white ${isInputEmpty ? "bg-custom-gray-600" : "bg-vibrant-purple-600 hover:bg-vibrant-purple-700 cursor-pointer"}`}>
                         Create
                     </button>
                 </div>

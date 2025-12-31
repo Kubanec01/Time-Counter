@@ -5,5 +5,5 @@ export const setColorByDate = (sectionName: string) => {
 
     if (sectionName === todayDateString) {
         return "bg-linear-to-b from-pastel-purple-500 to-pastel-purple-500"
-    } else return `bg-linear-to-b from-pastel-green-700 to-pastel-purple-500`
+    } else return `bg-linear-to-b from-pastel-green-600 to-pastel-purple-500`
 }

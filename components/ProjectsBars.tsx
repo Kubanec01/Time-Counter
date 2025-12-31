@@ -78,7 +78,7 @@ const ProjectsBars = () => {
 
     const setProjectBarColor = (projectType: ProjectType) => {
         if (projectType === "tracking") return "bg-linear-to-br from-pastel-purple-600 to-pastel-purple-500/80"
-        else return "bg-linear-to-br from-pastel-blue-700 to-pastel-blue-600/60"
+        else return "bg-linear-to-br from-pastel-blue-700/70 to-pastel-blue-600/60"
     }
 
     if (!mounted) return null;

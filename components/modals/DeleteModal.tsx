@@ -18,7 +18,7 @@ const DeleteModal = ({...props}: ModalProps) => {
     return (
         <div
             style={{top: props.topDistance}}
-            className={`${openStyle} fixed left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-[298px] w-[90%] py-[28px] px-[30px] rounded-[12px] bg-white/70 backdrop-blur-sm border border-black/10`}>
+            className={`${openStyle} z-[1000] fixed left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-[298px] w-[90%] py-[28px] px-[30px] rounded-[12px] bg-white/70 backdrop-blur-sm border border-black/10`}>
                 <span className={"mx-auto flex justify-center text-4xl"}>
                     <PiSealWarningFill/>
                 </span>
