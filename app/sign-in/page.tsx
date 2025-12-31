@@ -63,7 +63,7 @@ const SignInPage = () => {
                         type="password"
                     />
                     <h1
-                        className={"text-red-500/90"}>
+                        className={"text-red-500/90 text-sm"}>
                         {errorMess}</h1>
                     <button
                         type={"submit"}
@@ -80,7 +80,7 @@ const SignInPage = () => {
                         Forgot your password?
                     </button>
                     <span
-                        className={"text-custom-gray-800 text-base mt-[8px]"}>
+                        className={"text-custom-gray-700/80 text-base mt-[8px]"}>
                         Or don't have an account?
                         <Link className={"text-pastel-purple-700 hover:underline"}
                               href="/sign-up"> Sign up</Link></span>

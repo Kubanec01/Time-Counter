@@ -13,15 +13,16 @@ import {formatSecondsToTimeString} from "@/features/hooks/timeOperations";
 import {setProjectTotalTimeWithoutSectionId} from "@/features/utilities/time/totalTime";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
+import Select from 'react-select'
 
 
 export const LoggingProjectCart = ({...props}: ProjectProps) => {
 
     // States
-    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-    const [loggingCategory, setLoggingCategory] = useState<LoggingType>("Work")
-    const [isInfoModalOpen, setIsInfoModalOpen] = useState(false)
-    const [inputValue, setInputValue] = useState("");
+    const [taskType, setTaskType] = useState<LoggingType>(null)
+    const [customType, setCustomType] = useState<string>("")
+    const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+    const [nameValue, setNameValue] = useState("");
     const [timeInputValue, setTimeInputValue] = useState("0.25");
     const [sections, setSections] = useState<Section[]>([]);
 
@@ -30,16 +31,32 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
     const userId = user?.uid
     const {mode, workspaceId, userName} = useWorkSpaceContext()
 
+    const options = [
+        {value: 'research', label: 'Research'},
+        {value: 'meeting', label: 'Meeting'},
+        {value: 'planning', label: 'Planning'},
+        {value: 'deep-work', label: 'Deep Work'},
+        {value: 'study', label: 'Study'},
+        {value: 'coding', label: 'Coding'},
+        {value: 'testing', label: 'Testing'},
+        {value: 'debug', label: 'Debug'},
+        {value: 'personal', label: 'Personal'},
+        {value: 'custom', label: 'Custom'}
+    ];
+
+
     const createSection = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
         const time = formatSecondsToTimeString(Number(timeInputValue) * 3600)
         console.log(time)
 
-        await createNewSection(userId, userName, props.projectId, inputValue, time, setInputValue, setIsInfoModalOpen, loggingCategory, mode, workspaceId)
+        const newTaskType = taskType === "custom" ? customType : taskType
+
+        await createNewSection(userId, userName, props.projectId, nameValue, time, setNameValue, setIsInfoModalOpen, newTaskType, mode, workspaceId)
         await setProjectTotalTimeWithoutSectionId(userId, props.projectId, time, mode, workspaceId)
-        setIsCreateModalOpen(false)
-        setLoggingCategory("Work")
+        setNameValue("")
+        setTaskType(null)
         setTimeInputValue("0.25")
     }
 
@@ -64,17 +81,89 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
 
     }, [props.projectId, userId])
 
+    const isButtonDisabled = () => {
+        if (nameValue.trim() === "" || taskType === null || timeInputValue.trim() === "" ||
+            (taskType === "custom" && customType?.trim() === "")) return true
+    }
 
     return (
         <>
             <ProjectCartNavbar projectName={props.projectName}/>
             <section
-                className={"mt-[200px] w-[90%] max-w-[776px] flex justify-center mx-auto border-b-2 border-custom-gray-600"}>
-                <button
-                    onClick={() => setIsCreateModalOpen(true)}
-                    className={"bg-pastel-green-800 text-white py-2 px-[22px] rounded-[100px] mb-[8px] cursor-pointer"}>
-                    What do you want to work on?
-                </button>
+                className={"w-[90%] max-w-[1000px] p-10 pt-4 mt-30 rounded-xl shadow-lg mx-auto bg-white/60"}>
+                <h1
+                    className={"font-semibold mb-0.5 text-black/46"}>
+                    Create a new entry
+                </h1>
+                <form
+                    onSubmit={createSection}
+                    className={"p-6 rounded-xl bg-black/2 flex flex-col justify-between gap-8 items-start mx-auto"}>
+                    {/* Main inputs Section */}
+                    <div
+                        className={"w-full flex justify-start gap-10"}>
+                        {/* Type of Work */}
+                        <div
+                            className={"flex flex-col"}>
+                            <label htmlFor="type-select" className={"font-bold"}>Type of task</label>
+                            <select
+                                value={taskType ?? ""}
+                                onChange={(e) => setTaskType(e.target.value as LoggingType)}
+                                id="task-type"
+                                className="border border-black/20 w-[130px] focus:outline-vibrant-purple-600 p-1 px-2
+                                 rounded-md bg-white cursor-pointer"
+                            >
+                                <option value="" disabled>
+                                    Select...
+                                </option>
+                                {options.map((option) => (
+                                    <option key={option.value} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        {/* Name/Description */}
+                        <div
+                            className={"flex flex-col"}>
+                            <label htmlFor="name-description" className={"font-bold"}>Name/Description</label>
+                            <input onChange={e => setNameValue(e.target.value)}
+                                   value={nameValue}
+                                   id={"name-description"} type="text" placeholder={"What are you going to work on?"}
+                                   className={"border border-black/20 w-[300px] focus:outline-vibrant-purple-600 p-1 px-2 rounded-md bg-white"}/>
+                        </div>
+                        {/* Time */}
+                        <div
+                            className={"flex flex-col"}>
+                            <label htmlFor="" className={"font-bold"}>Hours</label>
+                            <input
+                                min={0.25}
+                                max={900}
+                                step={0.25}
+                                value={timeInputValue}
+                                onChange={(e) => setTimeInputValue(e.target.value)}
+                                type={"number"}
+                                placeholder={"0.25"}
+                                className={"border border-black/20 text-sm focus:outline-vibrant-purple-600 p-1.5 px-2 rounded-md bg-white"}/>
+                        </div>
+                    </div>
+                    {/* Custom type Section */}
+                    <div
+                        className={`${taskType === "custom" ? "flex  flex-col" : "hidden"}`}>
+                        <label htmlFor="name-description" className={"font-bold"}>Custom Type of task</label>
+                        <input
+                            onChange={(e) => setCustomType(e.target.value)}
+                            id={"name-description"} type="text" placeholder={"Write your custom type..."}
+                            className={"border border-black/20 w-[300px] focus:outline-vibrant-purple-600 p-1 px-2 rounded-md bg-white"}/>
+                    </div>
+                    {/*Submit Button*/}
+                    <button
+                        type={"submit"}
+                        disabled={isButtonDisabled()}
+                        className={`${isButtonDisabled() ? "bg-black/80  border text-white/80" : "main-button"}
+                         px-5 py-2 mt-4 text-sm font-semibold rounded-md text-white duration-100`}>
+                        Create entry
+                    </button>
+                </form>
             </section>
             <section
                 className={"w-[90%] max-w-[776px] mx-auto mt-10 flex flex-col gap-4"}>
@@ -92,19 +181,6 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
                     </div>
                 ))}
             </section>
-            <CreateLoggingModal
-                title={"Create new logging?"}
-                desc={"Select a task type, name, and enter the time in decimal notation."}
-                isModalOpen={isCreateModalOpen}
-                setIsModalOpen={setIsCreateModalOpen}
-                setLoggingType={setLoggingCategory}
-                inputValue={inputValue}
-                setInputValue={setInputValue}
-                formFunction={createSection}
-                timeInputValue={timeInputValue}
-                setTimeInputValue={setTimeInputValue}
-            />
         </>
     )
 }
-

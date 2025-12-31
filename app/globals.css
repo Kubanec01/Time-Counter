@@ -23,6 +23,20 @@
     --color-pastel-green-600: #D9F0E7;
     --color-pastel-green-500: #EAF7F2;
     --color-pastel-green-400: #F4FBF8;
+    --color-vibrant-purple-700: #6237ff;
+    --color-vibrant-purple-600: #6C47FF;
+    --color-vibrant-purple-500: #8A6BFF;
+    --color-vibrant-purple-400: #A999FF;
+
+}
+
+@layer components {
+    .main-button {
+        @apply bg-vibrant-purple-600 cursor-pointer border border-vibrant-purple-600;
+    }
+    .main-button:hover {
+        @apply bg-gradient-to-t from-vibrant-purple-600 to-vibrant-purple-500;
+    }
 }
 
 

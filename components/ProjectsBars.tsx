@@ -77,8 +77,8 @@ const ProjectsBars = () => {
     }
 
     const setProjectBarColor = (projectType: ProjectType) => {
-        if (projectType === "tracking") return "bg-linear-to-br from-pastel-purple-600/80 to-pastel-purple-500/80"
-        else return "bg-linear-to-br from-pastel-blue-700/80 to-pastel-blue-600/80"
+        if (projectType === "tracking") return "bg-linear-to-br from-pastel-purple-600 to-pastel-purple-500/80"
+        else return "bg-linear-to-br from-pastel-blue-700 to-pastel-blue-600/60"
     }
 
     if (!mounted) return null;
@@ -91,7 +91,7 @@ const ProjectsBars = () => {
                         {projectsData.map((p: Project) => (
                             <li
                                 key={p.projectId}
-                                className={`${setProjectBarColor(p.type)} hover:-translate-y-2 duration-150 ease-in shadow-md hover:shadow-lg shadow-custom-gray-600/80 pt-13 px-3 pb-3 rounded-2xl w-[248px] h-[300px] relative`}>
+                                className={`${setProjectBarColor(p.type)}  duration-150 ease-in shadow-md hover:shadow-lg shadow-custom-gray-600/80 pt-13 px-3 pb-3 rounded-2xl w-[248px] h-[300px] relative`}>
                                 <ul
                                     className={`
                                     ${(userRole === "Admin" || userRole === "Manager") ? "flex" : "hidden"} absolute top-3 right-3 px-3 py-2 
@@ -141,7 +141,7 @@ const ProjectsBars = () => {
                                     </div>
                                     <button
                                         onClick={() => replace(`/projects/${p.type}/${p.projectId}`)}
-                                        className="mt-4 text-white text-sm hover:text-blue-500 mb-2 cursor-pointer"
+                                        className="mt-4 text-white text-sm hover:text-blue-500 duration-100 ease-in mb-2 cursor-pointer"
                                     >
                                         {"Enter project >"}
                                     </button>
