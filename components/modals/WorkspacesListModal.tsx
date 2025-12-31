@@ -56,7 +56,7 @@ export const WorkspacesListModal = ({...props}: WorkspacesListModalProps) => {
                                         props.setWorkspaceInputId(workspace)
                                         props.setIsModalOpen(false)
                                     }}
-                                    className={"py-1 px-1.5 rounded-full cursor-pointer text-black/50 hover:text-blue-600"}>
+                                    className={"py-1 px-1.5 rounded-full cursor-pointer text-black/50 hover:text-vibrant-purple-700"}>
                                     <GoArrowUpRight/>
                                 </button>
                                 <Splitter/>
