@@ -21,7 +21,7 @@ const Navbar = () => {
 
 
     // Styles
-    const rightButtonsStyle = "text-custom-gray-800 hover:text-blue-500 duration-150 ease-in-out text-[24px] cursor-pointer"
+    const rightButtonsStyle = "text-custom-gray-800 hover:text-vibrant-purple-400 duration-150 ease-in-out text-[24px] cursor-pointer"
 
     return (
         <div

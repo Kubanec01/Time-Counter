@@ -141,7 +141,7 @@ const ProjectsBars = () => {
                                     </div>
                                     <button
                                         onClick={() => replace(`/projects/${p.type}/${p.projectId}`)}
-                                        className="mt-4 text-white text-sm hover:text-blue-500 duration-100 ease-in mb-2 cursor-pointer"
+                                        className="mt-4 text-white text-sm hover:text-vibrant-purple-400 duration-100 ease-in mb-2 cursor-pointer"
                                     >
                                         {"Enter project >"}
                                     </button>
