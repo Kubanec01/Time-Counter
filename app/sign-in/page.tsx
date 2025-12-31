@@ -68,7 +68,7 @@ const SignInPage = () => {
                     <button
                         type={"submit"}
                         disabled={isLoading}
-                        className={`${isLoading ? "bg-white/25 text-white/60 cursor-base" : "cursor-pointer text-white bg-linear-to-t from-pastel-purple-800 to-pastel-purple-700 hover:from-pastel-purple-700"}
+                        className={`${isLoading ? "bg-white/25 text-white/60 cursor-base" : "cursor-pointer text-white bg-linear-to-t from-vibrant-purple-500 to-vibrant-purple-400 hover:from-vibrant-purple-600"}
                          w-full h-[43px] mt-[8px] font-medium text-base  rounded-[8px]`}
                     >
                         Log in
