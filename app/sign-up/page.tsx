@@ -115,7 +115,7 @@ const SignUpPage = () => {
                         type="password"
                     />
                     <h1
-                        className={"text-red-500/90"}>
+                        className={"text-red-500/90 text-sm"}>
                         {errMess}</h1>
                     <button
                         type={"submit"}
@@ -125,7 +125,7 @@ const SignUpPage = () => {
                         Sign Up
                     </button>
                     <span
-                        className="mt-[32px] text-center text-base text-custom-gray-800"
+                        className="mt-[32px] text-center text-base text-custom-gray-700/80"
                     >
                         Already have account? <br/>
                         <Link

@@ -129,6 +129,7 @@ export const UserMenu = ({...props}: Props) => {
                 btnText={"Log Out"}
                 btnFunction={() => {
                     setIsLogoutModalOpen(false);
+                    replace("/")
                     signOut(auth)
                 }}
                 desc={"You can always log back in anywhere, anytime. Your progress will be saved without any worries."}

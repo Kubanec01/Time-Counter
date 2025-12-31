@@ -42,7 +42,7 @@ const CreateProjectModal = ({...props}: ModalProps) => {
         >
             <form
                 onSubmit={props.formFunction}
-                className={"w-[90%] max-w-[360px] rounded-xl border border-black/14 bg-white/84 p-7"}
+                className={"w-[90%] max-w-[360px] rounded-xl border border-black/14 bg-white/90 p-7"}
             >
                 <span
                     className={"mx-auto text-4xl w-full flex justify-center text-blue-500"}
@@ -93,7 +93,7 @@ const CreateProjectModal = ({...props}: ModalProps) => {
                     <button
                         type={"submit"}
                         disabled={isInputEmpty}
-                        className={`w-[100px] h-[34px] text-base rounded-[100px] text-white ${isInputEmpty ? "bg-custom-gray-600" : "bg-blue-500 hover:bg-blue-400 cursor-pointer"}`}>
+                        className={`w-[100px] h-[34px] text-base rounded-[100px] text-white ${isInputEmpty ? "bg-custom-gray-600" : "bg-blue-500 hover:bg-blue-500/90 cursor-pointer"}`}>
                         Create
                     </button>
                 </div>
