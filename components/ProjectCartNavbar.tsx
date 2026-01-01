@@ -56,7 +56,7 @@ const ProjectCartNavbar = ({projectName}: { projectName: string | null }) => {
                 <li>
                     <button
                         onClick={() => goToHomePage()}
-                        className={"flex justify-center items-center cursor-pointer text-sm rounded-md px-[18px] h-[38px] " +
+                        className={"text-sm flex justify-center items-center cursor-pointer rounded-md px-[18px] h-[36px] " +
                             "bg-white/10 text-white hover:bg-linear-to-b from-vibrant-purple-500 to-vibrant-purple-700" +
                             " hover:text-white duration-100 ease-in"}
                     >

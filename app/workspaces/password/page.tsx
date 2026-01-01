@@ -5,7 +5,7 @@ import {useRouter} from "next/navigation";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {db} from "@/app/firebase/config";
 import {doc, updateDoc} from "firebase/firestore";
-import checkmarkImg from "@/public/blue_checkmark_img.png"
+import checkmarkImg from "@/public/purple_checkmark.png"
 
 const WorkspacePassword = () => {
 
@@ -26,11 +26,11 @@ const WorkspacePassword = () => {
 
         if (password !== confirmPassword) {
             setIsLoading(false)
-            return setErrMessage("Passwords do not match");
+            return setErrMessage("Passwords do not match (≥o≤)");
         }
         if (password.trim() === "" || confirmPassword.trim() === "") {
             setIsLoading(false)
-            return setErrMessage("Something went wrong.");
+            return setErrMessage("Something went wrong, try it gain.");
         }
 
         if (!workspaceId) return
@@ -59,9 +59,9 @@ const WorkspacePassword = () => {
                                 <div
                                     className={"my-7"}>
                                     <img src={checkmarkImg.src} alt="checkmark image"
-                                         className={"w-[24%] mx-auto"}/>
+                                         className={"w-[56%] mx-auto"}/>
                                     <h1
-                                        className={"text-white text-center mt-4"}>
+                                        className={"text-white text-center text-sm mt-4"}>
                                         Password was changed.</h1>
                                 </div>
                             </>
@@ -96,8 +96,9 @@ const WorkspacePassword = () => {
                                 <button
                                     type="submit"
                                     disabled={isLoading}
-                                    className={`${isLoading ? "bg-white/20 text-white/50" : "bg-blue-600 hover:bg-blue-500 cursor-pointer "} 
-                        w-full h-[34px] mt-6 text-sm font-semibold text-white rounded-full`}
+                                    className={`${isLoading ? "bg-white/20 text-white/50" : "bg-vibrant-purple-700 " +
+                                        " hover:bg-linear-to-t from-vibrant-purple-700 to-vibrant-purple-600 cursor-pointer "} 
+                                         w-full h-[34px] mt-6 text-sm font-semibold text-white rounded-full`}
                                 >
                                     Change password
                                 </button>
@@ -106,7 +107,7 @@ const WorkspacePassword = () => {
                     <button
                         type="button"
                         onClick={() => router.push("/")}
-                        className="w-full h-[34px] mt-1 text-sm font-semibold text-white bg-white/30 hover:bg-white/25 cursor-pointer rounded-full"
+                        className="w-full h-[34px] mt-1 text-sm font-semibold text-white bg-white/20 hover:bg-white/25 cursor-pointer rounded-full"
                     >
                         Cancel
                     </button>

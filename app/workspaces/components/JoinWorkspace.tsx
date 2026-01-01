@@ -18,7 +18,7 @@ export const JoinWorkspace = () => {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [workspacesList, setWorkspacesList] = useState<string[]>([])
 
-    const {setMode, setWorkspaceId, userName, userSurname, userMail, workspaceId} = useWorkSpaceContext()
+    const {setMode, setWorkspaceId, userName, userSurname, userMail} = useWorkSpaceContext()
     const {replace} = useReplaceRouteLink()
     const [user] = useAuthState(auth)
     const userId = user?.uid
@@ -44,7 +44,7 @@ export const JoinWorkspace = () => {
         const members: Member[] = data.members
 
         if (password !== correctPassword) return setErrMess("Wrong password or Id")
-        if (blackList.some(member => member.userId === userId)) return setErrMess("You do not have permission to join this workspace.")
+        if (blackList.some(member => member.userId === userId)) return setErrMess("You don't have permission to join this workspace.")
 
         const setStatesAndReplace = () => {
             setMode("workspace")
@@ -134,7 +134,7 @@ export const JoinWorkspace = () => {
                     type="password"
                 />
                 <h1
-                    className={`text-red-500 text-sm font-semibold text-center ${errMess !== "" ? "bg-black/70 border border-white/60 px-4 py-1.5 rounded-full" : ""}`}>
+                    className={`text-red-500 text-sm font-semibold text-center ${errMess !== "" ? "bg-black/70 px-4 py-1.5 rounded-full" : ""}`}>
                     {errMess}
                 </h1>
                 <button

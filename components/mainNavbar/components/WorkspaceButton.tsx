@@ -12,7 +12,7 @@ export const WorkspaceButton = (
 
     const handleClick = () => {
         if (mode === "solo") {
-            replace("/workplaces")
+            replace("/workspaces")
         } else setIsModalOpen(true)
     }
 
@@ -20,7 +20,7 @@ export const WorkspaceButton = (
         <button
             onClick={() => handleClick()}
             className={"w-full flex items-center gap-2 text-white text-sm bg-linear-to-b from-vibrant-purple-500 to-vibrant-purple-700 " +
-                "hover:from-vibrant-purple-400 duration-100 ease-in p-2 rounded-md cursor-pointer"}>
+                "hover:from-vibrant-purple-500/90 duration-100 ease-in p-2 rounded-md cursor-pointer"}>
             {
                 mode === "solo"
                     ?

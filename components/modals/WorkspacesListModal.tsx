@@ -45,7 +45,7 @@ export const WorkspacesListModal = ({...props}: WorkspacesListModalProps) => {
                     {props.workspacesList.map((workspace) => (
                         <li
                             key={workspace}
-                            className={"w-full border-b border-black/10 bg-black/2 rounded-xl flex items-center justify-between px-2 py-2 mb-2"}
+                            className={"w-full border-b border-black/10 bg-black/3 rounded-xl flex items-center justify-between px-2 py-2 mb-2"}
                         >
                             <h1 className={"text-sm w-[50%] break-all font-semibold text-black/80"}>{workspace}</h1>
                             <div

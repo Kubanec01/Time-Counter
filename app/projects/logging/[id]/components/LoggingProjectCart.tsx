@@ -13,7 +13,6 @@ import {formatSecondsToTimeString} from "@/features/hooks/timeOperations";
 import {setProjectTotalTimeWithoutSectionId} from "@/features/utilities/time/totalTime";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
-import Select from 'react-select'
 
 
 export const LoggingProjectCart = ({...props}: ProjectProps) => {

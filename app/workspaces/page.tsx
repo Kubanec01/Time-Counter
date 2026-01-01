@@ -1,11 +1,11 @@
 'use client'
 
 import {useState} from "react";
-import {JoinWorkspace} from "@/app/workplaces/components/JoinWorkspace";
-import {CreateWorkspace} from "@/app/workplaces/components/CreateWorkspace";
+import {JoinWorkspace} from "@/app/workspaces/components/JoinWorkspace";
+import {CreateWorkspace} from "@/app/workspaces/components/CreateWorkspace";
 import backgroundImg2 from "@/public/background_team_img.jpg"
 
-const WorkPlacesPage = () => {
+const WorkspacesPage = () => {
 
     const [workspaceAction, setWorkspaceAction] = useState<"create" | "join">("join")
 
@@ -38,4 +38,4 @@ const WorkPlacesPage = () => {
     )
 }
 
-export default WorkPlacesPage
+export default WorkspacesPage

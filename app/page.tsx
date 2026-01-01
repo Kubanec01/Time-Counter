@@ -5,7 +5,6 @@ import ProjectsBars from "@/components/ProjectsBars";
 import React, {useState} from "react";
 import {auth} from "@/app/firebase/config";
 import {ProjectType} from "@/types";
-import Navbar from "@/components/mainNavbar/Navbar";
 import {createNewProject} from "@/features/utilities/create/createNewProject";
 import {useAuthRedirect} from "@/features/hooks/useAuthRedirect";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";

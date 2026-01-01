@@ -76,12 +76,12 @@ export const UserBar = ({...props}: UserBarProps) => {
                     className={"flex justify-start items-center gap-6"}>
                     <span
                         className={"flex items-center gap-1 font-semibold"}>
-                        <FaCircleUser className={"text-sm"}/>
+                        <FaCircleUser className={"text-sm text-black/60"}/>
                     <h1>{props.name} {props.surname}</h1>
                     </span>
                     <span
                         className={"flex items-center gap-1"}>
-                        <MdEmail className={"text-[15px]"}/>
+                        <MdEmail className={"text-[15px] text-black/60"}/>
                     <h2 className={"text-sm font-semibold"}
                     >{props.email}</h2>
                     </span>
@@ -99,17 +99,17 @@ export const UserBar = ({...props}: UserBarProps) => {
                         <button
                             onClick={() => setUserRole(props.userId, "Admin")}
                             className={`${userRole === "Admin" ? "block" : "hidden"} px-3 py-2 cursor-pointer text-xs text-white 
-                            bg-black hover:bg-blue-600 duration-100 ease-in rounded-md`}>
+                            bg-black hover:bg-linear-to-b from-vibrant-purple-600 to-vibrant-purple-700 duration-100 ease-in rounded-md`}>
                             Make Admin
                         </button>
                         <button
                             onClick={() => setUserRole(props.userId, "Manager")}
-                            className={"px-3 py-2 cursor-pointer text-xs text-white bg-black hover:bg-blue-600 duration-100 ease-in rounded-md"}>
+                            className={"px-3 py-2 cursor-pointer text-xs text-white bg-black hover:bg-linear-to-b from-vibrant-purple-600 to-vibrant-purple-700 duration-100 ease-in rounded-md"}>
                             Make Manager
                         </button>
                         <button
                             onClick={() => setUserRole(props.userId, "Member")}
-                            className={"px-3 py-2 cursor-pointer text-xs text-white bg-black hover:bg-blue-600 duration-100 ease-in rounded-md"}>
+                            className={"px-3 py-2 cursor-pointer text-xs text-white bg-black hover:bg-linear-to-b from-vibrant-purple-600 to-vibrant-purple-700 duration-100 ease-in rounded-md"}>
                             Make Member
                         </button>
                         <button

@@ -88,12 +88,12 @@ export const UserMenu = ({...props}: Props) => {
                         setIsModalOpen={setIsLeaveWorkspaceModalOpen}
                     />
                     <button
-                        onClick={() => router.push("/workplaces/users")}
+                        onClick={() => router.push("/workspaces/users")}
                         className={`${canAccessAdminFeatures ? "flex" : "hidden"} items-center gap-2 text-white hover:text-vibrant-purple-400 text-sm bg-black p-2 rounded-md cursor-pointer`}>
                         <MdSupervisedUserCircle className={"text-custom-gray-700"}/> Users
                     </button>
                     <button
-                        onClick={() => router.push("/workplaces/password")}
+                        onClick={() => router.push("/workspaces/password")}
                         className={`${canAccessAdminOnlyFeatures ? "flex" : "hidden"} w-full items-center gap-2 text-white hover:text-vibrant-purple-400 text-sm bg-black p-2 rounded-md cursor-pointer`}>
                         <TbPasswordUser className={"text-custom-gray-700"}/> Workspace Password
                     </button>
