@@ -13,6 +13,7 @@ import {formatSecondsToTimeString} from "@/features/hooks/timeOperations";
 import {setProjectTotalTimeWithoutSectionId} from "@/features/utilities/time/totalTime";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
+import {RiSettings3Fill} from "react-icons/ri";
 
 
 export const LoggingProjectCart = ({...props}: ProjectProps) => {
@@ -43,7 +44,6 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
         {value: 'custom', label: 'Custom'}
     ];
 
-
     const createSection = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
@@ -57,6 +57,11 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
         setNameValue("")
         setTaskType(null)
         setTimeInputValue("0.25")
+    }
+
+    const isButtonDisabled = () => {
+        if (nameValue.trim() === "" || taskType === null || timeInputValue.trim() === "" ||
+            (taskType === "custom" && customType?.trim() === "")) return true
     }
 
     useEffect(() => {
@@ -80,20 +85,22 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
 
     }, [props.projectId, userId])
 
-    const isButtonDisabled = () => {
-        if (nameValue.trim() === "" || taskType === null || timeInputValue.trim() === "" ||
-            (taskType === "custom" && customType?.trim() === "")) return true
-    }
-
     return (
         <>
             <ProjectCartNavbar projectName={props.projectName}/>
             <section
                 className={"w-[90%] max-w-[1000px] p-10 pt-4 mt-30 rounded-xl shadow-lg mx-auto bg-white/60"}>
-                <h1
-                    className={"font-semibold mb-0.5 text-black/46"}>
-                    Create a new entry
-                </h1>
+                <div
+                    className={"flex justify-between"}>
+                    <h1
+                        className={"font-semibold mb-0.5 text-black/46"}>
+                        Create a new entry
+                    </h1>
+                    <button
+                        className={"text-xl text-black/46 hover:rotate-180 duration-300 ease-in cursor-pointer"}>
+                        <RiSettings3Fill/>
+                    </button>
+                </div>
                 <form
                     onSubmit={createSection}
                     className={"p-6 rounded-xl bg-black/2 flex flex-col justify-between gap-8 items-start mx-auto"}>
