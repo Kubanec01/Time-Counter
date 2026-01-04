@@ -1,0 +1,67 @@
+'use client'
+
+import {FaUnlockKeyhole, FaUsersLine} from "react-icons/fa6";
+import {FaProjectDiagram, FaTrashAlt} from "react-icons/fa";
+import {useRouter} from "next/navigation";
+
+
+const WorkspaceSettingsHome = () => {
+
+    const router = useRouter();
+
+    const workspaceSettingsData = [
+        {
+            id: "users",
+            icon: <FaUsersLine/>,
+            name: "Users",
+            url: ""
+        },
+        {
+            id: "projects",
+            icon: <FaProjectDiagram/>,
+            name: "Projects",
+            url: "/workspaces/settings/projects"
+        },
+        {
+            id: "name-and-password",
+            icon: <FaUnlockKeyhole/>,
+            name: "Name and password",
+            url: ""
+        },
+        {
+            id: "delete-workspace",
+            icon: <FaTrashAlt/>,
+            name: "Delete Workspace",
+            url: ""
+        }
+    ]
+
+    return (
+        <>
+            <section
+                className={"w-[90%] max-w-[700px] mx-auto h-[400px] mt-[200px]"}>
+                <h1
+                    className={"text-xl text-white/80 font-semibold border-b border-white/30"}
+                >Workspace Settings</h1>
+                <ul
+                    className={"w-full p-4 pl-0 flex flex-col gap-3"}
+                >
+                    {workspaceSettingsData.map((item) => (
+                        <li
+                            onClick={() => router.push(item.url)}
+                            key={item.id}
+                            className={"text-white/80 text-lg font-medium px-2 py-2.5 border border-white/50 rounded-xl " +
+                                "flex items-center justify-start gap-1 cursor-pointer hover:border-white/80 duration-100"}>
+                            <span className={"text-xl"}>
+                                {item.icon}
+                            </span>
+                            {item.name}
+                        </li>
+                    ))}
+                </ul>
+            </section>
+        </>
+    )
+}
+
+export default WorkspaceSettingsHome

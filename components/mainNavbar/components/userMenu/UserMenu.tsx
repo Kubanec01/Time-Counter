@@ -13,7 +13,6 @@ import ConfirmExitModal from "@/components/modals/ConfirmExitModal";
 import {TbPasswordUser} from "react-icons/tb";
 import {removeLocalStorageWorkspaceIdAndUserMode} from "@/features/utilities/localStorage";
 import {NavSection} from "@/components/mainNavbar/components/userMenu/components/NavSection";
-import DeleteModal from "@/components/modals/DeleteModal";
 import {deleteWorkspaceData} from "@/features/utilities/delete/deleteWorkspaceData";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
@@ -27,7 +26,6 @@ export const UserMenu = ({...props}: Props) => {
 
     const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
     const [isLeaveWorkspaceModalOpen, setIsLeaveWorkspaceModalOpen] = useState(false);
-    const [isDeleteWorkspaceModalOpen, setIsDeleteWorkspaceModalOpen] = useState(false);
     const {setMode, setWorkspaceId, workspaceId} = useWorkSpaceContext()
 
     const setVisibility = props.isUserMenuOpen ? "flex" : "hidden";
@@ -45,13 +43,6 @@ export const UserMenu = ({...props}: Props) => {
         setWorkspaceId("unused")
         setIsLeaveWorkspaceModalOpen(false);
         removeLocalStorageWorkspaceIdAndUserMode()
-        replace("/")
-    }
-
-    const handleDeleteWorkspace = async () => {
-        await deleteWorkspaceData(userId, workspaceId)
-        handleLeaveWorkspace()
-        setIsDeleteWorkspaceModalOpen(false);
         replace("/")
     }
 
@@ -93,14 +84,9 @@ export const UserMenu = ({...props}: Props) => {
                         <MdSupervisedUserCircle className={"text-custom-gray-700"}/> Users
                     </button>
                     <button
-                        onClick={() => router.push("/workspaces/password")}
+                        onClick={() => router.push("/workspaces/settings")}
                         className={`${canAccessAdminOnlyFeatures ? "flex" : "hidden"} w-full items-center gap-2 text-white hover:text-vibrant-purple-400 text-sm bg-black p-2 rounded-md cursor-pointer`}>
-                        <TbPasswordUser className={"text-custom-gray-700"}/> Workspace Password
-                    </button>
-                    <button
-                        onClick={() => setIsDeleteWorkspaceModalOpen(true)}
-                        className={`${canAccessAdminOnlyFeatures ? "flex" : "hidden"} w-full items-center gap-2 text-white hover:text-red-500 text-sm bg-black p-2 rounded-md cursor-pointer`}>
-                        <RiSkullFill className={"text-custom-gray-700"}/> Delete workspace
+                        <TbPasswordUser className={"text-custom-gray-700"}/> Workspace Settings
                     </button>
                 </NavSection>
                 <NavSection
@@ -142,15 +128,6 @@ export const UserMenu = ({...props}: Props) => {
                 btnText={"Leave"}
                 btnFunction={() => handleLeaveWorkspace()}
                 desc={"You can always join back anywhere, anytime. Your progress will be saved without any worries."}
-            />
-            <DeleteModal
-                setIsModalOpen={setIsDeleteWorkspaceModalOpen}
-                isModalOpen={isDeleteWorkspaceModalOpen}
-                title={"Delete Workspace?"}
-                desc={"Deleting the workspace will permanently remove all your data and your team’s progress. This action is irreversible."}
-                deleteBtnText={"Delete workspace"}
-                btnFunction={() => handleDeleteWorkspace()}
-                topDistance={"540%"}
             />
         </>
     );

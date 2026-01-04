@@ -1,6 +1,6 @@
 'use client'
 
-import {LoggingType, ProjectProps, Section} from "@/types";
+import {LoggingType, Project, ProjectOption, ProjectProps, Section} from "@/types";
 import ProjectCartNavbar from "@/components/ProjectCartNavbar";
 import CreateLoggingModal from "@/app/projects/logging/[id]/components/createLoggingModal/CreateLoggingModal";
 import React, {useEffect, useState} from "react";
@@ -22,6 +22,7 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
     const [taskType, setTaskType] = useState<LoggingType>(null)
     const [customType, setCustomType] = useState<string>("")
     const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+    const [options, setOptions] = useState<ProjectOption[]>([])
     const [nameValue, setNameValue] = useState("");
     const [timeInputValue, setTimeInputValue] = useState("0.25");
     const [sections, setSections] = useState<Section[]>([]);
@@ -30,19 +31,6 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
     const [user] = useAuthState(auth)
     const userId = user?.uid
     const {mode, workspaceId, userName} = useWorkSpaceContext()
-
-    const options = [
-        {value: 'research', label: 'Research'},
-        {value: 'meeting', label: 'Meeting'},
-        {value: 'planning', label: 'Planning'},
-        {value: 'deep-work', label: 'Deep Work'},
-        {value: 'study', label: 'Study'},
-        {value: 'coding', label: 'Coding'},
-        {value: 'testing', label: 'Testing'},
-        {value: 'debug', label: 'Debug'},
-        {value: 'personal', label: 'Personal'},
-        {value: 'custom', label: 'Custom'}
-    ];
 
     const createSection = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -64,6 +52,7 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
             (taskType === "custom" && customType?.trim() === "")) return true
     }
 
+    // Fetch Sections
     useEffect(() => {
         if (!userId) return
 
@@ -83,7 +72,28 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
 
         return () => fetchSectionsData()
 
-    }, [props.projectId, userId])
+    }, [mode, props.projectId, userId, workspaceId])
+
+    // Fetch Options
+    useEffect(() => {
+        if (!userId) return
+
+        const userRef = getFirestoreTargetRef(userId, mode, workspaceId)
+
+        const fetchOptions = onSnapshot(userRef, snap => {
+            if (!snap.exists()) return
+
+            const data = snap.data()
+            const project = data.projects.find((project: Project) => project.projectId === props.projectId)
+            const options = project.options || []
+
+            if (!options) throw new Error("Failed fetch Options Data")
+            setOptions(options)
+        })
+
+        return () => fetchOptions()
+
+    })
 
     return (
         <>

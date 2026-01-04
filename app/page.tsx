@@ -9,6 +9,7 @@ import {createNewProject} from "@/features/utilities/create/createNewProject";
 import {useAuthRedirect} from "@/features/hooks/useAuthRedirect";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {useAuthState} from "react-firebase-hooks/auth";
+import {createNewLoggingProject} from "@/features/utilities/create/createNewLoggingProject";
 
 export default function HomePage() {
 
@@ -29,7 +30,9 @@ export default function HomePage() {
     // Create New project
     const setNewProject = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        await createNewProject(userId, inputValue, typeofProject, mode, workspaceId);
+
+        if (typeofProject === "tracking") await createNewProject(userId, inputValue, typeofProject, mode, workspaceId);
+        if (typeofProject === "logging") await createNewLoggingProject(userId, inputValue, typeofProject, mode, workspaceId);
         setInputValue("");
         setIsModalOpen(false);
         setTypeOfProject("tracking");

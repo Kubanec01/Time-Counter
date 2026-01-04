@@ -63,6 +63,8 @@ export type LoggingType =
     | string
     | null;
 
+export type ProjectOption = { value: string, label: string }
+
 export type Role = "Admin" | "Member" | "Manager" | null
 export type Member = {
     userId: string;
