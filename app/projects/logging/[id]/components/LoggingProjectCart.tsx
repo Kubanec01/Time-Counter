@@ -136,6 +136,7 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
                                         {option.label}
                                     </option>
                                 ))}
+                                <option value="custom">Custom</option>
                             </select>
                         </div>
                         {/* Name/Description */}

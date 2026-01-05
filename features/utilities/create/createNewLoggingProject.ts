@@ -30,8 +30,12 @@ export const createNewLoggingProject = async (
             {value: 'coding', label: 'Coding'},
             {value: 'testing', label: 'Testing'},
             {value: 'debug', label: 'Debug'},
+            {value: 'design', label: 'Design'},
+            {value: 'documentation', label: 'Documentation'},
+            {value: 'emails', label: 'Emails / Communication'},
+            {value: 'learning', label: 'Learning'},
             {value: 'personal', label: 'Personal'},
-            {value: 'custom', label: 'Custom'}
+            {value: 'break', label: 'Break / Rest'},
         ];
 
         const newProject: LoggingProject = {

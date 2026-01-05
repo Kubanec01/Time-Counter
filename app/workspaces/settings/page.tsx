@@ -14,7 +14,7 @@ const WorkspaceSettingsHome = () => {
             id: "users",
             icon: <FaUsersLine/>,
             name: "Users",
-            url: ""
+            url: "/workspaces/users"
         },
         {
             id: "projects",
@@ -26,7 +26,7 @@ const WorkspaceSettingsHome = () => {
             id: "name-and-password",
             icon: <FaUnlockKeyhole/>,
             name: "Name and password",
-            url: ""
+            url: "/workspaces/settings/nameAndPassword"
         },
         {
             id: "delete-workspace",
@@ -51,7 +51,7 @@ const WorkspaceSettingsHome = () => {
                             onClick={() => router.push(item.url)}
                             key={item.id}
                             className={"text-white/80 text-lg font-medium px-2 py-2.5 border border-white/50 rounded-xl " +
-                                "flex items-center justify-start gap-1 cursor-pointer hover:border-white/80 duration-100"}>
+                                "flex items-center justify-start gap-2.5 cursor-pointer hover:border-white/80 duration-100"}>
                             <span className={"text-xl"}>
                                 {item.icon}
                             </span>

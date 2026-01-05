@@ -9,6 +9,7 @@ import {UserMenu} from "@/components/mainNavbar/components/userMenu/UserMenu";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth} from "@/app/firebase/config";
+import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 
 
 const Navbar = () => {
@@ -18,6 +19,7 @@ const Navbar = () => {
 
     const {userInitials, workspaceName, workspaceId, mode} = useWorkSpaceContext()
     const [user] = useAuthState(auth)
+    const {replace} = useReplaceRouteLink()
 
 
     // Styles
@@ -31,7 +33,8 @@ const Navbar = () => {
             <div
                 className={"h-full flex justify-start items-center w-[75%]"}>
                 <div
-                    className={"h-full flex items-center px-[50px] justify-center border-r border-custom-gray-800 flex-shrink-0"}
+                    onClick={() => replace("/")}
+                    className={"h-full flex items-center cursor-pointer px-[50px] justify-center border-r border-custom-gray-800 flex-shrink-0"}
                 >
                     <img src={"/Logo.png"} alt={"Logo image"} className={"w-[94%] h-auto"}/>
                 </div>

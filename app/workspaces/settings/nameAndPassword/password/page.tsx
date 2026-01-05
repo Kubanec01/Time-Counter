@@ -57,11 +57,11 @@ const WorkspacePassword = () => {
                             ?
                             <>
                                 <div
-                                    className={"my-7"}>
+                                    className={"mb-7 mt-4"}>
                                     <img src={checkmarkImg.src} alt="checkmark image"
-                                         className={"w-[56%] mx-auto"}/>
+                                         className={"w-[76%] mx-auto"}/>
                                     <h1
-                                        className={"text-white text-center text-sm mt-4"}>
+                                        className={"text-white text-center text-sm mt-2"}>
                                         Password was changed.</h1>
                                 </div>
                             </>
