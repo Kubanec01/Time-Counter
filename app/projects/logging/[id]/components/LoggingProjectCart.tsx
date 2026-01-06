@@ -2,7 +2,6 @@
 
 import {LoggingType, Project, ProjectOption, ProjectProps, Section} from "@/types";
 import ProjectCartNavbar from "@/components/ProjectCartNavbar";
-import CreateLoggingModal from "@/app/projects/logging/[id]/components/createLoggingModal/CreateLoggingModal";
 import React, {useEffect, useState} from "react";
 import {createNewSection} from "@/features/utilities/create/createNewSection";
 import {useAuthState} from "react-firebase-hooks/auth";
@@ -14,6 +13,8 @@ import {setProjectTotalTimeWithoutSectionId} from "@/features/utilities/time/tot
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 import {RiSettings3Fill} from "react-icons/ri";
+import {MaxDateCalendarInput} from "@/features/utilities/date/MaxDateCalendarInput";
+import {useRouter} from "next/navigation";
 
 
 export const LoggingProjectCart = ({...props}: ProjectProps) => {
@@ -26,10 +27,12 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
     const [nameValue, setNameValue] = useState("");
     const [timeInputValue, setTimeInputValue] = useState("0.25");
     const [sections, setSections] = useState<Section[]>([]);
+    const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
 
     // User Auth
     const [user] = useAuthState(auth)
     const userId = user?.uid
+    const router = useRouter()
     const {mode, workspaceId, userName} = useWorkSpaceContext()
 
     const createSection = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -40,7 +43,7 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
 
         const newTaskType = taskType === "custom" ? customType : taskType
 
-        await createNewSection(userId, userName, props.projectId, nameValue, time, setNameValue, setIsInfoModalOpen, newTaskType, mode, workspaceId)
+        await createNewSection(userId, userName, props.projectId, nameValue, time, selectedDate, setNameValue, setIsInfoModalOpen, newTaskType, mode, workspaceId)
         await setProjectTotalTimeWithoutSectionId(userId, props.projectId, time, mode, workspaceId)
         setNameValue("")
         setTaskType(null)
@@ -49,7 +52,7 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
 
     const isButtonDisabled = () => {
         if (nameValue.trim() === "" || taskType === null || timeInputValue.trim() === "" ||
-            (taskType === "custom" && customType?.trim() === "")) return true
+            selectedDate === null || (taskType === "custom" && customType?.trim() === "")) return true
     }
 
     // Fetch Sections
@@ -93,7 +96,7 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
 
         return () => fetchOptions()
 
-    })
+    }, [mode, props.projectId, userId, workspaceId])
 
     return (
         <>
@@ -107,6 +110,7 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
                         Create a new entry
                     </h1>
                     <button
+                        onClick={() => router.push(`/workspaces/settings/projects/${props.projectId}`)}
                         className={"text-xl text-black/46 hover:rotate-180 duration-300 ease-in cursor-pointer"}>
                         <RiSettings3Fill/>
                     </button>
@@ -120,11 +124,11 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
                         {/* Type of Work */}
                         <div
                             className={"flex flex-col"}>
-                            <label htmlFor="type-select" className={"font-bold"}>Type of task</label>
+                            <label htmlFor="task-type" className={"font-bold"}>Type of task</label>
                             <select
+                                id="task-type"
                                 value={taskType ?? ""}
                                 onChange={(e) => setTaskType(e.target.value as LoggingType)}
-                                id="task-type"
                                 className="border border-black/20 w-[130px] focus:outline-vibrant-purple-600 p-1 px-2
                                  rounded-md bg-white cursor-pointer"
                             >
@@ -137,6 +141,7 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
                                     </option>
                                 ))}
                                 <option value="custom">Custom</option>
+                                <option value="unset">Unset</option>
                             </select>
                         </div>
                         {/* Name/Description */}
@@ -151,8 +156,9 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
                         {/* Time */}
                         <div
                             className={"flex flex-col"}>
-                            <label htmlFor="" className={"font-bold"}>Hours</label>
+                            <label htmlFor="time" className={"font-bold"}>Hours</label>
                             <input
+                                id="time"
                                 min={0.25}
                                 max={900}
                                 step={0.25}
@@ -161,6 +167,15 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
                                 type={"number"}
                                 placeholder={"0.25"}
                                 className={"border border-black/20 text-sm focus:outline-vibrant-purple-600 p-1.5 px-2 rounded-md bg-white"}/>
+                        </div>
+                        {/*  Date  */}
+                        <div
+                            className={"flex flex-col"}>
+                            <label className={"font-bold"}>Date</label>
+                            <MaxDateCalendarInput
+                                selectedDate={selectedDate}
+                                setSelectedDate={setSelectedDate}
+                            />
                         </div>
                     </div>
                     {/* Custom type Section */}
@@ -189,9 +204,8 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
                          className={"w-full h-[60px] rounded-[100] border flex justify-between items-center px-4"}>
                         <h1 className={"w-[25%]"}>{s.title}</h1>
                         <h2 className={"w-[25%]"}>{s.category}</h2>
-                        <span className={"w-[25%]"}>{s.time}</span>
+                        <span className={"w-[25%]"}>time {s.time} and date {s.updateDate}</span>
                         <button
-                            className={"w-[25%]"}
                             onClick={() => deleteAllSectionData(userId, props.projectId, s.sectionId, mode, workspaceId)}>
                             Delete
                         </button>

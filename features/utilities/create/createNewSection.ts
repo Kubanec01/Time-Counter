@@ -10,6 +10,7 @@ export const createNewSection = async (
     projectId: string,
     inputValue: string,
     time: string,
+    date: Date | null,
     setInputValue: (value: React.SetStateAction<string>) => void,
     setIsInfoModalOpen: (value: React.SetStateAction<boolean>) => void,
     category: LoggingType,
@@ -31,7 +32,7 @@ export const createNewSection = async (
     const sectionId = `${inputValue.replace(/\s+/g, "")}_${randomNum}`
 
     // Curr Date Variable
-    const date = new Date()
+    if (date === null) date = new Date();
     const currDate: string = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
 
 
