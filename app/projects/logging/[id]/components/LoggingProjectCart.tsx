@@ -7,7 +7,6 @@ import {createNewSection} from "@/features/utilities/create/createNewSection";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth, db} from "@/app/firebase/config";
 import {doc, onSnapshot} from "firebase/firestore";
-import {deleteAllSectionData} from "@/features/utilities/delete/deleteAllSectionData";
 import {formatSecondsToTimeString} from "@/features/hooks/timeOperations";
 import {setProjectTotalTimeWithoutSectionId} from "@/features/utilities/time/totalTime";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
@@ -15,9 +14,16 @@ import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef"
 import {RiSettings3Fill} from "react-icons/ri";
 import {MaxDateCalendarInput} from "@/features/utilities/date/MaxDateCalendarInput";
 import {useRouter} from "next/navigation";
+import {FaAngleLeft, FaAngleRight} from "react-icons/fa";
+import {addDays, subDays} from "date-fns";
+import {formateDate} from "@/features/utilities/date/formateDate";
+import {FaRegTrashCan} from "react-icons/fa6";
+import {deleteAllSectionData} from "@/features/utilities/delete/deleteAllSectionData";
 
 
 export const LoggingProjectCart = ({...props}: ProjectProps) => {
+
+    const currDate = new Date();
 
     // States
     const [taskType, setTaskType] = useState<LoggingType>(null)
@@ -27,7 +33,8 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
     const [nameValue, setNameValue] = useState("");
     const [timeInputValue, setTimeInputValue] = useState("0.25");
     const [sections, setSections] = useState<Section[]>([]);
-    const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+    const [selectedDate, setSelectedDate] = useState<Date | null>(currDate);
+    const [filteredDate, setFilteredDate] = useState<Date | null>(currDate);
 
     // User Auth
     const [user] = useAuthState(auth)
@@ -51,8 +58,13 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
     }
 
     const isButtonDisabled = () => {
-        if (nameValue.trim() === "" || taskType === null || timeInputValue.trim() === "" ||
-            selectedDate === null || (taskType === "custom" && customType?.trim() === "")) return true
+        return nameValue.trim() === "" || taskType === null || timeInputValue.trim() === "" ||
+            selectedDate === null || (taskType === "custom" && customType?.trim() === "");
+    }
+
+    const isPlusButtonDisabled = () => {
+        if (selectedDate === null || filteredDate === null) return true
+        else return (filteredDate.getDate() + 1) > currDate.getDate();
     }
 
     // Fetch Sections
@@ -69,13 +81,13 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
 
             if (!sections) throw new Error("Failed fetch Sections Data")
 
-            const currSections = sections.filter((s: Section) => s.projectId === props.projectId)
+            const currSections = sections.filter((s: Section) => s.projectId === props.projectId && s.updateDate === formateDate(filteredDate))
             setSections(currSections)
         })
 
         return () => fetchSectionsData()
 
-    }, [mode, props.projectId, userId, workspaceId])
+    }, [filteredDate, mode, props.projectId, userId, workspaceId])
 
     // Fetch Options
     useEffect(() => {
@@ -111,20 +123,20 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
                     </h1>
                     <button
                         onClick={() => router.push(`/workspaces/settings/projects/${props.projectId}`)}
-                        className={"text-xl text-black/46 hover:rotate-180 duration-300 ease-in cursor-pointer"}>
+                        className={"text-xl text-black/35 hover:text-black/50 hover:rotate-180 duration-250 ease-in cursor-pointer"}>
                         <RiSettings3Fill/>
                     </button>
                 </div>
                 <form
                     onSubmit={createSection}
-                    className={"p-6 rounded-xl bg-black/2 flex flex-col justify-between gap-8 items-start mx-auto"}>
+                    className={"p-6 rounded-xl bg-black/6 flex flex-col justify-between gap-8 items-start mx-auto"}>
                     {/* Main inputs Section */}
                     <div
                         className={"w-full flex justify-start gap-10"}>
                         {/* Type of Work */}
                         <div
                             className={"flex flex-col"}>
-                            <label htmlFor="task-type" className={"font-bold"}>Type of task</label>
+                            <label htmlFor="task-type" className={"font-semibold text-black/60"}>Type of task</label>
                             <select
                                 id="task-type"
                                 value={taskType ?? ""}
@@ -147,7 +159,8 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
                         {/* Name/Description */}
                         <div
                             className={"flex flex-col"}>
-                            <label htmlFor="name-description" className={"font-bold"}>Name/Description</label>
+                            <label htmlFor="name-description"
+                                   className={"font-semibold text-black/60"}>Name/Description</label>
                             <input onChange={e => setNameValue(e.target.value)}
                                    value={nameValue}
                                    id={"name-description"} type="text" placeholder={"What are you going to work on?"}
@@ -156,7 +169,7 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
                         {/* Time */}
                         <div
                             className={"flex flex-col"}>
-                            <label htmlFor="time" className={"font-bold"}>Hours</label>
+                            <label htmlFor="time" className={"font-semibold text-black/60"}>Hours</label>
                             <input
                                 id="time"
                                 min={0.25}
@@ -171,7 +184,7 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
                         {/*  Date  */}
                         <div
                             className={"flex flex-col"}>
-                            <label className={"font-bold"}>Date</label>
+                            <label className={"font-semibold text-black/60"}>Date</label>
                             <MaxDateCalendarInput
                                 selectedDate={selectedDate}
                                 setSelectedDate={setSelectedDate}
@@ -181,7 +194,8 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
                     {/* Custom type Section */}
                     <div
                         className={`${taskType === "custom" ? "flex  flex-col" : "hidden"}`}>
-                        <label htmlFor="name-description" className={"font-bold"}>Custom Type of task</label>
+                        <label htmlFor="name-description" className={"font-semibold text-black/60"}>Custom Type of
+                            task</label>
                         <input
                             onChange={(e) => setCustomType(e.target.value)}
                             id={"name-description"} type="text" placeholder={"Write your custom type..."}
@@ -191,26 +205,77 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
                     <button
                         type={"submit"}
                         disabled={isButtonDisabled()}
-                        className={`${isButtonDisabled() ? "bg-black/80  border text-white/80" : "main-button"}
+                        className={`${isButtonDisabled() ? "bg-black/40  border text-white/80" : "main-button"}
                          px-5 py-2 mt-4 text-sm font-semibold rounded-md text-white duration-100`}>
                         Create entry
                     </button>
                 </form>
             </section>
             <section
-                className={"w-[90%] max-w-[776px] mx-auto mt-10 flex flex-col gap-4"}>
-                {sections.map((s, index) => (
-                    <div key={index}
-                         className={"w-full h-[60px] rounded-[100] border flex justify-between items-center px-4"}>
-                        <h1 className={"w-[25%]"}>{s.title}</h1>
-                        <h2 className={"w-[25%]"}>{s.category}</h2>
-                        <span className={"w-[25%]"}>time {s.time} and date {s.updateDate}</span>
-                        <button
-                            onClick={() => deleteAllSectionData(userId, props.projectId, s.sectionId, mode, workspaceId)}>
-                            Delete
-                        </button>
+                className={"w-[90%] max-w-[1000px] p-8 mx-auto mt-10 flex flex-col gap-4 rounded-xl shadow-lg bg-white/60"}>
+                <div
+                    className={"flex gap-3"}>
+                    {/* Minus date btn */}
+                    <button
+                        onClick={() => setFilteredDate(subDays(filteredDate ?? new Date(), 1))}
+                        className={"border flex justify-center items-center px-2 rounded-md text-white bg-black/24 hover:bg-black/40 cursor-pointer"}>
+                        <FaAngleLeft/>
+                    </button>
+                    <MaxDateCalendarInput
+                        selectedDate={filteredDate}
+                        setSelectedDate={setFilteredDate}
+                    />
+                    {/* Plus date btn */}
+                    <button
+                        onClick={() => setFilteredDate(addDays(filteredDate ?? new Date(), 1))}
+                        disabled={isPlusButtonDisabled()}
+                        className={`${isPlusButtonDisabled() ? "cursor-not-allowed" : "cursor-pointer hover:bg-black/40"}
+                        er flex justify-center items-center px-2 rounded-md text-white bg-black/24`}>
+                        <FaAngleRight/>
+                    </button>
+                </div>
+                <section
+                    className={"w-full rounded-md mx-auto flex flex-col bg-black/18"}>
+                    <div
+                        className={"w-full rounded-t-md bg-vibrant-purple-500/80 text-white font-semibold flex justify-between items-center px-4 py-2"}>
+                        <h1 className={"w-[25%] text-sm"}>Name</h1>
+                        <h2 className={"w-[25%] text-sm"}>Type</h2>
+                        <span className={"w-[25%] text-sm"}>Time</span>
+                        <span className={"w-[25%] text-sm"}>Date</span>
                     </div>
-                ))}
+                    <ul
+                        className={"flex flex-col gap-1 p-1"}>
+                        {sections.length > 0 ?
+                            <>
+                                {sections.map(s => (
+                                    <li key={s.sectionId}
+                                        className={"w-full rounded-md bg-white flex justify-between text-black/70 text-sm font-medium items-center px-4 py-1.5 relative"}>
+                                        <h1 className={"w-[25%]"}>{s.title}</h1>
+                                        <h2 className={"w-[25%]"}>{s.category}</h2>
+                                        <span className={"w-[25%]"}>{s.time}</span>
+                                        <span
+                                            className={"w-[25%]"}>{s.updateDate}</span>
+                                        <button
+                                            className={"absolute right-4 text-sm text-black/40 hover:text-red-300 cursor-pointer"}
+                                            onClick={() => deleteAllSectionData(userId, props.projectId, s.sectionId, mode, workspaceId)}>
+                                            <FaRegTrashCan/>
+                                        </button>
+                                    </li>
+                                ))}
+                            </>
+                            :
+                            <>
+                                <div
+                                    className={"w-full bg-white rounded-md px-2 py-4 h-full flex items-center justify-center"}>
+                                    <h1
+                                        className={"text-black/50 text-sm font-medium"}>
+                                        No Entry found (≥o≤)
+                                    </h1>
+                                </div>
+                            </>
+                        }
+                    </ul>
+                </section>
             </section>
         </>
     )
