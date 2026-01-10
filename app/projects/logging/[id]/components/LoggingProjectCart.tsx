@@ -2,7 +2,7 @@
 
 import {LoggingType, Project, ProjectOption, ProjectProps, Section} from "@/types";
 import ProjectCartNavbar from "@/components/ProjectCartNavbar";
-import React, {useEffect, useState} from "react";
+import React, {FormEvent, useEffect, useState} from "react";
 import {createNewSection} from "@/features/utilities/create/createNewSection";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth, db} from "@/app/firebase/config";
@@ -14,11 +14,10 @@ import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef"
 import {RiSettings3Fill} from "react-icons/ri";
 import {MaxDateCalendarInput} from "@/features/utilities/date/MaxDateCalendarInput";
 import {useRouter} from "next/navigation";
-import {FaAngleLeft, FaAngleRight} from "react-icons/fa";
+import {FaAngleLeft, FaAngleRight, FaRegEdit} from "react-icons/fa";
 import {addDays, subDays} from "date-fns";
 import {formateDate} from "@/features/utilities/date/formateDate";
-import {FaRegTrashCan} from "react-icons/fa6";
-import {deleteAllSectionData} from "@/features/utilities/delete/deleteAllSectionData";
+import {SectionCart} from "@/app/projects/logging/[id]/components/components/SectionCart";
 
 
 export const LoggingProjectCart = ({...props}: ProjectProps) => {
@@ -40,17 +39,18 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
     const [user] = useAuthState(auth)
     const userId = user?.uid
     const router = useRouter()
-    const {mode, workspaceId, userName} = useWorkSpaceContext()
+    const {mode, workspaceId, userName, userSurname} = useWorkSpaceContext()
 
     const createSection = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
         const time = formatSecondsToTimeString(Number(timeInputValue) * 3600)
-        console.log(time)
 
         const newTaskType = taskType === "custom" ? customType : taskType
 
-        await createNewSection(userId, userName, props.projectId, nameValue, time, selectedDate, setNameValue, setIsInfoModalOpen, newTaskType, mode, workspaceId)
+        const userFullName = `${userName} ${userSurname}`
+
+        await createNewSection(userId, userFullName, props.projectId, nameValue, time, selectedDate, setNameValue, setIsInfoModalOpen, newTaskType, mode, workspaceId)
         await setProjectTotalTimeWithoutSectionId(userId, props.projectId, time, mode, workspaceId)
         setNameValue("")
         setTaskType(null)
@@ -248,19 +248,16 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
                         {sections.length > 0 ?
                             <>
                                 {sections.map(s => (
-                                    <li key={s.sectionId}
-                                        className={"w-full rounded-md bg-white flex justify-between text-black/70 text-sm font-medium items-center px-4 py-1.5 relative"}>
-                                        <h1 className={"w-[25%]"}>{s.title}</h1>
-                                        <h2 className={"w-[25%]"}>{s.category}</h2>
-                                        <span className={"w-[25%]"}>{s.time}</span>
-                                        <span
-                                            className={"w-[25%]"}>{s.updateDate}</span>
-                                        <button
-                                            className={"absolute right-4 text-sm text-black/40 hover:text-red-300 cursor-pointer"}
-                                            onClick={() => deleteAllSectionData(userId, props.projectId, s.sectionId, mode, workspaceId)}>
-                                            <FaRegTrashCan/>
-                                        </button>
-                                    </li>
+                                    <SectionCart
+                                        key={s.sectionId}
+                                        projectId={props.projectId}
+                                        sectionId={s.sectionId}
+                                        title={s.title}
+                                        time={s.time}
+                                        userName={s.userName}
+                                        category={s.category}
+                                        updateDate={s.updateDate}
+                                    />
                                 ))}
                             </>
                             :
@@ -269,7 +266,7 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
                                     className={"w-full bg-white rounded-md px-2 py-4 h-full flex items-center justify-center"}>
                                     <h1
                                         className={"text-black/50 text-sm font-medium"}>
-                                        No Entry found (≥o≤)
+                                        No tracks found 0.o
                                     </h1>
                                 </div>
                             </>

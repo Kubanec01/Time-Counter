@@ -155,14 +155,13 @@ const ProjectsBars = () => {
                             desc={"Are you sure you want to delete this project? This step is irreversible and everything stored in this project will be deleted."}
                             deleteBtnText={"Delete project"}
                             btnFunction={() => deleteProject(editingProjectId)}
-                            topDistance={"45%"}
+                            topDistance={300}
                         />
                         <RenameModal
                             setIsModalOpen={setIsModalOpen}
                             isModalOpen={isModalOpen}
                             setInputValue={setInputValue}
                             inputValue={inputValue}
-                            icon={<RiEditBoxFill/>}
                             inputPlaceholder={"What is new project name?"}
                             title={"Rename project?"}
                             desc={"You can rename your project anytime, anywhere. But remember - the name must contain a maximum of 24 characters."}

@@ -92,7 +92,6 @@ const SectionCart = ({...props}: SectionCartProps) => {
     const isWorkspaceRoleAdmin = mode === "workspace" && (userRole === "Admin" || userRole === "Manager");
 
 
-
     // Fetch Initial ClockTime
     useEffect(() => {
         const fetchInitialClockTime = async () => {
@@ -217,19 +216,21 @@ const SectionCart = ({...props}: SectionCartProps) => {
                 desc={"Are you sure you want to delete this track? This step is irreversible and everything stored in this track will be deleted."}
                 deleteBtnText={"Delete Track"}
                 btnFunction={() => deleteAllSectionData(props.userId, props.projectId, props.sectionId, mode, workspaceId)}
-                topDistance={"300px"}
+                topDistance={300}
             />
             <RenameModal
                 setIsModalOpen={() => setIsEditModalOpen(false)}
                 isModalOpen={isEditModalOpen}
                 setInputValue={setInputValue}
                 inputValue={inputValue}
-                icon={<RiEditBoxFill/>}
                 title={"Rename track?"}
                 inputPlaceholder={"What is new name?"}
                 desc={"You can rename your track anytime, anywhere. Name must contain a maximum of 24 characters."}
-                formFunction={(e) =>
-                    editSectionName(e, props.userId, props.projectId, props.sectionId, inputValue, setInputValue, setIsEditModalOpen, mode, workspaceId)}
+                formFunction={(e) => {
+                    e.preventDefault()
+                    editSectionName(props.userId, props.projectId, props.sectionId, inputValue, setInputValue, setIsEditModalOpen, mode, workspaceId)
+                }
+                }
             />
             <InformativeModal
                 isModalOpen={isInfoModalOpen}

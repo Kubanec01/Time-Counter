@@ -22,7 +22,7 @@ interface UserBarProps {
 
 export const UserBar = ({...props}: UserBarProps) => {
 
-    const {workspaceId, userRole} = useWorkSpaceContext()
+    const {userRole} = useWorkSpaceContext()
     const [user] = useAuthState(auth)
     const userId = user?.uid
 

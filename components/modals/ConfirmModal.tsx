@@ -8,6 +8,7 @@ interface ModalProps {
     btnFunction: () => void | Promise<void>;
     desc: string
     btnText: string
+    topDistance: number;
 }
 
 const ConfirmModal = ({...props}: ModalProps) => {
@@ -16,6 +17,9 @@ const ConfirmModal = ({...props}: ModalProps) => {
 
     return (
         <div
+            style={{
+                top: props.topDistance
+            }}
             className={`${openStyle} fixed left-[50%] -translate-x-[50%] max-w-[320px] w-[90%] py-[28px] px-[30px]
              rounded-[12px] bg-white/98 backdrop-blur-xl border border-black/10`}>
                 <span className={"mx-auto flex justify-center text-4xl"}>

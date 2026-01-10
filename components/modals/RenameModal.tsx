@@ -1,6 +1,7 @@
 'use client'
 
 import React, {Dispatch, ReactNode, SetStateAction, useEffect, useRef} from "react";
+import {RiEditBoxFill} from "react-icons/ri";
 
 
 interface ModalProps {
@@ -10,7 +11,6 @@ interface ModalProps {
     inputValue: string;
     title: string;
     desc: string;
-    icon: ReactNode;
     inputPlaceholder: string;
     formFunction: (e: React.FormEvent<HTMLFormElement>) => void;
 }
@@ -41,7 +41,7 @@ const RenameModal = ({...props}: ModalProps) => {
                 <span
                     className={"mx-auto text-4xl w-full flex justify-center text-vibrant-purple-600"}
                 >
-                    {props.icon}
+                    <RiEditBoxFill/>
                 </span>
                 <div className={"mt-[18px]"}>
                     <h1 className={"text-lg font-semibold"}>{props.title}</h1>

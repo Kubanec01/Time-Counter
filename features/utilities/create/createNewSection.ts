@@ -40,6 +40,7 @@ export const createNewSection = async (
         projectId: projectId,
         sectionId: sectionId,
         userName: userName,
+        userId: userId,
         title: inputValue,
         time: time,
         updateDate: currDate,

@@ -26,7 +26,7 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
     const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
 
     const [user] = useAuthState(auth)
-    const {mode, workspaceId, userName, userSurname} = useWorkSpaceContext()
+    const {mode, workspaceId, userName, userSurname, userRole} = useWorkSpaceContext()
 
     // Variables
     const projectId = props.projectId;
@@ -39,31 +39,38 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
         const userRef = getFirestoreTargetRef(userId, mode, workspaceId);
 
         const getSectionsData = onSnapshot(userRef, (snap) => {
-            if (snap.exists()) {
-                const data = snap.data();
-                const sections = data.projectsSections || [];
-                const updatedSectionsByDates = data.updatedSectionsByDates || []
+            if (!snap.exists()) return
 
-                const validUpdatedSectionByDates: UpdatedSectionByDate[] = updatedSectionsByDates.filter((s: UpdatedSectionByDate) => s.projectId === projectId);
 
-                const validSections = sections.filter(
+            const data = snap.data();
+            const sections = data.projectsSections || [];
+            const updatedSectionsByDates = data.updatedSectionsByDates || []
+
+
+            let validSections: Section[] = []
+
+            if (userRole === "Admin" || userRole === "Manager") {
+                validSections = sections.filter(
                     (s: Section) => s.projectId === projectId
                 );
-
-                const filteredDates = getUniqueDates(validUpdatedSectionByDates)
-
-                setSections(validSections);
-                setUpdatedSectionsByDates(sortDatesAscending(filteredDates))
-
             } else {
-                setSections([])
-                setUpdatedSectionsByDates([])
+                validSections = sections.filter(
+                    (s: Section) => s.projectId === projectId && s.userId === userId
+                );
             }
+
+
+            const validUpdatedSectionByDates: UpdatedSectionByDate[] = updatedSectionsByDates.filter((u: UpdatedSectionByDate) => validSections.some(s => s.sectionId === u.sectionId));
+
+            const filteredDates = getUniqueDates(validUpdatedSectionByDates)
+
+            setSections(validSections);
+            setUpdatedSectionsByDates(sortDatesAscending(filteredDates))
 
         });
 
         return () => getSectionsData();
-    }, [userId, projectId]);
+    }, [userId, projectId, mode, workspaceId, userRole]);
 
 
     // Functions

@@ -17,6 +17,7 @@ export interface Section {
     projectId: string;
     sectionId: string;
     userName: string;
+    userId: string;
     title: string;
     time: string;
     updateDate?: string

@@ -109,6 +109,7 @@ export const UserMenu = ({...props}: Props) => {
             {/*Modals*/}
             {/*Log out modal*/}
             <ConfirmModal
+                topDistance={200}
                 title={"Log Out of Trackio?"}
                 setIsModalOpen={setIsLogoutModalOpen}
                 isModalOpen={isLogoutModalOpen}
@@ -122,6 +123,7 @@ export const UserMenu = ({...props}: Props) => {
             />
             {/* Leave workspace modal */}
             <ConfirmModal
+                topDistance={200}
                 title={"Leave Workspace?"}
                 setIsModalOpen={setIsLeaveWorkspaceModalOpen}
                 isModalOpen={isLeaveWorkspaceModalOpen}

@@ -5,7 +5,6 @@ import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef"
 
 
 export const editSectionName = async (
-    e: React.FormEvent<HTMLFormElement>,
     userId: string | undefined,
     projectId: string,
     sectionId: string,
@@ -15,7 +14,6 @@ export const editSectionName = async (
     mode: UserMode,
     workspaceId: WorkspaceId,
 ) => {
-    e.preventDefault()
 
     if (!userId) return
 
