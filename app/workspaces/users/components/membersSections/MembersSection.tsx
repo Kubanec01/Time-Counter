@@ -9,9 +9,14 @@ import {setUserRole} from "@/features/utilities/edit/setUSerRole";
 import ConfirmModal from "@/components/modals/ConfirmModal";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth} from "@/app/firebase/config";
+import InformativeModal from "@/components/modals/InformativeModal";
 
+interface MembersSectionProps {
+    members: Member[];
+    admins: Member[];
+}
 
-export const MembersSection = ({members}: { members: Member[] }) => {
+export const MembersSection = ({...props}: MembersSectionProps) => {
     const [selectedUser, setSelectedUser] = useState<Member | null>(null)
     const [isInfoModalOpen, setIsInfoModalOpen] = useState(false)
     const [isDeleteUserModalOpen, setIsDeleteUserModalOpen] = useState(false)
@@ -25,12 +30,18 @@ export const MembersSection = ({members}: { members: Member[] }) => {
 
     const deleteUser = async () => {
         if (!selectedUser) return
+        if (selectedUser.role === "Admin" && props.admins.length < 2) {
+            setIsInfoModalOpen(true)
+            setIsDeleteUserModalOpen(false)
+            return;
+        }
 
         setIsDeleteUserModalOpen(false)
         removeUser(selectedUser.userId, selectedUser.name, selectedUser.surname, selectedUser.email, workspaceId)
     }
 
     const updateUSerRole = () => {
+
         if (!userRole || !selectedUser) return
 
         setIsConfirmModalOpen(false)
@@ -39,11 +50,11 @@ export const MembersSection = ({members}: { members: Member[] }) => {
 
     console.log(isConfirmModalOpen)
 
-    if (members.length === 0) return noUsersMess
+    if (props.members.length === 0) return noUsersMess
 
     return (
         <>
-            {members.map((member: Member) => (
+            {props.members.map((member: Member) => (
                 <UserBar
                     key={member.userId}
                     userId={member.userId}
@@ -51,9 +62,9 @@ export const MembersSection = ({members}: { members: Member[] }) => {
                     surname={member.surname}
                     email={member.email}
                     role={member.role}
-                    setIsInfoModalOpen={setIsInfoModalOpen}
-                    isDeleteUserModalOpen={isDeleteUserModalOpen}
                     setIsDeleteUserModalOpen={setIsDeleteUserModalOpen}
+                    isDeleteUserModalOpen={isDeleteUserModalOpen}
+                    setIsInfoModalOpen={setIsInfoModalOpen}
                     setSelectedUser={setSelectedUser}
                     setIsConfirmModalOpen={setIsConfirmModalOpen}
                     setNewRole={setNewRole}
@@ -76,6 +87,10 @@ export const MembersSection = ({members}: { members: Member[] }) => {
                  role to ${newRole}? This action may grant or revoke various permissions for the user. For more details, refer to user permissions.`}
                 btnFunction={updateUSerRole}
                 btnText={"Change user role"}/>
+            <InformativeModal
+                setIsModalOpen={setIsInfoModalOpen}
+                isModalOpen={isInfoModalOpen}
+                title={"The project must have at least one admin."}/>
         </>
     )
 }

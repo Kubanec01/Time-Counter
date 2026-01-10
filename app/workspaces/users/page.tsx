@@ -20,6 +20,7 @@ const UsersHomePage = () => {
     const [filteredRole, setFilteredRole] = useState<UserRoleFilter>("All")
     const [bannedMembers, setBannedMembers] = useState<Member[]>([])
     const [showBannedMembers, setShowBannedMembers] = useState<boolean>(false)
+    const [admins, setAdmins] = useState<Member[]>([])
 
     const {workspaceId, mode, userRole} = useWorkSpaceContext()
     const [user] = useAuthState(auth)
@@ -66,6 +67,7 @@ const UsersHomePage = () => {
             const data = docSnap.data()
             const members: Member[] = data.members
             const bannedMembers: Member[] = data.blackList || []
+            setAdmins(members.filter(m => m.role === "Admin"))
 
             setBannedMembers(bannedMembers)
             if (userRole === "Admin") {
@@ -79,7 +81,7 @@ const UsersHomePage = () => {
 
         return () => getWorkspaceUsers()
 
-    }, [workspaceId, mode, userId]);
+    }, [workspaceId, mode, userId, userRole]);
 
     return (
         <>
@@ -112,7 +114,7 @@ const UsersHomePage = () => {
                                     ?
                                     <BannedMembersSection members={bannedMembers}/>
                                     :
-                                    <MembersSection members={members}/>
+                                    <MembersSection members={members} admins={admins}/>
                                 }
                             </ul>
                         </section>

@@ -2,8 +2,9 @@ import {Member, Role} from "@/types";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {FaCircleUser} from "react-icons/fa6";
 import {MdEmail, MdOutlineShield} from "react-icons/md";
-import {setUserRole} from "@/features/utilities/edit/setUSerRole";
 import {Dispatch, SetStateAction} from "react";
+import {useAuthState} from "react-firebase-hooks/auth";
+import {auth} from "@/app/firebase/config";
 
 interface UserBarProps {
     userId: string;
@@ -22,6 +23,26 @@ interface UserBarProps {
 export const UserBar = ({...props}: UserBarProps) => {
 
     const {workspaceId, userRole} = useWorkSpaceContext()
+    const [user] = useAuthState(auth)
+    const userId = user?.uid
+
+    const buttons: { id: string, label: string, role: Role }[] = [
+        {
+            id: "admin",
+            label: "Admin",
+            role: "Admin"
+        },
+        {
+            id: "manager",
+            label: "Manager",
+            role: "Manager"
+        },
+        {
+            id: "member",
+            label: "Member",
+            role: "Member"
+        },
+    ]
 
     const selectUser = () => {
         props.setSelectedUser({
@@ -50,6 +71,7 @@ export const UserBar = ({...props}: UserBarProps) => {
                         className={"flex items-center gap-1 font-semibold"}>
                         <FaCircleUser className={"text-sm text-black/60"}/>
                     <h1>{props.name} {props.surname}</h1>
+                        <span className={"text-sm text-black/50"}>{props.userId === userId && "(You)"}</span>
                     </span>
                     <span
                         className={"flex items-center gap-1"}>
@@ -68,30 +90,29 @@ export const UserBar = ({...props}: UserBarProps) => {
                     </span>
                     <div
                         className={"flex justify-start items-center gap-4"}>
-                        <button
-                            onClick={() => setRole("Admin")}
-                            className={`${userRole === "Admin" ? "block" : "hidden"} px-3 py-2 cursor-pointer text-xs text-white 
-                            bg-black hover:bg-linear-to-b from-vibrant-purple-600 to-vibrant-purple-700 duration-100 ease-in rounded-md`}>
-                            Make Admin
-                        </button>
-                        <button
-                            onClick={() => setRole("Manager")}
-                            className={"px-3 py-2 cursor-pointer text-xs text-white bg-black hover:bg-linear-to-b from-vibrant-purple-600 to-vibrant-purple-700 duration-100 ease-in rounded-md"}>
-                            Make Manager
-                        </button>
-                        <button
-                            onClick={() => setRole("Member")}
-                            className={"px-3 py-2 cursor-pointer text-xs text-white bg-black hover:bg-linear-to-b from-vibrant-purple-600 to-vibrant-purple-700 duration-100 ease-in rounded-md"}>
-                            Make Member
-                        </button>
-                        <button
-                            onClick={() => {
-                                props.setIsDeleteUserModalOpen(true)
-                                selectUser()
-                            }}
-                            className={"px-3 py-2 cursor-pointer text-xs text-white bg-red-500 hover:bg-red-600 duration-100 ease-in rounded-md"}>
-                            Remove Member
-                        </button>
+                        {props.userId !== userId &&
+                            <>
+                                {buttons.map((btn) => (
+                                    <button
+                                        key={btn.id}
+                                        onClick={() => setRole(btn.role)}
+                                        className={`${userRole === "Manager" && btn.role === "Admin"
+                                            ? "hidden" : "block"}
+                                             px-3 py-2 cursor-pointer text-xs text-white 
+                                        bg-black hover:bg-linear-to-b from-vibrant-purple-600 to-vibrant-purple-700 duration-100 ease-in rounded-md`}>
+                                        Make {btn.label}
+                                    </button>
+                                ))}
+                                <button
+                                    onClick={() => {
+                                        props.setIsDeleteUserModalOpen(true)
+                                        selectUser()
+                                    }}
+                                    className={"px-3 py-2 cursor-pointer text-xs text-white bg-red-500 hover:bg-red-600 duration-100 ease-in rounded-md"}>
+                                    Remove Member
+                                </button>
+                            </>
+                        }
                     </div>
                 </div>
             </li>

@@ -4,6 +4,7 @@ import React from "react";
 import {noUsersMess} from "@/app/workspaces/users/components/membersSections/noUsersMess";
 
 
+
 export const BannedMembersSection = ({members}: { members: Member[] }) => {
     if (members.length === 0) return noUsersMess
 
