@@ -10,13 +10,13 @@ interface ModalProps {
     btnText: string
 }
 
-const ConfirmExitModal = ({...props}: ModalProps) => {
+const ConfirmModal = ({...props}: ModalProps) => {
     //   Style
     const openStyle = props.isModalOpen ? "block" : "hidden";
 
     return (
         <div
-            className={`${openStyle} fixed top-[300%] left-[50%] -translate-x-[50%] max-w-[298px] w-[90%] py-[28px] px-[30px]
+            className={`${openStyle} fixed left-[50%] -translate-x-[50%] max-w-[320px] w-[90%] py-[28px] px-[30px]
              rounded-[12px] bg-white/98 backdrop-blur-xl border border-black/10`}>
                 <span className={"mx-auto flex justify-center text-4xl"}>
                     <FaUser/>
@@ -39,4 +39,4 @@ const ConfirmExitModal = ({...props}: ModalProps) => {
     );
 };
 
-export default ConfirmExitModal;
+export default ConfirmModal;

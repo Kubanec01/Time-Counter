@@ -9,7 +9,7 @@ import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {WorkspaceButton} from "@/components/mainNavbar/components/WorkspaceButton";
 import {useRouter} from "next/navigation";
 import {signOut} from "@firebase/auth";
-import ConfirmExitModal from "@/components/modals/ConfirmExitModal";
+import ConfirmModal from "@/components/modals/ConfirmModal";
 import {TbPasswordUser} from "react-icons/tb";
 import {removeLocalStorageWorkspaceIdAndUserMode} from "@/features/utilities/localStorage";
 import {NavSection} from "@/components/mainNavbar/components/userMenu/components/NavSection";
@@ -108,7 +108,7 @@ export const UserMenu = ({...props}: Props) => {
             </div>
             {/*Modals*/}
             {/*Log out modal*/}
-            <ConfirmExitModal
+            <ConfirmModal
                 title={"Log Out of Trackio?"}
                 setIsModalOpen={setIsLogoutModalOpen}
                 isModalOpen={isLogoutModalOpen}
@@ -121,7 +121,7 @@ export const UserMenu = ({...props}: Props) => {
                 desc={"You can always log back in anywhere, anytime. Your progress will be saved without any worries."}
             />
             {/* Leave workspace modal */}
-            <ConfirmExitModal
+            <ConfirmModal
                 title={"Leave Workspace?"}
                 setIsModalOpen={setIsLeaveWorkspaceModalOpen}
                 isModalOpen={isLeaveWorkspaceModalOpen}

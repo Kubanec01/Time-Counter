@@ -1,10 +1,9 @@
 import {Member, Role} from "@/types";
-import {arrayUnion, doc, getDoc, updateDoc} from "firebase/firestore";
-import {auth, db} from "@/app/firebase/config";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
-import {useAuthState} from "react-firebase-hooks/auth";
 import {FaCircleUser} from "react-icons/fa6";
-import {MdEmail, MdOutlineShield, MdShield} from "react-icons/md";
+import {MdEmail, MdOutlineShield} from "react-icons/md";
+import {setUserRole} from "@/features/utilities/edit/setUSerRole";
+import {Dispatch, SetStateAction} from "react";
 
 interface UserBarProps {
     userId: string;
@@ -12,60 +11,33 @@ interface UserBarProps {
     surname: string;
     email: string;
     role: Role;
+    setIsInfoModalOpen: Dispatch<SetStateAction<boolean>>;
+    isDeleteUserModalOpen: boolean
+    setIsDeleteUserModalOpen: Dispatch<SetStateAction<boolean>>;
+    setSelectedUser: Dispatch<SetStateAction<Member | null>>;
+    setIsConfirmModalOpen: Dispatch<SetStateAction<boolean>>
+    setNewRole: Dispatch<SetStateAction<Role | null>>;
 }
 
 export const UserBar = ({...props}: UserBarProps) => {
 
-
     const {workspaceId, userRole} = useWorkSpaceContext()
-    const [user] = useAuthState(auth)
-    const userId = user?.uid
 
-    // Functions
-    const setUserRole = async (
-        memberId: string,
-        role: Role,
-    ) => {
-        if (!workspaceId) return
-        const docRef = doc(db, "realms", workspaceId)
-        const docSnap = await getDoc(docRef)
-        if (!docSnap.exists()) return
-        const data = docSnap.data()
-        const members: Member[] = data.members || []
-        const updatedMembers = members.map((member: Member) => {
-            if (member.userId !== memberId) return member
-            return {...member, role: role}
+    const selectUser = () => {
+        props.setSelectedUser({
+            userId: props.userId,
+            email: props.email,
+            name: props.name,
+            surname: props.surname,
+            role: props.role,
         })
-
-        await updateDoc(docRef, {members: updatedMembers})
-        console.log("changed")
     }
 
-    const removeUser = async (
-        memberId: string,
-        name: string,
-        surname: string,
-        email: string,
-        workspaceId: string | null
-    ) => {
-        if (!workspaceId || !userId) return
-        const docRef = doc(db, "realms", workspaceId)
-        const docSnap = await getDoc(docRef)
-        if (!docSnap.exists()) return
-        const data = docSnap.data()
-        const members: Member[] = data.members
-        const updatedMembers = members.filter(member => member.userId !== memberId)
-
-        const bannedMember = {
-            name: name,
-            surname: surname,
-            email: email,
-            userId: memberId
-        }
-
-        await updateDoc(docRef, {members: updatedMembers, blackList: arrayUnion(bannedMember)})
+    const setRole = (role: Role) => {
+        selectUser()
+        props.setNewRole(role)
+        props.setIsConfirmModalOpen(true)
     }
-
 
     return (
         <>
@@ -97,23 +69,26 @@ export const UserBar = ({...props}: UserBarProps) => {
                     <div
                         className={"flex justify-start items-center gap-4"}>
                         <button
-                            onClick={() => setUserRole(props.userId, "Admin")}
+                            onClick={() => setRole("Admin")}
                             className={`${userRole === "Admin" ? "block" : "hidden"} px-3 py-2 cursor-pointer text-xs text-white 
                             bg-black hover:bg-linear-to-b from-vibrant-purple-600 to-vibrant-purple-700 duration-100 ease-in rounded-md`}>
                             Make Admin
                         </button>
                         <button
-                            onClick={() => setUserRole(props.userId, "Manager")}
+                            onClick={() => setRole("Manager")}
                             className={"px-3 py-2 cursor-pointer text-xs text-white bg-black hover:bg-linear-to-b from-vibrant-purple-600 to-vibrant-purple-700 duration-100 ease-in rounded-md"}>
                             Make Manager
                         </button>
                         <button
-                            onClick={() => setUserRole(props.userId, "Member")}
+                            onClick={() => setRole("Member")}
                             className={"px-3 py-2 cursor-pointer text-xs text-white bg-black hover:bg-linear-to-b from-vibrant-purple-600 to-vibrant-purple-700 duration-100 ease-in rounded-md"}>
                             Make Member
                         </button>
                         <button
-                            onClick={() => removeUser(props.userId, props.name, props.surname, props.email, workspaceId)}
+                            onClick={() => {
+                                props.setIsDeleteUserModalOpen(true)
+                                selectUser()
+                            }}
                             className={"px-3 py-2 cursor-pointer text-xs text-white bg-red-500 hover:bg-red-600 duration-100 ease-in rounded-md"}>
                             Remove Member
                         </button>

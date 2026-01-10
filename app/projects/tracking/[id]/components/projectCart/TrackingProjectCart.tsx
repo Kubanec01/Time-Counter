@@ -78,6 +78,7 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
             props.projectId,
             inputValue,
             time,
+            new Date(),
             setInputValue,
             setIsInfoModalOpen,
             "unset",

@@ -8,7 +8,7 @@ interface ModalProps {
     btnFunction: () => void | Promise<void>;
     desc: string
     deleteBtnText: string
-    topDistance: string
+    topDistance: number
 }
 
 const DeleteModal = ({...props}: ModalProps) => {

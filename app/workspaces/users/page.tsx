@@ -2,17 +2,16 @@
 
 import React, {useEffect, useState} from "react";
 import {Member} from "@/types";
-import {IoSearch} from "react-icons/io5";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {auth, db} from "@/app/firebase/config";
 import {doc, onSnapshot} from "firebase/firestore";
 import {useAuthState} from "react-firebase-hooks/auth";
-import {UserBar} from "@/app/workspaces/users/components/UserBar";
 import {RiArrowGoBackLine} from "react-icons/ri";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
-import {BannedUserBar} from "@/app/workspaces/users/components/BannedUserBar";
+import {MembersFilterBar, UserRoleFilter} from "@/app/workspaces/users/components/MembersFilterBar";
+import {BannedMembersSection} from "@/app/workspaces/users/components/membersSections/BannedMembersSection";
+import {MembersSection} from "@/app/workspaces/users/components/membersSections/MembersSection";
 
-type UserRoleFilter = | "All" | "Admin" | "Manager" | "Member" | "Banned";
 
 const UsersHomePage = () => {
 
@@ -22,19 +21,12 @@ const UsersHomePage = () => {
     const [bannedMembers, setBannedMembers] = useState<Member[]>([])
     const [showBannedMembers, setShowBannedMembers] = useState<boolean>(false)
 
-    const {workspaceId, mode} = useWorkSpaceContext()
+    const {workspaceId, mode, userRole} = useWorkSpaceContext()
     const [user] = useAuthState(auth)
     const userId = user?.uid
     const {replace} = useReplaceRouteLink()
 
-    const options = [
-        {value: "All", label: "Show all"},
-        {value: 'Admin', label: 'Admins'},
-        {value: 'Manager', label: 'Managers'},
-        {value: 'Member', label: 'Members'},
-        {value: 'Banned', label: 'Banned'},
-    ];
-
+    // Functions
     const selectUser = (role: string) => {
         if (role === "All") {
             setShowBannedMembers(false)
@@ -47,7 +39,6 @@ const UsersHomePage = () => {
         const filteredUsers = mem.filter(member => member.role === role)
         setMembers(filteredUsers)
     }
-
     const findUser = (text: string) => {
         if (text.trim() === "") return selectUser(filteredRole)
 
@@ -65,50 +56,6 @@ const UsersHomePage = () => {
         setMembers(filteredUsers)
     }
 
-    const noUsersMess = (
-        <div className={"w-full px-2 py-4 h-full flex items-center justify-center"}>
-            <h1
-                className={"text-black/50"}>
-                No users found (≥o≤)
-            </h1>
-        </div>
-    )
-
-    const bannedMembersSection = () => {
-        if (bannedMembers.length === 0) return noUsersMess
-
-        return (
-            bannedMembers.map((member: Member) => (
-                <BannedUserBar
-                    key={member.userId}
-                    userId={member.userId}
-                    name={member.name}
-                    surname={member.surname}
-                    email={member.email}
-                    role={member.role}
-                />
-            ))
-        )
-    }
-
-    const membersSection = () => {
-        if (members.length === 0) return noUsersMess
-
-        return (
-            members.map((member: Member) => (
-                <UserBar
-                    key={member.userId}
-                    userId={member.userId}
-                    name={member.name}
-                    surname={member.surname}
-                    email={member.email}
-                    role={member.role}
-                />
-            ))
-        )
-    }
-
-
     // Fetch Workspace Members
     useEffect(() => {
         if (!workspaceId || !userId) return
@@ -117,17 +64,16 @@ const UsersHomePage = () => {
         const getWorkspaceUsers = onSnapshot(docRef, docSnap => {
             if (!docSnap.exists()) return
             const data = docSnap.data()
-            const adminId: string = data.adminId
             const members: Member[] = data.members
             const bannedMembers: Member[] = data.blackList || []
 
             setBannedMembers(bannedMembers)
-            if (userId === adminId) {
+            if (userRole === "Admin") {
                 setMembers(members)
                 setMem(members)
             } else {
-                setMembers(members.filter((member: Member) => member.userId !== adminId))
-                setMem(members.filter((member: Member) => member.userId !== adminId))
+                setMembers(members.filter((member: Member) => member.role !== "Admin"))
+                setMem(members.filter((member: Member) => member.role !== "Admin"))
             }
         })
 
@@ -148,35 +94,8 @@ const UsersHomePage = () => {
                     >
                         <div
                             className={"w-full flex items-center justify-between"}>
-                            <div
-                                className={"flex items-center gap-2"}>
-                                {/* Search members input */}
-                                <select
-                                    onChange={(event) => {
-                                        const value = event.target.value as UserRoleFilter;
-                                        setFilteredRole(value)
-                                        selectUser(value)
-                                    }}
-                                    className="border border-black/20 w-[120px] outline-none p-1 px-2
-                                 rounded-md bg-white cursor-pointer">
-                                    {options.map((option) => (
-                                        <option key={option.value} value={option.value}>
-                                            {option.label}
-                                        </option>
-                                    ))}
-                                </select>
-                                <div className={"relative w-[340px]"}>
-                                    <input
-                                        disabled={showBannedMembers}
-                                        onChange={(e) => findUser(e.target.value)}
-                                        className={"rounded-md w-full p-1 pl-4 pr-8.5 bg-white/90 " +
-                                            " border border-black/20 outline-none"}
-                                        placeholder={"Search for members..."}
-                                        type="text"/>
-                                    <IoSearch
-                                        className={"absolute top-1/2 -translate-y-1/2 right-3 text-xl text-black/40"}/>
-                                </div>
-                            </div>
+                            <MembersFilterBar setRole={setFilteredRole} selectUser={selectUser} findUser={findUser}
+                                              isBtnDisabled={showBannedMembers}/>
                             <button
                                 onClick={() => replace("/")}
                                 className={`cursor-pointer hover:scale-105 duration-100 ease-in
@@ -191,13 +110,9 @@ const UsersHomePage = () => {
                                     " rounded-lg px-4 py-2 border border-black/10"}>
                                 {showBannedMembers
                                     ?
-                                    <>
-                                        {bannedMembersSection()}
-                                    </>
+                                    <BannedMembersSection members={bannedMembers}/>
                                     :
-                                    <>
-                                        {membersSection()}
-                                    </>
+                                    <MembersSection members={members}/>
                                 }
                             </ul>
                         </section>
