@@ -103,16 +103,16 @@ export const UserBar = ({...props}: UserBarProps) => {
                                         Make {btn.label}
                                     </button>
                                 ))}
-                                <button
-                                    onClick={() => {
-                                        props.setIsDeleteUserModalOpen(true)
-                                        selectUser()
-                                    }}
-                                    className={"px-3 py-2 cursor-pointer text-xs text-white bg-red-500 hover:bg-red-600 duration-100 ease-in rounded-md"}>
-                                    Remove Member
-                                </button>
                             </>
                         }
+                        <button
+                            onClick={() => {
+                                props.setIsDeleteUserModalOpen(true)
+                                selectUser()
+                            }}
+                            className={"px-3 py-2 cursor-pointer text-xs text-white bg-red-500 hover:bg-red-600 duration-100 ease-in rounded-md"}>
+                            Remove Member
+                        </button>
                     </div>
                 </div>
             </li>

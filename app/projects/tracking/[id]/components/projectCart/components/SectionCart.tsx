@@ -115,7 +115,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
         };
         fetchInitialClockTime();
 
-    }, [props.userId, props.projectId, props.sectionId]);
+    }, [props.userId, props.projectId, props.sectionId, mode, workspaceId, reset]);
 
     // Fetch Time Checkouts
     useEffect(() => {
@@ -134,13 +134,13 @@ const SectionCart = ({...props}: SectionCartProps) => {
             setSubSections(timeCheckouts);
         });
         return () => fetchTimeCheckouts();
-    }, [props.userId, props.sectionId]);
+    }, [props.userId, props.sectionId, mode, workspaceId]);
 
     return (
         <li
             key={props.sectionId}
             className={`w-full rounded-2xl flex flex-col flex-between bg-white relative ${!isAnySections && "pb-1.5"}
-             ${(mode === "solo" || !isWorkspaceRoleAdmin) ? "pt-1.5" : "pt-3"} px-[16px] mb-[8px]`}>
+             ${(mode === "solo" || userRole === "Member") ? "pt-1.5" : "pt-3"} px-[16px] mb-[8px]`}>
             {/*User Name*/}
             <span
                 className={`${isWorkspaceRoleAdmin ? "flex" : "hidden"} items-center text-xs font-semibold absolute top-2 left-2.5 text-custom-gray-800`}>
@@ -163,12 +163,10 @@ const SectionCart = ({...props}: SectionCartProps) => {
                         {/*Start & Pause Button*/}
                         <button
                             onClick={() => toggleTimer()}
-                            className={`${(mode === "solo" || userRole !== "Admin") ? "block" : "hidden"}
-                            cursor-pointer hover:text-custom-gray-800 duration-150 text-lg`}>
+                            className={`cursor-pointer hover:text-custom-gray-800 duration-150 text-lg`}>
                             {isRunning ? <FiPause/> : <FiPlay/>}
                         </button>
-                        <span className={`${(mode === "solo" || userRole !== "Admin") ? "block" : "hidden"}
-                         w-[1px] h-[36px] bg-custom-gray-600`}/>
+                        <span className={`w-[1px] h-[36px] bg-custom-gray-600`}/>
                     </>
                     {/*Rename Button*/}
                     <button

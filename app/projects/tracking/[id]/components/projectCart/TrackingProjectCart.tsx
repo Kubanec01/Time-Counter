@@ -4,7 +4,7 @@ import {auth} from "@/app/firebase/config";
 import {onSnapshot} from "firebase/firestore";
 import React, {useEffect, useState} from "react";
 import SectionCart from "./components/SectionCart";
-import {ProjectProps, Section, UpdatedSectionByDate} from "@/types";
+import {Member, ProjectProps, Section, UpdatedSectionByDate} from "@/types";
 import ProjectCartNavbar from "@/components/ProjectCartNavbar";
 import InformativeModal from "@/components/modals/InformativeModal";
 import {sortDatesAscending} from "@/features/utilities/date/sortDates";
@@ -15,15 +15,16 @@ import {setColorByDate} from "@/features/utilities/date/setcolorByDate";
 import {getUniqueDates} from "@/features/utilities/date/getUniqueDates";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
-import {useMounted} from "@/features/hooks/useMounted";
 
 const TrackingProjectCart = ({...props}: ProjectProps) => {
 
     // States
     const [sections, setSections] = useState<Section[]>([]);
     const [updatedSectionsByDates, setUpdatedSectionsByDates] = useState<string[]>([]);
+    const [selectedUserId, setSelectedUserId] = useState<string | "all">("all");
     const [inputValue, setInputValue] = useState<string>("");
     const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+    const [members, setMembers] = useState<Member[]>([]);
 
     const [user] = useAuthState(auth)
     const {mode, workspaceId, userName, userSurname, userRole} = useWorkSpaceContext()
@@ -44,21 +45,28 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
 
             const data = snap.data();
             const sections = data.projectsSections || [];
-            const updatedSectionsByDates = data.updatedSectionsByDates || []
+            const updatedSectionsByDates: UpdatedSectionByDate[] = data.updatedSectionsByDates || []
 
+            if (mode === "workspace" && userRole !== "Member") {
+                const membersData: Member[] = data.members
+                setMembers(membersData)
+            }
 
             let validSections: Section[] = []
 
-            if (userRole === "Admin" || userRole === "Manager") {
+            if (userRole === "Member") {
+                validSections = sections.filter(
+                    (s: Section) => s.projectId === projectId && s.userId === userId
+                );
+            } else if (selectedUserId === "all") {
                 validSections = sections.filter(
                     (s: Section) => s.projectId === projectId
                 );
             } else {
                 validSections = sections.filter(
-                    (s: Section) => s.projectId === projectId && s.userId === userId
+                    (s: Section) => s.projectId === projectId && s.userId === selectedUserId
                 );
             }
-
 
             const validUpdatedSectionByDates: UpdatedSectionByDate[] = updatedSectionsByDates.filter((u: UpdatedSectionByDate) => validSections.some(s => s.sectionId === u.sectionId));
 
@@ -67,10 +75,11 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
             setSections(validSections);
             setUpdatedSectionsByDates(sortDatesAscending(filteredDates))
 
+            console.log("is fetched")
         });
 
         return () => getSectionsData();
-    }, [userId, projectId, mode, workspaceId, userRole]);
+    }, [userId, projectId, mode, workspaceId, userRole, selectedUserId]);
 
 
     // Functions
@@ -79,45 +88,50 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
 
         const userFullName = `${userName} ${userSurname}`
         const time = "00:00:00";
-        await createNewSection(
-            userId,
-            userFullName,
-            props.projectId,
-            inputValue,
-            time,
-            new Date(),
-            setInputValue,
-            setIsInfoModalOpen,
-            "unset",
-            mode,
-            workspaceId)
+        await createNewSection(userId, userFullName, props.projectId, inputValue, time, new Date(), setInputValue, setIsInfoModalOpen, "unset", mode, workspaceId)
     }
-
 
     return (
         <>
             <ProjectCartNavbar projectName={props.projectName}/>
             <section
-                className={"w-[90%] max-w-[776px] mx-auto pt-[198px] border-b-2 border-custom-gray-600/50 pb-3 px-20"}
+                className={"w-[90%] max-w-[876px] mx-auto pt-[198px] border-b-2 border-custom-gray-600/50 pb-3 px-2"}
             >
-                <form
-                    onSubmit={createSection}
-                    className={"flex justify-between"}
-                >
-                    <input
-                        placeholder={"What do you want to work on?"}
-                        className={"w-[476px] h-[38px] rounded-lg pl-3 text-sm bg-white border border-black/20 outline-none"}
-                        type="text"
-                        value={inputValue}
-                        maxLength={24}
-                        onChange={(e) => setInputValue(e.target.value)}
-                    />
-                    <button
-                        type={"submit"}
-                        className={"px-5 py-1 text-sm font-semibold rounded-lg text-white main-button duration-100 cursor-pointer"}>
-                        New Timer
-                    </button>
-                </form>
+                <div
+                    className={"mx-auto flex justify-center gap-4"}>
+                    <select
+                        onChange={(event) => {
+                            const value = event.target.value as string | "all";
+                            setSelectedUserId(value);
+                        }}
+                        className={` ${mode === "solo" || userRole === "Member" ? "hidden" : "block"}
+                        border border-black/20 outline-none px-2 h-9.5 w-[120px] text-sm rounded-lg bg-white cursor-pointer`}>
+                        <option value="all">All Users</option>
+                        {members.map((mem) => (
+                            <option key={mem.userId} value={mem.userId}>
+                                {mem.name} {mem.surname}
+                            </option>
+                        ))}
+                    </select>
+                    <form
+                        onSubmit={createSection}
+                        className={"flex justify-between gap-4"}
+                    >
+                        <input
+                            placeholder={"What do you want to work on?"}
+                            className={"w-[476px] h-9.5 rounded-lg pl-3 text-sm bg-white border border-black/20 outline-none"}
+                            type="text"
+                            value={inputValue}
+                            maxLength={24}
+                            onChange={(e) => setInputValue(e.target.value)}
+                        />
+                        <button
+                            type={"submit"}
+                            className={"px-5 py-1 h-9.5 text-nowrap text-sm font-semibold rounded-lg text-white main-button duration-100 cursor-pointer"}>
+                            New Timer
+                        </button>
+                    </form>
+                </div>
             </section>
             <section
                 className={"w-[90%] max-w-[756px] mx-auto mt-[30] mb-[20]"}>

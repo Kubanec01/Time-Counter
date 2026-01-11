@@ -39,7 +39,7 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
     const [user] = useAuthState(auth)
     const userId = user?.uid
     const router = useRouter()
-    const {mode, workspaceId, userName, userSurname} = useWorkSpaceContext()
+    const {mode, workspaceId, userName, userSurname, userRole} = useWorkSpaceContext()
 
     const createSection = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -80,14 +80,20 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
             const sections: Section[] = data.projectsSections || []
 
             if (!sections) throw new Error("Failed fetch Sections Data")
+            let currSections: Section[] = []
 
-            const currSections = sections.filter((s: Section) => s.projectId === props.projectId && s.updateDate === formateDate(filteredDate))
+            if (userRole === "Member") {
+                currSections = sections.filter((s: Section) => s.projectId === props.projectId && s.updateDate === formateDate(filteredDate) && s.userId === userId)
+            } else {
+                currSections = sections.filter((s: Section) => s.projectId === props.projectId && s.updateDate === formateDate(filteredDate))
+            }
+
             setSections(currSections)
         })
 
         return () => fetchSectionsData()
 
-    }, [filteredDate, mode, props.projectId, userId, workspaceId])
+    }, [filteredDate, mode, props.projectId, userId, userRole, workspaceId])
 
     // Fetch Options
     useEffect(() => {
@@ -123,7 +129,8 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
                     </h1>
                     <button
                         onClick={() => router.push(`/workspaces/settings/projects/${props.projectId}`)}
-                        className={"text-xl text-black/35 hover:text-black/50 hover:rotate-180 duration-250 ease-in cursor-pointer"}>
+                        className={`${userRole === "Member" ? "hidden" : "block"}
+                        text-xl text-black/35 hover:text-black/50 hover:rotate-180 duration-250 ease-in cursor-pointer`}>
                         <RiSettings3Fill/>
                     </button>
                 </div>
@@ -250,6 +257,7 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
                                 {sections.map(s => (
                                     <SectionCart
                                         key={s.sectionId}
+                                        userId={s.userId}
                                         projectId={props.projectId}
                                         sectionId={s.sectionId}
                                         title={s.title}

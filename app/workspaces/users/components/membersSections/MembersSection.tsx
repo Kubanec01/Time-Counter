@@ -75,10 +75,13 @@ export const MembersSection = ({...props}: MembersSectionProps) => {
                 isModalOpen={isDeleteUserModalOpen}
                 title={"Remove Member?"}
                 btnFunction={deleteUser}
-                desc={"Are you sure you want to remove this member? You can add this member again later, but their progress will be permanently lost."}
+                desc={`Are you sure you want to remove
+                 ${selectedUser?.userId === userId ? "yourself? You won’t be able to log into the workspace again until another user approves it. Your progress will be permanently lost."
+                    : `${selectedUser?.name} ${selectedUser?.surname}? You can add this member again later, but their progress will be permanently lost.`}`}
                 deleteBtnText={"Remove member"}
                 topDistance={400}/>
             <ConfirmModal
+                topDistance={200}
                 setIsModalOpen={setIsConfirmModalOpen}
                 isModalOpen={isConfirmModalOpen}
                 title={"Change user role?"}
