@@ -9,7 +9,8 @@ import {useAuthState} from "react-firebase-hooks/auth";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {useGetProjectName} from "@/features/hooks/useGetProjectName";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
-import {TaskTypesOptions} from "@/app/workspaces/settings/projects/[id]/components/TaskTypesOptions";
+import {TaskTypesOptions} from "@/app/workspaces/settings/projects/[id]/components/tasks/TaskTypesOptions";
+import {UsersSettings} from "@/app/workspaces/settings/projects/[id]/components/users/Users";
 
 const WorkspaceProjectSettingsHome = () => {
 
@@ -60,7 +61,16 @@ const WorkspaceProjectSettingsHome = () => {
                 >
                     {hasActiveAndInactiveOptions && (
                         <>
-                            <TaskTypesOptions projectId={projectId}/>
+                            <TaskTypesOptions
+                                userId={userId}
+                                mode={mode}
+                                workSpaceId={workspaceId}
+                                projectId={projectId}/>
+                            <UsersSettings
+                                userId={userId}
+                                mode={mode}
+                                workSpaceId={workspaceId}
+                                projectId={projectId}/>
                         </>
                     )}
                 </ul>

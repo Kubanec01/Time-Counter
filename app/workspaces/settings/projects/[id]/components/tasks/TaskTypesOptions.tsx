@@ -1,71 +1,41 @@
 'use client'
 
-import {FaAngleDown, FaAngleUp, FaPlus, FaTasks} from "react-icons/fa";
+import {FaAngleDown, FaPlus, FaTasks} from "react-icons/fa";
 import {FaXmark} from "react-icons/fa6";
 import {useEffect, useState} from "react";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
-import {getDoc, onSnapshot, updateDoc} from "firebase/firestore";
-import {Project, ProjectOption} from "@/types";
-import {useAuthState} from "react-firebase-hooks/auth";
-import {auth} from "@/app/firebase/config";
+import {onSnapshot} from "firebase/firestore";
+import {Project, ProjectOption, UserMode} from "@/types";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {createNewOption} from "@/features/utilities/create/createNewOption";
+import {setProjectOptionState} from "@/features/utilities/edit/setProjectOptionState";
 
-interface TaskTypesOptionsProps {
+export interface TaskTypesOptionsProps {
+    userId: string | undefined;
+    mode: UserMode;
+    workSpaceId: string
     projectId: string;
 }
 
 export const TaskTypesOptions = ({...props}: TaskTypesOptionsProps) => {
 
-    const [user] = useAuthState(auth)
-    const userId = user?.uid
     const {workspaceId, mode} = useWorkSpaceContext()
 
     // States
     const [activeOptions, setActiveOptions] = useState<ProjectOption[]>([]);
     const [inactiveOptions, setInactiveOptions] = useState<ProjectOption[]>([]);
     const [isSectionOpen, setIsSectionOpen] = useState(false);
+    const [customInputValue, setCustomInputValue] = useState("");
 
-    const toggleOption = async (item: ProjectOption, action: ("activate" | "deactivate")) => {
-        if (!userId) return
-
-        const docRef = getFirestoreTargetRef(userId, mode, workspaceId);
-        const docSnap = await getDoc(docRef)
-        if (!docSnap.exists()) return
-        const data = docSnap.data()
-        const projects = data.projects
-        const project = projects.find((p: Project) => p.projectId === props.projectId)
-        const activeOptions = project.options || []
-        const inactiveOptions = project.inactiveOptions || []
-
-        // Active options
-        const updatedActiveOptions = action === "deactivate"
-            ?
-            activeOptions.filter((o: ProjectOption) => o.value !== item.value)
-            :
-            [...activeOptions, item]
-
-        // Inactive options
-        const updatedInactiveOptions = action === "deactivate"
-            ?
-            [...inactiveOptions, item]
-            :
-            inactiveOptions.filter((o: ProjectOption) => o.value !== item.value)
-
-        // Project
-        const updatedProjects = projects.map((p: Project) => {
-            if (p.projectId !== props.projectId) return p
-            return {...p, options: updatedActiveOptions, inactiveOptions: updatedInactiveOptions}
-        })
-
-        // Update Doc
-        await updateDoc(docRef, {projects: updatedProjects})
-    }
+    // Function
+    const toggleOption = (opt: ProjectOption, action: ("activate" | "deactivate")) =>
+        setProjectOptionState("general", props.userId, "unused", props.projectId, props.mode, props.workSpaceId, opt, action)
 
     // Fetch Options
     useEffect(() => {
-        if (!userId) return
+        if (!props.userId) return
 
-        const docRef = getFirestoreTargetRef(userId, mode, workspaceId);
+        const docRef = getFirestoreTargetRef(props.userId, mode, workspaceId);
 
         const fetchOptions = onSnapshot(docRef, snap => {
             if (!snap.exists()) return
@@ -78,7 +48,7 @@ export const TaskTypesOptions = ({...props}: TaskTypesOptionsProps) => {
             setInactiveOptions(inactiveOptions)
         });
         return () => fetchOptions()
-    }, [mode, props.projectId, userId, workspaceId])
+    }, [mode, props.projectId, props.userId, workspaceId])
 
     return (
         <>
@@ -98,7 +68,8 @@ export const TaskTypesOptions = ({...props}: TaskTypesOptionsProps) => {
                         <FaAngleDown/>
                     </button>
                 </div>
-                <section>
+                <section
+                    className={"flex gap-4"}>
                     {activeOptions.length > 0 &&
                         <>
                             <div
@@ -154,6 +125,28 @@ export const TaskTypesOptions = ({...props}: TaskTypesOptionsProps) => {
                         </>
                     }
                 </section>
+                <form
+                    onSubmit={(e) => {
+                        e.preventDefault()
+                        const opt = {label: customInputValue, value: customInputValue}
+                        createNewOption("general", props.userId, props.projectId, props.mode, props.workSpaceId, opt)
+                        setCustomInputValue("")
+                    }}
+                    className={"mt-8 flex gap-2 px-2 items-end"}>
+                    <div
+                        className={"flex flex-col"}>
+                        <label htmlFor="" className={"text-base w-[300px]"}>Custom type</label>
+                        <input
+                            value={customInputValue}
+                            onChange={(e) => setCustomInputValue(e.target.value)}
+                            type="text" className={"border text-base h-8.5 px-2 rounded-md"}/>
+                    </div>
+                    <button
+                        type={"submit"}
+                        className={"border text-base px-10 h-8.5 rounded-md cursor-pointer"}>
+                        Create
+                    </button>
+                </form>
             </li>
         </>
     )

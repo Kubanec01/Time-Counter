@@ -25,9 +25,8 @@ const WorkspaceProjectsPage = () => {
             const projects = data.projects || []
             setProjects(projects)
         })
-
         return () => fetchProjects()
-    })
+    }, [workspaceId])
 
     return (
         <>

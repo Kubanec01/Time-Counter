@@ -26,7 +26,8 @@ const ProjectCartNavbar = ({projectName}: { projectName: string | null }) => {
             <div
                 className={"h-full flex"}>
                 <div
-                    className={"h-full flex items-center px-[50px] justify-center border-r border-custom-gray-800"}
+                    onClick={() => router.push("/")}
+                    className={"h-full flex items-center cursor-pointer px-[50px] justify-center border-r border-custom-gray-800"}
                 >
                     <img src={"/Logo.png"} alt={"Logo image"} className={"w-[94%] h-auto"}/>
                 </div>

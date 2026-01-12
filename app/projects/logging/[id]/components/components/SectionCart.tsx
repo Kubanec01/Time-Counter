@@ -44,7 +44,7 @@ export const SectionCart = ({...props}: Section) => {
                     <span
                         className={"w-[25%]"}>{props.updateDate}</span>
                     <span
-                        className={"absolute right-4 flex gap-4"}>
+                        className={"absolute right-4 h-full top-0 flex items-center justify-center gap-4"}>
                 <button
                     className={"text-sm text-black/40 hover:text-vibrant-purple-500 cursor-pointer"}
                     onClick={() => setIsEditModalOpen(true)}>

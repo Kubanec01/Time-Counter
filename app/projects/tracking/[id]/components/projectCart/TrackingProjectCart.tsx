@@ -47,6 +47,7 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
             const sections = data.projectsSections || [];
             const updatedSectionsByDates: UpdatedSectionByDate[] = data.updatedSectionsByDates || []
 
+
             if (mode === "workspace" && userRole !== "Member") {
                 const membersData: Member[] = data.members
                 setMembers(membersData)
@@ -74,12 +75,13 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
 
             setSections(validSections);
             setUpdatedSectionsByDates(sortDatesAscending(filteredDates))
-
             console.log("is fetched")
         });
 
         return () => getSectionsData();
     }, [userId, projectId, mode, workspaceId, userRole, selectedUserId]);
+
+    console.log(sections)
 
 
     // Functions

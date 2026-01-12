@@ -35,6 +35,17 @@ export type WorkspaceId = string | "unused"
 
 export type ProjectType = "tracking" | "logging"
 
+export type UserProjectOptions = {
+    userId: string;
+    activeOptions: ProjectOption[];
+    inactiveOptions: ProjectOption[];
+};
+
+export interface ProjectWithCustomOptions extends Project {
+    customizedUsersOptions: UserProjectOptions[]
+}
+
+
 export interface Project {
     projectId: string;
     title: string;

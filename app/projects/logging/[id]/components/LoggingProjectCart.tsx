@@ -1,12 +1,12 @@
 'use client'
 
-import {LoggingType, Project, ProjectOption, ProjectProps, Section} from "@/types";
+import {LoggingType, Member, Project, ProjectOption, ProjectProps, Section, UserProjectOptions} from "@/types";
 import ProjectCartNavbar from "@/components/ProjectCartNavbar";
-import React, {FormEvent, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {createNewSection} from "@/features/utilities/create/createNewSection";
 import {useAuthState} from "react-firebase-hooks/auth";
-import {auth, db} from "@/app/firebase/config";
-import {doc, onSnapshot} from "firebase/firestore";
+import {auth} from "@/app/firebase/config";
+import {onSnapshot} from "firebase/firestore";
 import {formatSecondsToTimeString} from "@/features/hooks/timeOperations";
 import {setProjectTotalTimeWithoutSectionId} from "@/features/utilities/time/totalTime";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
@@ -14,7 +14,7 @@ import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef"
 import {RiSettings3Fill} from "react-icons/ri";
 import {MaxDateCalendarInput} from "@/features/utilities/date/MaxDateCalendarInput";
 import {useRouter} from "next/navigation";
-import {FaAngleLeft, FaAngleRight, FaRegEdit} from "react-icons/fa";
+import {FaAngleLeft, FaAngleRight} from "react-icons/fa";
 import {addDays, subDays} from "date-fns";
 import {formateDate} from "@/features/utilities/date/formateDate";
 import {SectionCart} from "@/app/projects/logging/[id]/components/components/SectionCart";
@@ -29,6 +29,8 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
     const [customType, setCustomType] = useState<string>("")
     const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
     const [options, setOptions] = useState<ProjectOption[]>([])
+    const [filteredMemberId, setFilteredMemberId] = useState<string | "all">("all")
+    const [members, setMembers] = useState<Member[]>([])
     const [nameValue, setNameValue] = useState("");
     const [timeInputValue, setTimeInputValue] = useState("0.25");
     const [sections, setSections] = useState<Section[]>([]);
@@ -84,8 +86,10 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
 
             if (userRole === "Member") {
                 currSections = sections.filter((s: Section) => s.projectId === props.projectId && s.updateDate === formateDate(filteredDate) && s.userId === userId)
-            } else {
+            } else if (filteredMemberId === "all") {
                 currSections = sections.filter((s: Section) => s.projectId === props.projectId && s.updateDate === formateDate(filteredDate))
+            } else {
+                currSections = sections.filter((s: Section) => s.projectId === props.projectId && s.updateDate === formateDate(filteredDate) && s.userId === filteredMemberId)
             }
 
             setSections(currSections)
@@ -93,7 +97,7 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
 
         return () => fetchSectionsData()
 
-    }, [filteredDate, mode, props.projectId, userId, userRole, workspaceId])
+    }, [filteredDate, filteredMemberId, mode, props.projectId, userId, userRole, workspaceId])
 
     // Fetch Options
     useEffect(() => {
@@ -106,8 +110,12 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
 
             const data = snap.data()
             const project = data.projects.find((project: Project) => project.projectId === props.projectId)
-            const options = project.options || []
+            const customized = project.customizedUsersOptions ?? [];
+            const userOptions = customized.find((o: UserProjectOptions) => o.userId === userId);
+            const options = userOptions?.activeOptions ?? project.options;
+            const members = data.members
 
+            setMembers(members)
             if (!options) throw new Error("Failed fetch Options Data")
             setOptions(options)
         })
@@ -222,6 +230,23 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
                 className={"w-[90%] max-w-[1000px] p-8 mx-auto mt-10 flex flex-col gap-4 rounded-xl shadow-lg bg-white/60"}>
                 <div
                     className={"flex gap-3"}>
+                    {mode === "solo" || userRole === "Member" &&
+                        <>
+                            <select
+                                onChange={(event) => {
+                                    const value = event.target.value as string | "all";
+                                    setFilteredMemberId(value);
+                                }}
+                                className={`border border-black/20 outline-none px-2 h-8.5 w-[120px] text-sm rounded-md bg-white cursor-pointer`}>
+                                <option value="all">All Users</option>
+                                {members.map((mem) => (
+                                    <option key={mem.userId} value={mem.userId}>
+                                        {mem.name} {mem.surname}
+                                    </option>
+                                ))}
+                            </select>
+                        </>
+                    }
                     {/* Minus date btn */}
                     <button
                         onClick={() => setFilteredDate(subDays(filteredDate ?? new Date(), 1))}
@@ -244,7 +269,7 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
                 <section
                     className={"w-full rounded-md mx-auto flex flex-col bg-black/18"}>
                     <div
-                        className={"w-full rounded-t-md bg-vibrant-purple-500/80 text-white font-semibold flex justify-between items-center px-4 py-2"}>
+                        className={"w-full rounded-t-md bg-gradient-to-b from-vibrant-purple-500/80 to-vibrant-purple-600/85 text-white font-semibold flex justify-between items-center px-4 py-2"}>
                         <h1 className={"w-[25%] text-sm"}>Name</h1>
                         <h2 className={"w-[25%] text-sm"}>Type</h2>
                         <span className={"w-[25%] text-sm"}>Time</span>

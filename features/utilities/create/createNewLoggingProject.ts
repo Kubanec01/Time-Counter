@@ -2,6 +2,7 @@ import {throwRandomNum} from "@/features/utilities/throwRandomNum";
 import {Project, ProjectOption, ProjectType, UserMode, WorkspaceId} from "@/types";
 import {arrayUnion, updateDoc} from "firebase/firestore";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
+import {projectTasksOptions} from "@/data/users";
 
 interface LoggingProject extends Project {
     options: ProjectOption[]
@@ -21,29 +22,12 @@ export const createNewLoggingProject = async (
         // Random Num Variable
         const randomNum = throwRandomNum(10_000_000).toString();
 
-        const options = [
-            {value: 'research', label: 'Research'},
-            {value: 'meeting', label: 'Meeting'},
-            {value: 'planning', label: 'Planning'},
-            {value: 'deep-work', label: 'Deep Work'},
-            {value: 'study', label: 'Study'},
-            {value: 'coding', label: 'Coding'},
-            {value: 'testing', label: 'Testing'},
-            {value: 'debug', label: 'Debug'},
-            {value: 'design', label: 'Design'},
-            {value: 'documentation', label: 'Documentation'},
-            {value: 'emails', label: 'Emails / Communication'},
-            {value: 'learning', label: 'Learning'},
-            {value: 'personal', label: 'Personal'},
-            {value: 'break', label: 'Break / Rest'},
-        ];
-
         const newProject: LoggingProject = {
             projectId: `${inputValue.replace(/\s+/g, "")}_${randomNum}`,
             title: inputValue,
             totalTime: "00:00:00",
             type: typeOfProject,
-            options: options,
+            options: projectTasksOptions,
         };
 
         await updateDoc(userRef, {
