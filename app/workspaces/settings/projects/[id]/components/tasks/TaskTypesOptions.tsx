@@ -8,7 +8,7 @@ import {onSnapshot} from "firebase/firestore";
 import {Project, ProjectOption, UserMode} from "@/types";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {createNewOption} from "@/features/utilities/create/createNewOption";
-import {setProjectOptionState} from "@/features/utilities/edit/setProjectOptionState";
+import {setProjectOptionState} from "@/app/workspaces/settings/projects/[id]/components/tasks/utils/setProjectOptionState";
 
 export interface TaskTypesOptionsProps {
     userId: string | undefined;
@@ -29,7 +29,7 @@ export const TaskTypesOptions = ({...props}: TaskTypesOptionsProps) => {
 
     // Function
     const toggleOption = (opt: ProjectOption, action: ("activate" | "deactivate")) =>
-        setProjectOptionState("general", props.userId, "unused", props.projectId, props.mode, props.workSpaceId, opt, action)
+        setProjectOptionState(props.userId, props.projectId, props.mode, props.workSpaceId, opt, action)
 
     // Fetch Options
     useEffect(() => {

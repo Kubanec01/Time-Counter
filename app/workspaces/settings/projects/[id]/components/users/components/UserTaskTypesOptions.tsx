@@ -4,27 +4,25 @@ import {FaAngleDown, FaPlus, FaTasks} from "react-icons/fa";
 import {FaXmark} from "react-icons/fa6";
 import {useEffect, useState} from "react";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
-import {doc, getDoc, onSnapshot, updateDoc} from "firebase/firestore";
-import {Member, Project, ProjectOption} from "@/types";
+import {onSnapshot} from "firebase/firestore";
+import {Member, Project, ProjectOption, UserProjectOptions} from "@/types";
 import {useAuthState} from "react-firebase-hooks/auth";
-import {auth, db} from "@/app/firebase/config";
+import {auth} from "@/app/firebase/config";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
-import {projectTasksOptions} from "@/data/users";
 import {createNewOption} from "@/features/utilities/create/createNewOption";
+import {
+    setUserCustomOption
+} from "@/app/workspaces/settings/projects/[id]/components/users/components/utils/setUserCustomOption";
+import {
+    createCustomizedTasks
+} from "@/app/workspaces/settings/projects/[id]/components/users/components/utils/createCustomTasksData";
+import {
+    deleteUsersOptionsData
+} from "@/app/workspaces/settings/projects/[id]/components/users/components/utils/deleteUsersOptionsData";
 
 interface TaskTypesOptionsProps {
     projectId: string;
     member: Member;
-}
-
-type NewUserOptions = {
-    userId: string;
-    activeOptions: ProjectOption[];
-    inactiveOptions: ProjectOption[];
-};
-
-interface LoggingProject extends Project {
-    customizedUsersOptions: NewUserOptions[]
 }
 
 
@@ -42,122 +40,9 @@ export const UserTaskTypesOptions = ({...props}: TaskTypesOptionsProps) => {
 
     const isCustomized = activeOptions.length > 0 || inactiveOptions.length > 0;
 
-    // const createNewOption = async (userId: string, newOption: ProjectOption) => {
-    //     if (!userId) return
-    //
-    //     const docRef = getFirestoreTargetRef(userId, mode, workspaceId);
-    //     const docSnap = await getDoc(docRef)
-    //     if (!docSnap.exists()) return
-    //     const data = docSnap.data()
-    //     const projects = data.projects
-    //     const project = projects.find((p: Project) => p.projectId === props.projectId)
-    //     const activeUserOptions = project.customizedUsersOptions.find((o: NewUserOptions) => o.userId === userId).activeOptions;
-    //
-    //     const updatedUserOptions = [...activeUserOptions, newOption]
-    //
-    //     const updatedOptions = project.customizedUsersOptions.map((o: NewUserOptions) => {
-    //         if (o.userId !== userId) return o
-    //
-    //         return {...o, activeOptions: updatedUserOptions}
-    //     })
-    //
-    //     // Project
-    //     const updatedProjects = projects.map((p: LoggingProject) => {
-    //         if (p.projectId !== props.projectId) return p
-    //         return {...p, customizedUsersOptions: updatedOptions}
-    //     })
-    //
-    //     await updateDoc(docRef, {projects: updatedProjects})
-    // }
-
-    const toggleOption = async (item: ProjectOption, action: ("activate" | "deactivate")) => {
-        if (!userId) return
-
-        const docRef = getFirestoreTargetRef(userId, mode, workspaceId);
-        const docSnap = await getDoc(docRef)
-        if (!docSnap.exists()) return
-        const data = docSnap.data()
-        const projects = data.projects
-        const project = data.projects.find((p: Project) => p.projectId === props.projectId)
-        const usersOptions = project.customizedUsersOptions.find((o: NewUserOptions) => o.userId === props.member.userId)
-        const activeOptions = usersOptions.activeOptions || []
-        const inactiveOptions = usersOptions.inactiveOptions || []
-
-        // Active options
-        const updatedActiveOptions = action === "deactivate"
-            ?
-            activeOptions.filter((o: ProjectOption) => o.value !== item.value)
-            :
-            [...activeOptions, item]
-
-        // Inactive options
-        const updatedInactiveOptions = action === "deactivate"
-            ?
-            [...inactiveOptions, item]
-            :
-            inactiveOptions.filter((o: ProjectOption) => o.value !== item.value)
-
-        const updatedOptions = project.customizedUsersOptions.map((o: NewUserOptions) => {
-            if (o.userId !== props.member.userId) return o
-
-            return {...o, activeOptions: updatedActiveOptions, inactiveOptions: updatedInactiveOptions}
-
-        })
-
-        // Project
-        const updatedProjects = projects.map((p: LoggingProject) => {
-            if (p.projectId !== props.projectId) return p
-
-            return {...p, customizedUsersOptions: updatedOptions}
-        })
-
-        // Update Doc
-        await updateDoc(docRef, {projects: updatedProjects})
+    const toggleOption = (item: ProjectOption, action: ("activate" | "deactivate")) => {
+        setUserCustomOption(props.member.userId, props.projectId, mode, workspaceId, item, action);
     }
-
-    const createCustomizedTasks = async (userId: string, projectId: string, workspaceId: string) => {
-        if (!workspaceId || !userId) return
-
-        const docRef = doc(db, "realms", workspaceId);
-        const docSnap = await getDoc(docRef)
-        if (!docSnap.exists()) return
-        const data = docSnap.data()
-        const projects = data.projects
-
-        const newUserOptions = {
-            userId: userId,
-            activeOptions: projectTasksOptions,
-            inactiveOptions: [],
-        }
-
-        const updatedProjects = projects.map((p: LoggingProject) => {
-            if (p.projectId !== props.projectId) return p
-
-            return {...p, customizedUsersOptions: [...p.customizedUsersOptions ?? [], newUserOptions]}
-
-        })
-
-        await updateDoc(docRef, {projects: updatedProjects})
-    }
-
-    const deleteUsersOptionsData = async (userId: string) => {
-        if (!userId) return
-
-        const docRef = getFirestoreTargetRef(userId, mode, workspaceId);
-        const docSnap = await getDoc(docRef)
-        if (!docSnap.exists()) return
-        const data = docSnap.data()
-        const projects = data.projects || []
-        const project = projects.find((p: Project) => p.projectId === props.projectId)
-        const updatedUsersOptions = project.customizedUsersOptions.filter((o: NewUserOptions) => o.userId !== props.member.userId)
-        const updatedProjects = projects.map((p: LoggingProject) => {
-            if (p.projectId !== props.projectId) return p
-            return {...p, customizedUsersOptions: updatedUsersOptions}
-        })
-
-        await updateDoc(docRef, {projects: updatedProjects})
-    }
-
 
     // Fetch Options
     useEffect(() => {
@@ -170,7 +55,7 @@ export const UserTaskTypesOptions = ({...props}: TaskTypesOptionsProps) => {
 
             const data = snap.data()
             const project = data.projects.find((p: Project) => p.projectId === props.projectId) || []
-            const usersOptions = project.customizedUsersOptions.find((o: NewUserOptions) => o.userId === props.member.userId) || {}
+            const usersOptions = project.customizedUsersOptions.find((o: UserProjectOptions) => o.userId === props.member.userId) || {}
 
             const activeOptions: ProjectOption[] = usersOptions.activeOptions || []
             const inactiveOptions = usersOptions.inactiveOptions || []
@@ -201,7 +86,7 @@ export const UserTaskTypesOptions = ({...props}: TaskTypesOptionsProps) => {
                 <button
                     onClick={() => {
                         if (!isCustomized) createCustomizedTasks(props.member.userId, props.projectId, workspaceId)
-                        else deleteUsersOptionsData(props.member.userId)
+                        else deleteUsersOptionsData(props.member.userId, props.projectId, workspaceId)
                     }}
                     className={"text-base border px-2 py-1 rounded-md my-4 cursor-pointer"}>
                     {isCustomized ? "Reset to default" : "Customize tasks"}
