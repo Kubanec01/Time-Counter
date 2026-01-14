@@ -5,7 +5,7 @@ import {FaAngleDown, FaUsers} from "react-icons/fa"
 import {Member} from "@/types";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 import {onSnapshot} from "firebase/firestore";
-import {UserCart} from "@/app/workspaces/settings/projects/[id]/components/users/components/UsersCart";
+import {UserCart} from "@/app/workspaces/settings/projects/[id]/components/users/components/userCart/UsersCart";
 import {TaskTypesOptionsProps} from "@/app/workspaces/settings/projects/[id]/components/tasks/TaskTypesOptions";
 
 

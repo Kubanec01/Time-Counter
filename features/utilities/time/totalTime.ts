@@ -1,7 +1,7 @@
 import {documentNotFound, invalidUserId, sectionNotFound} from "@/messages/errors";
 import {getDoc, updateDoc} from "firebase/firestore";
 import {Project, Section, UserMode, WorkspaceId} from "@/types";
-import {formatSecondsToTimeString, parseTimeStringToSeconds} from "@/features/hooks/timeOperations";
+import {formatSecondsToTimeString, parseTimeStringToSeconds} from "@/features/utilities/time/timeOperations";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 
 export const getProjectTotalTime = async (

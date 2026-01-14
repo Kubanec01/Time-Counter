@@ -18,7 +18,7 @@ import {editSectionName} from "@/features/utilities/edit/editSectionName";
 import {stopTimeDifference} from "@/features/utilities/time/stopTimeDifference";
 import {deleteSubsectionAndTimeCheckoutsData} from "@/features/utilities/delete/deleteSubsectionAndTimeCheckoutsData";
 import SubSectionCart from "@/app/projects/tracking/[id]/components/projectCart/components/SubSectionCart";
-import {formatSecondsToTimeString, formatTimeUnit, parseTimeStringToSeconds} from "@/features/hooks/timeOperations";
+import {formatSecondsToTimeString, formatTimeUnit, parseTimeStringToSeconds} from "@/features/utilities/time/timeOperations";
 import {setProjectTotalTime, subtractProjectTotalTime} from "@/features/utilities/time/totalTime";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";

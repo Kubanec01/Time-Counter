@@ -5,7 +5,7 @@ import {FaAngleDown} from "react-icons/fa"
 import {Member} from "@/types";
 import {
     UserTaskTypesOptions
-} from "@/app/workspaces/settings/projects/[id]/components/users/components/UserTaskTypesOptions";
+} from "@/app/workspaces/settings/projects/[id]/components/users/components/userCart/UserTaskTypesOptions";
 
 interface TaskTypesOptionsProps {
     member: Member

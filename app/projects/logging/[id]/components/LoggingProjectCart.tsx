@@ -7,17 +7,18 @@ import {createNewSection} from "@/features/utilities/create/createNewSection";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth} from "@/app/firebase/config";
 import {onSnapshot} from "firebase/firestore";
-import {formatSecondsToTimeString} from "@/features/hooks/timeOperations";
+import {formatSecondsToTimeString} from "@/features/utilities/time/timeOperations";
 import {setProjectTotalTimeWithoutSectionId} from "@/features/utilities/time/totalTime";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
-import {RiSettings3Fill} from "react-icons/ri";
+import {RiBarChart2Fill, RiFolderChartLine, RiSettings3Fill} from "react-icons/ri";
 import {MaxDateCalendarInput} from "@/features/utilities/date/MaxDateCalendarInput";
 import {useRouter} from "next/navigation";
 import {FaAngleLeft, FaAngleRight} from "react-icons/fa";
 import {addDays, subDays} from "date-fns";
 import {formateDate} from "@/features/utilities/date/formateDate";
 import {SectionCart} from "@/app/projects/logging/[id]/components/components/SectionCart";
+import {updateTotalTrackedTime} from "@/features/utilities/edit/updateTotalTrackedTime";
 
 
 export const LoggingProjectCart = ({...props}: ProjectProps) => {
@@ -53,6 +54,7 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
         const userFullName = `${userName} ${userSurname}`
 
         await createNewSection(userId, userFullName, props.projectId, nameValue, time, selectedDate, setNameValue, setIsInfoModalOpen, newTaskType, mode, workspaceId)
+        await updateTotalTrackedTime(userId, props.projectId, selectedDate, time, mode, workspaceId)
         await setProjectTotalTimeWithoutSectionId(userId, props.projectId, time, mode, workspaceId)
         setNameValue("")
         setTaskType(null)
@@ -135,12 +137,22 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
                         className={"font-semibold mb-0.5 text-black/46"}>
                         Create a new entry
                     </h1>
-                    <button
-                        onClick={() => router.push(`/workspaces/settings/projects/${props.projectId}`)}
-                        className={`${userRole === "Member" ? "hidden" : "block"}
+                    <div
+                        className={"flex gap-2.5"}
+                    >
+                        <button
+                            onClick={() => router.push(`/stats/${props.projectId}`)}
+                            className={`${userRole === "Member" ? "hidden" : "block"}
+                        text-xl text-black/35 hover:text-black/50 duration-250 ease-in cursor-pointer`}>
+                            <RiBarChart2Fill/>
+                        </button>
+                        <button
+                            onClick={() => router.push(`/workspaces/settings/projects/${props.projectId}`)}
+                            className={`${userRole === "Member" ? "hidden" : "block"}
                         text-xl text-black/35 hover:text-black/50 hover:rotate-180 duration-250 ease-in cursor-pointer`}>
-                        <RiSettings3Fill/>
-                    </button>
+                            <RiSettings3Fill/>
+                        </button>
+                    </div>
                 </div>
                 <form
                     onSubmit={createSection}

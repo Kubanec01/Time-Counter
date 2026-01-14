@@ -1,4 +1,4 @@
-import {formatSecondsToTimeString} from "@/features/hooks/timeOperations";
+import {formatSecondsToTimeString} from "@/features/utilities/time/timeOperations";
 
 
 export const stopTimeDifference = (

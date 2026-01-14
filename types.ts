@@ -45,12 +45,17 @@ export interface ProjectWithCustomOptions extends Project {
     customizedUsersOptions: UserProjectOptions[]
 }
 
+export type TotalTrackedTime = {
+    date: string;
+    time: string;
+}
 
 export interface Project {
     projectId: string;
     title: string;
     totalTime: string;
     type: ProjectType
+    totalTrackedTimes: TotalTrackedTime[];
 }
 
 export interface SectionCartProps {
