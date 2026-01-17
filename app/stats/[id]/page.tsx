@@ -46,7 +46,7 @@ export default function StatsHome() {
             const totalTrackedTimes = project.totalTrackedTimes
 
             const thisWeekData = totalTrackedTimes.filter(i =>
-                isThisWeek(parseISO(i.date), {weekStartsOn: 1})
+                isThisWeek(i.date, {weekStartsOn: 1})
             );
 
             console.log(thisWeekData)

@@ -55,7 +55,7 @@ export const UserTaskTypesOptions = ({...props}: TaskTypesOptionsProps) => {
 
             const data = snap.data()
             const project = data.projects.find((p: Project) => p.projectId === props.projectId) || []
-            const usersOptions = project.customizedUsersOptions.find((o: UserProjectOptions) => o.userId === props.member.userId) || {}
+            const usersOptions = project.customizedUsersOptions?.find((o: UserProjectOptions) => o.userId === props.member.userId) || {}
 
             const activeOptions: ProjectOption[] = usersOptions.activeOptions || []
             const inactiveOptions = usersOptions.inactiveOptions || []

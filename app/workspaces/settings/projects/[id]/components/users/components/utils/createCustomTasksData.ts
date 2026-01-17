@@ -22,7 +22,13 @@ export const createCustomizedTasks = async (userId: string, projectId: string, w
     const updatedProjects = projects.map((p: ProjectWithCustomOptions) => {
         if (p.projectId !== projectId) return p
 
-        return {...p, customizedUsersOptions: [...p.customizedUsersOptions, newUserOptions]}
+        return {
+            ...p,
+            customizedUsersOptions: [
+                ...(p.customizedUsersOptions || []),
+                newUserOptions
+            ]
+        }
 
     })
 

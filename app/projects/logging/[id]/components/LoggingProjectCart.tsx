@@ -242,7 +242,7 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
                 className={"w-[90%] max-w-[1000px] p-8 mx-auto mt-10 flex flex-col gap-4 rounded-xl shadow-lg bg-white/60"}>
                 <div
                     className={"flex gap-3"}>
-                    {mode === "solo" || userRole === "Member" &&
+                    {mode === "solo" || userRole !== "Member" &&
                         <>
                             <select
                                 onChange={(event) => {
