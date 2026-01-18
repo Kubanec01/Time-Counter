@@ -5,9 +5,9 @@ import {JoinWorkspace} from "@/app/workspaces/components/JoinWorkspace";
 import {CreateWorkspace} from "@/app/workspaces/components/CreateWorkspace";
 import backgroundImg2 from "@/public/background_team_img.jpg"
 
-const WorkspacesPage = () => {
+export default function WorkspacesPage() {
 
-    const [workspaceAction, setWorkspaceAction] = useState<"create" | "join">("join")
+    const [workspaceAction, setWorkspaceAction] = useState<"create" | "join">("create")
 
     return (
         <section
@@ -37,5 +37,3 @@ const WorkspacesPage = () => {
         </section>
     )
 }
-
-export default WorkspacesPage

@@ -20,6 +20,7 @@ interface Context {
     workspaceName: string | null;
     isUserMenuOpen: boolean;
     setIsUserMenuOpen: Dispatch<SetStateAction<boolean>>;
+    userId: string | undefined;
 }
 
 const workSpaceContext = createContext<Context | undefined>(undefined)
@@ -39,8 +40,7 @@ export const WorkSpaceContextProvider = ({children}: { children: ReactNode }) =>
 
     const [user] = useAuthState(auth)
     const userId = user?.uid
-    // console.log(mode, workspaceId)
-    // console.log("isMatched", isMatched)
+
 
     // Fetch Mode and WorkspaceId
     useEffect(() => {
@@ -86,7 +86,7 @@ export const WorkSpaceContextProvider = ({children}: { children: ReactNode }) =>
                 setWorkspaceName(null)
             }
         }).catch(err => console.log(err))
-    }, [mode, userId, workspaceId]);
+    }, [isMatched, mode, userId, workspaceId]);
 
     return (
         <workSpaceContext.Provider
@@ -102,7 +102,8 @@ export const WorkSpaceContextProvider = ({children}: { children: ReactNode }) =>
                 workspaceName,
                 userMail,
                 isUserMenuOpen,
-                setIsUserMenuOpen
+                setIsUserMenuOpen,
+                userId
             }}>
             {children}
         </workSpaceContext.Provider>

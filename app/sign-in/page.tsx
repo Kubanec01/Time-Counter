@@ -1,10 +1,10 @@
 "use client";
 
-import {FormEvent, useState} from "react";
+import {FormEvent, useEffect, useState} from "react";
 import {auth} from "@/app/firebase/config";
 import Link from "next/link";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
-import {signInWithEmailAndPassword} from "@firebase/auth";
+import {onAuthStateChanged, signInWithEmailAndPassword} from "@firebase/auth";
 
 const SignInPage = () => {
     const [email, setEmail] = useState("");
@@ -34,6 +34,16 @@ const SignInPage = () => {
             setErrorMess("Incorrect email or password (≥o≤)")
         }
     };
+
+    useEffect(() => {
+        const unsub = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                replace("/")
+            }
+
+            return () => unsub();
+        })
+    }, []);
 
     return (
         <section className="w-full h-screen bg-black flex flex-col justify-center items-center">

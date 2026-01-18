@@ -12,7 +12,7 @@ export const useAuthRedirect = () => {
     useEffect(() => {
 
         if (!user && !loading) {
-            router.push("/sign-in")
+            router.replace("/sign-in")
         }
     }, [user, loading, router])
 }

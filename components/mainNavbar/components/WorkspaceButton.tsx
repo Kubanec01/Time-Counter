@@ -12,7 +12,7 @@ export const WorkspaceButton = (
 
     const handleClick = () => {
         if (mode === "solo") {
-            replace("/workspaces")
+            replace("/")
         } else setIsModalOpen(true)
     }
 

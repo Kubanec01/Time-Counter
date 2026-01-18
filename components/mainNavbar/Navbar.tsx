@@ -17,17 +17,18 @@ const Navbar = () => {
     // states
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
-    const {userInitials, workspaceName, workspaceId, mode} = useWorkSpaceContext()
-    const [user] = useAuthState(auth)
+    const {userInitials, workspaceName, workspaceId, mode, userId} = useWorkSpaceContext()
     const {replace} = useReplaceRouteLink()
 
 
     // Styles
     const rightButtonsStyle = "text-custom-gray-800 hover:text-vibrant-purple-400 duration-150 ease-in-out text-[24px] cursor-pointer"
 
+    console.log(userId)
+
     return (
         <div
-            className={`${user === null ? "hidden" : "block"} w-full fixed top-0 left-0 h-[72px] z-[40] bg-black/95 backdrop-blur-sm flex justify-between items-center`}
+            className={`${userId === undefined ? "hidden" : "block"} w-full fixed top-0 left-0 h-[72px] z-[40] bg-black/95 backdrop-blur-sm flex justify-between items-center`}
         >
             {/*Left Side*/}
             <div

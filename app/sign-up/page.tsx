@@ -42,8 +42,6 @@ const SignUpPage = () => {
                     userId: resp.user.uid,
                     name: name,
                     surname: surname,
-                    role: "Admin",
-                    projects: [],
                 });
                 setEmail("");
                 setPassword("");

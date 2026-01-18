@@ -13,7 +13,6 @@ import ConfirmModal from "@/components/modals/ConfirmModal";
 import {TbPasswordUser} from "react-icons/tb";
 import {removeLocalStorageWorkspaceIdAndUserMode} from "@/features/utilities/localStorage";
 import {NavSection} from "@/components/mainNavbar/components/userMenu/components/NavSection";
-import {deleteWorkspaceData} from "@/features/utilities/delete/deleteWorkspaceData";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 
