@@ -1,7 +1,7 @@
 import {documentNotFound, invalidUserId} from "@/messages/errors";
 import {arrayUnion, doc, getDoc, setDoc, updateDoc} from "firebase/firestore";
 import {db} from "@/app/firebase/config";
-import {Member} from "@/types";
+import {Member, WorkspaceCredentials} from "@/types";
 import {setLocalStorageUserMode, setLocalStorageWorkspaceId} from "@/features/utilities/localStorage";
 
 
@@ -12,8 +12,10 @@ export const createNewWorkspace = async (
     password: string,
 ) => {
     if (!userId) throw new Error(invalidUserId)
+
     const userRef = doc(db, "users", userId)
     const userSnap = await getDoc(userRef)
+
     if (!userSnap.exists()) throw new Error(documentNotFound)
     const data = userSnap.data()
     const name: string = data.name
@@ -32,6 +34,11 @@ export const createNewWorkspace = async (
 
     const docRef = doc(db, "realms", workspaceId)
 
+    const workspaceCredentials: WorkspaceCredentials = {
+        workspaceId: workspaceId,
+        password: password,
+    }
+
     await setDoc(docRef, {
         adminId: userId,
         workSpaceId: workspaceId,
@@ -40,7 +47,8 @@ export const createNewWorkspace = async (
         members: [member],
         projects: [],
     })
-    await updateDoc(userRef, {workspacesList: arrayUnion(workspaceId)})
+
+    await updateDoc(userRef, {workspacesList: arrayUnion(workspaceCredentials)},)
     setLocalStorageUserMode("workspace")
     setLocalStorageWorkspaceId(workspaceId)
 }

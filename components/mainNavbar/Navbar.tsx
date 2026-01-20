@@ -1,24 +1,35 @@
 'use client'
 
 
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {RxQuestionMarkCircled} from "react-icons/rx";
 import {LuMessageCircleMore} from "react-icons/lu";
 import userBgImg from "@/public/gradient-bg.jpg"
 import {UserMenu} from "@/components/mainNavbar/components/userMenu/UserMenu";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
-import {useAuthState} from "react-firebase-hooks/auth";
-import {auth} from "@/app/firebase/config";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
+import {getHours} from "date-fns";
 
 
 const Navbar = () => {
 
     // states
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+    const [isClient, setIsClient] = useState(false)
 
-    const {userInitials, workspaceName, workspaceId, mode, userId} = useWorkSpaceContext()
+
+    const {userInitials, workspaceName, workspaceId, mode, userId, userName} = useWorkSpaceContext()
     const {replace} = useReplaceRouteLink()
+
+    const welcomeSign = () => {
+        const currHour = getHours(new Date())
+        const name = userName
+
+        if (currHour >= 6 && currHour <= 11) return `Good morning, ${name} 🌤️`
+        else if (currHour > 11 && currHour <= 17) return `Good afternoon, ${name} ☀️️`
+        else return `Good evening, ${name} 🌙`
+
+    }
 
 
     // Styles
@@ -26,9 +37,18 @@ const Navbar = () => {
 
     console.log(userId)
 
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setIsClient(true)
+    }, [])
+
+    if (!isClient) return (
+        <></>
+    )
+
     return (
         <div
-            className={`${userId === undefined ? "hidden" : "block"} w-full fixed top-0 left-0 h-[72px] z-[40] bg-black/95 backdrop-blur-sm flex justify-between items-center`}
+            className={`${userId ? "block" : "hidden"} w-full fixed top-0 left-0 h-[72px] z-[40] bg-black/95 backdrop-blur-sm flex justify-between items-center`}
         >
             {/*Left Side*/}
             <div
@@ -47,7 +67,7 @@ const Navbar = () => {
                         <h1
                             className={"text-white text-lg font-light ml-[22px]"}
                         >
-                            {"Projects"} {">"}
+                            {welcomeSign()}
                         </h1>
                         :
                         <>

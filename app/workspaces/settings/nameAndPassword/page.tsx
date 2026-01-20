@@ -6,7 +6,7 @@ const links: { id: string, title: string, url: string }[] = [
     {
         id: "workspace-name",
         title: "Name Settings",
-        url: "",
+        url: "/workspaces/settings/nameAndPassword/name",
     },
     {
         id: "workspace-password",

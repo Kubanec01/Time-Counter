@@ -2,13 +2,15 @@ import React, {Dispatch, SetStateAction} from "react";
 import {GoArrowUpRight, GoTrash} from "react-icons/go";
 import {db} from "@/app/firebase/config";
 import {doc, getDoc, updateDoc} from "firebase/firestore";
+import {WorkspaceCredentials} from "@/types";
 
 interface WorkspacesListModalProps {
     userId: string | undefined;
     isModalOpen: boolean
     setIsModalOpen: Dispatch<SetStateAction<boolean>>;
-    workspacesList: string[];
+    workspacesList: WorkspaceCredentials[];
     setWorkspaceInputId: Dispatch<SetStateAction<string>>;
+    setPasswordInputId: Dispatch<SetStateAction<string>>;
 }
 
 export const WorkspacesListModal = ({...props}: WorkspacesListModalProps) => {
@@ -21,8 +23,10 @@ export const WorkspacesListModal = ({...props}: WorkspacesListModalProps) => {
         const userSnap = await getDoc(userRef)
         if (!userSnap.exists()) return;
         const data = userSnap.data();
-        const updatedWorkspacesList: string[] = data.workspacesList.filter((workspace: string) => workspace !== workspaceName);
+        const updatedWorkspacesList: WorkspaceCredentials[] =
+            data.workspacesList.filter((workspace: WorkspaceCredentials) => workspace.workspaceId !== workspaceName);
 
+        if (updatedWorkspacesList.length === 0) props.setIsModalOpen(false);
         await updateDoc(userRef, {workspacesList: updatedWorkspacesList});
     }
 
@@ -30,11 +34,10 @@ export const WorkspacesListModal = ({...props}: WorkspacesListModalProps) => {
         return <span className={"w-[1px] h-[22px] bg-black/30"}/>
     }
 
-
     return (
         <div
             className={`${openStyle} fixed top-6 left-[50%] -translate-x-[50%] w-[90%] h-[70%] py-4 px-3 rounded-[12px] 
-            bg-white backdrop-blur-3xl border border-black/10`}>
+            bg-white/90 backdrop-blur-3xl border border-black/10`}>
             <div
                 className={"w-full h-[75%] relative"}>
                 <span
@@ -44,16 +47,17 @@ export const WorkspacesListModal = ({...props}: WorkspacesListModalProps) => {
                 >
                     {props.workspacesList.map((workspace) => (
                         <li
-                            key={workspace}
-                            className={"w-full border-b border-black/10 bg-black/3 rounded-xl flex items-center justify-between px-2 py-2 mb-2"}
+                            key={workspace.workspaceId}
+                            className={"w-full border-b border-black/10 bg-black/14 rounded-xl flex items-center justify-between px-2 py-2 mb-2"}
                         >
-                            <h1 className={"text-sm w-[50%] break-all font-semibold text-black/80"}>{workspace}</h1>
+                            <h1 className={"text-sm w-[50%] break-all font-semibold text-black/80"}>{workspace.workspaceId}</h1>
                             <div
                                 className={"flex gap-2.5 justify-end"}>
                                 <Splitter/>
                                 <button
                                     onClick={() => {
-                                        props.setWorkspaceInputId(workspace)
+                                        props.setWorkspaceInputId(workspace.workspaceId)
+                                        props.setPasswordInputId(workspace.password)
                                         props.setIsModalOpen(false)
                                     }}
                                     className={"py-1 px-1.5 rounded-full cursor-pointer text-black/50 hover:text-vibrant-purple-700"}>
@@ -61,7 +65,7 @@ export const WorkspacesListModal = ({...props}: WorkspacesListModalProps) => {
                                 </button>
                                 <Splitter/>
                                 <button
-                                    onClick={() => removeWorkspaceFromList(workspace)}
+                                    onClick={() => removeWorkspaceFromList(workspace.workspaceId)}
                                     className={"py-1 px-2 rounded-full cursor-pointer text-black/50 hover:text-red-600"}>
                                     <GoTrash className={"text-sm"}/>
                                 </button>

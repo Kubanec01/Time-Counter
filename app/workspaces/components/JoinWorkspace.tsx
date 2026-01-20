@@ -7,7 +7,7 @@ import {auth, db} from "@/app/firebase/config";
 import {invalidUserId} from "@/messages/errors";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {arrayUnion, doc, getDoc, onSnapshot, updateDoc} from "firebase/firestore";
-import {Member} from "@/types";
+import {Member, WorkspaceCredentials} from "@/types";
 import {WorkspacesListModal} from "@/components/modals/WorkspacesListModal";
 import {setLocalStorageUserMode, setLocalStorageWorkspaceId} from "@/features/utilities/localStorage";
 
@@ -16,7 +16,7 @@ export const JoinWorkspace = () => {
     const [password, setPassword] = useState("")
     const [errMess, setErrMess] = useState("")
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const [workspacesList, setWorkspacesList] = useState<string[]>([])
+    const [workspacesList, setWorkspacesList] = useState<WorkspaceCredentials[]>([])
 
     const {setMode, setWorkspaceId, userName, userSurname, userMail} = useWorkSpaceContext()
     const {replace} = useReplaceRouteLink()
@@ -46,12 +46,18 @@ export const JoinWorkspace = () => {
         if (password !== correctPassword) return setErrMess("Wrong password or Id")
         if (blackList.some(member => member.userId === userId)) return setErrMess("You don't have permission to join this workspace.")
 
-        const setStatesAndReplace = () => {
+        const workspaceCredential: WorkspaceCredentials = {
+            workspaceId: workspaceInputId,
+            password: password
+        }
+
+
+        const setStatesAndReplace = async () => {
+            await updateDoc(userRef, {workspacesList: arrayUnion(workspaceCredential)})
             setMode("workspace")
             setWorkspaceId(workspaceInputId)
             setWorkspaceInputId("")
             setPassword("")
-            replace("/")
             setLocalStorageUserMode("workspace")
             setLocalStorageWorkspaceId(workspaceInputId)
         }
@@ -66,10 +72,10 @@ export const JoinWorkspace = () => {
                 surname: userSurname,
                 role: "Member"
             }
+
             await updateDoc(docRef, {members: arrayUnion(newMember)})
-            await updateDoc(userRef, {workspacesList: arrayUnion(workspaceInputId)})
-            setStatesAndReplace()
-        } else setStatesAndReplace()
+            await setStatesAndReplace()
+        } else await setStatesAndReplace()
 
     }
 
@@ -157,6 +163,7 @@ export const JoinWorkspace = () => {
                 isModalOpen={isModalOpen}
                 workspacesList={workspacesList}
                 setWorkspaceInputId={setWorkspaceInputId}
+                setPasswordInputId={setPassword}
             />
         </>
     )

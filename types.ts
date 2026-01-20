@@ -83,6 +83,7 @@ export type LoggingType =
 export type ProjectOption = { value: string, label: string }
 
 export type Role = "Admin" | "Member" | "Manager" | null
+
 export type Member = {
     userId: string;
     email: string;
@@ -90,6 +91,12 @@ export type Member = {
     surname: string;
     role: Role;
 }
+
+export interface WorkspaceCredentials {
+    workspaceId: string;
+    password: string;
+}
+
 
 export interface WorkSpace {
     adminId: string;
