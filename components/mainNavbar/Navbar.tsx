@@ -64,11 +64,11 @@ const Navbar = () => {
                 >
                     {mode === "solo"
                         ?
-                        <h1
-                            className={"text-white text-lg font-light ml-[22px]"}
+                        <div
+                            className={"text-white bg-white/16 text-lg ml-[22px] px-2 py-1 rounded-3xl"}
                         >
                             {welcomeSign()}
-                        </h1>
+                        </div>
                         :
                         <>
                             <span className={"text-white text-lg font-light ml-[22px]"}>

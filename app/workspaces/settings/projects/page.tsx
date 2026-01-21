@@ -7,6 +7,7 @@ import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {doc, onSnapshot} from "firebase/firestore";
 import {db} from "@/app/firebase/config";
 import {useRouter} from "next/navigation";
+import {BackButton} from "@/app/workspaces/settings/components/BackButton";
 
 const WorkspaceProjectsPage = () => {
 
@@ -32,9 +33,14 @@ const WorkspaceProjectsPage = () => {
         <>
             <section
                 className={"w-[90%] max-w-[700px] mx-auto h-[400px] mt-[200px]"}>
-                <h1
-                    className={"text-xl text-white/80 font-semibold border-b border-white/30"}
-                >Workspace Projects</h1>
+                <div
+                    className={"w-full border-b border-white/30 flex justify-between"}>
+                    <h1
+                        className={"text-xl text-white/80 font-semibold ml-2"}>
+                        Workspace Projects
+                    </h1>
+                    <BackButton/>
+                </div>
                 <ul
                     className={"w-full p-4 pl-0 flex flex-col gap-3"}
                 >

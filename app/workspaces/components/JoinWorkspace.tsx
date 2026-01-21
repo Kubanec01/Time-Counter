@@ -51,7 +51,6 @@ export const JoinWorkspace = () => {
             password: password
         }
 
-
         const setStatesAndReplace = async () => {
             await updateDoc(userRef, {workspacesList: arrayUnion(workspaceCredential)})
             setMode("workspace")

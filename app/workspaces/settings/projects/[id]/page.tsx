@@ -11,6 +11,7 @@ import {useGetProjectName} from "@/features/hooks/useGetProjectName";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 import {TaskTypesOptions} from "@/app/workspaces/settings/projects/[id]/components/tasks/TaskTypesOptions";
 import {UsersSettings} from "@/app/workspaces/settings/projects/[id]/components/users/Users";
+import {BackButton} from "@/app/workspaces/settings/components/BackButton";
 
 const WorkspaceProjectSettingsHome = () => {
 
@@ -53,9 +54,14 @@ const WorkspaceProjectSettingsHome = () => {
         <>
             <section
                 className={"w-[90%] max-w-[700px] mx-auto mt-[200px]"}>
-                <h1
-                    className={"text-xl text-white/80 font-semibold border-b border-white/30"}
-                >{projectName} / Project Settings</h1>
+                <div
+                    className={"w-full border-b border-white/30 flex justify-between"}>
+                    <h1
+                        className={"text-xl text-white/80 font-semibold ml-2"}>
+                        {projectName} settings
+                    </h1>
+                    <BackButton/>
+                </div>
                 <ul
                     className={"w-full px-4 py-5 pl-0 flex flex-col gap-3"}
                 >

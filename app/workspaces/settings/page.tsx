@@ -3,6 +3,7 @@
 import {FaUnlockKeyhole, FaUsersLine} from "react-icons/fa6";
 import {FaProjectDiagram, FaTrashAlt} from "react-icons/fa";
 import {useRouter} from "next/navigation";
+import {BackButton} from "@/app/workspaces/settings/components/BackButton";
 
 
 const WorkspaceSettingsHome = () => {
@@ -40,9 +41,14 @@ const WorkspaceSettingsHome = () => {
         <>
             <section
                 className={"w-[90%] max-w-[700px] mx-auto h-[400px] mt-[200px]"}>
-                <h1
-                    className={"text-xl text-white/80 font-semibold border-b border-white/30"}
-                >Workspace Settings</h1>
+                <div
+                    className={"w-full border-b border-white/30 flex justify-between"}>
+                    <h1
+                        className={"text-xl text-white/80 font-semibold ml-2"}>
+                        Workspace Settings
+                    </h1>
+                    <BackButton/>
+                </div>
                 <ul
                     className={"w-full p-4 pl-0 flex flex-col gap-3"}
                 >

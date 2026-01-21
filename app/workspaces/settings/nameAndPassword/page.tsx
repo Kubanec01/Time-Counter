@@ -1,16 +1,17 @@
 'use client'
 
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
+import {BackButton} from "@/app/workspaces/settings/components/BackButton";
 
 const links: { id: string, title: string, url: string }[] = [
     {
         id: "workspace-name",
-        title: "Name Settings",
+        title: "Change workspace name",
         url: "/workspaces/settings/nameAndPassword/name",
     },
     {
         id: "workspace-password",
-        title: "Password Settings",
+        title: "Change workspace password",
         url: "/workspaces/settings/nameAndPassword/password",
     },
 ]
@@ -23,9 +24,14 @@ const NameAndPasswordSettingsHome = () => {
         <>
             <section
                 className={"w-[90%] max-w-[700px] mx-auto h-[400px] mt-[200px]"}>
-                <h1
-                    className={"text-xl text-white/80 font-semibold border-b border-white/30"}
-                >Workspace Name and Password</h1>
+                <div
+                    className={"w-full border-b border-white/30 flex justify-between"}>
+                    <h1
+                        className={"text-xl text-white/80 font-semibold ml-2"}>
+                        Workspace Name and Password
+                    </h1>
+                    <BackButton/>
+                </div>
                 <ul
                     className={"w-full p-4 pl-0 flex flex-col gap-3"}
                 >
