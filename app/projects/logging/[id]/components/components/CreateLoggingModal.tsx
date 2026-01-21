@@ -2,7 +2,7 @@
 
 
 import {PiCirclesThreeFill} from "react-icons/pi";
-import {LoggingTypeButton} from "@/app/projects/logging/[id]/components/components/createLoggingModal/LoggingTypeButton";
+import {LoggingTypeButton} from "@/app/projects/logging/[id]/components/components/LoggingTypeButton";
 import {Dispatch, FormEvent, SetStateAction, useState} from "react";
 import {LoggingType} from "@/types";
 

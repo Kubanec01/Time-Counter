@@ -65,7 +65,7 @@ const Navbar = () => {
                     {mode === "solo"
                         ?
                         <div
-                            className={"text-white bg-white/16 text-lg ml-[22px] px-2 py-1 rounded-3xl"}
+                            className={"text-white/98 bg-white/14 text-lg ml-[22px] px-3 py-1 rounded-3xl"}
                         >
                             {welcomeSign()}
                         </div>

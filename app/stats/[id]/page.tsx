@@ -4,21 +4,17 @@
 import {useParams} from "next/navigation";
 import {LineChart} from "@/app/stats/[id]/components/LineChart";
 import {useEffect, useState} from "react";
-import {Project, TotalTrackedTime} from "@/types";
+import {Project} from "@/types";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth} from "@/app/firebase/config";
 import {getDoc} from "firebase/firestore";
 import {
-    compareAsc,
     eachDayOfInterval,
     endOfWeek,
     format,
-    isSameWeek,
     isThisWeek,
-    parse,
-    parseISO,
     startOfWeek
 } from "date-fns";
 
