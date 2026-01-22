@@ -11,14 +11,23 @@ import {useAuthState} from "react-firebase-hooks/auth";
 import {auth} from "@/app/firebase/config";
 import {getDoc} from "firebase/firestore";
 import {format} from "date-fns";
-import {getCurrentWeekDays, getThisWeekTRackedDates, timeFormatToHours} from "@/app/stats/[id]/utils";
+import {
+    getCurrentMonthDays,
+    getCurrentWeekDays,
+    getThisMonthTrackedDates,
+    getThisWeekTrackedDates,
+    timeFormatToHours
+} from "@/app/stats/[id]/utils";
+import {StatsSectionBody} from "@/app/stats/[id]/components/StatsSectionBody";
 
 export default function StatsHome() {
 
-    const [totalTrackedTimes, setTotalTrackedTimes] = useState<number[]>([]);
+    const [totalTrackedWeekTimes, setTotalTrackedWeekTimes] = useState<number[]>([]);
+    const [totalTrackedMonthTimes, setTotalTrackedMonthTimes] = useState<number[]>([]);
 
     // Data
     const daysData = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const monthsData = getCurrentMonthDays.map(d => format(d, "dd"))
 
     const {mode, workspaceId} = useWorkSpaceContext()
     const [user] = useAuthState(auth)
@@ -39,15 +48,23 @@ export default function StatsHome() {
             const project: Project = data.projects.find((p: Project) => p.projectId === projectId)
             const totalTrackedTimes = project.totalTrackedTimes
 
-            const thisWeekData = getThisWeekTRackedDates(totalTrackedTimes)
+            const thisWeekData = getThisWeekTrackedDates(totalTrackedTimes)
+            const thisMonthData = getThisMonthTrackedDates(totalTrackedTimes)
 
-            const result = getCurrentWeekDays.map(d => {
+            const weekResult = getCurrentWeekDays.map(d => {
                 const date = format(d, "yyyy-MM-dd");
                 const item = thisWeekData.find(i => i.date === date)
                 return item ? item.time : "0"
             });
 
-            setTotalTrackedTimes(result.map(t => timeFormatToHours(t)))
+            const monthResult = getCurrentMonthDays.map(d => {
+                const date = format(d, "yyyy-MM-dd");
+                const item = thisMonthData.find(i => i.date === date)
+                return item ? item.time : "0"
+            })
+
+            setTotalTrackedWeekTimes(weekResult.map(t => timeFormatToHours(t)))
+            setTotalTrackedMonthTimes(monthResult.map(t => timeFormatToHours(t)))
         }
 
         fetchData()
@@ -63,8 +80,8 @@ export default function StatsHome() {
                     Project name {projectId}
                 </h1>
             </section>
-            <section
-                className={"w-[90%] max-w-[1000px] h-[340px] p-10 mt-30 rounded-xl shadow-lg mx-auto flex justify-between items-center bg-white/60"}>
+            {/*Weekly Times*/}
+            <StatsSectionBody>
                 <div
                     className={"h-full flex-1 text-xl pt-8"}>
                     <h1 className={"font-semibold"}>
@@ -79,11 +96,32 @@ export default function StatsHome() {
                     className={"w-[60%] h-full flex justify-end items-center"}>
                     <LineChart
                         yAxisTitle={'Hours'}
-                        yAxisData={totalTrackedTimes}
+                        yAxisData={totalTrackedWeekTimes}
                         xAxisData={daysData}
                     />
                 </div>
-            </section>
+            </StatsSectionBody>
+            {/*Monthly Times*/}
+            <StatsSectionBody>
+                <div
+                    className={"h-full flex-1 text-xl pt-8"}>
+                    <h1 className={"font-semibold"}>
+                        This are stats for the last month.
+                    </h1>
+                    <p
+                        className={"text-base w-[70%] mt-1"}>
+                        Here you can see how many total hours you tracked in the project over the past month.
+                    </p>
+                </div>
+                <div
+                    className={"w-[60%] h-full flex justify-end items-center"}>
+                    <LineChart
+                        yAxisTitle={'Hours'}
+                        yAxisData={totalTrackedMonthTimes}
+                        xAxisData={monthsData}
+                    />
+                </div>
+            </StatsSectionBody>
         </>
     )
 }
