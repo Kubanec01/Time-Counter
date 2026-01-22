@@ -2,7 +2,13 @@
 
 import ReactECharts from 'echarts-for-react'
 
-export const LineChart = ({data}: { data: number[] }) => {
+interface LineChartProps {
+    yAxisData: number[],
+    yAxisTitle: string,
+    xAxisData: string[] | number[],
+}
+
+export const LineChart = ({...props}: LineChartProps) => {
 
 
     const option = {
@@ -11,16 +17,16 @@ export const LineChart = ({data}: { data: number[] }) => {
         },
         xAxis: {
             type: 'category',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            data: props.xAxisData,
         },
         yAxis: {
             type: 'value',
-            name: 'Hours',
+            name: props.yAxisTitle,
         },
         series: [
             {
                 type: 'bar',
-                data: data,
+                data: props.yAxisData,
                 barWidth: '40%',
             },
         ],

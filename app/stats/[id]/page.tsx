@@ -10,17 +10,15 @@ import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth} from "@/app/firebase/config";
 import {getDoc} from "firebase/firestore";
-import {
-    eachDayOfInterval,
-    endOfWeek,
-    format,
-    isThisWeek,
-    startOfWeek
-} from "date-fns";
+import {format} from "date-fns";
+import {getCurrentWeekDays, getThisWeekTRackedDates, timeFormatToHours} from "@/app/stats/[id]/utils";
 
 export default function StatsHome() {
 
     const [totalTrackedTimes, setTotalTrackedTimes] = useState<number[]>([]);
+
+    // Data
+    const daysData = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
     const {mode, workspaceId} = useWorkSpaceContext()
     const [user] = useAuthState(auth)
@@ -41,36 +39,15 @@ export default function StatsHome() {
             const project: Project = data.projects.find((p: Project) => p.projectId === projectId)
             const totalTrackedTimes = project.totalTrackedTimes
 
-            const thisWeekData = totalTrackedTimes.filter(i =>
-                isThisWeek(i.date, {weekStartsOn: 1})
-            );
+            const thisWeekData = getThisWeekTRackedDates(totalTrackedTimes)
 
-            console.log(thisWeekData)
-
-            const weekDays = eachDayOfInterval({
-                start: startOfWeek(new Date(), {weekStartsOn: 1}),
-                end: endOfWeek(new Date(), {weekStartsOn: 1}),
-            });
-
-            console.log(weekDays)
-
-            const result = weekDays.map(d => {
+            const result = getCurrentWeekDays.map(d => {
                 const date = format(d, "yyyy-MM-dd");
                 const item = thisWeekData.find(i => i.date === date)
                 return item ? item.time : "0"
             });
 
-            function toHours(time: string): number {
-                if (time === "0" || time === "0:0:0") return 0;
-
-                const [h, m, s] = time.split(":").map(Number);
-                return h + m / 60 + s / 3600;
-            }
-
-
-            console.log(result.map(t => toHours(t)))
-
-            setTotalTrackedTimes(result.map(t => toHours(t)))
+            setTotalTrackedTimes(result.map(t => timeFormatToHours(t)))
         }
 
         fetchData()
@@ -100,7 +77,11 @@ export default function StatsHome() {
                 </div>
                 <div
                     className={"w-[60%] h-full flex justify-end items-center"}>
-                    <LineChart data={totalTrackedTimes}/>
+                    <LineChart
+                        yAxisTitle={'Hours'}
+                        yAxisData={totalTrackedTimes}
+                        xAxisData={daysData}
+                    />
                 </div>
             </section>
         </>
