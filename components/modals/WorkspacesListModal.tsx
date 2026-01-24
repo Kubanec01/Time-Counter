@@ -3,6 +3,7 @@ import {GoArrowUpRight, GoTrash} from "react-icons/go";
 import {db} from "@/app/firebase/config";
 import {doc, getDoc, updateDoc} from "firebase/firestore";
 import {WorkspaceCredentials} from "@/types";
+import {removeWorkspaceFromList} from "@/features/utilities/delete/removeWorkspaceFromList";
 
 interface WorkspacesListModalProps {
     userId: string | undefined;
@@ -17,17 +18,11 @@ export const WorkspacesListModal = ({...props}: WorkspacesListModalProps) => {
 
     const openStyle = props.isModalOpen ? "block" : "hidden";
 
-    const removeWorkspaceFromList = async (workspaceName: string) => {
-        if (!props.userId) return;
-        const userRef = doc(db, "users", props.userId)
-        const userSnap = await getDoc(userRef)
-        if (!userSnap.exists()) return;
-        const data = userSnap.data();
-        const updatedWorkspacesList: WorkspaceCredentials[] =
-            data.workspacesList.filter((workspace: WorkspaceCredentials) => workspace.workspaceId !== workspaceName);
+    const deleteWorkspaceFromList = async (workspaceId: string) => {
+        await removeWorkspaceFromList(props.userId, workspaceId)
 
-        if (updatedWorkspacesList.length === 0) props.setIsModalOpen(false);
-        await updateDoc(userRef, {workspacesList: updatedWorkspacesList});
+        if (props.workspacesList.length === 0) props.setIsModalOpen(false);
+
     }
 
     const Splitter = () => {
@@ -65,7 +60,7 @@ export const WorkspacesListModal = ({...props}: WorkspacesListModalProps) => {
                                 </button>
                                 <Splitter/>
                                 <button
-                                    onClick={() => removeWorkspaceFromList(workspace.workspaceId)}
+                                    onClick={() => deleteWorkspaceFromList(workspace.workspaceId)}
                                     className={"py-1 px-2 rounded-full cursor-pointer text-black/50 hover:text-red-600"}>
                                     <GoTrash className={"text-sm"}/>
                                 </button>
