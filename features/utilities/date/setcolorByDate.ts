@@ -1,7 +1,9 @@
+import {formateDateToDMY} from "@/features/utilities/date/formateDates";
+
 export const setColorByDate = (sectionName: string) => {
 
     const date = new Date()
-    const todayDateString = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+    const todayDateString = formateDateToDMY(date)
 
     if (sectionName === todayDateString) {
         return "bg-linear-to-b from-pastel-purple-500 to-pastel-purple-500"

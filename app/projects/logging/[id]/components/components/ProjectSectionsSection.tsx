@@ -7,7 +7,7 @@ import {Member, Section} from "@/types";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 import {onSnapshot} from "firebase/firestore";
-import {formateDate} from "@/features/utilities/date/formateDate";
+import {formateDateToDMY} from "@/features/utilities/date/formateDates";
 
 interface ProjectSectionsSectionProps {
     projectId: string;
@@ -54,18 +54,18 @@ export const ProjectSectionsSection = ({...props}: ProjectSectionsSectionProps) 
             if (userRole === "Member") {
                 currSections = sections.filter(
                     s => s.projectId === props.projectId &&
-                        s.updateDate === formateDate(filteredDate) &&
+                        s.updateDate === formateDateToDMY(filteredDate) &&
                         s.userId === props.userId
                 )
             } else if (filteredMemberId === "all") {
                 currSections = sections.filter(
                     s => s.projectId === props.projectId &&
-                        s.updateDate === formateDate(filteredDate)
+                        s.updateDate === formateDateToDMY(filteredDate)
                 )
             } else {
                 currSections = sections.filter(
                     s => s.projectId === props.projectId &&
-                        s.updateDate === formateDate(filteredDate) &&
+                        s.updateDate === formateDateToDMY(filteredDate) &&
                         s.userId === filteredMemberId
                 )
             }
@@ -83,7 +83,7 @@ export const ProjectSectionsSection = ({...props}: ProjectSectionsSectionProps) 
             className={"w-[90%] max-w-[1000px] p-8 mx-auto mt-10 flex flex-col gap-4 rounded-xl shadow-lg bg-white/60"}>
             <div
                 className={"flex gap-3"}>
-                {mode === "solo" || userRole !== "Member" &&
+                {members.length < 2 || userRole !== "Member" &&
                     <>
                         <select
                             onChange={(event) => {

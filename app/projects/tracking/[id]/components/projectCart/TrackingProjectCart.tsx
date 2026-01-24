@@ -7,7 +7,6 @@ import SectionCart from "./components/SectionCart";
 import {Member, ProjectProps, Section, UpdatedSectionByDate} from "@/types";
 import ProjectCartNavbar from "@/components/ProjectCartNavbar";
 import InformativeModal from "@/components/modals/InformativeModal";
-import {sortDatesAscending} from "@/features/utilities/date/sortDates";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {createNewSection} from "@/features/utilities/create/createNewSection";
 import {setNameByDate} from "@/features/utilities/date/setNameByDate";
@@ -15,6 +14,7 @@ import {setColorByDate} from "@/features/utilities/date/setcolorByDate";
 import {getUniqueDates} from "@/features/utilities/date/getUniqueDates";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
+import {compareAsc} from "date-fns";
 
 const TrackingProjectCart = ({...props}: ProjectProps) => {
 
@@ -74,14 +74,11 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
             const filteredDates = getUniqueDates(validUpdatedSectionByDates)
 
             setSections(validSections);
-            setUpdatedSectionsByDates(sortDatesAscending(filteredDates))
-            console.log("is fetched")
+            setUpdatedSectionsByDates(filteredDates.sort(compareAsc))
         });
 
         return () => getSectionsData();
     }, [userId, projectId, mode, workspaceId, userRole, selectedUserId]);
-
-    console.log(sections)
 
 
     // Functions
@@ -92,6 +89,8 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
         const time = "00:00:00";
         await createNewSection(userId, userFullName, props.projectId, inputValue, time, new Date(), setInputValue, setIsInfoModalOpen, "unset", mode, workspaceId)
     }
+
+    console.log(updatedSectionsByDates)
 
     return (
         <>
@@ -106,7 +105,7 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
                             const value = event.target.value as string | "all";
                             setSelectedUserId(value);
                         }}
-                        className={` ${mode === "solo" || userRole === "Member" ? "hidden" : "block"}
+                        className={` ${members.length < 2 || userRole === "Member" ? "hidden" : "block"}
                         border border-black/20 outline-none px-2 h-9.5 w-[120px] text-sm rounded-lg bg-white cursor-pointer`}>
                         <option value="all">All Users</option>
                         {members.map((mem) => (

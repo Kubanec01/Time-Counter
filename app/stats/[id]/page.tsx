@@ -19,6 +19,7 @@ import {
     timeFormatToHours
 } from "@/app/stats/[id]/utils";
 import {StatsSectionBody} from "@/app/stats/[id]/components/StatsSectionBody";
+import {formateDateToYMD} from "@/features/utilities/date/formateDates";
 
 export default function StatsHome() {
 
@@ -52,13 +53,13 @@ export default function StatsHome() {
             const thisMonthData = getThisMonthTrackedDates(totalTrackedTimes)
 
             const weekResult = getCurrentWeekDays.map(d => {
-                const date = format(d, "yyyy-MM-dd");
+                const date = formateDateToYMD(d);
                 const item = thisWeekData.find(i => i.date === date)
                 return item ? item.time : "0"
             });
 
             const monthResult = getCurrentMonthDays.map(d => {
-                const date = format(d, "yyyy-MM-dd");
+                const date = formateDateToYMD(d);
                 const item = thisMonthData.find(i => i.date === date)
                 return item ? item.time : "0"
             })

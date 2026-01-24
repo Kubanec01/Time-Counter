@@ -3,6 +3,7 @@ import {arrayUnion, updateDoc} from "firebase/firestore";
 import {throwRandomNum} from "@/features/utilities/throwRandomNum";
 import {LoggingType, Section, UpdatedSectionByDate, UserMode, WorkspaceId} from "@/types";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
+import {formateDateToDMY} from "@/features/utilities/date/formateDates";
 
 export const createNewSection = async (
     userId: string | undefined,
@@ -33,7 +34,7 @@ export const createNewSection = async (
 
     // Curr Date Variable
     if (date === null) date = new Date();
-    const currDate: string = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+    const currDate: string = formateDateToDMY(date)
 
 
     const newSection: Section = {

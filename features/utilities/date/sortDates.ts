@@ -2,7 +2,7 @@ export const sortDatesAscending = (arr: string[]): string[] => {
 
     if (arr.length === 0) return []
 
-    const arrToNum = arr.map(date => date.split("/").map(Number))
+    const arrToNum = arr.map(date => date.split(".").map(Number))
 
     for (let i = 0; i < arrToNum.length; i++) {
         for (let j = 0; j < arrToNum.length - 1 - i; j++) {
@@ -27,7 +27,7 @@ export const sortDatesAscending = (arr: string[]): string[] => {
     }
 
     return arrToNum.map(([day, month, year]) => {
-        return `${day}/${month}/${year}`
+        return `${day}-${month}-${year}`
     })
 
 }
