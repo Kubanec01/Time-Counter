@@ -90,7 +90,7 @@ const WorkspaceName = () => {
                     }
                     <button
                         type="button"
-                        onClick={() => router.push("/")}
+                        onClick={() => window.location.href = "/"}
                         className="w-full h-[34px] mt-1 text-sm font-semibold text-white bg-white/20 hover:bg-white/25 cursor-pointer rounded-full"
                     >
                         Cancel

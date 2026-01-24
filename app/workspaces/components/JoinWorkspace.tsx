@@ -36,12 +36,15 @@ export const JoinWorkspace = () => {
         if (!docRef || !userRef) return console.error("Could not find docRef or userRef")
 
         const docSnap = await getDoc(docRef)
+        const userSnap = await getDoc(userRef)
 
-        if (!docSnap.exists()) return setErrMess("Wrong password or Id")
+        if (!docSnap.exists() || !userSnap.exists()) return setErrMess("Wrong password or Id")
         const data = docSnap.data()
+        const userData = userSnap.data()
         const correctPassword = data.password
         const blackList: Member[] = data.blackList || []
         const members: Member[] = data.members
+        const workspacesList: WorkspaceCredentials[] = userData.workspacesList || []
 
         if (password !== correctPassword) return setErrMess("Wrong password or Id")
         if (blackList.some(member => member.userId === userId)) return setErrMess("You don't have permission to join this workspace.")
@@ -51,8 +54,23 @@ export const JoinWorkspace = () => {
             password: password
         }
 
+        console.log("workspaces", workspacesList)
+        const matchedWorkspace = workspacesList.find(w => w.workspaceId === workspaceInputId)
+        console.log("matchedWorkspace", matchedWorkspace)
+        const updatedWorkspacesList = workspacesList.map((workspace) => {
+            if (workspace.workspaceId !== workspaceInputId) return workspace
+
+            return {...workspace, password: password}
+        })
+
         const setStatesAndReplace = async () => {
-            await updateDoc(userRef, {workspacesList: arrayUnion(workspaceCredential)})
+            if (matchedWorkspace) {
+                console.log("matchedWorkspace updated")
+                await updateDoc(userRef, {workspacesList: updatedWorkspacesList})
+            } else {
+                console.log("updated workspaces update")
+                await updateDoc(userRef, {workspacesList: arrayUnion(workspaceCredential)})
+            }
             setMode("workspace")
             setWorkspaceId(workspaceInputId)
             setWorkspaceInputId("")

@@ -23,7 +23,6 @@ import {removeWorkspaceFromList} from "@/features/utilities/delete/removeWorkspa
 import {invalidUserId} from "@/messages/errors";
 import {IoMdAddCircle} from "react-icons/io";
 import {useRouter} from "next/navigation";
-import * as repl from "node:repl";
 
 interface Props {
     isUserMenuOpen: boolean
@@ -94,7 +93,7 @@ export const UserMenu = ({...props}: Props) => {
         <>
             <div
                 onMouseLeave={() => props.setIsUserMenuOpen(false)}
-                className={`${setVisibility} fixed top-15 right-12.5 rounded-md z-[50] bg-black/90 backdrop-blur-sm flex flex-col w-[286px] pt-3`}>
+                className={`${setVisibility} fixed top-15 right-12.5 rounded-lg z-[50] bg-black/90 backdrop-blur-sm flex flex-col w-[286px] pt-3`}>
                 {/* User section */}
                 <section
                     className={"border-b border-white/50 px-3"}>
