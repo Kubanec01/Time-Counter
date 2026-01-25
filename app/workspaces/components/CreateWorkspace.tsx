@@ -7,12 +7,14 @@ import {createNewWorkspace} from "@/features/utilities/create/createNewWorkspace
 import {useAuthState} from "react-firebase-hooks/auth";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {throwRandomNum} from "@/features/utilities/throwRandomNum";
+import {IoMdEye, IoMdEyeOff} from "react-icons/io";
 
 export const CreateWorkspace = () => {
 
 
     const [workspaceName, setWorkspaceName] = useState("")
     const [password, setPassword] = useState("")
+    const [isPasswordHidden, setIsPasswordHidden] = useState(true)
 
     const {setWorkspaceId, setMode} = useWorkSpaceContext()
     const {replace} = useReplaceRouteLink()
@@ -55,14 +57,24 @@ export const CreateWorkspace = () => {
             />
 
             {/* Password Input */}
-            <input
-                onChange={e => setPassword(e.target.value)}
-                value={password}
-                placeholder="Workspace Password"
-                className="w-full h-[38px] bg-white rounded-full text-base px-3 outline-none"
-                type="password"
-            />
-
+            <div
+                className={"w-full relative flex items-center justify-center"}>
+                <input
+                    onChange={e => setPassword(e.target.value)}
+                    value={password}
+                    placeholder="Workspace Password"
+                    className="w-full h-[38px] bg-white rounded-full text-base px-3 outline-none"
+                    type={`${isPasswordHidden ? "password" : "text"}`}
+                />
+                <IoMdEyeOff
+                    onClick={() => setIsPasswordHidden(v => !v)}
+                    style={{display: isPasswordHidden ? "block" : "none"}}
+                    className={"absolute text-custom-gray-700 text-lg right-2.5 cursor-pointer"}/>
+                <IoMdEye
+                    onClick={() => setIsPasswordHidden(v => !v)}
+                    style={{display: isPasswordHidden ? "none" : "block"}}
+                    className={"absolute text-custom-gray-700 text-lg right-2.5 cursor-pointer"}/>
+            </div>
             <button
                 type="submit"
                 className="cursor-pointer w-full py-1.5 mt-4 font-medium text-base text-white bg-black/80 hover:bg-black/75 rounded-full"

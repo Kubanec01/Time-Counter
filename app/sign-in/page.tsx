@@ -5,12 +5,14 @@ import {auth} from "@/app/firebase/config";
 import Link from "next/link";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 import {onAuthStateChanged, signInWithEmailAndPassword} from "@firebase/auth";
+import {IoMdEye, IoMdEyeOff} from "react-icons/io";
 
 const SignInPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMess, setErrorMess] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
     const {replace} = useReplaceRouteLink()
 
@@ -66,12 +68,23 @@ const SignInPage = () => {
                         type="text"
                     />
                     {/* Password Input */}
-                    <input
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Your password..."
-                        className="w-full h-[46px] border border-custom-gray-800 text-custom-gray-600 rounded-[4px] text-base px-3"
-                        type="password"
-                    />
+                    <div
+                        className={"w-full relative flex items-center"}>
+                        <input
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="Your password..."
+                            className="w-full h-[46px] border border-custom-gray-800 text-custom-gray-600 rounded-[4px] text-base px-3"
+                            type={`${isPasswordHidden ? "password" : "text"}`}
+                        />
+                        <IoMdEyeOff
+                            onClick={() => setIsPasswordHidden(v => !v)}
+                            style={{display: isPasswordHidden ? "block" : "none"}}
+                            className={"absolute text-custom-gray-800 text-lg right-2.5 cursor-pointer"}/>
+                        <IoMdEye
+                            onClick={() => setIsPasswordHidden(v => !v)}
+                            style={{display: isPasswordHidden ? "none" : "block"}}
+                            className={"absolute text-custom-gray-800 text-lg right-2.5 cursor-pointer"}/>
+                    </div>
                     <h1
                         className={"text-red-500/90 text-sm"}>
                         {errorMess}</h1>

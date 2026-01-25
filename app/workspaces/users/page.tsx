@@ -46,12 +46,11 @@ const UsersHomePage = () => {
         let filteredUsers = []
 
         if (filteredRole === "All") {
-            filteredUsers = mem.filter(member =>
-                `${member.name} ${member.surname}`.toLowerCase().includes(text.toLowerCase()))
+            filteredUsers = mem.filter(member => (`${member.name}`.toLowerCase().startsWith(text.toLowerCase()))
+                || (`${member.surname}`.toLowerCase().startsWith(text.toLowerCase())))
         } else {
-            filteredUsers = mem.filter(member =>
-                `${member.name} ${member.surname}`.toLowerCase().includes(text.toLowerCase())
-                && member.role === filteredRole)
+            filteredUsers = mem.filter(member => ((`${member.name} ${member.surname}`.toLowerCase().startsWith(text.toLowerCase())) ||
+                `${member.surname}`.toLowerCase().startsWith(text.toLowerCase())) && member.role === filteredRole)
         }
 
         setMembers(filteredUsers)

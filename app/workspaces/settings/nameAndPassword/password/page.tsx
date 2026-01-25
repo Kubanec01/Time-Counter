@@ -6,6 +6,7 @@ import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {db} from "@/app/firebase/config";
 import {doc, updateDoc} from "firebase/firestore";
 import checkmarkImg from "@/public/purple_checkmark.png"
+import {IoMdEye, IoMdEyeOff} from "react-icons/io";
 
 const WorkspacePassword = () => {
 
@@ -14,6 +15,7 @@ const WorkspacePassword = () => {
     const [errMessage, setErrMessage] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [isChanged, setIsChanged] = useState(false);
+    const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
     const {workspaceId} = useWorkSpaceContext()
 
@@ -67,27 +69,40 @@ const WorkspacePassword = () => {
                             </>
                             :
                             <>
-
-                                <input
-                                    value={password}
-                                    onChange={(e) => {
-                                        setErrMessage("")
-                                        setPassword(e.target.value)
-                                    }}
-                                    placeholder="New password..."
-                                    className="w-full h-[40px] border border-custom-gray-800 text-white/80 rounded-lg outline-none text-sm px-3"
-                                    type="password"
-                                />
-                                <input
-                                    value={confirmPassword}
-                                    onChange={(e) => {
-                                        setErrMessage("")
-                                        setConfirmPassword(e.target.value)
-                                    }}
-                                    placeholder="Confirm password..."
-                                    className="w-full h-[40px] border border-custom-gray-800 text-white/80 rounded-lg outline-none text-sm px-3"
-                                    type="password"
-                                />
+                                <div
+                                    className={"w-full relative flex items-center justify-center"}>
+                                    <input
+                                        value={password}
+                                        onChange={(e) => {
+                                            setErrMessage("")
+                                            setPassword(e.target.value)
+                                        }}
+                                        placeholder="New password..."
+                                        className="w-full h-[40px] border border-custom-gray-800 text-white/80 rounded-lg outline-none text-sm px-3"
+                                        type={`${isPasswordHidden ? "password" : "text"}`}
+                                    />
+                                    <IoMdEyeOff
+                                        onClick={() => setIsPasswordHidden(v => !v)}
+                                        style={{display: isPasswordHidden ? "block" : "none"}}
+                                        className={"absolute text-custom-gray-800 text-lg right-2.5 cursor-pointer"}/>
+                                    <IoMdEye
+                                        onClick={() => setIsPasswordHidden(v => !v)}
+                                        style={{display: isPasswordHidden ? "none" : "block"}}
+                                        className={"absolute text-custom-gray-800 text-lg right-2.5 cursor-pointer"}/>
+                                </div>
+                                <div
+                                    className={"w-full relative flex items-center justify-center"}>
+                                    <input
+                                        value={confirmPassword}
+                                        onChange={(e) => {
+                                            setErrMessage("")
+                                            setConfirmPassword(e.target.value)
+                                        }}
+                                        placeholder="Confirm password..."
+                                        className="w-full h-[40px] border border-custom-gray-800 text-white/80 rounded-lg outline-none text-sm px-3"
+                                        type={`${isPasswordHidden ? "password" : "text"}`}
+                                    />
+                                </div>
                                 <h1
                                     className={"text-red-600/90 text-sm -mb-2"}
                                 >

@@ -10,6 +10,7 @@ import {arrayUnion, doc, getDoc, onSnapshot, updateDoc} from "firebase/firestore
 import {Member, WorkspaceCredentials} from "@/types";
 import {WorkspacesListModal} from "@/components/modals/WorkspacesListModal";
 import {setLocalStorageUserMode, setLocalStorageWorkspaceId} from "@/features/utilities/localStorage";
+import {IoMdEye, IoMdEyeOff} from "react-icons/io";
 
 export const JoinWorkspace = () => {
     const [workspaceInputId, setWorkspaceInputId] = useState("")
@@ -17,6 +18,7 @@ export const JoinWorkspace = () => {
     const [errMess, setErrMess] = useState("")
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [workspacesList, setWorkspacesList] = useState<WorkspaceCredentials[]>([])
+    const [isPasswordHidden, setIsPasswordHidden] = useState(true)
 
     const {setMode, setWorkspaceId, userName, userSurname, userMail} = useWorkSpaceContext()
     const {replace} = useReplaceRouteLink()
@@ -54,9 +56,7 @@ export const JoinWorkspace = () => {
             password: password
         }
 
-        console.log("workspaces", workspacesList)
         const matchedWorkspace = workspacesList.find(w => w.workspaceId === workspaceInputId)
-        console.log("matchedWorkspace", matchedWorkspace)
         const updatedWorkspacesList = workspacesList.map((workspace) => {
             if (workspace.workspaceId !== workspaceInputId) return workspace
 
@@ -146,16 +146,27 @@ export const JoinWorkspace = () => {
                     type="text"
                 />
                 {/* Password Input */}
-                <input
-                    onChange={e => {
-                        setErrMess("")
-                        setPassword(e.target.value)
-                    }}
-                    value={password}
-                    placeholder="Workspace Password"
-                    className="w-full h-[38px] bg-white  rounded-full text-base px-3 outline-none"
-                    type="password"
-                />
+                <div
+                    className={"w-full relative flex items-center justify-center"}>
+                    <input
+                        onChange={e => {
+                            setErrMess("")
+                            setPassword(e.target.value)
+                        }}
+                        value={password}
+                        placeholder="Workspace Password"
+                        className="w-full h-[38px] bg-white  rounded-full text-base px-3 outline-none"
+                        type={`${isPasswordHidden ? "password" : "text"}`}
+                    />
+                    <IoMdEyeOff
+                        onClick={() => setIsPasswordHidden(v => !v)}
+                        style={{display: isPasswordHidden ? "block" : "none"}}
+                        className={"absolute text-custom-gray-700 text-lg right-2.5 cursor-pointer"}/>
+                    <IoMdEye
+                        onClick={() => setIsPasswordHidden(v => !v)}
+                        style={{display: isPasswordHidden ? "none" : "block"}}
+                        className={"absolute text-custom-gray-700 text-lg right-2.5 cursor-pointer"}/>
+                </div>
                 <h1
                     className={`text-red-500 text-sm font-semibold text-center ${errMess !== "" ? "bg-black/70 px-4 py-1.5 rounded-full" : ""}`}>
                     {errMess}

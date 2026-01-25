@@ -160,7 +160,7 @@ export const UserMenu = ({...props}: Props) => {
                 >
                     <button
                         style={{
-                            display: mode === "solo" ? "none" : "flex",
+                            display: mode === "solo" || userRole === "Member" ? "none" : "flex",
                         }}
                         onClick={() => router.push("/workspaces/settings")}
                         className={"items-center w-full px-3 py-2.5 gap-1 text-white/98 text-xs border-b border-white/20 hover:bg-white/5 cursor-pointer"}>

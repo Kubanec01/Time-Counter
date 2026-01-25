@@ -18,11 +18,16 @@ import {editSectionName} from "@/features/utilities/edit/editSectionName";
 import {stopTimeDifference} from "@/features/utilities/time/stopTimeDifference";
 import {deleteSubsectionAndTimeCheckoutsData} from "@/features/utilities/delete/deleteSubsectionAndTimeCheckoutsData";
 import SubSectionCart from "@/app/projects/tracking/[id]/components/projectCart/components/SubSectionCart";
-import {formatSecondsToTimeString, formatTimeUnit, parseTimeStringToSeconds} from "@/features/utilities/time/timeOperations";
+import {
+    formatSecondsToTimeString,
+    formatTimeUnit,
+    parseTimeStringToSeconds
+} from "@/features/utilities/time/timeOperations";
 import {setProjectTotalTime, subtractProjectTotalTime} from "@/features/utilities/time/totalTime";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 import {HiMiniUserCircle} from "react-icons/hi2";
+import {formateDateToDMY} from "@/features/utilities/date/formateDates";
 
 
 const SectionCart = ({...props}: SectionCartProps) => {
@@ -70,7 +75,6 @@ const SectionCart = ({...props}: SectionCartProps) => {
 
         const now = new Date();
         const formattedTime = `${formatTimeUnit(now.getHours())}:${formatTimeUnit(now.getMinutes())}`;
-        const currDateString = `${now.getDate()}/${now.getMonth() + 1}/${now.getFullYear()}`;
 
         if (!isRunning) {
             setIsClocktimeRunning(true)
@@ -79,13 +83,13 @@ const SectionCart = ({...props}: SectionCartProps) => {
             setStartTime(formattedTime);
             start();
         } else {
+            pause();
             setIsClocktimeRunning(false)
             setActiveClockTimeSectionId("")
             setIsRunning(false);
-            pause();
             setLastStopClockTime(totalSeconds)
             await setProjectTotalTime(props.userId, props.sectionId, props.projectId, newTime, mode, workspaceId)
-            await sendTimeData(props.userId, props.sectionId, newTime, currDateString, mode, workspaceId);
+            await sendTimeData(props.userId, props.sectionId, newTime, formateDateToDMY(now), mode, workspaceId);
             await createNewTimeCheckout(props.userId, formattedTime, props.projectId, props.sectionId, startTime, stopTimeDifference(totalSeconds, lastStopClockTime), mode, workspaceId);
         }
     };

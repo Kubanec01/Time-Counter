@@ -21,7 +21,8 @@ export const WorkspacesListModal = ({...props}: WorkspacesListModalProps) => {
     const deleteWorkspaceFromList = async (workspaceId: string) => {
         await removeWorkspaceFromList(props.userId, workspaceId)
 
-        if (props.workspacesList.length === 0) props.setIsModalOpen(false);
+        console.log(props.workspacesList.length)
+        if (props.workspacesList.length < 2) props.setIsModalOpen(false);
 
     }
 
