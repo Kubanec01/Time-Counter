@@ -27,7 +27,7 @@ export const sortDatesAscending = (arr: string[]): string[] => {
     }
 
     return arrToNum.map(([day, month, year]) => {
-        return `${day}-${month}-${year}`
+        return `${day}.${month}.${year}`
     })
 
 }

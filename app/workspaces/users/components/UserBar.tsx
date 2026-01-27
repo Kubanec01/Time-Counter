@@ -63,10 +63,10 @@ export const UserBar = ({...props}: UserBarProps) => {
     return (
         <>
             <li
-                className={"w-full h-[84px] p-3 flex flex-col gap-2 border-b border-black/20"}
+                className={"w-full h-[96px] p-3 flex flex-col gap-2 border-b border-black/20"}
             >
                 <div
-                    className={"flex justify-start items-center gap-6"}>
+                    className={"flex justify-start items-center gap-6 mb-1"}>
                     <span
                         className={"flex items-center gap-1 font-semibold"}>
                         <FaCircleUser className={"text-sm text-black/60"}/>
@@ -82,12 +82,21 @@ export const UserBar = ({...props}: UserBarProps) => {
                 </div>
                 <div
                     className={"flex justify-between items-center w-full"}>
+                    <div
+                        className={"flex items-center gap-4 font-semibold"}>
                     <span
                         className={"py-1 px-2 rounded-md bg-black/32 text-white text-sm flex items-center gap-0.5"}
                     >
                         <MdOutlineShield className={"mb-0.5"}/>
                         {props.role}
                     </span>
+                        <button
+                            className={"text-black/32 cursor-pointer hover:bg-black/5 px-1.5 py-1 rounded-md text-xs" +
+                                " flex items-center duration-150"}
+                        >
+                            Add class
+                        </button>
+                    </div>
                     <div
                         className={"flex justify-start items-center gap-4"}>
                         {props.userId !== userId &&

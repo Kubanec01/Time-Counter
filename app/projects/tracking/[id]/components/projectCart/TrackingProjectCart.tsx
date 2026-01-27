@@ -14,7 +14,7 @@ import {setColorByDate} from "@/features/utilities/date/setcolorByDate";
 import {getUniqueDates} from "@/features/utilities/date/getUniqueDates";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
-import {compareAsc} from "date-fns";
+import {sortDatesAscending} from "@/features/utilities/date/sortDates";
 
 const TrackingProjectCart = ({...props}: ProjectProps) => {
 
@@ -74,7 +74,7 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
             const filteredDates = getUniqueDates(validUpdatedSectionByDates)
 
             setSections(validSections);
-            setUpdatedSectionsByDates(filteredDates.sort(compareAsc))
+            setUpdatedSectionsByDates(sortDatesAscending(filteredDates))
         });
 
         return () => getSectionsData();

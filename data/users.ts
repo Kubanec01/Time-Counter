@@ -25,3 +25,55 @@ export const projectTasksOptions: ProjectOption[] = [
     {value: 'personal', label: 'Personal'},
     {value: 'break', label: 'Break / Rest'},
 ];
+
+interface UsersClasses {
+    id: string,
+    name: string,
+    options: ProjectOption[],
+}
+
+const usersClasses: UsersClasses[] = [
+    {
+        id: "frontendClass",
+        name: "Frontend",
+        options: [
+            {value: 'design', label: 'Design'},
+            {value: 'frontend-coding', label: 'Coding (Frontend)'},
+            {value: 'testing', label: 'Testing'},
+            {value: 'debug', label: 'Debug'},
+        ],
+    },
+    {
+        id: "technicalClass",
+        name: "Technical",
+        options: [
+            {value: 'backend-coding', label: 'Coding'},
+            {value: 'research', label: 'Research'},
+            {value: 'deep-work', label: 'Deep Work'},
+            {value: 'documentation', label: 'Documentation'},
+            {value: 'learning', label: 'Learning'},
+        ],
+    },
+    {
+        id: "managementAndPersonalClass",
+        name: "Management and Personal",
+        options: [
+            {value: 'meeting', label: 'Meeting'},
+            {value: 'planning', label: 'Planning'},
+            {value: 'emails', label: 'Emails / Communication'},
+            {value: 'study', label: 'Study'},
+            {value: 'personal', label: 'Personal'},
+            {value: 'break', label: 'Break / Rest'},
+        ]
+    },
+    {
+        id: "uiUxDesignClass",
+        name: "UI/UX Design",
+        options: [
+            {value: 'ui-design', label: 'UI Design'},
+            {value: 'ux-design', label: 'UX Design'},
+            {value: 'prototyping', label: 'Prototyping'},
+            {value: 'design-system', label: 'Design System'},
+        ]
+    },
+]
