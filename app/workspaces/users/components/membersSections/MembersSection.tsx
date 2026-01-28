@@ -10,6 +10,7 @@ import ConfirmModal from "@/components/modals/ConfirmModal";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth} from "@/app/firebase/config";
 import InformativeModal from "@/components/modals/InformativeModal";
+import {UpdateUserClassModal} from "@/components/modals/UpdateUserClassModal";
 
 interface MembersSectionProps {
     members: Member[];
@@ -22,6 +23,7 @@ export const MembersSection = ({...props}: MembersSectionProps) => {
     const [isDeleteUserModalOpen, setIsDeleteUserModalOpen] = useState(false)
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false)
     const [newRole, setNewRole] = useState<Role | null>(null)
+    const [isUpdateClassModalOpen, setIsUpdateClassModalOpen] = useState(false)
 
     const {workspaceId, userRole} = useWorkSpaceContext()
     const [user] = useAuthState(auth)
@@ -48,7 +50,9 @@ export const MembersSection = ({...props}: MembersSectionProps) => {
         setUserRole(selectedUser.userId, workspaceId, newRole)
     }
 
-    console.log(isConfirmModalOpen)
+    const updateUserRole = () => {
+
+    }
 
     if (props.members.length === 0) return noUsersMess
 
@@ -62,12 +66,14 @@ export const MembersSection = ({...props}: MembersSectionProps) => {
                     surname={member.surname}
                     email={member.email}
                     role={member.role}
+                    class={member.class}
                     setIsDeleteUserModalOpen={setIsDeleteUserModalOpen}
                     isDeleteUserModalOpen={isDeleteUserModalOpen}
                     setIsInfoModalOpen={setIsInfoModalOpen}
                     setSelectedUser={setSelectedUser}
                     setIsConfirmModalOpen={setIsConfirmModalOpen}
                     setNewRole={setNewRole}
+                    setIsUpdateClassModalOpen={setIsUpdateClassModalOpen}
                 />
             ))}
             <DeleteModal
@@ -94,6 +100,11 @@ export const MembersSection = ({...props}: MembersSectionProps) => {
                 setIsModalOpen={setIsInfoModalOpen}
                 isModalOpen={isInfoModalOpen}
                 title={"The project must have at least one admin."}/>
+            <UpdateUserClassModal
+                isModalOpen={isUpdateClassModalOpen}
+                setIsModalOpen={setIsUpdateClassModalOpen}
+                formFunction={updateUserRole}
+            />
         </>
     )
 }

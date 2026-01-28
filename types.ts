@@ -84,12 +84,21 @@ export type ProjectOption = { value: string, label: string }
 
 export type Role = "Admin" | "Member" | "Manager" | null
 
+export type UserClass =
+    | "Frontend"
+    | "Technical"
+    | "Management and Personal"
+    | "UI/UX Design"
+    | "Full stack"
+    | "unset";
+
 export type Member = {
     userId: string;
     email: string;
     name: string;
     surname: string;
     role: Role;
+    class: UserClass;
 }
 
 export interface WorkspaceCredentials {

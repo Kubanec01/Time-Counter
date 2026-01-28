@@ -32,7 +32,7 @@ interface UsersClasses {
     options: ProjectOption[],
 }
 
-const usersClasses: UsersClasses[] = [
+export const usersClasses: UsersClasses[] = [
     {
         id: "frontendClass",
         name: "Frontend",
@@ -74,6 +74,16 @@ const usersClasses: UsersClasses[] = [
             {value: 'ux-design', label: 'UX Design'},
             {value: 'prototyping', label: 'Prototyping'},
             {value: 'design-system', label: 'Design System'},
+        ]
+    },
+    {
+        id: "fullStackClass",
+        name: "Full stack",
+        options: [
+            {value: 'feature', label: 'Feature (UI + API)'},
+            {value: 'ui-api', label: 'UI ↔ API'},
+            {value: 'api-db', label: 'API ↔ Database'},
+            {value: 'bugfix', label: 'Bugfix (Full-stack)'},
         ]
     },
 ]

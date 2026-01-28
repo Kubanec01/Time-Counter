@@ -1,7 +1,7 @@
-import {Member, Role} from "@/types";
+import {Member, Role, UserClass} from "@/types";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {FaCircleUser} from "react-icons/fa6";
-import {MdEmail, MdOutlineShield} from "react-icons/md";
+import {MdEmail, MdOutlineShield, MdStarOutline} from "react-icons/md";
 import {Dispatch, SetStateAction} from "react";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth} from "@/app/firebase/config";
@@ -12,12 +12,14 @@ interface UserBarProps {
     surname: string;
     email: string;
     role: Role;
+    class: UserClass;
     setIsInfoModalOpen: Dispatch<SetStateAction<boolean>>;
     isDeleteUserModalOpen: boolean
     setIsDeleteUserModalOpen: Dispatch<SetStateAction<boolean>>;
     setSelectedUser: Dispatch<SetStateAction<Member | null>>;
     setIsConfirmModalOpen: Dispatch<SetStateAction<boolean>>
     setNewRole: Dispatch<SetStateAction<Role | null>>;
+    setIsUpdateClassModalOpen: Dispatch<SetStateAction<boolean>>
 }
 
 export const UserBar = ({...props}: UserBarProps) => {
@@ -25,6 +27,8 @@ export const UserBar = ({...props}: UserBarProps) => {
     const {userRole} = useWorkSpaceContext()
     const [user] = useAuthState(auth)
     const userId = user?.uid
+
+    const membersClass = props.class ? props.class : "unset"
 
     const buttons: { id: string, label: string, role: Role }[] = [
         {
@@ -51,6 +55,7 @@ export const UserBar = ({...props}: UserBarProps) => {
             name: props.name,
             surname: props.surname,
             role: props.role,
+            class: props.class,
         })
     }
 
@@ -90,12 +95,27 @@ export const UserBar = ({...props}: UserBarProps) => {
                         <MdOutlineShield className={"mb-0.5"}/>
                         {props.role}
                     </span>
-                        <button
-                            className={"text-black/32 cursor-pointer hover:bg-black/5 px-1.5 py-1 rounded-md text-xs" +
-                                " flex items-center duration-150"}
-                        >
-                            Add class
-                        </button>
+                        {membersClass === "unset"
+                            ?
+                            <>
+                                <button
+                                    onClick={() => props.setIsUpdateClassModalOpen(true)}
+                                    className={"text-black/32 cursor-pointer hover:bg-black/5 px-1.5 py-1 rounded-md text-xs" +
+                                        " flex items-center duration-150"}
+                                >
+                                    Add class
+                                </button>
+                            </>
+                            :
+                            <>
+                                <span
+                                    className={"py-1 px-2 rounded-md bg-pastel-purple-800 text-white text-sm flex items-center gap-0.5"}
+                                >
+                                    <MdStarOutline className={"mb-0.5"}/>
+                                    {props.class}
+                                </span>
+                            </>
+                        }
                     </div>
                     <div
                         className={"flex justify-start items-center gap-4"}>

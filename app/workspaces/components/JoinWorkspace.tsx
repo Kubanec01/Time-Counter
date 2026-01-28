@@ -65,10 +65,8 @@ export const JoinWorkspace = () => {
 
         const setStatesAndReplace = async () => {
             if (matchedWorkspace) {
-                console.log("matchedWorkspace updated")
                 await updateDoc(userRef, {workspacesList: updatedWorkspacesList})
             } else {
-                console.log("updated workspaces update")
                 await updateDoc(userRef, {workspacesList: arrayUnion(workspaceCredential)})
             }
             setMode("workspace")
@@ -87,7 +85,8 @@ export const JoinWorkspace = () => {
                 email: userMail,
                 name: userName,
                 surname: userSurname,
-                role: "Member"
+                role: "Member",
+                class: "unset"
             }
 
             await updateDoc(docRef, {members: arrayUnion(newMember)})

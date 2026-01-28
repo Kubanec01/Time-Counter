@@ -7,15 +7,15 @@
     --color-custom-gray-700: #919191;
     --color-custom-gray-600: #C7C7C7;
     --color-custom-dark-gray-800: #262626;
-    --color-pastel-purple-800: #8B7FCC;  /* jemne tmavá, sofistikovaná */
-    --color-pastel-purple-700: #A99DD9;  /* stredná, decentná */
-    --color-pastel-purple-600: #C2B6E6;  /* svetlá, elegantná */
-    --color-pastel-purple-500: #E0D8F4;  /* veľmi svetlá, jemný akcent */
-    --color-pastel-purple-400: #F5F2FB;  /* takmer biela, subtilný tón */
-    --color-pastel-blue-700: #7FA6C7;  /* stredne tmavý, jemný akcent */
-    --color-pastel-blue-600: #A1C1DA;  /* stredný, decentný odtieň */
-    --color-pastel-blue-500: #C4D9EB;  /* svetlá, jemná gradácia */
-    --color-pastel-blue-400: #E6F2F8;  /* veľmi svetlá, takmer biela */
+    --color-pastel-purple-800: #8B7FCC;
+    --color-pastel-purple-700: #A99DD9;
+    --color-pastel-purple-600: #C2B6E6;
+    --color-pastel-purple-500: #E0D8F4;
+    --color-pastel-purple-400: #F5F2FB;
+    --color-pastel-blue-700: #7FA6C7;
+    --color-pastel-blue-600: #A1C1DA;
+    --color-pastel-blue-500: #C4D9EB;
+    --color-pastel-blue-400: #E6F2F8;
     --color-pastel-green-800: #86C6B6;
     --color-pastel-green-700: #A8DED1;
     --color-pastel-green-600: #C2E9E0;
@@ -32,6 +32,7 @@
     .main-button {
         @apply bg-vibrant-purple-600 cursor-pointer border border-vibrant-purple-600;
     }
+
     .main-button:hover {
         @apply bg-gradient-to-t from-vibrant-purple-600 to-vibrant-purple-500;
     }
