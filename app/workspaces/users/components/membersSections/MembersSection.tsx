@@ -1,4 +1,4 @@
-import {Member, Role} from "@/types";
+import {Member, Role, UserClass} from "@/types";
 import {UserBar} from "@/app/workspaces/users/components/UserBar";
 import React, {useState} from "react";
 import {noUsersMess} from "@/app/workspaces/users/components/membersSections/noUsersMess";
@@ -8,9 +8,10 @@ import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {setUserRole} from "@/features/utilities/edit/setUSerRole";
 import ConfirmModal from "@/components/modals/ConfirmModal";
 import {useAuthState} from "react-firebase-hooks/auth";
-import {auth} from "@/app/firebase/config";
+import {auth, db} from "@/app/firebase/config";
 import InformativeModal from "@/components/modals/InformativeModal";
 import {UpdateUserClassModal} from "@/components/modals/UpdateUserClassModal";
+import {doc, getDoc, updateDoc} from "firebase/firestore";
 
 interface MembersSectionProps {
     members: Member[];
@@ -48,10 +49,6 @@ export const MembersSection = ({...props}: MembersSectionProps) => {
 
         setIsConfirmModalOpen(false)
         setUserRole(selectedUser.userId, workspaceId, newRole)
-    }
-
-    const updateUserRole = () => {
-
     }
 
     if (props.members.length === 0) return noUsersMess
@@ -103,7 +100,8 @@ export const MembersSection = ({...props}: MembersSectionProps) => {
             <UpdateUserClassModal
                 isModalOpen={isUpdateClassModalOpen}
                 setIsModalOpen={setIsUpdateClassModalOpen}
-                formFunction={updateUserRole}
+                selectedUser={selectedUser}
+                workspaceId={workspaceId}
             />
         </>
     )

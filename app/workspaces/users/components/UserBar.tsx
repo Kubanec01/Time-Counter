@@ -5,6 +5,7 @@ import {MdEmail, MdOutlineShield, MdStarOutline} from "react-icons/md";
 import {Dispatch, SetStateAction} from "react";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth} from "@/app/firebase/config";
+import {usersClasses} from "@/data/users";
 
 interface UserBarProps {
     userId: string;
@@ -28,6 +29,8 @@ export const UserBar = ({...props}: UserBarProps) => {
     const [user] = useAuthState(auth)
     const userId = user?.uid
 
+    const userClassTitle = usersClasses.find(c => c.id === props.class)?.name || ""
+
     const membersClass = props.class ? props.class : "unset"
 
     const buttons: { id: string, label: string, role: Role }[] = [
@@ -48,6 +51,7 @@ export const UserBar = ({...props}: UserBarProps) => {
         },
     ]
 
+    // setSelectedUser function
     const selectUser = () => {
         props.setSelectedUser({
             userId: props.userId,
@@ -99,7 +103,10 @@ export const UserBar = ({...props}: UserBarProps) => {
                             ?
                             <>
                                 <button
-                                    onClick={() => props.setIsUpdateClassModalOpen(true)}
+                                    onClick={() => {
+                                        selectUser()
+                                        props.setIsUpdateClassModalOpen(true)
+                                    }}
                                     className={"text-black/32 cursor-pointer hover:bg-black/5 px-1.5 py-1 rounded-md text-xs" +
                                         " flex items-center duration-150"}
                                 >
@@ -109,10 +116,14 @@ export const UserBar = ({...props}: UserBarProps) => {
                             :
                             <>
                                 <span
-                                    className={"py-1 px-2 rounded-md bg-pastel-purple-800 text-white text-sm flex items-center gap-0.5"}
+                                    onClick={() => {
+                                        selectUser()
+                                        props.setIsUpdateClassModalOpen(true)
+                                    }}
+                                    className={"py-1 px-2 rounded-md bg-pastel-purple-800 text-white text-sm flex items-center gap-0.5 cursor-pointer"}
                                 >
                                     <MdStarOutline className={"mb-0.5"}/>
-                                    {props.class}
+                                    {userClassTitle}
                                 </span>
                             </>
                         }

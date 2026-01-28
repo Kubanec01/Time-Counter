@@ -1,5 +1,5 @@
 import {RiBarChart2Fill, RiSettings3Fill} from "react-icons/ri";
-import {LoggingType, Project, ProjectOption, UserProjectOptions} from "@/types";
+import {LoggingType, Member, Project, ProjectOption, UserProjectOptions} from "@/types";
 import {MaxDateCalendarInput} from "@/features/utilities/date/MaxDateCalendarInput";
 import React, {FormEvent, useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
@@ -12,6 +12,7 @@ import {formatSecondsToTimeString} from "@/features/utilities/time/timeOperation
 import {createNewSection} from "@/features/utilities/create/createNewSection";
 import {updateTotalTrackedTime} from "@/features/utilities/edit/updateTotalTrackedTime";
 import {setProjectTotalTimeWithoutSectionId} from "@/features/utilities/time/totalTime";
+import {usersClasses} from "@/data/users";
 
 type CreateEntrySectionProps = {
     projectId: string;
@@ -70,13 +71,21 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
             if (!snap.exists()) return
 
             const data = snap.data()
-            const project = data.projects.find((project: Project) => project.projectId === props.projectId)
-            const customized = project.customizedUsersOptions ?? [];
-            const userOptions = customized.find((o: UserProjectOptions) => o.userId === userId);
-            const options = userOptions?.activeOptions ?? project.options;
+            const member: Member = data.members.find((m: Member) => m.userId === userId)
+            const memberClass = member.class
+            if (memberClass && memberClass !== "unset") {
+                const classes = usersClasses.find(c => c.id === memberClass)
+                if (classes) setOptions(classes.options)
+            } else {
 
-            if (!options) throw new Error("Failed fetch Options Data")
-            setOptions(options)
+                const project = data.projects.find((project: Project) => project.projectId === props.projectId)
+                const customized = project.customizedUsersOptions ?? [];
+                const userOptions = customized.find((o: UserProjectOptions) => o.userId === userId);
+                const options = userOptions?.activeOptions ?? project.options;
+
+                if (!options) throw new Error("Failed fetch Options Data")
+                setOptions(options)
+            }
         })
 
         return () => fetchOptions()

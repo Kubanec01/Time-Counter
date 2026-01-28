@@ -38,7 +38,7 @@ export const usersClasses: UsersClasses[] = [
         name: "Frontend",
         options: [
             {value: 'design', label: 'Design'},
-            {value: 'frontend-coding', label: 'Coding (Frontend)'},
+            {value: 'frontend-coding', label: 'Coding'},
             {value: 'testing', label: 'Testing'},
             {value: 'debug', label: 'Debug'},
         ],
