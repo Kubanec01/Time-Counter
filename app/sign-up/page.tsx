@@ -45,6 +45,7 @@ const SignUpPage = () => {
                     userId: resp.user.uid,
                     name: name,
                     surname: surname,
+                    hasCompletedOnboarding: false,
                 });
                 setEmail("");
                 setPassword("");

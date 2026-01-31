@@ -8,7 +8,6 @@ export const options = [
     {value: 'Banned', label: 'Banned'},
 ];
 
-
 export const projectTasksOptions: ProjectOption[] = [
     {value: 'research', label: 'Research'},
     {value: 'meeting', label: 'Meeting'},

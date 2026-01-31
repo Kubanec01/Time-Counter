@@ -10,6 +10,7 @@ import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {createNewLoggingProject} from "@/features/utilities/create/createNewLoggingProject";
 import WorkspacesPage from "@/app/workspaces/page";
 import {LoadingPage} from "@/components/LoadingPage";
+import {OnboardingModal} from "@/components/modals/OnboardingModal";
 
 export default function HomePage() {
 
@@ -50,6 +51,7 @@ export default function HomePage() {
 
     return (
         <>
+            <OnboardingModal/>
             {mode === "solo"
                 ?
                 <>
