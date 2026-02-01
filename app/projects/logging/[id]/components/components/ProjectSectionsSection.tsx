@@ -1,4 +1,4 @@
-import {addDays, subDays} from "date-fns";
+import {addDays, isAfter, isSameDay, subDays} from "date-fns";
 import {FaAngleLeft, FaAngleRight} from "react-icons/fa";
 import {MaxDateCalendarInput} from "@/features/utilities/date/MaxDateCalendarInput";
 import {SectionCart} from "@/app/projects/logging/[id]/components/components/SectionCart";
@@ -29,7 +29,8 @@ export const ProjectSectionsSection = ({...props}: ProjectSectionsSectionProps) 
 
     const isPlusButtonDisabled = () => {
         if (filteredDate === null) return true
-        else return (filteredDate.getDate() + 1) > currDate.getDate();
+
+        return isSameDay(filteredDate, currDate)
     }
 
 
