@@ -73,18 +73,20 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
             const data = snap.data()
             const member: Member = data.members.find((m: Member) => m.userId === userId)
             const memberClass = member.class
-            if (memberClass && memberClass !== "unset") {
+            const project = data.projects.find((project: Project) => project.projectId === props.projectId)
+            const customized = project.customizedUsersOptions ?? [];
+            const userOptions = customized.find((o: UserProjectOptions) => o.userId === userId);
+
+            if (userOptions) {
+                setOptions(userOptions.activeOptions)
+                console.log("users custom is fetched")
+            } else if (memberClass && memberClass !== "unset") {
                 const classes = usersClasses.find(c => c.id === memberClass)
                 if (classes) setOptions(classes.options)
+                console.log("users class is fetched")
             } else {
-
-                const project = data.projects.find((project: Project) => project.projectId === props.projectId)
-                const customized = project.customizedUsersOptions ?? [];
-                const userOptions = customized.find((o: UserProjectOptions) => o.userId === userId);
-                const options = userOptions?.activeOptions ?? project.options;
-
-                if (!options) throw new Error("Failed fetch Options Data")
-                setOptions(options)
+                setOptions(project.options)
+                console.log("general is fetched")
             }
         })
 
