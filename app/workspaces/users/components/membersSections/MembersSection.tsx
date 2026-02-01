@@ -10,7 +10,7 @@ import ConfirmModal from "@/components/modals/ConfirmModal";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth, db} from "@/app/firebase/config";
 import InformativeModal from "@/components/modals/InformativeModal";
-import {UpdateUserClassModal} from "@/components/modals/UpdateUserClassModal";
+import {UpdateUserClassModal} from "@/components/modals/updateUserClassModal/UpdateUserClassModal";
 import {doc, getDoc, updateDoc} from "firebase/firestore";
 
 interface MembersSectionProps {

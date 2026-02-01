@@ -28,6 +28,7 @@ export const LineChart = ({...props}: LineChartProps) => {
                 type: 'bar',
                 data: props.yAxisData,
                 barWidth: '40%',
+                color: '#6C47FF',
             },
         ],
     }

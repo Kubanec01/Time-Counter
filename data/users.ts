@@ -25,7 +25,7 @@ export const projectTasksOptions: ProjectOption[] = [
     {value: 'break', label: 'Break / Rest'},
 ];
 
-interface UsersClasses {
+export interface UsersClasses {
     id: string,
     name: string,
     options: ProjectOption[],

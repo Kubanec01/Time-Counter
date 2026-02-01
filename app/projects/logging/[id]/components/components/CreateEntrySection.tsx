@@ -12,7 +12,7 @@ import {formatSecondsToTimeString} from "@/features/utilities/time/timeOperation
 import {createNewSection} from "@/features/utilities/create/createNewSection";
 import {updateTotalTrackedTime} from "@/features/utilities/edit/updateTotalTrackedTime";
 import {setProjectTotalTimeWithoutSectionId} from "@/features/utilities/time/totalTime";
-import {usersClasses} from "@/data/users";
+import {UsersClasses, usersClasses} from "@/data/users";
 
 type CreateEntrySectionProps = {
     projectId: string;
@@ -73,20 +73,19 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
             const data = snap.data()
             const member: Member = data.members.find((m: Member) => m.userId === userId)
             const memberClass = member.class
+            const usersClasses: UsersClasses[] = data.userClasses
             const project = data.projects.find((project: Project) => project.projectId === props.projectId)
             const customized = project.customizedUsersOptions ?? [];
             const userOptions = customized.find((o: UserProjectOptions) => o.userId === userId);
 
+
             if (userOptions) {
                 setOptions(userOptions.activeOptions)
-                console.log("users custom is fetched")
             } else if (memberClass && memberClass !== "unset") {
-                const classes = usersClasses.find(c => c.id === memberClass)
+                const classes = usersClasses.find(i => i.id === memberClass)
                 if (classes) setOptions(classes.options)
-                console.log("users class is fetched")
             } else {
                 setOptions(project.options)
-                console.log("general is fetched")
             }
         })
 

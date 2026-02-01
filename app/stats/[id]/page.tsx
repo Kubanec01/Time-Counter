@@ -28,15 +28,33 @@ export default function StatsHome() {
     const [totalTrackedWeekTimes, setTotalTrackedWeekTimes] = useState<number[]>([]);
     const [totalTrackedMonthTimes, setTotalTrackedMonthTimes] = useState<number[]>([]);
     const [totalTrackedYearTimes, setTotalTrackedYearTimes] = useState<number[]>([]);
+    const [chartStats, setChartStats] = useState<string[]>(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']);
+    const [currData, setCurrData] = useState<number[]>([]);
+    const [activeBtnId, setActiveBtnId] = useState<string>("week");
 
     // Data
-    const daysData = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    const monthsData = getCurrentMonthDays.map(d => format(d, "dd"))
-    const yearData: string[] = getCurrentYearMonths.map(d => format(d, "M"))
+    const chartData: { id: string, title: string, data: number[], stats: string[] }[] = [
+        {
+            id: "week",
+            title: "Days",
+            stats: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            data: totalTrackedWeekTimes
+        },
+        {
+            id: "month",
+            title: "Month",
+            stats: getCurrentMonthDays.map(d => format(d, "dd")),
+            data: totalTrackedMonthTimes
+        },
+        {
+            id: "year",
+            title: "Year",
+            stats: getCurrentYearMonths.map(d => format(d, "M")),
+            data: totalTrackedYearTimes
+        },
+    ]
 
-    const {mode, workspaceId} = useWorkSpaceContext()
-    const [user] = useAuthState(auth)
-    const userId = user?.uid
+    const {mode, workspaceId, userId} = useWorkSpaceContext()
     const params = useParams()
     const projectId = params.id
 
@@ -78,6 +96,7 @@ export default function StatsHome() {
             })
 
             setTotalTrackedWeekTimes(weekResult)
+            setCurrData(weekResult)
             setTotalTrackedMonthTimes(monthResult)
             setTotalTrackedYearTimes(yearResults)
         }
@@ -100,60 +119,36 @@ export default function StatsHome() {
                 <div
                     className={"h-full flex-1 text-xl pt-8"}>
                     <h1 className={"font-semibold"}>
-                        This are stats for the last week.
+                        This are stats for this project.
                     </h1>
                     <p
                         className={"text-base w-[70%] mt-1"}>
-                        Here you can see how many total hours you tracked in the project over the past week.
+                        Here you can see how many total hours you tracked in the project.
                     </p>
+                    <div
+                        className={"flex gap-2 py-4"}>
+                        {chartData.map(i => (
+                            <button
+                                onClick={() => {
+                                    setActiveBtnId(i.id)
+                                    setCurrData(i.data)
+                                    setChartStats(i.stats)
+                                }}
+                                key={i.id}
+                                className={`${activeBtnId === i.id ? "bg-vibrant-purple-600 text-white" : "bg-transparent text-vibrant-purple-600 font-semibold"}
+                                text-sm border border-vibrant-purple-600 px-3 py-1 rounded-full cursor-pointer`}
+                            >
+                                {i.title}
+                            </button>
+                        ))}
+                    </div>
                 </div>
                 <div
                     className={"w-[60%] h-full flex justify-end items-center"}>
                     <LineChart
                         yAxisTitle={'Hours'}
-                        yAxisData={totalTrackedWeekTimes}
-                        xAxisData={daysData}
-                    />
-                </div>
-            </StatsSectionBody>
-            {/*Monthly Times*/}
-            <StatsSectionBody>
-                <div
-                    className={"h-full flex-1 text-xl pt-8"}>
-                    <h1 className={"font-semibold"}>
-                        This are stats for the last month.
-                    </h1>
-                    <p
-                        className={"text-base w-[70%] mt-1"}>
-                        Here you can see how many total hours you tracked in the project over the past month.
-                    </p>
-                </div>
-                <div
-                    className={"w-[60%] h-full flex justify-end items-center"}>
-                    <LineChart
-                        yAxisTitle={'Hours'}
-                        yAxisData={totalTrackedMonthTimes}
-                        xAxisData={monthsData}
-                    />
-                </div>
-            </StatsSectionBody>
-            <StatsSectionBody>
-                <div
-                    className={"h-full flex-1 text-xl pt-8"}>
-                    <h1 className={"font-semibold"}>
-                        This are stats for the last year.
-                    </h1>
-                    <p
-                        className={"text-base w-[70%] mt-1"}>
-                        Here you can see how many total hours you tracked in the project over the past year.
-                    </p>
-                </div>
-                <div
-                    className={"w-[60%] h-full flex justify-end items-center"}>
-                    <LineChart
-                        yAxisTitle={'Hours'}
-                        yAxisData={totalTrackedYearTimes}
-                        xAxisData={yearData}
+                        yAxisData={currData}
+                        xAxisData={chartStats}
                     />
                 </div>
             </StatsSectionBody>

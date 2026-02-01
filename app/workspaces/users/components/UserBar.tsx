@@ -1,11 +1,14 @@
+'use client'
+
 import {Member, Role, UserClass} from "@/types";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {FaCircleUser} from "react-icons/fa6";
 import {MdEmail, MdOutlineShield, MdStarOutline} from "react-icons/md";
-import {Dispatch, SetStateAction} from "react";
+import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {useAuthState} from "react-firebase-hooks/auth";
-import {auth} from "@/app/firebase/config";
-import {usersClasses} from "@/data/users";
+import {auth, db} from "@/app/firebase/config";
+import {UsersClasses, usersClasses} from "@/data/users";
+import {doc, getDoc} from "firebase/firestore";
 
 interface UserBarProps {
     userId: string;
@@ -25,11 +28,9 @@ interface UserBarProps {
 
 export const UserBar = ({...props}: UserBarProps) => {
 
-    const {userRole} = useWorkSpaceContext()
-    const [user] = useAuthState(auth)
-    const userId = user?.uid
+    const [userClass, setUserClass] = useState<string>("")
 
-    const userClassTitle = usersClasses.find(c => c.id === props.class)?.name || ""
+    const {userRole, workspaceId} = useWorkSpaceContext()
 
     const membersClass = props.class ? props.class : "unset"
 
@@ -69,6 +70,19 @@ export const UserBar = ({...props}: UserBarProps) => {
         props.setIsConfirmModalOpen(true)
     }
 
+    useEffect(() => {
+
+        const fetchData = async () => {
+            const docRef = doc(db, "realms", workspaceId)
+            const docSnap = await getDoc(docRef)
+            if (!docSnap.exists()) return
+            const data = docSnap.data()
+            const usersClassName: UsersClasses = data.userClasses.find((c: UsersClasses) => c.id === props.class) || []
+            setUserClass(usersClassName.name)
+        }
+        fetchData()
+    }, [props.class, workspaceId])
+
     return (
         <>
             <li
@@ -80,7 +94,7 @@ export const UserBar = ({...props}: UserBarProps) => {
                         className={"flex items-center gap-1 font-semibold"}>
                         <FaCircleUser className={"text-sm text-black/60"}/>
                     <h1>{props.name} {props.surname}</h1>
-                        <span className={"text-sm text-black/50"}>{props.userId === userId && "(You)"}</span>
+                        <span className={"text-sm text-black/50"}>{props.userId === props.userId && "(You)"}</span>
                     </span>
                     <span
                         className={"flex items-center gap-1"}>
@@ -123,14 +137,14 @@ export const UserBar = ({...props}: UserBarProps) => {
                                     className={"py-1 px-2 rounded-md bg-pastel-purple-800 text-white text-sm flex items-center gap-0.5 cursor-pointer"}
                                 >
                                     <MdStarOutline className={"mb-0.5"}/>
-                                    {userClassTitle}
+                                    {userClass}
                                 </span>
                             </>
                         }
                     </div>
                     <div
                         className={"flex justify-start items-center gap-4"}>
-                        {props.userId !== userId &&
+                        {props.userId !== props.userId &&
                             <>
                                 {buttons.map((btn) => (
                                     <button
