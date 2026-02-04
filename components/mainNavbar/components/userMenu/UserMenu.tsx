@@ -4,7 +4,7 @@ import userBgImg from "@/public/gradient-bg.jpg";
 import {
     MdDeleteOutline,
     MdExitToApp,
-    MdOutlineSettings,
+    MdOutlineSettings, MdPeopleAlt,
 } from "react-icons/md";
 import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {auth, db} from "@/app/firebase/config";
@@ -165,6 +165,15 @@ export const UserMenu = ({...props}: Props) => {
                         onClick={() => router.push("/workspaces/settings")}
                         className={"items-center w-full px-3 py-2.5 gap-1 text-white/98 text-xs border-b border-white/20 hover:bg-white/5 cursor-pointer"}>
                         <MdOutlineSettings className={"text-sm"}/> Manage workspace
+                    </button>
+                    {/* Member btn */}
+                    <button
+                        style={{
+                            display: mode === "solo" || userRole !== "Member" ? "none" : "flex",
+                        }}
+                        onClick={() => router.push("/workspaces/users")}
+                        className={"items-center w-full px-3 py-2.5 gap-1 text-white/98 text-xs border-b border-white/20 hover:bg-white/5 cursor-pointer"}>
+                        <MdPeopleAlt  className={"text-sm"}/> Workspace users
                     </button>
                     <button
                         onClick={() => setIsLeaveWorkspaceModalOpen(true)}

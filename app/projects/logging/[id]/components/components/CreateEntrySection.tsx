@@ -12,7 +12,7 @@ import {formatSecondsToTimeString} from "@/features/utilities/time/timeOperation
 import {createNewSection} from "@/features/utilities/create/createNewSection";
 import {updateTotalTrackedTime} from "@/features/utilities/edit/updateTotalTrackedTime";
 import {setProjectTotalTimeWithoutSectionId} from "@/features/utilities/time/totalTime";
-import {UsersClasses, usersClasses} from "@/data/users";
+import {UsersClasses} from "@/data/users";
 
 type CreateEntrySectionProps = {
     projectId: string;
@@ -165,7 +165,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                         <input
                             id="time"
                             min={0.25}
-                            max={900}
+                            max={24}
                             step={0.25}
                             value={timeInputValue}
                             onChange={(e) => setTimeInputValue(e.target.value)}

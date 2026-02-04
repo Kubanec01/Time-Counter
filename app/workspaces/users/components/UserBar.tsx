@@ -5,9 +5,8 @@ import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {FaCircleUser} from "react-icons/fa6";
 import {MdEmail, MdOutlineShield, MdStarOutline} from "react-icons/md";
 import {Dispatch, SetStateAction, useEffect, useState} from "react";
-import {useAuthState} from "react-firebase-hooks/auth";
-import {auth, db} from "@/app/firebase/config";
-import {UsersClasses, usersClasses} from "@/data/users";
+import {db} from "@/app/firebase/config";
+import {UsersClasses} from "@/data/users";
 import {doc, getDoc} from "firebase/firestore";
 
 interface UserBarProps {
@@ -30,7 +29,7 @@ export const UserBar = ({...props}: UserBarProps) => {
 
     const [userClass, setUserClass] = useState<string>("")
 
-    const {userRole, workspaceId} = useWorkSpaceContext()
+    const {userRole, workspaceId, userId} = useWorkSpaceContext()
 
     const membersClass = props.class ? props.class : "unset"
 
@@ -94,7 +93,7 @@ export const UserBar = ({...props}: UserBarProps) => {
                         className={"flex items-center gap-1 font-semibold"}>
                         <FaCircleUser className={"text-sm text-black/60"}/>
                     <h1>{props.name} {props.surname}</h1>
-                        <span className={"text-sm text-black/50"}>{props.userId === props.userId && "(You)"}</span>
+                        <span className={"text-sm text-black/50"}>{props.userId === userId && "(You)"}</span>
                     </span>
                     <span
                         className={"flex items-center gap-1"}>
@@ -113,22 +112,24 @@ export const UserBar = ({...props}: UserBarProps) => {
                         <MdOutlineShield className={"mb-0.5"}/>
                         {props.role}
                     </span>
-                        {membersClass === "unset"
-                            ?
+                        {userRole !== "Member" &&
                             <>
-                                <button
-                                    onClick={() => {
-                                        selectUser()
-                                        props.setIsUpdateClassModalOpen(true)
-                                    }}
-                                    className={"text-black/32 cursor-pointer hover:bg-black/5 px-1.5 py-1 rounded-md text-xs" +
-                                        " flex items-center duration-150"}
-                                >
-                                    Add class
-                                </button>
-                            </>
-                            :
-                            <>
+                                {membersClass === "unset"
+                                    ?
+                                    <>
+                                        <button
+                                            onClick={() => {
+                                                selectUser()
+                                                props.setIsUpdateClassModalOpen(true)
+                                            }}
+                                            className={"text-black/32 cursor-pointer hover:bg-black/5 px-1.5 py-1 rounded-md text-xs" +
+                                                " flex items-center duration-150"}
+                                        >
+                                            Add class
+                                        </button>
+                                    </>
+                                    :
+                                    <>
                                 <span
                                     onClick={() => {
                                         selectUser()
@@ -139,18 +140,20 @@ export const UserBar = ({...props}: UserBarProps) => {
                                     <MdStarOutline className={"mb-0.5"}/>
                                     {userClass}
                                 </span>
+                                    </>
+                                }
                             </>
                         }
                     </div>
                     <div
                         className={"flex justify-start items-center gap-4"}>
-                        {props.userId !== props.userId &&
+                        {props.userId !== userId &&
                             <>
                                 {buttons.map((btn) => (
                                     <button
                                         key={btn.id}
                                         onClick={() => setRole(btn.role)}
-                                        className={`${userRole === "Manager" && btn.role === "Admin"
+                                        className={`${(userRole === "Manager" && btn.role === "Admin") || (userRole !== "Admin" && props.role === "Admin" || userRole === "Member")
                                             ? "hidden" : "block"}
                                              px-3 py-2 cursor-pointer text-xs text-white 
                                         bg-black hover:bg-linear-to-b from-vibrant-purple-600 to-vibrant-purple-700 duration-100 ease-in rounded-md`}>
@@ -160,6 +163,10 @@ export const UserBar = ({...props}: UserBarProps) => {
                             </>
                         }
                         <button
+                            style={{
+                                display: userRole === "Admin" || (userId === props.userId && userRole !== "Member")
+                                    ? "block" : "none"
+                            }}
                             onClick={() => {
                                 props.setIsDeleteUserModalOpen(true)
                                 selectUser()

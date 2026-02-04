@@ -4,11 +4,13 @@ import {FaUnlockKeyhole, FaUsersLine} from "react-icons/fa6";
 import {FaProjectDiagram, FaTrashAlt} from "react-icons/fa";
 import {useRouter} from "next/navigation";
 import {BackButton} from "@/app/workspaces/settings/components/BackButton";
+import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 
 
 const WorkspaceSettingsHome = () => {
 
     const router = useRouter();
+    const {userRole} = useWorkSpaceContext()
 
     const workspaceSettingsData = [
         {
@@ -54,10 +56,14 @@ const WorkspaceSettingsHome = () => {
                 >
                     {workspaceSettingsData.map((item) => (
                         <li
+                            style={{
+                                display: ((item.id === "delete-workspace" || item.id === "name-and-password") && userRole !== "Admin")
+                                    ? "none" : "flex"
+                            }}
                             onClick={() => router.push(item.url)}
                             key={item.id}
                             className={"text-white/80 text-lg font-medium px-2 py-2.5 border border-white/50 rounded-xl " +
-                                "flex items-center justify-start gap-2.5 cursor-pointer hover:border-white/80 duration-100"}>
+                                " items-center justify-start gap-2.5 cursor-pointer hover:border-white/80 duration-100"}>
                             <span className={"text-xl"}>
                                 {item.icon}
                             </span>

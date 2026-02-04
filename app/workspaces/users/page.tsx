@@ -69,13 +69,8 @@ const UsersHomePage = () => {
             setAdmins(members.filter(m => m.role === "Admin"))
 
             setBannedMembers(bannedMembers)
-            if (userRole === "Admin") {
-                setMembers(members)
-                setMem(members)
-            } else {
-                setMembers(members.filter((member: Member) => member.role !== "Admin"))
-                setMem(members.filter((member: Member) => member.role !== "Admin"))
-            }
+            setMembers(members)
+            setMem(members)
         })
 
         return () => getWorkspaceUsers()
