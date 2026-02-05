@@ -13,6 +13,9 @@ import {createNewSection} from "@/features/utilities/create/createNewSection";
 import {updateTotalTrackedTime} from "@/features/utilities/edit/updateTotalTrackedTime";
 import {setProjectTotalTimeWithoutSectionId} from "@/features/utilities/time/totalTime";
 import {UsersClasses} from "@/data/users";
+import {updateUserProjectTimeData} from "@/features/utilities/create/updateUserProjectTimeData";
+import {formateDateToDMY} from "@/features/utilities/date/formateDates";
+import InformativeModal from "@/components/modals/InformativeModal";
 
 type CreateEntrySectionProps = {
     projectId: string;
@@ -31,6 +34,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
     const [nameValue, setNameValue] = useState("");
     const [timeInputValue, setTimeInputValue] = useState("0.25");
     const [selectedDate, setSelectedDate] = useState<Date | null>(currDate);
+    const [isMaxTimeModalOpen, setIsMaxTimeModalOpen] = useState(false);
 
     const router = useRouter();
 
@@ -47,6 +51,15 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
         const newTaskType = taskType === "custom" ? customType : taskType
 
         const userFullName = `${userName} ${userSurname}`
+
+        const canContinue = await updateUserProjectTimeData(userId, workspaceId, props.projectId, formateDateToDMY(selectedDate), timeInputValue)
+        if (canContinue === false) {
+            setIsMaxTimeModalOpen(true);
+            setNameValue("")
+            setTaskType(null)
+            setTimeInputValue("0.25")
+            return
+        }
 
         await createNewSection(userId, userFullName, props.projectId, nameValue, time, selectedDate, setNameValue, setIsInfoModalOpen, newTaskType, mode, workspaceId)
         await updateTotalTrackedTime(userId, props.projectId, selectedDate, time, mode, workspaceId)
@@ -202,6 +215,8 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                     Create entry
                 </button>
             </form>
+            <InformativeModal setIsModalOpen={setIsMaxTimeModalOpen} isModalOpen={isMaxTimeModalOpen}
+                              title={"You can't track more than 24 hours a day."}/>
         </section>
     )
 }

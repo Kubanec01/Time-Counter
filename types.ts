@@ -50,12 +50,20 @@ export type TotalTrackedTime = {
     time: string;
 }
 
+export type MemberTime = {
+    daily: Record<string, number>
+    total: number
+}
+
+export type UserIndividualTimes = Record<string, MemberTime>
+
 export interface Project {
     projectId: string;
     title: string;
     totalTime: string;
     type: ProjectType
     totalTrackedTimes: TotalTrackedTime[];
+    membersIndividualTimes: UserIndividualTimes
 }
 
 export interface SectionCartProps {

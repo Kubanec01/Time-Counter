@@ -28,6 +28,7 @@ export const createNewLoggingProject = async (
             totalTime: "00:00:00",
             type: typeOfProject,
             totalTrackedTimes: [],
+            membersIndividualTimes: {},
             options: projectTasksOptions,
         };
 
