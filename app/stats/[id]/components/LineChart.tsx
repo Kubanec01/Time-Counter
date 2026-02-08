@@ -2,7 +2,7 @@
 
 import ReactECharts from 'echarts-for-react'
 
-interface LineChartProps {
+type LineChartProps = {
     yAxisData: number[],
     yAxisTitle: string,
     xAxisData: string[] | number[],

@@ -14,7 +14,7 @@ const currDate = new Date()
 
 export const getThisWeekTrackedDates = (trackedTimes: TotalTrackedTime[]) => {
 
-    return trackedTimes.filter(t => isThisWeek(t.date, {weekStartsOn: 0}))
+    return trackedTimes.filter(t => isThisWeek(t.date, {weekStartsOn: 1}))
 }
 
 export function getThisMonthTrackedDates(trackedTimes: TotalTrackedTime[]) {

@@ -1,16 +1,12 @@
 'use client'
 
-
 import {useParams} from "next/navigation";
-import {LineChart} from "@/app/stats/[id]/components/LineChart";
 import {useEffect, useState} from "react";
-import {Project} from "@/types";
+import {Member, Project} from "@/types";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
-import {useAuthState} from "react-firebase-hooks/auth";
-import {auth} from "@/app/firebase/config";
 import {getDoc} from "firebase/firestore";
-import {format, secondsToHours} from "date-fns";
+import {format} from "date-fns";
 import {
     getCurrentMonthDays,
     getCurrentWeekDays,
@@ -19,40 +15,18 @@ import {
     getThisWeekTrackedDates, getThisYearTrackedDates,
     timeFormatToHours
 } from "@/app/stats/[id]/utils";
-import {StatsSectionBody} from "@/app/stats/[id]/components/StatsSectionBody";
 import {formateDateToYMD} from "@/features/utilities/date/formateDates";
-import {parseTimeStringToSeconds} from "@/features/utilities/time/timeOperations";
+import {FullTrackedTimeChart} from "@/app/stats/[id]/components/chartsSections/FullTrackedTimeChart";
+import {EveryUserTotalTimePieChart} from "@/app/stats/[id]/components/chartsSections/EveryUserTotalTimePieChart";
+import {ProjectTimeProgres} from "@/app/stats/[id]/components/chartsSections/ProjectTimeProgres";
 
 export default function StatsHome() {
 
     const [totalTrackedWeekTimes, setTotalTrackedWeekTimes] = useState<number[]>([]);
     const [totalTrackedMonthTimes, setTotalTrackedMonthTimes] = useState<number[]>([]);
     const [totalTrackedYearTimes, setTotalTrackedYearTimes] = useState<number[]>([]);
-    const [chartStats, setChartStats] = useState<string[]>(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']);
-    const [currData, setCurrData] = useState<number[]>([]);
-    const [activeBtnId, setActiveBtnId] = useState<string>("week");
+    const [membersStats, setMembersStats] = useState<{ value: number, name: string }[]>([]);
 
-    // Data
-    const chartData: { id: string, title: string, data: number[], stats: string[] }[] = [
-        {
-            id: "week",
-            title: "Days",
-            stats: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-            data: totalTrackedWeekTimes
-        },
-        {
-            id: "month",
-            title: "Month",
-            stats: getCurrentMonthDays.map(d => format(d, "dd")),
-            data: totalTrackedMonthTimes
-        },
-        {
-            id: "year",
-            title: "Year",
-            stats: getCurrentYearMonths.map(d => format(d, "M")),
-            data: totalTrackedYearTimes
-        },
-    ]
 
     const {mode, workspaceId, userId} = useWorkSpaceContext()
     const params = useParams()
@@ -88,17 +62,32 @@ export default function StatsHome() {
             })
 
             const yearResults = getCurrentYearMonths.map(d => {
-                let seconds = 0
+                let hours = 0
                 const date = format(d, "MM")
                 const items = thisYearData.filter(i => format(i.date, "MM") === date)
-                items.forEach(i => seconds = seconds + parseTimeStringToSeconds(i.time))
-                return secondsToHours(seconds)
+                items.forEach(i => hours += timeFormatToHours(i.time))
+                return hours
             })
 
             setTotalTrackedWeekTimes(weekResult)
-            setCurrData(weekResult)
             setTotalTrackedMonthTimes(monthResult)
             setTotalTrackedYearTimes(yearResults)
+
+            const members: Member[] = data.members
+            const membersIndividualTimes = project.membersIndividualTimes
+
+            const membersStates: {
+                value: number,
+                name: string
+            }[] = members.filter(m => membersIndividualTimes[m.userId] !== undefined).map((m: Member) => {
+
+                return {
+                    value: membersIndividualTimes[m.userId].total,
+                    name: `${m.name} ${m.surname}`,
+                }
+            })
+
+            setMembersStats(membersStates)
         }
 
         fetchData()
@@ -115,43 +104,17 @@ export default function StatsHome() {
                 </h1>
             </section>
             {/*Weekly Times*/}
-            <StatsSectionBody>
-                <div
-                    className={"h-full flex-1 text-xl pt-8"}>
-                    <h1 className={"font-semibold"}>
-                        This are stats for this project.
-                    </h1>
-                    <p
-                        className={"text-base w-[70%] mt-1"}>
-                        Here you can see how many total hours you tracked in the project.
-                    </p>
-                    <div
-                        className={"flex gap-2 py-4"}>
-                        {chartData.map(i => (
-                            <button
-                                onClick={() => {
-                                    setActiveBtnId(i.id)
-                                    setCurrData(i.data)
-                                    setChartStats(i.stats)
-                                }}
-                                key={i.id}
-                                className={`${activeBtnId === i.id ? "bg-vibrant-purple-600 text-white" : "bg-transparent text-vibrant-purple-600 font-semibold"}
-                                text-sm border border-vibrant-purple-600 px-3 py-1 rounded-full cursor-pointer`}
-                            >
-                                {i.title}
-                            </button>
-                        ))}
-                    </div>
-                </div>
-                <div
-                    className={"w-[60%] h-full flex justify-end items-center"}>
-                    <LineChart
-                        yAxisTitle={'Hours'}
-                        yAxisData={currData}
-                        xAxisData={chartStats}
-                    />
-                </div>
-            </StatsSectionBody>
+            <FullTrackedTimeChart
+                totalTrackedWeekTimes={totalTrackedWeekTimes}
+                totalTrackedMonthTimes={totalTrackedMonthTimes}
+                totalTrackedYearTimes={totalTrackedYearTimes}
+            />
+            <EveryUserTotalTimePieChart
+                membersStats={membersStats}
+            />
+            <ProjectTimeProgres
+                totalTrackedYearTimes={totalTrackedYearTimes}
+            />
         </>
     )
 }
