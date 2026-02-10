@@ -1,26 +1,25 @@
-import React from "react";
-import {LoggingType, Project, TotalTrackedTime, UserMode, WorkspaceId} from "@/types";
-import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
+import {Project, TotalTrackedTime, WorkspaceId} from "@/types";
 import {doc, getDoc, updateDoc} from "firebase/firestore";
 import {formatSecondsToTimeString, parseTimeStringToSeconds} from "@/features/utilities/time/timeOperations";
+import {formateDateToYMD} from "@/features/utilities/date/formateDates";
+import {db} from "@/app/firebase/config";
 
 
 export const updateTotalTrackedTime = async (
     userId: string | undefined,
     projectId: string,
-    date: Date | null,
-    time: string,
-    mode: UserMode,
+    date: string | null,
+    seconds: number,
     workspaceId: WorkspaceId,
+    changes: "increase" | "decrease",
 ) => {
 
     if (!userId) return;
 
     // Curr Date Variable
-    if (date === null) date = new Date();
-    const currDate: string = date.toISOString().slice(0, 10);
+    if (date === null) date = formateDateToYMD(new Date())
 
-    const docRef = getFirestoreTargetRef(userId, mode, workspaceId);
+    const docRef = doc(db, "realms", workspaceId);
     const docSnap = await getDoc(docRef)
     if (!docSnap.exists()) return;
 
@@ -34,18 +33,19 @@ export const updateTotalTrackedTime = async (
     const trackedTimes = project.totalTrackedTimes ?? []
 
     const existingTrackedTime = trackedTimes.find(
-        t => t.date === currDate
+        t => t.date === date
     )
 
     let updatedTrackedTimes: TotalTrackedTime[]
 
     if (existingTrackedTime) {
         updatedTrackedTimes = trackedTimes.map(t => {
-            if (t.date !== currDate) return t
+            if (t.date !== date) return t
 
-            const updatedTime =
-                parseTimeStringToSeconds(t.time) +
-                parseTimeStringToSeconds(time)
+            let updatedTime = 0
+
+            if (changes === "increase") updatedTime = parseTimeStringToSeconds(t.time) + seconds
+            else if (changes === "decrease") updatedTime = parseTimeStringToSeconds(t.time) - seconds
 
             return {
                 ...t,
@@ -55,7 +55,7 @@ export const updateTotalTrackedTime = async (
     } else {
         updatedTrackedTimes = [
             ...trackedTimes,
-            {date: currDate, time},
+            {date: date, time: formatSecondsToTimeString(seconds)},
         ]
     }
 

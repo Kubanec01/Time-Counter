@@ -10,6 +10,7 @@ import {auth} from "@/app/firebase/config";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import DeleteModal from "@/components/modals/DeleteModal";
 import {HiMiniUserCircle} from "react-icons/hi2";
+import {timeFormatToHours} from "@/app/stats/[id]/utils";
 
 
 export const SectionCart = ({...props}: Section) => {
@@ -75,7 +76,7 @@ export const SectionCart = ({...props}: Section) => {
                 isModalOpen={isDeleteModalOpen}
                 title={"Delete track?"}
                 desc={"Are you sure you want to delete this track? This step is irreversible and everything stored in this track will be deleted."}
-                btnFunction={() => deleteAllSectionData(userId, props.projectId, props.sectionId, mode, workspaceId)}
+                btnFunction={() => deleteAllSectionData(userId, props.projectId, props.sectionId, mode, workspaceId, props.updateDate, String(timeFormatToHours(props.time)))}
                 deleteBtnText={"Delete track"}
                 topDistance={400}
             />

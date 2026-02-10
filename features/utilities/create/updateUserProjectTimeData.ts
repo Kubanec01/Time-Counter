@@ -9,6 +9,7 @@ export const updateUserProjectTimeData = async (
     projectId: string,
     date: string,
     hours: string,
+    changes: "increase" | "decrease"
 ) => {
     if (!userId) return
 
@@ -37,8 +38,13 @@ export const updateUserProjectTimeData = async (
             total: time
         }
     } else {
-        membersData[userId].daily[date] = (membersData[userId].daily[date] ?? 0) + time
-        membersData[userId].total += time
+        if (changes === "increase") {
+            membersData[userId].daily[date] += time
+            membersData[userId].total += time
+        } else {
+            membersData[userId].daily[date] -= time
+            membersData[userId].total -= time
+        }
     }
 
     const updatedProjects = projects.map((p: Project) => {

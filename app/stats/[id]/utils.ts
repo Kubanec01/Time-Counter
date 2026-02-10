@@ -48,3 +48,5 @@ export function timeFormatToHours(time: string) {
     const [h, m, s] = time.split(":").map(Number)
     return h + m / 60 + s / 3600
 }
+
+export const formatFloatHoursToSeconds = (hours: number) => hours * 60 * 60

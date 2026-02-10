@@ -3,6 +3,9 @@ import {Section, TimeCheckout, UpdatedSectionByDate, UserMode, WorkspaceId} from
 import {subtractProjectTotalTime} from "@/features/utilities/time/totalTime";
 import {sectionNotFound} from "@/messages/errors";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
+import {updateUserProjectTimeData} from "@/features/utilities/create/updateUserProjectTimeData";
+import {updateTotalTrackedTime} from "@/features/utilities/edit/updateTotalTrackedTime";
+import {formatFloatHoursToSeconds} from "@/app/stats/[id]/utils";
 
 
 export const deleteAllSectionData = async (
@@ -10,8 +13,11 @@ export const deleteAllSectionData = async (
     projectId: string,
     sectionId: string,
     mode: UserMode,
-    workspaceId: WorkspaceId,) => {
-    if (!userId || !projectId) return;
+    workspaceId: WorkspaceId,
+    date: string | undefined,
+    hours: string,
+) => {
+    if (!userId || !projectId || !date) return;
 
     const userRef = getFirestoreTargetRef(userId, mode, workspaceId);
     const userSnap = await getDoc(userRef);
@@ -25,6 +31,7 @@ export const deleteAllSectionData = async (
     const section = sections.find(s => s.sectionId === sectionId)
     if (!section) throw new Error(sectionNotFound);
 
+
     const sectionTime = section.time
 
     const updatedSections = sections.filter(
@@ -37,6 +44,8 @@ export const deleteAllSectionData = async (
 
     const updatedSectionsByDates = sectionsByDates.filter((s: UpdatedSectionByDate) => s.sectionId !== sectionId);
 
+    await updateUserProjectTimeData(userId, workspaceId, projectId, date, hours, "decrease")
+    await updateTotalTrackedTime(userId, projectId, date, formatFloatHoursToSeconds(Number(hours)), workspaceId, "decrease")
 
     await updateDoc(userRef, {
         projectsSections: updatedSections,

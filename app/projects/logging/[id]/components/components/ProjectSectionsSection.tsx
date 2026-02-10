@@ -1,4 +1,4 @@
-import {addDays, isAfter, isSameDay, subDays} from "date-fns";
+import {addDays, isSameDay, subDays} from "date-fns";
 import {FaAngleLeft, FaAngleRight} from "react-icons/fa";
 import {MaxDateCalendarInput} from "@/features/utilities/date/MaxDateCalendarInput";
 import {SectionCart} from "@/app/projects/logging/[id]/components/components/SectionCart";
@@ -7,7 +7,7 @@ import {Member, Section} from "@/types";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 import {onSnapshot} from "firebase/firestore";
-import {formateDateToDMY} from "@/features/utilities/date/formateDates";
+import {formateDateToDMY, formateDateToYMD} from "@/features/utilities/date/formateDates";
 
 interface ProjectSectionsSectionProps {
     projectId: string;
@@ -55,18 +55,18 @@ export const ProjectSectionsSection = ({...props}: ProjectSectionsSectionProps) 
             if (userRole === "Member") {
                 currSections = sections.filter(
                     s => s.projectId === props.projectId &&
-                        s.updateDate === formateDateToDMY(filteredDate) &&
+                        s.updateDate === formateDateToYMD(filteredDate) &&
                         s.userId === props.userId
                 )
             } else if (filteredMemberId === "all") {
                 currSections = sections.filter(
                     s => s.projectId === props.projectId &&
-                        s.updateDate === formateDateToDMY(filteredDate)
+                        s.updateDate === formateDateToYMD(filteredDate)
                 )
             } else {
                 currSections = sections.filter(
                     s => s.projectId === props.projectId &&
-                        s.updateDate === formateDateToDMY(filteredDate) &&
+                        s.updateDate === formateDateToYMD(filteredDate) &&
                         s.userId === filteredMemberId
                 )
             }

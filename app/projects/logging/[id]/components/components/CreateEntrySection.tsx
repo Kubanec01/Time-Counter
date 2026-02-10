@@ -14,7 +14,7 @@ import {updateTotalTrackedTime} from "@/features/utilities/edit/updateTotalTrack
 import {setProjectTotalTimeWithoutSectionId} from "@/features/utilities/time/totalTime";
 import {UsersClasses} from "@/data/users";
 import {updateUserProjectTimeData} from "@/features/utilities/create/updateUserProjectTimeData";
-import {formateDateToDMY} from "@/features/utilities/date/formateDates";
+import {formateDateToDMY, formateDateToYMD} from "@/features/utilities/date/formateDates";
 import InformativeModal from "@/components/modals/InformativeModal";
 
 type CreateEntrySectionProps = {
@@ -52,7 +52,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
 
         const userFullName = `${userName} ${userSurname}`
 
-        const canContinue = await updateUserProjectTimeData(userId, workspaceId, props.projectId, formateDateToDMY(selectedDate), timeInputValue)
+        const canContinue = await updateUserProjectTimeData(userId, workspaceId, props.projectId, formateDateToYMD(selectedDate), timeInputValue, "increase")
         if (canContinue === false) {
             setIsMaxTimeModalOpen(true);
             setNameValue("")
@@ -62,7 +62,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
         }
 
         await createNewSection(userId, userFullName, props.projectId, nameValue, time, selectedDate, setNameValue, setIsInfoModalOpen, newTaskType, mode, workspaceId)
-        await updateTotalTrackedTime(userId, props.projectId, selectedDate, time, mode, workspaceId)
+        await updateTotalTrackedTime(userId, props.projectId, formateDateToYMD(selectedDate), time, workspaceId, "increase")
         await setProjectTotalTimeWithoutSectionId(userId, props.projectId, time, mode, workspaceId)
         setNameValue("")
         setTaskType(null)
