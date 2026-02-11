@@ -8,18 +8,17 @@ import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef"
 import {onSnapshot} from "firebase/firestore";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth} from "@/app/firebase/config";
-import {formatSecondsToTimeString} from "@/features/utilities/time/timeOperations";
+import {formatFloatHoursToSeconds} from "@/features/utilities/time/timeOperations";
 import {createNewSection} from "@/features/utilities/create/createNewSection";
 import {updateTotalTrackedTime} from "@/features/utilities/edit/updateTotalTrackedTime";
-import {setProjectTotalTimeWithoutSectionId} from "@/features/utilities/time/totalTime";
+import {updateProjectTotalTime} from "@/features/utilities/time/totalTime";
 import {UsersClasses} from "@/data/users";
-import {updateUserProjectTimeData} from "@/features/utilities/create/updateUserProjectTimeData";
-import {formateDateToDMY, formateDateToYMD} from "@/features/utilities/date/formateDates";
+import {updateUserIndividualTime} from "@/features/utilities/create/updateUserIndividualTime";
+import {formateDateToYMD} from "@/features/utilities/date/formateDates";
 import InformativeModal from "@/components/modals/InformativeModal";
 
 type CreateEntrySectionProps = {
     projectId: string;
-    userId: string | undefined;
 }
 
 export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
@@ -32,45 +31,42 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
     const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
     const [options, setOptions] = useState<ProjectOption[]>([])
     const [nameValue, setNameValue] = useState("");
-    const [timeInputValue, setTimeInputValue] = useState("0.25");
+    const [timeInputValue, setTimeInputValue] = useState(0.25);
     const [selectedDate, setSelectedDate] = useState<Date | null>(currDate);
     const [isMaxTimeModalOpen, setIsMaxTimeModalOpen] = useState(false);
 
     const router = useRouter();
 
-    // User Auth
-    const [user] = useAuthState(auth)
-    const userId = user?.uid
-    const {mode, workspaceId, userName, userSurname, userRole} = useWorkSpaceContext()
+    const {mode, workspaceId, userName, userSurname, userRole, userId} = useWorkSpaceContext()
 
     const createSection = async (e: FormEvent) => {
         e.preventDefault();
 
-        const time = formatSecondsToTimeString(Number(timeInputValue) * 3600)
+        const timeToSeconds = formatFloatHoursToSeconds(timeInputValue)
 
         const newTaskType = taskType === "custom" ? customType : taskType
 
         const userFullName = `${userName} ${userSurname}`
 
-        const canContinue = await updateUserProjectTimeData(userId, workspaceId, props.projectId, formateDateToYMD(selectedDate), timeInputValue, "increase")
+        const canContinue = await updateUserIndividualTime(userId, workspaceId, props.projectId, formateDateToYMD(selectedDate), timeToSeconds, "increase")
         if (canContinue === false) {
             setIsMaxTimeModalOpen(true);
             setNameValue("")
             setTaskType(null)
-            setTimeInputValue("0.25")
+            setTimeInputValue(0.25)
             return
         }
 
-        await createNewSection(userId, userFullName, props.projectId, nameValue, time, selectedDate, setNameValue, setIsInfoModalOpen, newTaskType, mode, workspaceId)
-        await updateTotalTrackedTime(userId, props.projectId, formateDateToYMD(selectedDate), time, workspaceId, "increase")
-        await setProjectTotalTimeWithoutSectionId(userId, props.projectId, time, mode, workspaceId)
+        await createNewSection(userId, userFullName, props.projectId, nameValue, timeToSeconds, selectedDate, setNameValue, setIsInfoModalOpen, newTaskType, workspaceId)
+        await updateTotalTrackedTime(props.projectId, formateDateToYMD(selectedDate), timeToSeconds, workspaceId, "increase")
+        await updateProjectTotalTime(props.projectId, timeToSeconds, workspaceId, "increase")
         setNameValue("")
         setTaskType(null)
-        setTimeInputValue("0.25")
+        setTimeInputValue(0.25)
     }
 
     const isButtonDisabled = () => {
-        return nameValue.trim() === "" || taskType === null || timeInputValue.trim() === "" ||
+        return nameValue.trim() === "" || taskType === null || timeInputValue === 0 ||
             selectedDate === null || (taskType === "custom" && customType?.trim() === "");
     }
 
@@ -181,7 +177,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                             max={24}
                             step={0.25}
                             value={timeInputValue}
-                            onChange={(e) => setTimeInputValue(e.target.value)}
+                            onChange={(e) => setTimeInputValue(Number(e.target.value))}
                             type={"number"}
                             placeholder={"0.25"}
                             className={"border border-black/20 text-sm focus:outline-vibrant-purple-600 p-1.5 px-2 rounded-md bg-white"}/>

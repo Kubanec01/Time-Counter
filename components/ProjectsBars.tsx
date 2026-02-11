@@ -18,6 +18,7 @@ import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef"
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 import {useMounted} from "@/features/hooks/useMounted";
+import {formatSecondsToTimeString} from "@/features/utilities/time/timeOperations";
 
 
 const ProjectsBars = () => {
@@ -136,7 +137,7 @@ const ProjectsBars = () => {
                                             Total time
                                         </h3>
                                         <span className="text-xl font-semibold text-white">
-                                    {p.totalTime}
+                                    {formatSecondsToTimeString(p.totalTime)}
                                         </span>
                                     </div>
                                     <button

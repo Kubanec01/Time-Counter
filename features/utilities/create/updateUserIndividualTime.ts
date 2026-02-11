@@ -3,17 +3,15 @@ import {doc, getDoc, updateDoc} from "firebase/firestore";
 import {Project} from "@/types";
 
 
-export const updateUserProjectTimeData = async (
+export const updateUserIndividualTime = async (
     userId: string | undefined,
     workspaceId: string,
     projectId: string,
     date: string,
-    hours: string,
+    seconds: number,
     changes: "increase" | "decrease"
 ) => {
     if (!userId) return
-
-    const time = Number(hours)
 
     const docRef = doc(db, "realms", workspaceId)
     const docSnap = await getDoc(docRef)
@@ -24,8 +22,8 @@ export const updateUserProjectTimeData = async (
     const membersData = currProject.membersIndividualTimes
 
     if (membersData[userId]) {
-        const currentDayTime = membersData[userId].daily[date] ?? 0
-        if (currentDayTime + time > 24) {
+        const dataTime = membersData[userId].daily[date] ?? 0
+        if (dataTime + seconds > 86_400) {
             return false
         }
     }
@@ -33,17 +31,17 @@ export const updateUserProjectTimeData = async (
     if (!membersData[userId]) {
         membersData[userId] = {
             daily: {
-                [date]: time
+                [date]: seconds
             },
-            total: time
+            total: seconds
         }
     } else {
         if (changes === "increase") {
-            membersData[userId].daily[date] += time
-            membersData[userId].total += time
+            membersData[userId].daily[date] += seconds
+            membersData[userId].total += seconds
         } else {
-            membersData[userId].daily[date] -= time
-            membersData[userId].total -= time
+            membersData[userId].daily[date] -= seconds
+            membersData[userId].total -= seconds
         }
     }
 

@@ -1,23 +1,19 @@
 import React from "react";
-import {getDoc, updateDoc} from "firebase/firestore";
-import {Section, UserMode, WorkspaceId} from "@/types";
-import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
+import {doc, getDoc, updateDoc} from "firebase/firestore";
+import {Section, WorkspaceId} from "@/types";
+import {db} from "@/app/firebase/config";
 
 
 export const editSectionName = async (
-    userId: string | undefined,
     projectId: string,
     sectionId: string,
     inputValue: string,
     setInputValue: (value: React.SetStateAction<string>) => void,
     setIsEditModalOpen: (value: React.SetStateAction<boolean>) => void,
-    mode: UserMode,
     workspaceId: WorkspaceId,
 ) => {
 
-    if (!userId) return
-
-    const userRef = getFirestoreTargetRef(userId, mode, workspaceId);
+    const userRef = doc(db, "realms", workspaceId);
     const userSnap = await getDoc(userRef);
 
     if (!userSnap.exists()) return;

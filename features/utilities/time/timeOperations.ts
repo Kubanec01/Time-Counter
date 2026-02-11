@@ -18,4 +18,6 @@ export const formatSecondsToTimeString = (timeSeconds: number) => {
 
 }
 
+export const formatFloatHoursToSeconds = (hours: number) => hours * 60 * 60
 
+export const secondsToFloatHours = (seconds: number) => Number((seconds / 3600).toFixed(2))

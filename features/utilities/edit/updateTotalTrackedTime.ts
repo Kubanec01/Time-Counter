@@ -1,20 +1,17 @@
 import {Project, TotalTrackedTime, WorkspaceId} from "@/types";
 import {doc, getDoc, updateDoc} from "firebase/firestore";
-import {formatSecondsToTimeString, parseTimeStringToSeconds} from "@/features/utilities/time/timeOperations";
 import {formateDateToYMD} from "@/features/utilities/date/formateDates";
 import {db} from "@/app/firebase/config";
 
 
 export const updateTotalTrackedTime = async (
-    userId: string | undefined,
     projectId: string,
-    date: string | null,
+    date: string | null | undefined,
     seconds: number,
     workspaceId: WorkspaceId,
     changes: "increase" | "decrease",
 ) => {
-
-    if (!userId) return;
+    if(date === undefined) return console.error("Date is undefined");
 
     // Curr Date Variable
     if (date === null) date = formateDateToYMD(new Date())
@@ -26,36 +23,34 @@ export const updateTotalTrackedTime = async (
     const data = docSnap.data();
     const projects: Project[] = data.projects
     const project = projects.find(p => p.projectId === projectId);
-    if (!project) {
-        console.error("Project not found");
-        return null
-    }
+    if (!project) return console.log("Project not found");
+
     const trackedTimes = project.totalTrackedTimes ?? []
 
-    const existingTrackedTime = trackedTimes.find(
+    const validTrackedTime = trackedTimes.find(
         t => t.date === date
     )
 
     let updatedTrackedTimes: TotalTrackedTime[]
 
-    if (existingTrackedTime) {
+    if (validTrackedTime) {
         updatedTrackedTimes = trackedTimes.map(t => {
             if (t.date !== date) return t
 
             let updatedTime = 0
 
-            if (changes === "increase") updatedTime = parseTimeStringToSeconds(t.time) + seconds
-            else if (changes === "decrease") updatedTime = parseTimeStringToSeconds(t.time) - seconds
+            if (changes === "increase") updatedTime = t.time + seconds
+            else if (changes === "decrease") updatedTime = t.time - seconds
 
             return {
                 ...t,
-                time: formatSecondsToTimeString(updatedTime),
+                time: updatedTime,
             }
         })
     } else {
         updatedTrackedTimes = [
             ...trackedTimes,
-            {date: date, time: formatSecondsToTimeString(seconds)},
+            {date: date, time: seconds}
         ]
     }
 

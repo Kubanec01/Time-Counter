@@ -1,21 +1,20 @@
 import React from "react";
-import {arrayUnion, updateDoc} from "firebase/firestore";
+import {arrayUnion, doc, updateDoc} from "firebase/firestore";
 import {throwRandomNum} from "@/features/utilities/throwRandomNum";
-import {LoggingType, Section, UpdatedSectionByDate, UserMode, WorkspaceId} from "@/types";
-import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
-import {formateDateToDMY, formateDateToYMD} from "@/features/utilities/date/formateDates";
+import {LoggingType, Section, UpdatedSectionByDate, WorkspaceId} from "@/types";
+import {formateDateToYMD} from "@/features/utilities/date/formateDates";
+import {db} from "@/app/firebase/config";
 
 export const createNewSection = async (
     userId: string | undefined,
     userName: string,
     projectId: string,
     inputValue: string,
-    time: string,
+    time: number,
     date: Date | null,
     setInputValue: (value: React.SetStateAction<string>) => void,
     setIsInfoModalOpen: (value: React.SetStateAction<boolean>) => void,
     category: LoggingType,
-    mode: UserMode,
     workspaceId: WorkspaceId,
 ) => {
 
@@ -26,15 +25,15 @@ export const createNewSection = async (
     }
 
     if (!userId) return;
-    const userRef = getFirestoreTargetRef(userId, mode, workspaceId);
+    const userRef = doc(db, "realms", workspaceId);
 
     // Random Num Variable
     const randomNum = throwRandomNum(10_000_000).toString()
     const sectionId = `${inputValue.replace(/\s+/g, "")}_${randomNum}`
 
-    // Curr Date Variable
+
     if (date === null) date = new Date();
-    const currDate: string = formateDateToYMD(date)
+    const dateData: string = formateDateToYMD(date)
 
 
     const newSection: Section = {
@@ -44,14 +43,14 @@ export const createNewSection = async (
         userId: userId,
         title: inputValue,
         time: time,
-        updateDate: currDate,
+        updateDate: dateData,
         category: category
     };
 
     const newSectionUpdate: UpdatedSectionByDate = {
         projectId: projectId,
         sectionId: sectionId,
-        date: currDate,
+        date: dateData,
     }
 
     await updateDoc(userRef, {projectsSections: arrayUnion(newSection)});

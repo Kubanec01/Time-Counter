@@ -1,25 +1,25 @@
-import {getDoc, updateDoc} from "firebase/firestore";
+import {doc, getDoc, updateDoc} from "firebase/firestore";
 import {Section, TimeCheckout, UpdatedSectionByDate, UserMode, WorkspaceId} from "@/types";
-import {subtractProjectTotalTime} from "@/features/utilities/time/totalTime";
 import {sectionNotFound} from "@/messages/errors";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
-import {updateUserProjectTimeData} from "@/features/utilities/create/updateUserProjectTimeData";
+import {updateUserIndividualTime} from "@/features/utilities/create/updateUserIndividualTime";
 import {updateTotalTrackedTime} from "@/features/utilities/edit/updateTotalTrackedTime";
-import {formatFloatHoursToSeconds} from "@/app/stats/[id]/utils";
+import {formatFloatHoursToSeconds} from "@/features/utilities/time/timeOperations";
+import {db} from "@/app/firebase/config";
+import {updateProjectTotalTime} from "@/features/utilities/time/totalTime";
 
 
 export const deleteAllSectionData = async (
     userId: string | undefined,
     projectId: string,
     sectionId: string,
-    mode: UserMode,
     workspaceId: WorkspaceId,
     date: string | undefined,
-    hours: string,
+    seconds: number,
 ) => {
-    if (!userId || !projectId || !date) return;
+    if (date === undefined) return console.error("date is undefined");
 
-    const userRef = getFirestoreTargetRef(userId, mode, workspaceId);
+    const userRef = doc(db, "realms", workspaceId);
     const userSnap = await getDoc(userRef);
 
     if (!userSnap.exists()) return;
@@ -29,10 +29,8 @@ export const deleteAllSectionData = async (
     const sectionsByDates: UpdatedSectionByDate[] = data.updatedSectionsByDates || []
 
     const section = sections.find(s => s.sectionId === sectionId)
-    if (!section) throw new Error(sectionNotFound);
+    if (!section) console.error(sectionNotFound);
 
-
-    const sectionTime = section.time
 
     const updatedSections = sections.filter(
         (s: Section) => s.sectionId !== sectionId
@@ -44,13 +42,13 @@ export const deleteAllSectionData = async (
 
     const updatedSectionsByDates = sectionsByDates.filter((s: UpdatedSectionByDate) => s.sectionId !== sectionId);
 
-    await updateUserProjectTimeData(userId, workspaceId, projectId, date, hours, "decrease")
-    await updateTotalTrackedTime(userId, projectId, date, formatFloatHoursToSeconds(Number(hours)), workspaceId, "decrease")
+    await updateUserIndividualTime(userId, workspaceId, projectId, date, seconds, "decrease")
+    await updateTotalTrackedTime(projectId, date, seconds, workspaceId, "decrease")
 
     await updateDoc(userRef, {
         projectsSections: updatedSections,
         timeCheckouts: updatedCheckouts,
         updatedSectionsByDates: updatedSectionsByDates
     });
-    await subtractProjectTotalTime(userId, projectId, sectionTime, mode, workspaceId);
+    await updateProjectTotalTime(projectId, seconds, workspaceId, "decrease")
 };

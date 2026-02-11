@@ -3,9 +3,8 @@
 import {useParams} from "next/navigation";
 import {useEffect, useState} from "react";
 import {Member, Project} from "@/types";
-import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
-import {getDoc} from "firebase/firestore";
+import {doc, getDoc} from "firebase/firestore";
 import {format} from "date-fns";
 import {
     getCurrentMonthDays,
@@ -13,12 +12,14 @@ import {
     getCurrentYearMonths,
     getThisMonthTrackedDates,
     getThisWeekTrackedDates, getThisYearTrackedDates,
-    timeFormatToHours
 } from "@/app/stats/[id]/utils";
 import {formateDateToYMD} from "@/features/utilities/date/formateDates";
 import {FullTrackedTimeChart} from "@/app/stats/[id]/components/chartsSections/FullTrackedTimeChart";
 import {EveryUserTotalTimePieChart} from "@/app/stats/[id]/components/chartsSections/EveryUserTotalTimePieChart";
 import {ProjectTimeProgres} from "@/app/stats/[id]/components/chartsSections/ProjectTimeProgres";
+import {db} from "@/app/firebase/config";
+import {documentNotFound} from "@/messages/errors";
+import {secondsToFloatHours} from "@/features/utilities/time/timeOperations";
 
 export default function StatsHome() {
 
@@ -38,9 +39,9 @@ export default function StatsHome() {
 
         const fetchData = async () => {
 
-            const docRef = getFirestoreTargetRef(userId, mode, workspaceId)
+            const docRef = doc(db, "realms", workspaceId)
             const docSnap = await getDoc(docRef)
-            if (!docSnap.exists()) return
+            if (!docSnap.exists()) return console.error(documentNotFound)
             const data = docSnap.data()
             const project: Project = data.projects.find((p: Project) => p.projectId === projectId)
             const totalTrackedTimes = project.totalTrackedTimes
@@ -52,20 +53,20 @@ export default function StatsHome() {
             const weekResult = getCurrentWeekDays.map(d => {
                 const date = formateDateToYMD(d);
                 const item = thisWeekData.find(i => i.date === date)
-                return item ? timeFormatToHours(item.time) : timeFormatToHours("0")
+                return item ? secondsToFloatHours(item.time) : 0
             });
 
             const monthResult = getCurrentMonthDays.map(d => {
                 const date = formateDateToYMD(d);
                 const item = thisMonthData.find(i => i.date === date)
-                return item ? timeFormatToHours(item.time) : timeFormatToHours("0")
+                return item ? secondsToFloatHours(item.time) : 0
             })
 
             const yearResults = getCurrentYearMonths.map(d => {
                 let hours = 0
                 const date = format(d, "MM")
                 const items = thisYearData.filter(i => format(i.date, "MM") === date)
-                items.forEach(i => hours += timeFormatToHours(i.time))
+                items.forEach(i => hours += secondsToFloatHours(i.time))
                 return hours
             })
 
@@ -76,16 +77,13 @@ export default function StatsHome() {
             const members: Member[] = data.members
             const membersIndividualTimes = project.membersIndividualTimes
 
-            const membersStates: {
-                value: number,
-                name: string
-            }[] = members.filter(m => membersIndividualTimes[m.userId] !== undefined).map((m: Member) => {
-
-                return {
-                    value: membersIndividualTimes[m.userId].total,
-                    name: `${m.name} ${m.surname}`,
-                }
-            })
+            const membersStates: { value: number, name: string }[] =
+                members.filter(m => membersIndividualTimes[m.userId] !== undefined).map((m: Member) => {
+                    return {
+                        value: secondsToFloatHours(membersIndividualTimes[m.userId].total),
+                        name: `${m.name} ${m.surname}`,
+                    }
+                })
 
             setMembersStats(membersStates)
         }

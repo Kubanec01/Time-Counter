@@ -6,12 +6,12 @@ import React, {useEffect, useState} from "react";
 import {Member, Section} from "@/types";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
-import {onSnapshot} from "firebase/firestore";
-import {formateDateToDMY, formateDateToYMD} from "@/features/utilities/date/formateDates";
+import {doc, onSnapshot} from "firebase/firestore";
+import {formateDateToYMD} from "@/features/utilities/date/formateDates";
+import {db} from "@/app/firebase/config";
 
 interface ProjectSectionsSectionProps {
     projectId: string;
-    userId: string | undefined;
 }
 
 export const ProjectSectionsSection = ({...props}: ProjectSectionsSectionProps) => {
@@ -25,7 +25,7 @@ export const ProjectSectionsSection = ({...props}: ProjectSectionsSectionProps) 
     const [sections, setSections] = useState<Section[]>([]);
 
 
-    const {mode, userRole, workspaceId} = useWorkSpaceContext()
+    const {mode, userRole, workspaceId, userId} = useWorkSpaceContext()
 
     const isPlusButtonDisabled = () => {
         if (filteredDate === null) return true
@@ -36,9 +36,8 @@ export const ProjectSectionsSection = ({...props}: ProjectSectionsSectionProps) 
 
 // Single Snapshot Listener
     useEffect(() => {
-        if (!props.userId) return
 
-        const userRef = getFirestoreTargetRef(props.userId, mode, workspaceId)
+        const userRef = doc(db, "realms", workspaceId)
 
         const unsubscribe = onSnapshot(userRef, snap => {
             if (!snap.exists()) return
@@ -56,7 +55,7 @@ export const ProjectSectionsSection = ({...props}: ProjectSectionsSectionProps) 
                 currSections = sections.filter(
                     s => s.projectId === props.projectId &&
                         s.updateDate === formateDateToYMD(filteredDate) &&
-                        s.userId === props.userId
+                        s.userId === userId
                 )
             } else if (filteredMemberId === "all") {
                 currSections = sections.filter(
@@ -76,7 +75,7 @@ export const ProjectSectionsSection = ({...props}: ProjectSectionsSectionProps) 
 
         return () => unsubscribe()
 
-    }, [filteredDate, filteredMemberId, mode, props.projectId, props.userId, userRole, workspaceId])
+    }, [filteredDate, filteredMemberId, mode, props.projectId, userId, userRole, workspaceId])
 
 
     return (

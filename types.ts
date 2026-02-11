@@ -19,7 +19,7 @@ export interface Section {
     userName: string;
     userId: string;
     title: string;
-    time: string;
+    time: number;
     updateDate?: string
     category?: LoggingType
 }
@@ -47,7 +47,7 @@ export interface ProjectWithCustomOptions extends Project {
 
 export type TotalTrackedTime = {
     date: string;
-    time: string;
+    time: number;
 }
 
 export type MemberTime = {
@@ -60,7 +60,7 @@ export type UserIndividualTimes = Record<string, MemberTime>
 export interface Project {
     projectId: string;
     title: string;
-    totalTime: string;
+    totalTime: number;
     type: ProjectType
     totalTrackedTimes: TotalTrackedTime[];
     membersIndividualTimes: UserIndividualTimes

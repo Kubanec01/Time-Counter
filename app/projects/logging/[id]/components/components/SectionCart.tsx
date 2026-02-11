@@ -10,7 +10,8 @@ import {auth} from "@/app/firebase/config";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import DeleteModal from "@/components/modals/DeleteModal";
 import {HiMiniUserCircle} from "react-icons/hi2";
-import {timeFormatToHours} from "@/app/stats/[id]/utils";
+import {formatSecondsToTimeString} from "@/features/utilities/time/timeOperations";
+import {formateYMDToDMY} from "@/features/utilities/date/formateDates";
 
 
 export const SectionCart = ({...props}: Section) => {
@@ -41,9 +42,9 @@ export const SectionCart = ({...props}: Section) => {
 
                     <h1 className={"w-[25%]"}>{props.title}</h1>
                     <h2 className={"w-[25%]"}>{props.category}</h2>
-                    <span className={"w-[25%]"}>{props.time}</span>
+                    <span className={"w-[25%]"}>{formatSecondsToTimeString(props.time)}</span>
                     <span
-                        className={"w-[25%]"}>{props.updateDate}</span>
+                        className={"w-[25%]"}>{formateYMDToDMY(props.updateDate)}</span>
                     <span
                         className={"absolute right-4 h-full top-0 flex items-center justify-center gap-4"}>
                 <button
@@ -69,14 +70,14 @@ export const SectionCart = ({...props}: Section) => {
                 inputPlaceholder={"What is a new track name?"}
                 formFunction={(e) => {
                     e.preventDefault()
-                    editSectionName(userId, props.projectId, props.sectionId, editModalInputValue, setEditModalInputValue, setIsEditModalOpen, mode, workspaceId)
+                    editSectionName(props.projectId, props.sectionId, editModalInputValue, setEditModalInputValue, setIsEditModalOpen, workspaceId)
                 }}/>
             <DeleteModal
                 setIsModalOpen={setIsDeleteModalOpen}
                 isModalOpen={isDeleteModalOpen}
                 title={"Delete track?"}
                 desc={"Are you sure you want to delete this track? This step is irreversible and everything stored in this track will be deleted."}
-                btnFunction={() => deleteAllSectionData(userId, props.projectId, props.sectionId, mode, workspaceId, props.updateDate, String(timeFormatToHours(props.time)))}
+                btnFunction={() => deleteAllSectionData(userId,props.projectId, props.sectionId, workspaceId, props.updateDate, props.time,)}
                 deleteBtnText={"Delete track"}
                 topDistance={400}
             />

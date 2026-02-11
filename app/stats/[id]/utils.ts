@@ -49,4 +49,3 @@ export function timeFormatToHours(time: string) {
     return h + m / 60 + s / 3600
 }
 
-export const formatFloatHoursToSeconds = (hours: number) => hours * 60 * 60

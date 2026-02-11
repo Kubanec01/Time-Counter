@@ -1,23 +1,19 @@
 import {throwRandomNum} from "@/features/utilities/throwRandomNum";
-import {Project, ProjectOption, ProjectType, UserMode, WorkspaceId} from "@/types";
-import {arrayUnion, updateDoc} from "firebase/firestore";
-import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
+import {Project, ProjectOption, ProjectType, WorkspaceId} from "@/types";
+import {arrayUnion, doc, updateDoc} from "firebase/firestore";
 import {projectTasksOptions} from "@/data/users";
+import {db} from "@/app/firebase/config";
 
 interface LoggingProject extends Project {
     options: ProjectOption[]
 }
 
 export const createNewLoggingProject = async (
-        userId: string | undefined,
         inputValue: string,
         typeOfProject: ProjectType,
-        mode: UserMode,
         workspaceId: WorkspaceId,
     ) => {
-
-        if (!userId) return;
-        const userRef = getFirestoreTargetRef(userId, mode, workspaceId);
+        const userRef = doc(db, "realms", workspaceId);
 
         // Random Num Variable
         const randomNum = throwRandomNum(10_000_000).toString();
@@ -25,7 +21,7 @@ export const createNewLoggingProject = async (
         const newProject: LoggingProject = {
             projectId: `${inputValue.replace(/\s+/g, "")}_${randomNum}`,
             title: inputValue,
-            totalTime: "00:00:00",
+            totalTime: 0,
             type: typeOfProject,
             totalTrackedTimes: [],
             membersIndividualTimes: {},

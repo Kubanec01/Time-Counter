@@ -18,7 +18,7 @@ export default function HomePage() {
     useAuthRedirect()
 
     // User Data
-    const {mode, workspaceId, userRole, userId} = useWorkSpaceContext()
+    const {mode, workspaceId, userRole} = useWorkSpaceContext()
 
     //   States
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,8 +31,8 @@ export default function HomePage() {
     const setNewProject = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        if (typeofProject === "tracking") await createNewProject(userId, inputValue, typeofProject, mode, workspaceId);
-        if (typeofProject === "logging") await createNewLoggingProject(userId, inputValue, typeofProject, mode, workspaceId);
+        if (typeofProject === "tracking") await createNewProject(inputValue, typeofProject, workspaceId);
+        if (typeofProject === "logging") await createNewLoggingProject(inputValue, typeofProject, workspaceId);
         setInputValue("");
         setIsModalOpen(false);
         setTypeOfProject("tracking");
