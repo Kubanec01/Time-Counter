@@ -1,4 +1,3 @@
-
 export const formatTimeUnit = (num: number) => num.toString().padStart(2, '0');
 
 export const parseTimeStringToSeconds = (time: string) => {
@@ -20,4 +19,18 @@ export const formatSecondsToTimeString = (timeSeconds: number) => {
 
 export const formatFloatHoursToSeconds = (hours: number) => hours * 60 * 60
 
-export const secondsToFloatHours = (seconds: number) => Number((seconds / 3600).toFixed(2))
+export const secondsToFloatHours = (seconds: number) => Number(Math.round(seconds / 3600 * 4) / 4)
+
+export const formatedTimeToSeconds = (time: string) => {
+    const [h, m] = time.split(':').map(Number);
+    return h * 3600 + m * 60
+}
+
+export const formatedTwoTimesDifferenceToSeconds = (fromTime: string, toTime: string) => {
+
+    const totalSec1 = formatedTimeToSeconds(fromTime)
+    const totalSec2 = formatedTimeToSeconds(toTime)
+
+    return totalSec2 - totalSec1
+
+}

@@ -6,9 +6,10 @@ import {useRouter} from "next/navigation";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 import {onSnapshot} from "firebase/firestore";
-import {useAuthState} from "react-firebase-hooks/auth";
-import {auth} from "@/app/firebase/config";
-import {formatFloatHoursToSeconds} from "@/features/utilities/time/timeOperations";
+import {
+    formatedTwoTimesDifferenceToSeconds,
+    formatFloatHoursToSeconds, secondsToFloatHours
+} from "@/features/utilities/time/timeOperations";
 import {createNewSection} from "@/features/utilities/create/createNewSection";
 import {updateTotalTrackedTime} from "@/features/utilities/edit/updateTotalTrackedTime";
 import {updateProjectTotalTime} from "@/features/utilities/time/totalTime";
@@ -16,6 +17,7 @@ import {UsersClasses} from "@/data/users";
 import {updateUserIndividualTime} from "@/features/utilities/create/updateUserIndividualTime";
 import {formateDateToYMD} from "@/features/utilities/date/formateDates";
 import InformativeModal from "@/components/modals/InformativeModal";
+import {getHours, getMinutes} from "date-fns";
 
 type CreateEntrySectionProps = {
     projectId: string;
@@ -24,6 +26,7 @@ type CreateEntrySectionProps = {
 export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
 
     const currDate = new Date();
+    const currTime = `${String(getHours(currDate)).padStart(2, "0")}:${String(getMinutes(currDate)).padStart(2, "0")}`
 
     // States
     const [taskType, setTaskType] = useState<LoggingType>(null)
@@ -31,9 +34,22 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
     const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
     const [options, setOptions] = useState<ProjectOption[]>([])
     const [nameValue, setNameValue] = useState("");
-    const [timeInputValue, setTimeInputValue] = useState(0.25);
+    const [timeInputValue, setTimeInputValue] = useState(0);
     const [selectedDate, setSelectedDate] = useState<Date | null>(currDate);
     const [isMaxTimeModalOpen, setIsMaxTimeModalOpen] = useState(false);
+    const [timeFormat, setTimeFormat] = useState<"Decimal" | "Range">("Decimal")
+    const [fromTime, setFromTime] = useState(currTime);
+    const [toTime, setToTime] = useState(currTime);
+
+
+    const setTimeDifference = (firstTime: string, secondTime: string) => {
+        setFromTime(firstTime)
+        setToTime(secondTime)
+
+        const timeDifference = formatedTwoTimesDifferenceToSeconds(firstTime, secondTime);
+
+        setTimeInputValue(secondsToFloatHours(timeDifference));
+    }
 
     const router = useRouter();
 
@@ -53,7 +69,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
             setIsMaxTimeModalOpen(true);
             setNameValue("")
             setTaskType(null)
-            setTimeInputValue(0.25)
+            setTimeInputValue(0)
             return
         }
 
@@ -62,11 +78,13 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
         await updateProjectTotalTime(props.projectId, timeToSeconds, workspaceId, "increase")
         setNameValue("")
         setTaskType(null)
-        setTimeInputValue(0.25)
+        setTimeInputValue(0)
+        setFromTime(currTime)
+        setToTime(currTime)
     }
 
     const isButtonDisabled = () => {
-        return nameValue.trim() === "" || taskType === null || timeInputValue === 0 ||
+        return nameValue.trim() === "" || taskType === null || timeInputValue <= 0 ||
             selectedDate === null || (taskType === "custom" && customType?.trim() === "");
     }
 
@@ -133,7 +151,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                 className={"p-6 rounded-xl bg-black/6 flex flex-col justify-between gap-8 items-start mx-auto"}>
                 {/* Main inputs Section */}
                 <div
-                    className={"w-full flex justify-start gap-10"}>
+                    className={"w-full flex justify-start gap-10 flex-wrap"}>
                     {/* Type of Work */}
                     <div
                         className={"flex flex-col"}>
@@ -167,20 +185,49 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                                id={"name-description"} type="text" placeholder={"What are you going to work on?"}
                                className={"border border-black/20 w-[300px] focus:outline-vibrant-purple-600 p-1 px-2 rounded-md bg-white"}/>
                     </div>
-                    {/* Time */}
+                    {/* Decimal time input */}
                     <div
-                        className={"flex flex-col"}>
+                        className={`${timeFormat === "Decimal" ? "flex" : "hidden"} flex-col`}>
                         <label htmlFor="time" className={"font-semibold text-black/60"}>Hours</label>
                         <input
                             id="time"
                             min={0.25}
                             max={24}
                             step={0.25}
-                            value={timeInputValue}
+                            value={timeInputValue === 0 ? 0.25 : timeInputValue}
                             onChange={(e) => setTimeInputValue(Number(e.target.value))}
                             type={"number"}
                             placeholder={"0.25"}
                             className={"border border-black/20 text-sm focus:outline-vibrant-purple-600 p-1.5 px-2 rounded-md bg-white"}/>
+                    </div>
+                    {/* Range time inputs */}
+                    <div
+                        className={`${timeFormat === "Range" ? "flex" : "hidden"} flex gap-6`}>
+                        <div
+                            className={"flex flex-col"}>
+                            <label htmlFor="time" className={"font-semibold text-black/60"}>From</label>
+                            <input
+                                id="time"
+                                type={"time"}
+                                value={fromTime}
+                                onChange={(e) => {
+                                    setFromTime(e.target.value)
+                                    setTimeDifference(e.target.value, toTime)
+                                }}
+                                className={"border border-black/20 text-sm focus:outline-vibrant-purple-600 p-1.5 px-2 rounded-md bg-white"}/>
+                        </div>
+                        <div
+                            className={"flex flex-col"}>
+                            <label htmlFor="time" className={"font-semibold text-black/60"}>To</label>
+                            <input
+                                id="time"
+                                type={"time"}
+                                value={toTime}
+                                onChange={(e) => {
+                                    setTimeDifference(fromTime, e.target.value)
+                                }}
+                                className={"border border-black/20 text-sm focus:outline-vibrant-purple-600 p-1.5 px-2 rounded-md bg-white"}/>
+                        </div>
                     </div>
                     {/*  Date  */}
                     <div
@@ -191,17 +238,18 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                             setSelectedDate={setSelectedDate}
                         />
                     </div>
+                    {/* Custom input */}
+                    <div
+                        className={`${taskType === "custom" ? "flex  flex-col" : "hidden"}`}>
+                        <label htmlFor="name-description" className={"font-semibold text-black/60"}>Custom Type of
+                            task</label>
+                        <input
+                            onChange={(e) => setCustomType(e.target.value)}
+                            id={"name-description"} type="text" placeholder={"Write your custom type..."}
+                            className={"border border-black/20 w-[300px] focus:outline-vibrant-purple-600 p-1 px-2 rounded-md bg-white"}/>
+                    </div>
                 </div>
                 {/* Custom type Section */}
-                <div
-                    className={`${taskType === "custom" ? "flex  flex-col" : "hidden"}`}>
-                    <label htmlFor="name-description" className={"font-semibold text-black/60"}>Custom Type of
-                        task</label>
-                    <input
-                        onChange={(e) => setCustomType(e.target.value)}
-                        id={"name-description"} type="text" placeholder={"Write your custom type..."}
-                        className={"border border-black/20 w-[300px] focus:outline-vibrant-purple-600 p-1 px-2 rounded-md bg-white"}/>
-                </div>
                 {/*Submit Button*/}
                 <button
                     type={"submit"}
