@@ -4,8 +4,9 @@ import {arrayUnion, doc, updateDoc} from "firebase/firestore";
 import {projectTasksOptions} from "@/data/users";
 import {db} from "@/app/firebase/config";
 
-interface LoggingProject extends Project {
-    options: ProjectOption[]
+export interface LoggingProject extends Project {
+    options: ProjectOption[],
+    trackFormat: "Decimal" | "Range",
 }
 
 export const createNewLoggingProject = async (
@@ -26,6 +27,7 @@ export const createNewLoggingProject = async (
             totalTrackedTimes: [],
             membersIndividualTimes: {},
             options: projectTasksOptions,
+            trackFormat: "Decimal",
         };
 
         await updateDoc(userRef, {

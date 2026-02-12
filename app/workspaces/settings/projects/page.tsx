@@ -32,7 +32,7 @@ const WorkspaceProjectsPage = () => {
     return (
         <>
             <section
-                className={"w-[90%] max-w-[700px] mx-auto h-[400px] mt-[200px]"}>
+                className={"w-[90%] max-w-[700px] text-black mx-auto h-[400px] mt-[200px]"}>
                 <div
                     className={"w-full border-b border-white/30 flex justify-between"}>
                     <h1

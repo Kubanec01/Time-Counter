@@ -9,7 +9,7 @@ export const BackButton = () => {
     return (
         <button
             onClick={() => router.back()}
-            className={"text-white/80 mr-2 cursor-pointer hover:bg-white/10 duration-100 flex items-center justify-center p-1.5 pl-3 rounded-lg"}>
+            className={"text-black/80 cursor-pointer"}>
             <MdArrowBackIos/>
         </button>
     )

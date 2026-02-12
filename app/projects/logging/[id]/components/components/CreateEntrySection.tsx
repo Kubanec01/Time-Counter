@@ -88,7 +88,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
             selectedDate === null || (taskType === "custom" && customType?.trim() === "");
     }
 
-    // Fetch Options
+    // Fetch Data
     useEffect(() => {
         if (!userId) return
 
@@ -104,7 +104,9 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
             const project = data.projects.find((project: Project) => project.projectId === props.projectId)
             const customized = project.customizedUsersOptions ?? [];
             const userOptions = customized.find((o: UserProjectOptions) => o.userId === userId);
+            const trackFormat = project.trackFormat
 
+            setTimeFormat(trackFormat)
 
             if (userOptions) {
                 setOptions(userOptions.activeOptions)
