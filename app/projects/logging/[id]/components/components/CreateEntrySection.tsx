@@ -196,7 +196,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                             min={0.25}
                             max={24}
                             step={0.25}
-                            value={timeInputValue === 0 ? 0.25 : timeInputValue}
+                            value={timeInputValue}
                             onChange={(e) => setTimeInputValue(Number(e.target.value))}
                             type={"number"}
                             placeholder={"0.25"}

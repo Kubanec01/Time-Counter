@@ -15,10 +15,11 @@ import {OnboardingModal} from "@/components/modals/OnboardingModal";
 export default function HomePage() {
 
     // User Auth Redirect
-    useAuthRedirect()
+    const {user, loading} = useAuthRedirect()
 
     // User Data
     const {mode, workspaceId, userRole} = useWorkSpaceContext()
+
 
     //   States
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -45,7 +46,7 @@ export default function HomePage() {
         setIsClient(true)
     }, []);
 
-    if (!isClient) return (
+    if ((loading || !user) || !isClient) return (
         <LoadingPage/>
     )
 

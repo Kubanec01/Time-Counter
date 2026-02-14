@@ -173,11 +173,12 @@ export const UserMenu = ({...props}: Props) => {
                         }}
                         onClick={() => router.push("/workspaces/users")}
                         className={"items-center w-full px-3 py-2.5 gap-1 text-white/98 text-xs border-b border-white/20 hover:bg-white/5 cursor-pointer"}>
-                        <MdPeopleAlt  className={"text-sm"}/> Workspace users
+                        <MdPeopleAlt className={"text-sm"}/> Workspace users
                     </button>
                     <button
+                        style={{display: mode === "workspace" ? "flex" : "none"}}
                         onClick={() => setIsLeaveWorkspaceModalOpen(true)}
-                        className={"flex items-center gap-1 bg-white/10 hover:bg-white/15 w-full p-3 text-white/98 cursor-pointer text-xs"}>
+                        className={"items-center gap-1 bg-white/10 hover:bg-white/15 w-full p-3 text-white/98 cursor-pointer text-xs"}>
                         <IoMdAddCircle className={"text-sm"}/> Join/Create workspace
                     </button>
                 </section>
