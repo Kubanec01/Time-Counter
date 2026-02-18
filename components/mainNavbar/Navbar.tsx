@@ -47,7 +47,7 @@ const Navbar = () => {
     return (
         <div
             className={`${userId ? "block" : "hidden"} w-[90%] max-w-[1100px] px-4 fixed top-2 left-2/4 -translate-x-2/4 h-[46px]
-             rounded-xl z-[40] bg-[#F8F8F8E6] border-gray-500/30 border shadow-xs flex justify-between items-center`}
+             rounded-xl z-[40] bg-[#F8F8F8E6] border border-black/20 shadow-xs flex justify-between items-center`}
         >
             {/*Left Side*/}
             <div
