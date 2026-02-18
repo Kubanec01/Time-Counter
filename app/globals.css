@@ -25,7 +25,8 @@
     --color-vibrant-purple-600: #6C47FF;
     --color-vibrant-purple-500: #8A6BFF;
     --color-vibrant-purple-400: #A999FF;
-
+    --color-gradient-yellow: #FCF0DA;
+    --color-cloud-white: #ffffff;
 }
 
 @layer components {
@@ -36,11 +37,20 @@
     .main-button:hover {
         @apply bg-gradient-to-t from-vibrant-purple-600 to-vibrant-purple-500;
     }
+
+    .small-button {
+        @apply font-medium flex items-center justify-center text-xs p-1 px-1.5 rounded-md;
+    }
+
+    .medium-button {
+        @apply font-semibold text-sm px-3 py-1 rounded-md;
+    }
+
 }
 
 
 body {
-    background: #f5f5f7;
+    background: #ffffff;
     font-family: "Nunito", sans-serif;
 }
 

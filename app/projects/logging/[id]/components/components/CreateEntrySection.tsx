@@ -150,7 +150,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
             </div>
             <form
                 onSubmit={createSection}
-                className={"p-6 rounded-xl bg-black/6 flex flex-col justify-between gap-8 items-start mx-auto"}>
+                className={"p-6 rounded-xl bg-black/2 flex flex-col justify-between gap-8 items-start mx-auto"}>
                 {/* Main inputs Section */}
                 <div
                     className={"w-full flex justify-start gap-10 flex-wrap"}>

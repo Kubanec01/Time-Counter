@@ -1,0 +1,37 @@
+'use client'
+
+import {useState} from "react";
+import {WorkspaceForm} from "@/app/workspaces/components/workspaceLoginSection/WorkspaceForm";
+
+
+export const WorkspacesLoginSection = () => {
+
+    const [workspaceAction, setWorkspaceAction] = useState<"create" | "join">("create")
+
+
+    return (
+        <>
+            {/* Buttons */}
+            <div
+                className={"mt-10 flex items-center justify-center gap-20"}>
+                <button
+                    onClick={() => setWorkspaceAction("create")}
+                    className={`${workspaceAction === "create" ? "text-black" : "text-black/50"}
+                    font-semibold cursor-pointer`}
+                >
+                    Create Workspace
+                </button>
+                <button
+                    onClick={() => setWorkspaceAction("join")}
+                    className={`${workspaceAction === "join" ? "text-black" : "text-black/50"}
+                    font-semibold cursor-pointer`}
+                >
+                    Join Workspace
+                </button>
+            </div>
+            <WorkspaceForm
+                workspaceAction={workspaceAction}
+            />
+        </>
+    )
+}

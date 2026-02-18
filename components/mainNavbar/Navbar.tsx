@@ -21,6 +21,8 @@ const Navbar = () => {
     const {userInitials, workspaceName, workspaceId, mode, userId, userName} = useWorkSpaceContext()
     const {replace} = useReplaceRouteLink()
 
+    const btnStyle = "text-black font-semibold text-sm duration-150 ease-in-out cursor-pointer hover:bg-black/5 border border-transparent hover:border-black/10 px-3 py-0.5 rounded-md duration-150"
+
     const welcomeSign = () => {
         const currHour = getHours(new Date())
         const name = userName
@@ -30,10 +32,6 @@ const Navbar = () => {
         else return `Good evening, ${name} 🌙`
 
     }
-
-
-    // Styles
-    const rightButtonsStyle = "text-custom-gray-800 hover:text-vibrant-purple-400 duration-150 ease-in-out text-[24px] cursor-pointer"
 
     console.log(userId)
 
@@ -48,16 +46,17 @@ const Navbar = () => {
 
     return (
         <div
-            className={`${userId ? "block" : "hidden"} w-full fixed top-0 left-0 h-[72px] z-[40] bg-black/95 backdrop-blur-sm flex justify-between items-center`}
+            className={`${userId ? "block" : "hidden"} w-[90%] max-w-[1100px] px-4 fixed top-2 left-2/4 -translate-x-2/4 h-[46px]
+             rounded-xl z-[40] bg-[#F8F8F8E6] border-gray-500/30 border shadow-xs flex justify-between items-center`}
         >
             {/*Left Side*/}
             <div
-                className={"h-full flex justify-start items-center w-[75%]"}>
+                className={"h-full flex justify-start items-center w-[50%]"}>
                 <div
                     onClick={() => replace("/")}
-                    className={"h-full flex items-center cursor-pointer px-[50px] justify-center border-r border-custom-gray-800 flex-shrink-0"}
+                    className={"h-full w-[38px] flex items-center cursor-pointer justify-start border-r border-black/10 flex-shrink-0"}
                 >
-                    <img src={"/Logo.png"} alt={"Logo image"} className={"w-[94%] h-auto"}/>
+                    <img src={"/Logo.png"} alt={"Logo image"} className={"w-[22px] aspect-square"}/>
                 </div>
                 <div
                     className={"h-full flex items-center justify-start overflow-hidden text-nowrap"}
@@ -65,7 +64,7 @@ const Navbar = () => {
                     {mode === "solo"
                         ?
                         <div
-                            className={"text-white/98 bg-white/14 text-lg ml-[22px] px-3 py-1 rounded-3xl"}
+                            className={"text-black/80 bg-black/6 medium-button ml-[18px] border border-black/10"}
                         >
                             {welcomeSign()}
                         </div>
@@ -86,21 +85,20 @@ const Navbar = () => {
             </div>
             {/*Right Side*/}
             <ul
-                className={"h-full w-[25%] flex items-center justify-end gap-[30px] text-white pr-[50px] pl-10 overflow-hidden"}
+                className={"h-full w-[50%] flex items-center justify-end gap-2"}
             >
                 <li>
                     <button
-                        className={rightButtonsStyle}
+                        className={btnStyle}
                     >
-                        <LuMessageCircleMore/>
-
+                        Guide
                     </button>
                 </li>
                 <li>
                     <button
-                        className={rightButtonsStyle}
+                        className={btnStyle}
                     >
-                        <RxQuestionMarkCircled/>
+                        Contact us
                     </button>
                 </li>
                 <li>
@@ -111,8 +109,8 @@ const Navbar = () => {
                             backgroundSize: "cover",
                             backgroundRepeat: "no-repeat",
                         }}
-                        className={`cursor-pointer aspect-square w-[36px] rounded-[100px]
-                         overflow-hidden flex justify-center items-center text-white`}
+                        className={`cursor-pointer aspect-square w-[32px] rounded-[100px]
+                         overflow-hidden flex justify-center items-center text-white text-[15px] ml-3`}
                     >
                         {userInitials}
                     </button>

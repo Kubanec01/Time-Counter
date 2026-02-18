@@ -23,6 +23,8 @@ import {removeWorkspaceFromList} from "@/features/utilities/delete/removeWorkspa
 import {invalidUserId} from "@/messages/errors";
 import {IoMdAddCircle} from "react-icons/io";
 import {useRouter} from "next/navigation";
+import {CiCirclePlus} from "react-icons/ci";
+import {FaPlusCircle} from "react-icons/fa";
 
 interface Props {
     isUserMenuOpen: boolean
@@ -93,10 +95,10 @@ export const UserMenu = ({...props}: Props) => {
         <>
             <div
                 onMouseLeave={() => props.setIsUserMenuOpen(false)}
-                className={`${setVisibility} fixed top-15 right-12.5 rounded-lg z-[50] bg-black/90 backdrop-blur-sm flex flex-col w-[286px] pt-3`}>
+                className={`${setVisibility} fixed top-12 right-0 rounded-xl z-[50] bg-black/10 overflow-hidden backdrop-blur-xl shadow-md flex flex-col w-[286px]`}>
                 {/* User section */}
                 <section
-                    className={"border-b border-white/50 px-3"}>
+                    className={"px-3 bg-white/75 pt-3"}>
                     {/* User Initials */}
                     <div
                         className={"flex items-center gap-2"}>
@@ -106,30 +108,30 @@ export const UserMenu = ({...props}: Props) => {
                         backgroundSize: "cover",
                         backgroundRepeat: "no-repeat",
                     }}
-                    className={`aspect-square w-[44px] rounded-[100px]
-                         overflow-hidden flex justify-center items-center text-white text-lg`}
+                    className={`aspect-square w-[40px] rounded-full
+                         overflow-hidden flex justify-center items-center text-white text-base`}
                 >
                     {userInitials}
                 </span>
                         <div
-                            className={"text-white"}>
-                            <h1 className={"text-sm font-medium"}>{userName} {userSurname}</h1>
+                            className={"text-black"}>
+                            <h1 className={"text-sm font-semibold"}>{userName} {userSurname}</h1>
                             <p
-                                className={"text-xs"}>
+                                className={"text-[13px] font-semibold -mt-0.5 text-black/75"}>
                                 {userRole}</p>
                         </div>
                     </div>
                     {/* Buttons */}
                     <div
-                        className={"flex items-center gap-2 my-2 justify-end"}>
+                        className={"flex items-center gap-2 my-2 mt-3 justify-start"}>
                         <button
-                            className={"text-white/98 flex items-center justify-center text-xs gap-1 bg-white/10 border border-white/20 p-1 px-2 rounded-md"}>
+                            className={"text-black small-button gap-1 bg-black/3 border border-black/15"}>
                             <MdOutlineSettings/>
                             Manage account
                         </button>
                         <button
                             onClick={() => setIsLogoutModalOpen(true)}
-                            className={"text-white/98 flex items-center justify-center text-xs gap-1 bg-white/10 border border-white/20 p-1 px-2 rounded-md cursor-pointer"}>
+                            className={"cursor-pointer text-black small-button gap-1 bg-black/3 hover:bg-black/6 border border-black/15"}>
                             <MdExitToApp className={"text-[14px]"}/>
                             Sign out
                         </button>
@@ -137,19 +139,19 @@ export const UserMenu = ({...props}: Props) => {
                 </section>
                 {/* Workspaces List */}
                 <ul
-                    className={"flex flex-col"}>
+                    className={"flex flex-col p-3 border-b border-t border-black/10 rounded-b-xl bg-white/75"}>
                     {workspacesList.map((workspace) => (
                         <li
                             key={workspace.workspaceId}
                             onClick={() => joinWorkspace(userId, workspace.workspaceId, workspace.password)}
-                            className={"flex items-center justify-between px-3 py-4 gap-2 border-b border-white/50 hover:bg-white/5 cursor-pointer"}>
+                            className={"flex items-center justify-between px-3 py-2.5 gap-2 border border-black/15 hover:bg-black/2 rounded-lg cursor-pointer"}>
                             <div
-                                className={"text-white text-xs"}>
+                                className={"text-black text-xs font-medium"}>
                                 <h1>{workspace.workspaceId}</h1>
                             </div>
                             <button
                                 onClick={() => removeWorkspaceFromList(userId, workspace.workspaceId)}
-                                className={"text-white/40 hover:text-red-300/70 cursor-pointer"}>
+                                className={"text-black/40 hover:text-red-400/70 cursor-pointer"}>
                                 <MdDeleteOutline/>
                             </button>
                         </li>
@@ -163,23 +165,15 @@ export const UserMenu = ({...props}: Props) => {
                             display: mode === "solo" || userRole === "Member" ? "none" : "flex",
                         }}
                         onClick={() => router.push("/workspaces/settings")}
-                        className={"items-center w-full px-3 py-2.5 gap-1 text-white/98 text-xs border-b border-white/20 hover:bg-white/5 cursor-pointer"}>
+                        className={"items-center w-full px-3 py-2.5 gap-1  text-black/90 text-xs font-medium border-b border-white/50 hover:bg-white/10 cursor-pointer"}>
                         <MdOutlineSettings className={"text-sm"}/> Manage workspace
                     </button>
                     {/* Member btn */}
                     <button
-                        style={{
-                            display: mode === "solo" || userRole !== "Member" ? "none" : "flex",
-                        }}
-                        onClick={() => router.push("/workspaces/users")}
-                        className={"items-center w-full px-3 py-2.5 gap-1 text-white/98 text-xs border-b border-white/20 hover:bg-white/5 cursor-pointer"}>
-                        <MdPeopleAlt className={"text-sm"}/> Workspace users
-                    </button>
-                    <button
                         style={{display: mode === "workspace" ? "flex" : "none"}}
                         onClick={() => setIsLeaveWorkspaceModalOpen(true)}
-                        className={"items-center gap-1 bg-white/10 hover:bg-white/15 w-full p-3 text-white/98 cursor-pointer text-xs"}>
-                        <IoMdAddCircle className={"text-sm"}/> Join/Create workspace
+                        className={"items-center gap-1 w-full px-3 py-2.5  text-black/90 hover:bg-white/10 font-medium cursor-pointer text-xs"}>
+                        <FaPlusCircle className={"text-xs"}/> Join/Create workspace
                     </button>
                 </section>
             </div>
