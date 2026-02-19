@@ -95,7 +95,7 @@ export const UserMenu = ({...props}: Props) => {
         <>
             <div
                 onMouseLeave={() => props.setIsUserMenuOpen(false)}
-                className={`${setVisibility} fixed top-12 right-0 rounded-xl z-[50] bg-black/10 shadow-lg border border-black/20 overflow-hidden backdrop-blur-xl flex flex-col w-[286px]`}>
+                className={`${setVisibility} fixed top-12 right-0 rounded-xl z-50 bg-black/8 shadow-xl border border-black/15 overflow-hidden backdrop-blur-md flex flex-col w-[286px]`}>
                 {/* User section */}
                 <section
                     className={"px-3 bg-white pt-3"}>
@@ -139,7 +139,7 @@ export const UserMenu = ({...props}: Props) => {
                 </section>
                 {/* Workspaces List */}
                 <ul
-                    className={"flex flex-col p-3 border-b border-t border-black/10 border-b-black/20 rounded-b-xl bg-white"}>
+                    className={"flex flex-col gap-2 p-3 border-b border-t border-black/10 border-b-black/20 rounded-b-xl bg-white"}>
                     {workspacesList.map((workspace) => (
                         <li
                             key={workspace.workspaceId}

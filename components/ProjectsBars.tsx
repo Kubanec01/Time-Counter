@@ -1,14 +1,9 @@
 'use client'
 
-import {Project, ProjectType} from "@/types";
+import {Member, Project, ProjectType} from "@/types";
 import {onSnapshot} from "firebase/firestore";
 import React, {useEffect, useState} from "react";
-import {HiOutlineMenuAlt3} from "react-icons/hi";
-import {IoClose} from "react-icons/io5";
-import {MdOutlineEdit} from "react-icons/md";
-import {MdDeleteOutline} from "react-icons/md";
 import RenameModal from "@/components/modals/RenameModal";
-import {RiEditBoxFill} from "react-icons/ri";
 import {editProjectName} from "@/features/utilities/edit/editProjectName";
 import DeleteModal from "@/components/modals/DeleteModal";
 import {deleteProjectCascade} from "@/features/utilities/delete/deleteProjectCascade";
@@ -31,10 +26,9 @@ const ProjectsBars = () => {
     const [editingProjectId, setEditingProjectId] = useState<string | null>(null);
 
     const {replace} = useReplaceRouteLink()
-    const {mode, workspaceId, userRole} = useWorkSpaceContext()
+    const {mode, workspaceId,} = useWorkSpaceContext()
     const mounted = useMounted()
 
-    const isCurrProjectEditing = (projectId: string) => editingProjectId === projectId
 
     // User Data
     const [user] = useAuthState(auth)
@@ -77,105 +71,96 @@ const ProjectsBars = () => {
         setEditingProjectId(null)
     }
 
-    const setProjectBarColor = (projectType: ProjectType) => {
-        if (projectType === "tracking") return "bg-linear-to-br from-pastel-purple-600 to-pastel-purple-500/80"
-        else return "bg-linear-to-br from-pastel-blue-700/70 to-pastel-blue-600/60"
-    }
-
     if (!mounted) return null;
 
     return (
         <>
-            <ul className={"w-[90%] max-w-[856px] pb-[24px] h-auto mx-auto mt-[64px] flex justify-center items-center flex-wrap gap-[56px]"}>
-                {projectsData.length > 0 ?
-                    <>
-                        {projectsData.map((p: Project) => (
-                            <li
-                                key={p.projectId}
-                                className={`${setProjectBarColor(p.type)}  duration-150 ease-in shadow-md hover:shadow-lg shadow-custom-gray-600/80 pt-13 px-3 pb-3 rounded-2xl w-[248px] h-[300px] relative`}>
-                                <ul
-                                    className={`
-                                    ${(userRole === "Admin" || userRole === "Manager") ? "flex" : "hidden"} absolute top-3 right-3 px-3 py-2 
-                                    rounded-full bg-black/75 backdrop-blur-md items-center gap-3 text-white/80 shadow-sm`}
+            <div
+                className={"relative w-full flex flex-1 overflow-y-hidden"}
+            >
+                <span
+                    className={"absolute top-0 left-0 w-[98%] h-10 bg-linear-to-b from-white from-25% z-10 to-transparent"}/>
+                <span
+                    className={"absolute bottom-0 left-0 w-[98%] h-10 bg-linear-to-t from-white from-20% z-40 to-transparent"}/>
+
+                <ul className={"pb-[24px] pt-6 w-full overflow-y-auto"}>
+                    {projectsData.length > 0 ?
+                        <>
+                            {projectsData.map((p: Project) => (
+                                <li
+                                    key={p.projectId}
+                                    className={"cursor-pointer ease-in border mb-4 border-black/20 shadow-md rounded-xl" +
+                                        " bg-linear-to-t from-black/2 to-white hover:from-black/4 duration-100 w-full flex items-center justify-between px-6 py-4"}
                                 >
-                                    <li
-                                        onClick={() => setIsDeleteModalOpen(isCurrProjectEditing(p.projectId))}
-                                        className={`${isCurrProjectEditing(p.projectId) ? "block" : "hidden"} cursor-pointer hover:text-red-300 transition`}
-                                    >
-                                        <MdDeleteOutline/>
-                                    </li>
-
-                                    <li
-                                        onClick={() => setIsModalOpen(isCurrProjectEditing(p.projectId))}
-                                        className={`${isCurrProjectEditing(p.projectId) ? "block" : "hidden"} cursor-pointer hover:text-white transition`}
-                                    >
-                                        <MdOutlineEdit/>
-                                    </li>
-
-                                    <li
-                                        onClick={() =>
-                                            setEditingProjectId(prev => (prev === p.projectId ? null : p.projectId))
-                                        }
-                                        className="cursor-pointer hover:text-white transition"
-                                    >
-                                        {isCurrProjectEditing(p.projectId) ? <IoClose/> : <HiOutlineMenuAlt3/>}
-                                    </li>
-                                </ul>
-                                {/* Body */}
-                                <div className="h-full w-full rounded-2xl p-5 bg-black/85 flex flex-col items-start">
-                                    <div className="flex-0 w-[90%] border-b border-white/20 pb-1.5">
-                                        <h2 className="text-sm text-white/70 font-light -mb-0.5">
+                                    <div
+                                        className={"w-[30%]"}>
+                                        <p
+                                            className={"text-xs font-bold text-vibrant-purple-700"}
+                                        >
                                             Project name
-                                        </h2>
-                                        <h1 className="text-xl leading-tight font-semibold text-white break-words line-clamp-2">
+                                        </p>
+                                        <h1
+                                            className={"font-semibold break-all"}>
                                             {p.title}
                                         </h1>
                                     </div>
-                                    <div className="flex-1"/>
-                                    <div className="flex-0 mb-3 w-[90%] border-b border-white/20">
-                                        <h3 className="text-sm text-white/70 font-light -mb-0.5">
+                                    <div
+                                        className={""}>
+                                        <p
+                                            className={"text-xs font-bold text-black/50"}
+                                        >
                                             Total time
-                                        </h3>
-                                        <span className="text-xl font-semibold text-white">
-                                    {formatSecondsToTimeString(p.totalTime)}
-                                        </span>
+                                        </p>
+                                        <h1
+                                            className={"font-semibold"}>
+                                            {formatSecondsToTimeString(p.totalTime)}
+                                        </h1>
                                     </div>
-                                    <button
-                                        onClick={() => replace(`/projects/${p.type}/${p.projectId}`)}
-                                        className="mt-4 text-white text-sm hover:text-vibrant-purple-400 duration-100 ease-in mb-2 cursor-pointer"
-                                    >
-                                        {"Enter project >"}
-                                    </button>
-                                </div>
-                            </li>
-                        ))}
-                        <DeleteModal
-                            setIsModalOpen={setIsDeleteModalOpen}
-                            isModalOpen={isDeleteModalOpen}
-                            title={"Delete project?"}
-                            desc={"Are you sure you want to delete this project? This step is irreversible and everything stored in this project will be deleted."}
-                            deleteBtnText={"Delete project"}
-                            btnFunction={() => deleteProject(editingProjectId)}
-                            topDistance={300}
-                        />
-                        <RenameModal
-                            setIsModalOpen={setIsModalOpen}
-                            isModalOpen={isModalOpen}
-                            setInputValue={setInputValue}
-                            inputValue={inputValue}
-                            inputPlaceholder={"What is new project name?"}
-                            title={"Rename project?"}
-                            desc={"You can rename your project anytime, anywhere. But remember - the name must contain a maximum of 24 characters."}
-                            formFunction={setProjectName}/>
-                    </>
-                    :
-                    <>
-                        <h1 className="text-custom-gray-600 text-lg mt-[20px]">You have no projects created
-                            0.o</h1>
-                    </>
-                }
-            </ul>
-
+                                    <div
+                                        className={""}>
+                                        <p
+                                            className={"text-xs font-bold text-black/50"}
+                                        >
+                                            Members
+                                        </p>
+                                        <h1
+                                            className={"font-semibold"}>
+                                            0
+                                        </h1>
+                                    </div>
+                                    <h1
+                                        className={"text-sm font-medium"}>
+                                        {'Enter project >'}
+                                    </h1>
+                                </li>
+                            ))}
+                            <DeleteModal
+                                setIsModalOpen={setIsDeleteModalOpen}
+                                isModalOpen={isDeleteModalOpen}
+                                title={"Delete project?"}
+                                desc={"Are you sure you want to delete this project? This step is irreversible and everything stored in this project will be deleted."}
+                                deleteBtnText={"Delete project"}
+                                btnFunction={() => deleteProject(editingProjectId)}
+                                topDistance={300}
+                            />
+                            <RenameModal
+                                setIsModalOpen={setIsModalOpen}
+                                isModalOpen={isModalOpen}
+                                setInputValue={setInputValue}
+                                inputValue={inputValue}
+                                inputPlaceholder={"What is new project name?"}
+                                title={"Rename project?"}
+                                desc={"You can rename your project anytime, anywhere. But remember - the name must contain a maximum of 24 characters."}
+                                formFunction={setProjectName}/>
+                        </>
+                        :
+                        <>
+                            <h1 className="text-custom-gray-600 text-lg mt-[20px]">You have no projects created
+                                0.o</h1>
+                        </>
+                    }
+                </ul>
+            </div>
         </>
     );
 };

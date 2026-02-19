@@ -26,24 +26,31 @@
     --color-vibrant-purple-500: #8A6BFF;
     --color-vibrant-purple-400: #A999FF;
     --color-gradient-yellow: #FCF0DA;
+    --color-gradient-purple: #ebe7fd;
+    --color-gradient-green: #e1faf4;
     --color-cloud-white: #ffffff;
 }
 
 @layer components {
-    .main-button {
-        @apply bg-vibrant-purple-600 cursor-pointer border border-vibrant-purple-600;
-    }
-
-    .main-button:hover {
-        @apply bg-gradient-to-t from-vibrant-purple-600 to-vibrant-purple-500;
-    }
 
     .small-button {
-        @apply font-medium flex items-center justify-center text-xs p-1 px-1.5 rounded-md;
+        @apply font-medium flex items-center justify-center text-xs p-1 px-1.5 rounded-md cursor-pointer;
     }
 
     .medium-button {
-        @apply font-semibold text-sm px-3 py-1 rounded-md;
+        @apply font-semibold text-sm px-3 py-1 rounded-md cursor-pointer;
+    }
+
+    .large-button {
+        @apply text-sm rounded-lg font-medium cursor-pointer px-4 py-2.5;
+    }
+
+    .bg-purple-gradient {
+        @apply text-white border border-vibrant-purple-700 bg-linear-to-t from-vibrant-purple-600 to-vibrant-purple-500 hover:to-vibrant-purple-500/85;
+    }
+
+    .bg-black-gradient {
+        @apply bg-linear-to-t from-black to-black/60 hover:to-black/55 text-white;
     }
 
 }

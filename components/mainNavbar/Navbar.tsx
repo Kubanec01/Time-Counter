@@ -33,8 +33,6 @@ const Navbar = () => {
 
     }
 
-    console.log(userId)
-
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setIsClient(true)
@@ -64,18 +62,18 @@ const Navbar = () => {
                     {mode === "solo"
                         ?
                         <div
-                            className={"text-black/80 bg-black/6 medium-button ml-[18px] border border-black/10"}
+                            className={"text-black/80 bg-black/4 medium-button ml-[18px] border border-black/10"}
                         >
                             {welcomeSign()}
                         </div>
                         :
                         <>
-                            <span className={"text-white text-lg font-light ml-[22px]"}>
+                            <span className={"text-black font-semibold text-sm ml-[22px]"}>
                                 {"Workspace >"}
                             </span>
-                            <div className={`flex items-center justify-center gap-[30px] pl-[16px] h-full w-auto`}>
+                            <div className={`flex items-center justify-center gap-[30px] pl-3 h-full w-auto`}>
                             <span
-                                className={"text-custom-gray-600 text-lg font-light"}>
+                                className={"text-black/50 font-medium text-sm"}>
                             {workspaceName} / <span className={"text-sm"}>{workspaceId}</span>
                             </span>
                             </div>

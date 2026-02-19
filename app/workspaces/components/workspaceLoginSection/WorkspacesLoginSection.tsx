@@ -16,14 +16,14 @@ export const WorkspacesLoginSection = () => {
                 className={"mt-10 flex items-center justify-center gap-20"}>
                 <button
                     onClick={() => setWorkspaceAction("create")}
-                    className={`${workspaceAction === "create" ? "text-black" : "text-black/50"}
+                    className={`${workspaceAction === "create" ? "text-black" : "text-black/40"}
                     font-semibold cursor-pointer`}
                 >
                     Create Workspace
                 </button>
                 <button
                     onClick={() => setWorkspaceAction("join")}
-                    className={`${workspaceAction === "join" ? "text-black" : "text-black/50"}
+                    className={`${workspaceAction === "join" ? "text-black" : "text-black/40"}
                     font-semibold cursor-pointer`}
                 >
                     Join Workspace

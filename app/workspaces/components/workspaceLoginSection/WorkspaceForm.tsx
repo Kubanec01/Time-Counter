@@ -160,7 +160,7 @@ export const WorkspaceForm = ({...props}: WorkspaceFormProps) => {
                     {error}
                 </p>
                 <button
-                    className={"medium-button border bg-linear-to-t from-black to-black/60 hover:to-black/55 text-white rounded-lg py-1.5 cursor-pointer"}
+                    className={"medium-button bg-black-gradient rounded-lg py-1.5"}
                 >
                     {btnTitle}
                 </button>
