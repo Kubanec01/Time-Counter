@@ -124,11 +124,11 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
 
     return (
         <section
-            className={"w-[90%] max-w-[1000px] p-10 pt-4 mt-30 rounded-xl shadow-lg mx-auto bg-white/60"}>
+            className={"pb-10 pt-5 mt-8 bg-radial from-vibrant-purple-700/30 to-white to-70% w-[90%] max-w-[1000px] mx-auto"}>
             <div
-                className={"flex justify-between"}>
+                className={"w-full flex items-center justify-between px-8 pb-2"}>
                 <h1
-                    className={"font-semibold mb-0.5 text-black/46"}>
+                    className={"font-semibold mb-0.5 text-black/70 text-lg"}>
                     Create a new entry
                 </h1>
                 <div
@@ -136,133 +136,139 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                 >
                     <button
                         onClick={() => router.push(`/stats/${props.projectId}`)}
-                        className={`${userRole === "Member" ? "hidden" : "block"}
-                        text-xl text-black/35 hover:text-black/50 duration-250 ease-in cursor-pointer`}>
-                        <RiBarChart2Fill/>
+                        className={`${userRole === "Member" ? "hidden" : "flex"}
+                        medium-button border flex items-center justify-center gap-1 bg-black-gradient`}>
+                        Stats
+                        <RiBarChart2Fill className={"mb-0.5"}/>
                     </button>
                     <button
                         onClick={() => router.push(`/workspaces/settings/projects/${props.projectId}`)}
-                        className={`${userRole === "Member" ? "hidden" : "block"}
-                        text-xl text-black/35 hover:text-black/50 hover:rotate-180 duration-250 ease-in cursor-pointer`}>
+                        className={`${userRole === "Member" ? "hidden" : "flex"}
+                        medium-button border flex items-center justify-center gap-1 bg-black-gradient`}>
+                        Settings
                         <RiSettings3Fill/>
                     </button>
                 </div>
             </div>
-            <form
-                onSubmit={createSection}
-                className={"p-6 rounded-xl bg-black/2 flex flex-col justify-between gap-8 items-start mx-auto"}>
-                {/* Main inputs Section */}
-                <div
-                    className={"w-full flex justify-start gap-10 flex-wrap"}>
-                    {/* Type of Work */}
+            <div
+                className={"w-full p-8 rounded-xl shadow-lg mx-auto bg-white border border-black/5"}>
+                <form
+                    onSubmit={createSection}
+                    className={"p-6 rounded-xl bg-black/2 flex flex-col justify-between gap-8 items-start mx-auto"}>
+                    {/* Main inputs Section */}
                     <div
-                        className={"flex flex-col"}>
-                        <label htmlFor="task-type" className={"font-semibold text-black/60"}>Type of task</label>
-                        <select
-                            id="task-type"
-                            value={taskType ?? ""}
-                            onChange={(e) => setTaskType(e.target.value as LoggingType)}
-                            className="border border-black/20 w-[130px] focus:outline-vibrant-purple-600 p-1 px-2
+                        className={"w-full flex justify-start gap-10 flex-wrap"}>
+                        {/* Type of Work */}
+                        <div
+                            className={"flex flex-col"}>
+                            <label htmlFor="task-type" className={"font-semibold text-sm text-black/60"}>Type of
+                                task</label>
+                            <select
+                                id="task-type"
+                                value={taskType ?? ""}
+                                onChange={(e) => setTaskType(e.target.value as LoggingType)}
+                                className="border border-black/20 w-[130px] focus:outline-vibrant-purple-600 p-1 px-2
                                  rounded-md bg-white cursor-pointer"
-                        >
-                            <option value="" disabled>
-                                Select...
-                            </option>
-                            {options.map((option) => (
-                                <option key={option.value} value={option.value}>
-                                    {option.label}
+                            >
+                                <option value="" disabled>
+                                    Select...
                                 </option>
-                            ))}
-                            <option value="custom">Custom</option>
-                            <option value="unset">Unset</option>
-                        </select>
-                    </div>
-                    {/* Name/Description */}
-                    <div
-                        className={"flex flex-col"}>
-                        <label htmlFor="name-description"
-                               className={"font-semibold text-black/60"}>Name/Description</label>
-                        <input onChange={e => setNameValue(e.target.value)}
-                               value={nameValue}
-                               id={"name-description"} type="text" placeholder={"What are you going to work on?"}
-                               className={"border border-black/20 w-[300px] focus:outline-vibrant-purple-600 p-1 px-2 rounded-md bg-white"}/>
-                    </div>
-                    {/* Decimal time input */}
-                    <div
-                        className={`${timeFormat === "Decimal" ? "flex" : "hidden"} flex-col`}>
-                        <label htmlFor="time" className={"font-semibold text-black/60"}>Hours</label>
-                        <input
-                            id="time"
-                            min={0.25}
-                            max={24}
-                            step={0.25}
-                            value={timeInputValue}
-                            onChange={(e) => setTimeInputValue(Number(e.target.value))}
-                            type={"number"}
-                            placeholder={"0.25"}
-                            className={"border border-black/20 text-sm focus:outline-vibrant-purple-600 p-1.5 px-2 rounded-md bg-white"}/>
-                    </div>
-                    {/* Range time inputs */}
-                    <div
-                        className={`${timeFormat === "Range" ? "flex" : "hidden"} flex gap-6`}>
+                                {options.map((option) => (
+                                    <option key={option.value} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                                <option value="custom">Custom</option>
+                                <option value="unset">Unset</option>
+                            </select>
+                        </div>
+                        {/* Name/Description */}
                         <div
                             className={"flex flex-col"}>
-                            <label htmlFor="time" className={"font-semibold text-black/60"}>From</label>
+                            <label htmlFor="name-description"
+                                   className={"font-semibold text-sm text-black/60"}>Name/Description</label>
+                            <input onChange={e => setNameValue(e.target.value)}
+                                   value={nameValue}
+                                   id={"name-description"} type="text" placeholder={"What are you going to work on?"}
+                                   className={"border border-black/20 w-[300px] focus:outline-vibrant-purple-600 p-1 px-2 rounded-md bg-white"}/>
+                        </div>
+                        {/* Decimal time input */}
+                        <div
+                            className={`${timeFormat === "Decimal" ? "flex" : "hidden"} flex-col`}>
+                            <label htmlFor="time" className={"font-semibold text-sm text-black/60"}>Hours</label>
                             <input
                                 id="time"
-                                type={"time"}
-                                value={fromTime}
-                                onChange={(e) => {
-                                    setFromTime(e.target.value)
-                                    setTimeDifference(e.target.value, toTime)
-                                }}
+                                min={0.25}
+                                max={24}
+                                step={0.25}
+                                value={timeInputValue}
+                                onChange={(e) => setTimeInputValue(Number(e.target.value))}
+                                type={"number"}
+                                placeholder={"0.25"}
                                 className={"border border-black/20 text-sm focus:outline-vibrant-purple-600 p-1.5 px-2 rounded-md bg-white"}/>
                         </div>
+                        {/* Range time inputs */}
+                        <div
+                            className={`${timeFormat === "Range" ? "flex" : "hidden"} flex gap-6`}>
+                            <div
+                                className={"flex flex-col"}>
+                                <label htmlFor="time" className={"font-semibold text-sm text-black/60"}>From</label>
+                                <input
+                                    id="time"
+                                    type={"time"}
+                                    value={fromTime}
+                                    onChange={(e) => {
+                                        setFromTime(e.target.value)
+                                        setTimeDifference(e.target.value, toTime)
+                                    }}
+                                    className={"border border-black/20 text-sm focus:outline-vibrant-purple-600 p-1.5 px-2 rounded-md bg-white"}/>
+                            </div>
+                            <div
+                                className={"flex flex-col"}>
+                                <label htmlFor="time" className={"font-semibold text-sm text-black/60"}>To</label>
+                                <input
+                                    id="time"
+                                    type={"time"}
+                                    value={toTime}
+                                    onChange={(e) => {
+                                        setTimeDifference(fromTime, e.target.value)
+                                    }}
+                                    className={"border border-black/20 text-sm focus:outline-vibrant-purple-600 p-1.5 px-2 rounded-md bg-white"}/>
+                            </div>
+                        </div>
+                        {/*  Date  */}
                         <div
                             className={"flex flex-col"}>
-                            <label htmlFor="time" className={"font-semibold text-black/60"}>To</label>
+                            <label className={"font-semibold text-sm text-black/60"}>Date</label>
+                            <MaxDateCalendarInput
+                                selectedDate={selectedDate}
+                                setSelectedDate={setSelectedDate}
+                            />
+                        </div>
+                        {/* Custom input */}
+                        <div
+                            className={`${taskType === "custom" ? "flex  flex-col" : "hidden"}`}>
+                            <label htmlFor="name-description" className={"font-semibold text-black/60"}>Custom Type of
+                                task</label>
                             <input
-                                id="time"
-                                type={"time"}
-                                value={toTime}
-                                onChange={(e) => {
-                                    setTimeDifference(fromTime, e.target.value)
-                                }}
-                                className={"border border-black/20 text-sm focus:outline-vibrant-purple-600 p-1.5 px-2 rounded-md bg-white"}/>
+                                onChange={(e) => setCustomType(e.target.value)}
+                                id={"name-description"} type="text" placeholder={"Write your custom type..."}
+                                className={"border border-black/20 w-[300px] focus:outline-vibrant-purple-600 p-1 px-2 rounded-md bg-white"}/>
                         </div>
                     </div>
-                    {/*  Date  */}
-                    <div
-                        className={"flex flex-col"}>
-                        <label className={"font-semibold text-black/60"}>Date</label>
-                        <MaxDateCalendarInput
-                            selectedDate={selectedDate}
-                            setSelectedDate={setSelectedDate}
-                        />
-                    </div>
-                    {/* Custom input */}
-                    <div
-                        className={`${taskType === "custom" ? "flex  flex-col" : "hidden"}`}>
-                        <label htmlFor="name-description" className={"font-semibold text-black/60"}>Custom Type of
-                            task</label>
-                        <input
-                            onChange={(e) => setCustomType(e.target.value)}
-                            id={"name-description"} type="text" placeholder={"Write your custom type..."}
-                            className={"border border-black/20 w-[300px] focus:outline-vibrant-purple-600 p-1 px-2 rounded-md bg-white"}/>
-                    </div>
-                </div>
-                {/* Custom type Section */}
-                {/*Submit Button*/}
-                <button
-                    type={"submit"}
-                    disabled={isButtonDisabled()}
-                    className={`${isButtonDisabled() ? "bg-black/40  border text-white/80" : "main-button"}
+                    {/* Custom type Section */}
+                    {/*Submit Button*/}
+                    <button
+                        type={"submit"}
+                        disabled={isButtonDisabled()}
+                        className={`${isButtonDisabled() ? "bg-black/40  border text-white/80" : "bg-purple-gradient cursor-pointer"}
                          px-5 py-2 mt-4 text-sm font-semibold rounded-md text-white duration-100`}>
-                    Create entry
-                </button>
-            </form>
-            <InformativeModal setIsModalOpen={setIsMaxTimeModalOpen} isModalOpen={isMaxTimeModalOpen}
-                              title={"You can't track more than 24 hours a day."}/>
+                        Create entry
+                    </button>
+                </form>
+                <InformativeModal setIsModalOpen={setIsMaxTimeModalOpen} isModalOpen={isMaxTimeModalOpen}
+                                  title={"You can't track more than 24 hours a day."}/>
+            </div>
         </section>
     )
 }

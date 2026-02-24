@@ -1,9 +1,9 @@
 'use client'
 
 import {ProjectProps} from "@/types";
-import ProjectCartNavbar from "@/components/ProjectCartNavbar";
 import {CreateEntrySection} from "@/app/projects/logging/[id]/components/components/CreateEntrySection";
 import {ProjectSectionsSection} from "@/app/projects/logging/[id]/components/components/ProjectSectionsSection";
+import {ProjectHero} from "@/components/ProjectHero";
 
 
 export const LoggingProjectCart = ({...props}: ProjectProps) => {
@@ -11,7 +11,11 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
 
     return (
         <>
-            <ProjectCartNavbar projectName={props.projectName}/>
+            {/*<ProjectCartNavbar projectName={props.projectName}/>*/}
+            <ProjectHero
+                projectSpec={"Logging"}
+                projectName={props.projectName}
+            />
             <CreateEntrySection
                 projectId={props.projectId}
             />

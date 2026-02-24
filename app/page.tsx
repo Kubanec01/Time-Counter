@@ -65,7 +65,7 @@ export default function HomePage() {
                     >
 
                         <span
-                            className={"absolute top-0 left-0 w-full h-[20%] bg-linear-to-b from-gradient-purple to-transparent"}/>
+                            className={"absolute top-0 left-0 w-full h-[25%] bg-linear-to-b from-gradient-purple to-transparent z-10"}/>
                         <span
                             className={"absolute bottom-0 left-0 w-full h-[12%] bg-linear-to-t from-gradient-green to-transparent"}/>
 
@@ -90,7 +90,7 @@ export default function HomePage() {
                                     className={`${isUserMember ? "hidden" : "flex"} items-center justify-center`}>
                                     <button
                                         onClick={() => setIsModalOpen(true)}
-                                        className={" large-button bg-purple-gradient"}
+                                        className={" large-button bg-purple-gradient z-10"}
                                     >
                                         Create project
                                     </button>

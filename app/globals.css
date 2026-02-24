@@ -24,10 +24,10 @@
     --color-vibrant-purple-700: #5b33fd;
     --color-vibrant-purple-600: #6C47FF;
     --color-vibrant-purple-500: #8A6BFF;
-    --color-vibrant-purple-400: #A999FF;
+    --color-vibrant-purple-400: #9781F1;
     --color-gradient-yellow: #FCF0DA;
-    --color-gradient-purple: #ebe7fd;
-    --color-gradient-green: #e1faf4;
+    --color-gradient-purple: #E5DFFF;
+    --color-gradient-green: #CEF2EC;
     --color-cloud-white: #ffffff;
 }
 
@@ -38,7 +38,7 @@
     }
 
     .medium-button {
-        @apply font-semibold text-sm px-3 py-1 rounded-md cursor-pointer;
+        @apply font-medium text-sm px-3 py-1 rounded-md cursor-pointer;
     }
 
     .large-button {

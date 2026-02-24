@@ -95,7 +95,7 @@ export const UserMenu = ({...props}: Props) => {
         <>
             <div
                 onMouseLeave={() => props.setIsUserMenuOpen(false)}
-                className={`${setVisibility} fixed top-12 right-0 rounded-xl z-50 bg-black/8 shadow-xl border border-black/15 overflow-hidden backdrop-blur-md flex flex-col w-[286px]`}>
+                className={`${setVisibility} fixed top-12 right-0 rounded-xl z-50 bg-gray-300 shadow-xl border border-black/15 overflow-hidden backdrop-blur-lg flex flex-col w-[286px]`}>
                 {/* User section */}
                 <section
                     className={"px-3 bg-white pt-3"}>

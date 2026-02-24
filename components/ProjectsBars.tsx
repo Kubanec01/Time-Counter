@@ -89,6 +89,7 @@ const ProjectsBars = () => {
                             {projectsData.map((p: Project) => (
                                 <li
                                     key={p.projectId}
+                                    onClick={() => replace(`/projects/${p.type}/${p.projectId}`)}
                                     className={"cursor-pointer ease-in border mb-4 border-black/20 shadow-md rounded-xl" +
                                         " bg-linear-to-t from-black/2 to-white hover:from-black/4 duration-100 w-full flex items-center justify-between px-6 py-4"}
                                 >
@@ -155,7 +156,7 @@ const ProjectsBars = () => {
                         </>
                         :
                         <>
-                            <h1 className="text-custom-gray-600 text-lg mt-[20px]">You have no projects created
+                            <h1 className="text-custom-gray-600 text-center text-lg mt-24">You have no projects created
                                 0.o</h1>
                         </>
                     }

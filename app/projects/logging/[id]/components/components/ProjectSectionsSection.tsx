@@ -80,7 +80,7 @@ export const ProjectSectionsSection = ({...props}: ProjectSectionsSectionProps) 
 
     return (
         <section
-            className={"w-[90%] max-w-[1000px] p-8 mx-auto mt-10 flex flex-col gap-4 rounded-xl shadow-lg bg-white/60"}>
+            className={"w-[90%] max-w-[1000px] border border-black/5 p-8 mb-30 mx-auto flex flex-col gap-4 rounded-xl shadow-lg bg-white/60"}>
             <div
                 className={"flex gap-3"}>
                 {members.length < 2 || userRole !== "Member" &&
@@ -122,7 +122,7 @@ export const ProjectSectionsSection = ({...props}: ProjectSectionsSectionProps) 
             <section
                 className={"w-full rounded-md mx-auto flex flex-col bg-black/18"}>
                 <div
-                    className={"w-full rounded-t-md bg-gradient-to-b from-vibrant-purple-500/80 to-vibrant-purple-600/85 text-white font-semibold flex justify-between items-center px-4 py-2"}>
+                    className={"w-full rounded-t-md bg-gradient-to-b from-vibrant-purple-400 to-vibrant-purple-700 text-white font-semibold flex justify-between items-center px-4 py-2"}>
                     <h1 className={"w-[25%] text-sm"}>Name</h1>
                     <h2 className={"w-[25%] text-sm"}>Type</h2>
                     <span className={"w-[25%] text-sm"}>Time</span>
