@@ -40,6 +40,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
     const [timeFormat, setTimeFormat] = useState<"Decimal" | "Range">("Decimal")
     const [fromTime, setFromTime] = useState(currTime);
     const [toTime, setToTime] = useState(currTime);
+    const [isCreatingTrack, setIsCreatingTrack] = useState(false);
 
 
     const setTimeDifference = (firstTime: string, secondTime: string) => {
@@ -58,6 +59,9 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
     const createSection = async (e: FormEvent) => {
         e.preventDefault();
 
+        console.log("creting data")
+        setIsCreatingTrack(true)
+
         const timeToSeconds = formatFloatHoursToSeconds(timeInputValue)
 
         const newTaskType = taskType === "custom" ? customType : taskType
@@ -70,6 +74,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
             setNameValue("")
             setTaskType(null)
             setTimeInputValue(0)
+            setIsCreatingTrack(false)
             return
         }
 
@@ -81,11 +86,16 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
         setTimeInputValue(0)
         setFromTime(currTime)
         setToTime(currTime)
+
+        console.log("data created   ")
+
+        setIsCreatingTrack(false)
     }
 
     const isButtonDisabled = () => {
         return nameValue.trim() === "" || taskType === null || timeInputValue <= 0 ||
-            selectedDate === null || (taskType === "custom" && customType?.trim() === "");
+            selectedDate === null || (taskType === "custom" && customType?.trim() === "")
+            || isCreatingTrack;
     }
 
     // Fetch Data

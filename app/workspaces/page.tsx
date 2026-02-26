@@ -7,8 +7,7 @@ export default function WorkspacesPage() {
 
     return (
         <section
-            className={"w-full h-screen overflow-hidden" +
-                " bg-radial from-gradient-yellow from-5% to-cloud-white to-50%"}>
+            className={"w-full h-screen bg-radial from-gradient-yellow from-5% to-cloud-white to-50%"}>
             <Hero/>
             <WorkspacesLoginSection/>
         </section>

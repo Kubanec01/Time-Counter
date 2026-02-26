@@ -4,7 +4,7 @@ import userBgImg from "@/public/gradient-bg.jpg";
 import {
     MdDeleteOutline,
     MdExitToApp,
-    MdOutlineSettings, MdPeopleAlt,
+    MdOutlineSettings,
 } from "react-icons/md";
 import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {auth, db} from "@/app/firebase/config";
@@ -21,10 +21,9 @@ import {Member, WorkspaceCredentials} from "@/types";
 import {doc, getDoc, onSnapshot} from "firebase/firestore";
 import {removeWorkspaceFromList} from "@/features/utilities/delete/removeWorkspaceFromList";
 import {invalidUserId} from "@/messages/errors";
-import {IoMdAddCircle} from "react-icons/io";
 import {useRouter} from "next/navigation";
-import {CiCirclePlus} from "react-icons/ci";
 import {FaPlusCircle} from "react-icons/fa";
+import {PiSignOutLight} from "react-icons/pi";
 
 interface Props {
     isUserMenuOpen: boolean
@@ -173,7 +172,7 @@ export const UserMenu = ({...props}: Props) => {
                         style={{display: mode === "workspace" ? "flex" : "none"}}
                         onClick={() => setIsLeaveWorkspaceModalOpen(true)}
                         className={"items-center gap-1 w-full px-3 py-2.5  text-black/90 hover:bg-white/10 font-medium cursor-pointer text-xs"}>
-                        <FaPlusCircle className={"text-xs"}/> Join/Create workspace
+                        <PiSignOutLight className={"text-sm"}/> Leave workspace
                     </button>
                 </section>
             </div>

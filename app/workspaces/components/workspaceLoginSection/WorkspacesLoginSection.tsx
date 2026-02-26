@@ -13,7 +13,7 @@ export const WorkspacesLoginSection = () => {
         <>
             {/* Buttons */}
             <div
-                className={"mt-10 flex items-center justify-center gap-20"}>
+                className={"my-10 flex items-center justify-center gap-20"}>
                 <button
                     onClick={() => setWorkspaceAction("create")}
                     className={`${workspaceAction === "create" ? "text-black" : "text-black/40"}
