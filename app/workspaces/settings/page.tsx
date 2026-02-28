@@ -1,79 +1,51 @@
 'use client'
 
-import {FaUnlockKeyhole, FaUsersLine} from "react-icons/fa6";
-import {FaProjectDiagram, FaTrashAlt} from "react-icons/fa";
-import {useRouter} from "next/navigation";
-import {BackButton} from "@/app/workspaces/settings/components/BackButton";
-import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {SettingsBody} from "@/app/workspaces/settings/components/SettingsBody";
+import {useState} from "react";
+import {WorkspacesProjects} from "@/app/workspaces/settings/components/settingsSections/WorkspacesProjects";
+import {NameAndPassword} from "@/app/workspaces/settings/components/settingsSections/NameAndPassword";
 
 
 const WorkspaceSettingsHome = () => {
 
-    const router = useRouter();
-    const {userRole} = useWorkSpaceContext()
 
-    const workspaceSettingsData = [
-        {
-            id: "users",
-            icon: <FaUsersLine/>,
-            name: "Users",
-            url: "/workspaces/users"
-        },
+    const [activeNavId, setActiveNavId] = useState("projects");
+    const [primarySectionTitle, setPrimarySectionTitle] = useState("Projects");
+
+
+    const navTitle = <h1>Workspace <br/> Settings</h1>
+    const navLinksData: { id: string, title: string }[] = [
         {
             id: "projects",
-            icon: <FaProjectDiagram/>,
-            name: "Projects",
-            url: "/workspaces/settings/projects"
+            title: "Projects",
         },
         {
-            id: "name-and-password",
-            icon: <FaUnlockKeyhole/>,
-            name: "Name and password",
-            url: "/workspaces/settings/nameAndPassword"
+            id: "edit-name-and-edit-password",
+            title: "Name and Password",
         },
         {
             id: "delete-workspace",
-            icon: <FaTrashAlt/>,
-            name: "Delete Workspace",
-            url: ""
-        }
+            title: "Delete workspace",
+        },
     ]
+
+    const sectionPrimaryBody = () => {
+        if (activeNavId === "projects") return <WorkspacesProjects/>
+        else if (activeNavId === "edit-name-and-edit-password") return <NameAndPassword/>
+    }
 
     return (
         <>
-            <SettingsBody/>
-            {/*<section*/}
-            {/*    className={"w-[90%] max-w-[700px] mx-auto h-[400px] mt-[200px]"}>*/}
-            {/*    <div*/}
-            {/*        className={"w-full border-b border-white/30 flex justify-between"}>*/}
-            {/*        <h1*/}
-            {/*            className={"text-xl text-white/80 font-semibold ml-2"}>*/}
-            {/*            Workspace Settings*/}
-            {/*        </h1>*/}
-            {/*        <BackButton/>*/}
-            {/*    </div>*/}
-            {/*    <ul*/}
-            {/*        className={"w-full p-4 pl-0 flex flex-col gap-3"}*/}
-            {/*    >*/}
-            {/*        {workspaceSettingsData.map((item) => (*/}
-            {/*            <li*/}
-            {/*                style={{*/}
-            {/*                    display: ((item.id === "delete-workspace" || item.id === "name-and-password") && userRole !== "Admin")*/}
-            {/*                        ? "none" : "flex"*/}
-            {/*                }}*/}
-            {/*                onClick={() => router.push(item.url)}*/}
-            {/*                key={item.id}*/}
-            {/*                className={"text-white/80 text-lg font-medium px-2 py-2.5 border border-white/50 rounded-xl " +*/}
-            {/*                    " items-center justify-start gap-2.5 cursor-pointer hover:border-white/80 duration-100"}>*/}
-            {/*                <span className={"text-xl"}>*/}
-            {/*                    {item.icon}*/}
-            {/*                </span>*/}
-            {/*                {item.name}*/}
-            {/*            </li>*/}
-            {/*        ))}*/}
-            {/*    </ul>*/}
-            {/*</section>*/}
+            <SettingsBody
+                navTitle={navTitle}
+                activeNavId={activeNavId}
+                primarySectionTitle={primarySectionTitle}
+                setPrimarySectionTitleAction={setPrimarySectionTitle}
+                setActiveNavIdAction={setActiveNavId}
+                navbarLinks={navLinksData}
+            >
+                {sectionPrimaryBody()}
+            </SettingsBody>
         </>
     )
 }

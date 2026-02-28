@@ -33,7 +33,7 @@ const SignInPage = () => {
 
         } catch {
             setIsLoading(false)
-            setErrorMess("Incorrect email or password (≥o≤)")
+            setErrorMess("Incorrect email or edit-password (≥o≤)")
         }
     };
 

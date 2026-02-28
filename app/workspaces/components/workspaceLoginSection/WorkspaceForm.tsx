@@ -33,7 +33,7 @@ export const WorkspaceForm = ({...props}: WorkspaceFormProps) => {
         e.preventDefault()
         console.log("clicked")
 
-        if (password.trim() === "" || name.trim() === "") return setError('Missing password or name')
+        if (password.trim() === "" || name.trim() === "") return setError('Missing edit-password or edit-name')
 
 
         if (props.workspaceAction === "create") {
@@ -53,14 +53,14 @@ export const WorkspaceForm = ({...props}: WorkspaceFormProps) => {
             const docSnap = await getDoc(docRef)
             const userSnap = await getDoc(userRef)
 
-            if (!docSnap.exists() || !userSnap.exists()) return setError("Wrong password or Id")
+            if (!docSnap.exists() || !userSnap.exists()) return setError("Wrong edit-password or Id")
             const data = docSnap.data()
             const userData = userSnap.data()
             const correctPassword = data.password
             const blackList: Member[] = data.blackList || []
             const members: Member[] = data.members
             const workspacesList: WorkspaceCredentials[] = userData.workspacesList || []
-            if (password !== correctPassword) return setError("Wrong password or Id")
+            if (password !== correctPassword) return setError("Wrong edit-password or Id")
             if (blackList.some(member => member.userId === userId)) return setError("You don't have permission to join this workspace.")
             const workspaceCredential: WorkspaceCredentials = {
                 workspaceId: workspaceInputId,
@@ -135,7 +135,7 @@ export const WorkspaceForm = ({...props}: WorkspaceFormProps) => {
                             setName(e.target.value)
                             setWorkspaceId(e.target.value)
                         }}
-                        placeholder={"Enter workspace name"}
+                        placeholder={"Enter workspace edit-name"}
                         type="text"/>
                 </div>
                 <div
@@ -151,7 +151,7 @@ export const WorkspaceForm = ({...props}: WorkspaceFormProps) => {
                         className={"w-full border border-black/20 focus:border-black/40 rounded-md text-sm py-1 px-2 mt-1 outline-none"}
                         id={"create-workspace"}
                         onChange={e => setPassword(e.target.value)}
-                        placeholder={"Enter workspace password"}
+                        placeholder={"Enter workspace edit-password"}
                         type="password"/>
                 </div>
                 <p

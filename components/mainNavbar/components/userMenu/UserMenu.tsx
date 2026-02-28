@@ -65,7 +65,7 @@ export const UserMenu = ({...props}: Props) => {
         const correctPassword = data.password
         const blackList: Member[] = data.blackList || []
 
-        if (password !== correctPassword) return console.log("Wrong password or Id")
+        if (password !== correctPassword) return console.log("Wrong edit-password or Id")
         if (blackList.some(member => member.userId === userId)) return console.log("You don't have permission to join this workspace.")
         setLocalStorageUserMode("workspace")
         setLocalStorageWorkspaceId(workspaceId)

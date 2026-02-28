@@ -67,7 +67,7 @@ export const SectionCart = ({...props}: Section) => {
                 inputValue={editModalInputValue}
                 title={"Rename track?"}
                 desc={"You can rename your track anytime, anywhere."}
-                inputPlaceholder={"What is a new track name?"}
+                inputPlaceholder={"What is a new track edit-name?"}
                 formFunction={(e) => {
                     e.preventDefault()
                     editSectionName(props.projectId, props.sectionId, editModalInputValue, setEditModalInputValue, setIsEditModalOpen, workspaceId)

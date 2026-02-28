@@ -199,7 +199,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                                    className={"font-semibold text-sm text-black/60"}>Name/Description</label>
                             <input onChange={e => setNameValue(e.target.value)}
                                    value={nameValue}
-                                   id={"name-description"} type="text" placeholder={"What are you going to work on?"}
+                                   id={"edit-name-description"} type="text" placeholder={"What are you going to work on?"}
                                    className={"border border-black/20 w-[300px] focus:outline-vibrant-purple-600 p-1 px-2 rounded-md bg-white"}/>
                         </div>
                         {/* Decimal time input */}
@@ -262,7 +262,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                                 task</label>
                             <input
                                 onChange={(e) => setCustomType(e.target.value)}
-                                id={"name-description"} type="text" placeholder={"Write your custom type..."}
+                                id={"edit-name-description"} type="text" placeholder={"Write your custom type..."}
                                 className={"border border-black/20 w-[300px] focus:outline-vibrant-purple-600 p-1 px-2 rounded-md bg-white"}/>
                         </div>
                     </div>

@@ -226,7 +226,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
                 setInputValue={setInputValue}
                 inputValue={inputValue}
                 title={"Rename track?"}
-                inputPlaceholder={"What is new name?"}
+                inputPlaceholder={"What is new edit-name?"}
                 desc={"You can rename your track anytime, anywhere. Name must contain a maximum of 24 characters."}
                 formFunction={(e) => {
                     e.preventDefault()

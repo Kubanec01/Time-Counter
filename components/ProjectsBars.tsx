@@ -149,9 +149,9 @@ const ProjectsBars = () => {
                                 isModalOpen={isModalOpen}
                                 setInputValue={setInputValue}
                                 inputValue={inputValue}
-                                inputPlaceholder={"What is new project name?"}
+                                inputPlaceholder={"What is new project edit-name?"}
                                 title={"Rename project?"}
-                                desc={"You can rename your project anytime, anywhere. But remember - the name must contain a maximum of 24 characters."}
+                                desc={"You can rename your project anytime, anywhere. But remember - the edit-name must contain a maximum of 24 characters."}
                                 formFunction={setProjectName}/>
                         </>
                         :

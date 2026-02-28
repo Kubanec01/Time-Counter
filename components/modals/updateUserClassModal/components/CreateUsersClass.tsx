@@ -60,7 +60,7 @@ export const CreateUsersClass = ({isModalOpen, setIsCreatingClass}: {
     }, [isModalOpen])
     return (
         <>
-            {/* Create name */}
+            {/* Create edit-name */}
             <section
                 className={`${page === 1 ? "translate-x-0 duration-400 ease-in" : "-translate-x-[100%] duration-400 ease-in"}
             flex justify-center items-center px-2`}>
@@ -69,7 +69,7 @@ export const CreateUsersClass = ({isModalOpen, setIsCreatingClass}: {
                     <input type="text"
                            value={customClassName}
                            onChange={(e) => setCustomClassName(e.target.value)}
-                           placeholder={"Write name of your class"}
+                           placeholder={"Write edit-name of your class"}
                            className={"border px-2 rounded-sm py-1"}/>
                     <button
                         disabled={customClassName.trim().length === 0}
@@ -92,7 +92,7 @@ export const CreateUsersClass = ({isModalOpen, setIsCreatingClass}: {
                     <input type="text"
                            value={customOptionName}
                            onChange={(e) => setCustomOptionName(e.target.value)}
-                           placeholder={"Write name of your class"}
+                           placeholder={"Write edit-name of your class"}
                            className={"border px-2 rounded-sm py-1"}/>
                     <button
                         type="submit"

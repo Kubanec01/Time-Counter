@@ -68,7 +68,7 @@ export const WorkSpaceContextProvider = ({children}: { children: ReactNode }) =>
             } else {
                 setUserName("")
                 setUserSurname("")
-                console.error("Error fetching user name!")
+                console.error("Error fetching user edit-name!")
             }
         }).catch(err => console.log(err))
         getUserRoleData(userId, mode, workspaceId).then(resp => {

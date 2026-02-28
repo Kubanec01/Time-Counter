@@ -55,8 +55,8 @@ const SignUpPage = () => {
         } catch (err) {
             if (err instanceof FirebaseError) {
                 switch (err.code) {
-                    case "auth/weak-password":
-                        setErrMess("The password is too weak :(")
+                    case "auth/weak-edit-password":
+                        setErrMess("The edit-password is too weak :(")
                         break;
                     case "auth/email-already-in-use":
                         setErrMess("This email is already in use (≥o≤)")
