@@ -1,7 +1,7 @@
 'use client'
 
-import {Hero} from "@/app/workspaces/components/Hero";
-import {WorkspacesLoginSection} from "@/app/workspaces/components/workspaceLoginSection/WorkspacesLoginSection";
+import {Hero} from "@/app/workspaces/workspaceLoginSection/Hero";
+import {WorkspacesLoginSection} from "@/app/workspaces/workspaceLoginSection/WorkspacesLoginSection";
 
 export default function WorkspacesPage() {
 

@@ -20,7 +20,7 @@ export const SettingsBody = ({...props}: SettingsBodyProps) => {
 
     const navLink = props.navbarLinks || []
 
-    const navLinkBaseStyle = "flex items-center gap-1 text-black/50 cursor-pointer hover:text-black hover:translate-x-2 duration-150"
+    const navLinkBaseStyle = "flex items-center gap-1 text-black/50 cursor-pointer hover:text-vibrant-purple-500 hover:translate-x-2 duration-150"
     const navLinkDotStyle = "text-4xl mb-0.5"
 
     return (
@@ -51,7 +51,7 @@ export const SettingsBody = ({...props}: SettingsBodyProps) => {
                                     props.setPrimarySectionTitleAction(navItem.title)
                                 }}
                                 disabled={props.activeNavId === navItem.id}
-                                className={`${navLinkBaseStyle} ${props.activeNavId === navItem.id ? "text-black/100" : ""}`}>
+                                className={`${navLinkBaseStyle} ${props.activeNavId === navItem.id ? "text-vibrant-purple-600 font-semibold" : ""}`}>
                                 <span className={navLinkDotStyle}>·</span> {navItem.title}
                             </button>
                         </li>

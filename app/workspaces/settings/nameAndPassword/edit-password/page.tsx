@@ -1,36 +1,39 @@
 'use client'
 
 import {FormEvent, useState} from "react";
-import {useRouter} from "next/navigation";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {db} from "@/app/firebase/config";
 import {doc, updateDoc} from "firebase/firestore";
-import checkmarkImg from "@/public/purple_checkmark.png"
-import {IoMdEye, IoMdEyeOff} from "react-icons/io";
+import {ChangeFormModal} from "@/app/workspaces/settings/components/ChangeFormModal";
+import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
+import {useGetWorkspacePassword} from "@/features/hooks/useGetWorkspacePassword";
 
 const WorkspacePassword = () => {
 
-    const [password, setPassword] = useState("");
+    const [currPassword, setCurrPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [errMessage, setErrMessage] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const [isChanged, setIsChanged] = useState(false);
-    const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+    const [isFormSent, setIsFormSent] = useState(false);
+
 
     const {workspaceId} = useWorkSpaceContext()
+    const {replace} = useReplaceRouteLink();
+    const {password} = useGetWorkspacePassword()
 
-    const router = useRouter();
-
-    const handleChangePassword = async (e: FormEvent) => {
+    const changeWorkspacePassword = async (e: FormEvent) => {
         e.preventDefault();
 
         setIsLoading(true);
 
-        if (password !== confirmPassword) {
+        if (currPassword !== password) {
+            setIsLoading(false);
+            return setErrMessage("Wrong password, try again...");
+        } else if (newPassword !== confirmPassword) {
             setIsLoading(false)
             return setErrMessage("Passwords do not match (≥o≤)");
-        }
-        if (password.trim() === "" || confirmPassword.trim() === "") {
+        } else if (password.trim() === "" || confirmPassword.trim() === "") {
             setIsLoading(false)
             return setErrMessage("Something went wrong, try it gain.");
         }
@@ -38,96 +41,102 @@ const WorkspacePassword = () => {
         if (!workspaceId) return
         const docRef = doc(db, "realms", workspaceId)
         await updateDoc(docRef, {password: password})
-        setPassword("")
+        setCurrPassword("")
+        setNewPassword("")
         setConfirmPassword("")
         setIsLoading(false);
-        setIsChanged(true)
+        setIsFormSent(true);
     }
 
-    return (
-        <section className="w-full h-screen bg-black/90 flex flex-col justify-center items-center">
-            <div className="h-[300px] flex flex-col">
-                <form
-                    onSubmit={handleChangePassword}
-                    className="w-[320px] px-6 pb-6 pt-7 flex flex-col justify-center items-center border border-white/30
-                     rounded-xl bg-white/2 gap-[8px]">
-                    <h1
-                        className={"mb-2 text-white/70 text-center"}>Change Workspace <br/> password</h1>
-                    {/* Password Input */}
-                    {
-                        isChanged
-                            ?
-                            <>
-                                <div
-                                    className={"mb-7 mt-4"}>
-                                    <img src={checkmarkImg.src} alt="checkmark image"
-                                         className={"w-[76%] mx-auto"}/>
-                                    <h1
-                                        className={"text-white text-center text-sm mt-2"}>
-                                        Password was changed.</h1>
-                                </div>
-                            </>
-                            :
-                            <>
-                                <div
-                                    className={"w-full relative flex items-center justify-center"}>
-                                    <input
-                                        value={password}
-                                        onChange={(e) => {
-                                            setErrMessage("")
-                                            setPassword(e.target.value)
-                                        }}
-                                        placeholder="New password..."
-                                        className="w-full h-[40px] border border-custom-gray-800 text-white/80 rounded-lg outline-none text-sm px-3"
-                                        type={`${isPasswordHidden ? "password" : "text"}`}
-                                    />
-                                    <IoMdEyeOff
-                                        onClick={() => setIsPasswordHidden(v => !v)}
-                                        style={{display: isPasswordHidden ? "block" : "none"}}
-                                        className={"absolute text-custom-gray-800 text-lg right-2.5 cursor-pointer"}/>
-                                    <IoMdEye
-                                        onClick={() => setIsPasswordHidden(v => !v)}
-                                        style={{display: isPasswordHidden ? "none" : "block"}}
-                                        className={"absolute text-custom-gray-800 text-lg right-2.5 cursor-pointer"}/>
-                                </div>
-                                <div
-                                    className={"w-full relative flex items-center justify-center"}>
-                                    <input
-                                        value={confirmPassword}
-                                        onChange={(e) => {
-                                            setErrMessage("")
-                                            setConfirmPassword(e.target.value)
-                                        }}
-                                        placeholder="Confirm password..."
-                                        className="w-full h-[40px] border border-custom-gray-800 text-white/80 rounded-lg outline-none text-sm px-3"
-                                        type={`${isPasswordHidden ? "password" : "text"}`}
-                                    />
-                                </div>
-                                <h1
-                                    className={"text-red-600/90 text-sm -mb-2"}
-                                >
-                                    {errMessage}
-                                </h1>
-                                <button
-                                    type="submit"
-                                    disabled={isLoading}
-                                    className={`${isLoading ? "bg-white/20 text-white/50" : "bg-vibrant-purple-700 " +
-                                        " hover:bg-linear-to-t from-vibrant-purple-700 to-vibrant-purple-600 cursor-pointer "} 
-                                         w-full h-[34px] mt-6 text-sm font-semibold text-white rounded-full`}
-                                >
-                                    Change password
-                                </button>
-                            </>
-                    }
-                    <button
-                        type="button"
-                        onClick={() => router.push("/")}
-                        className="w-full h-[34px] mt-1 text-sm font-semibold text-white bg-white/20 hover:bg-white/25 cursor-pointer rounded-full"
-                    >
-                        Cancel
-                    </button>
-                </form>
+    const formBody = (
+        <form
+            onSubmit={changeWorkspacePassword}
+            className={"flex flex-col gap-3"}>
+            {/* password */}
+            <div
+                className={"w-full"}
+            >
+                <label
+                    htmlFor="workspace-password"
+                    className={"text-xs font-bold"}
+                >
+                    Workspace password
+                </label>
+                <input
+                    className={"w-full border border-black/20 focus:border-black/40 rounded-md text-sm py-1 px-2 mt-1 outline-none"}
+                    id={"workspace-password"}
+                    onChange={e => {
+                        setCurrPassword(e.target.value)
+                    }}
+                    placeholder={"Enter workspace password"}
+                    type="password"/>
             </div>
+            {/* new password */}
+            <div
+                className={"w-full mt-3"}
+            >
+                <label
+                    htmlFor="new-password"
+                    className={"text-xs font-bold"}
+                >
+                    New password
+                </label>
+                <input
+                    className={"w-full border border-black/20 focus:border-black/40 rounded-md text-sm py-1 px-2 mt-1 outline-none"}
+                    id={"new-password"}
+                    onChange={e => {
+                        setNewPassword(e.target.value)
+                    }}
+                    placeholder={"Enter new password"}
+                    type="password"/>
+            </div>
+            {/* confirm new password */}
+            <div
+                className={"w-full"}
+            >
+                <label
+                    htmlFor="confirm-password"
+                    className={"text-xs font-bold"}
+                >
+                    Confirm password
+                </label>
+                <input
+                    className={"w-full border border-black/20 focus:border-black/40 rounded-md text-sm py-1 px-2 mt-1 outline-none"}
+                    id={"confirm-password"}
+                    onChange={e => {
+                        setConfirmPassword(e.target.value)
+                    }}
+                    placeholder={"Confirm new password"}
+                    type="password"/>
+            </div>
+            <span
+                className={"text-center text-sm text-red-600"}>
+                {errMessage}
+            </span>
+            <button
+                disabled={isLoading}
+                type="submit"
+                className={"medium-button bg-black-gradient mt-2"}>
+                Change
+            </button>
+            <button
+                type="button"
+                onClick={() => replace('/')}
+                className={"text-[13px] font-bold text-black/50 mt-1 cursor-pointer hover:underline"}>
+                {"Back to Home"}
+            </button>
+        </form>
+    )
+
+    return (
+        <section
+            className="w-full h-screen flex flex-col justify-center items-center bg-radial from-gradient-purple to-white to-40%">
+            <ChangeFormModal
+                title={"Change workspace password"}
+                confirmText={"Workspace name has been updated!"}
+                formSection={formBody}
+                isFormSent={isFormSent}
+            />
         </section>
     )
 }

@@ -1,7 +1,7 @@
 'use client'
 
 import {useState} from "react";
-import {WorkspaceForm} from "@/app/workspaces/components/workspaceLoginSection/WorkspaceForm";
+import {WorkspaceForm} from "@/app/workspaces/workspaceLoginSection/WorkspaceForm";
 
 
 export const WorkspacesLoginSection = () => {
