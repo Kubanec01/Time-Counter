@@ -9,6 +9,7 @@ export const updateUserIndividualTime = async (
     projectId: string,
     date: string,
     seconds: number,
+    maxDailyTime: number,
     changes: "increase" | "decrease"
 ) => {
     if (!userId) return
@@ -23,7 +24,7 @@ export const updateUserIndividualTime = async (
 
     if (membersData[userId]) {
         const dataTime = membersData[userId].daily[date] ?? 0
-        if (dataTime + seconds > 86_400) {
+        if (dataTime + seconds > maxDailyTime) {
             return false
         }
     }

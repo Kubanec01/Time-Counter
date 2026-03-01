@@ -18,6 +18,7 @@ import {updateUserIndividualTime} from "@/features/utilities/create/updateUserIn
 import {formateDateToYMD} from "@/features/utilities/date/formateDates";
 import InformativeModal from "@/components/modals/InformativeModal";
 import {getHours, getMinutes} from "date-fns";
+import {LoggingProject} from "@/features/utilities/create/createNewLoggingProject";
 
 type CreateEntrySectionProps = {
     projectId: string;
@@ -41,6 +42,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
     const [fromTime, setFromTime] = useState(currTime);
     const [toTime, setToTime] = useState(currTime);
     const [isCreatingTrack, setIsCreatingTrack] = useState(false);
+    const [maxDailyTime, setMaxDailyTime] = useState(100);
 
 
     const setTimeDifference = (firstTime: string, secondTime: string) => {
@@ -67,7 +69,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
 
         const userFullName = `${userName} ${userSurname}`
 
-        const canContinue = await updateUserIndividualTime(userId, workspaceId, props.projectId, formateDateToYMD(selectedDate), timeToSeconds, "increase")
+        const canContinue = await updateUserIndividualTime(userId, workspaceId, props.projectId, formateDateToYMD(selectedDate), timeToSeconds, maxDailyTime, "increase")
         if (canContinue === false) {
             setIsMaxTimeModalOpen(true);
             setNameValue("")
@@ -85,8 +87,6 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
         setTimeInputValue(0)
         setFromTime(currTime)
         setToTime(currTime)
-
-        console.log("data created   ")
 
         setIsCreatingTrack(false)
     }
@@ -110,12 +110,14 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
             const member: Member = data.members.find((m: Member) => m.userId === userId)
             const memberClass = member.class
             const usersClasses: UsersClasses[] = data.userClasses
-            const project = data.projects.find((project: Project) => project.projectId === props.projectId)
+            const project: LoggingProject = data.projects.find((project: Project) => project.projectId === props.projectId)
+            const maxDailyTime = project.dailyTrackTime;
             const customized = project.customizedUsersOptions ?? [];
             const userOptions = customized.find((o: UserProjectOptions) => o.userId === userId);
             const trackFormat = project.trackFormat
 
             setTimeFormat(trackFormat)
+            setMaxDailyTime(maxDailyTime)
 
             if (userOptions) {
                 setOptions(userOptions.activeOptions)
@@ -198,7 +200,8 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                                    className={"font-semibold text-sm text-black/60"}>Name/Description</label>
                             <input onChange={e => setNameValue(e.target.value)}
                                    value={nameValue}
-                                   id={"edit-name-description"} type="text" placeholder={"What are you going to work on?"}
+                                   id={"edit-name-description"} type="text"
+                                   placeholder={"What are you going to work on?"}
                                    className={"border border-black/20 w-[300px] focus:outline-vibrant-purple-600 p-1 px-2 rounded-md bg-white"}/>
                         </div>
                         {/* Decimal time input */}
@@ -265,7 +268,6 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                                 className={"border border-black/20 w-[300px] focus:outline-vibrant-purple-600 p-1 px-2 rounded-md bg-white"}/>
                         </div>
                     </div>
-                    {/* Custom type Section */}
                     {/*Submit Button*/}
                     <button
                         type={"submit"}
@@ -276,7 +278,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                     </button>
                 </form>
                 <InformativeModal setIsModalOpen={setIsMaxTimeModalOpen} isModalOpen={isMaxTimeModalOpen}
-                                  title={"You can't track more than 24 hours a day."}/>
+                                  title={"You can't track more than the daily limit."}/>
             </div>
         </section>
     )

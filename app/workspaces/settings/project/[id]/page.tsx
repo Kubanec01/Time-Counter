@@ -4,6 +4,9 @@ import {useState} from "react";
 import {SettingsBody} from "@/app/workspaces/settings/components/SettingsBody";
 import {Stats} from "@/app/workspaces/settings/project/[id]/components/projectSettingsBodySections/Stats";
 import {ProjectName} from "@/app/workspaces/settings/project/[id]/components/projectSettingsBodySections/ProjectName";
+import {
+    CustomizeProject
+} from "@/app/workspaces/settings/project/[id]/components/projectSettingsBodySections/CustomizeProject";
 
 export default function ProjectSettingsPage() {
 
@@ -34,6 +37,7 @@ export default function ProjectSettingsPage() {
     const primarySectionBody = () => {
         if (activeNavId === "stats") return <Stats/>
         else if (activeNavId === "project-name") return <ProjectName/>
+        else if (activeNavId === "customize") return <CustomizeProject/>
     }
 
     return (

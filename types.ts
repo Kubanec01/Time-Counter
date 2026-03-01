@@ -61,6 +61,7 @@ export interface Project {
     projectId: string;
     title: string;
     totalTime: number;
+    dailyTrackTime: number;
     type: ProjectType
     totalTrackedTimes: TotalTrackedTime[];
     membersIndividualTimes: UserIndividualTimes

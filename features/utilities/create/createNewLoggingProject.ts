@@ -1,12 +1,14 @@
 import {throwRandomNum} from "@/features/utilities/throwRandomNum";
-import {Project, ProjectOption, ProjectType, WorkspaceId} from "@/types";
+import {Project, ProjectOption, ProjectType, UserProjectOptions, WorkspaceId} from "@/types";
 import {arrayUnion, doc, updateDoc} from "firebase/firestore";
 import {projectTasksOptions} from "@/data/users";
 import {db} from "@/app/firebase/config";
 
 export interface LoggingProject extends Project {
     options: ProjectOption[],
+    inactiveOptions: ProjectOption[]
     trackFormat: "Decimal" | "Range",
+    customizedUsersOptions: UserProjectOptions[]
 }
 
 export const createNewLoggingProject = async (
@@ -23,10 +25,13 @@ export const createNewLoggingProject = async (
             projectId: `${inputValue.replace(/\s+/g, "")}_${randomNum}`,
             title: inputValue,
             totalTime: 0,
+            dailyTrackTime: 86400,
             type: typeOfProject,
             totalTrackedTimes: [],
             membersIndividualTimes: {},
             options: projectTasksOptions,
+            inactiveOptions: [],
+            customizedUsersOptions: [],
             trackFormat: "Decimal",
         };
 

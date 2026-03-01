@@ -8,7 +8,7 @@ export const ProjectHero = ({...props}: HeroProps) => {
 
     return (
         <div
-            className={"w-11/12 mx-auto text-center mt-[140px]"}>
+            className={"w-11/12 mx-auto text-center mt-[120px]"}>
             <p
                 className={"text-sm font-semibold text-vibrant-purple-700"}>
                 {props.projectSpec}
