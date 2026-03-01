@@ -59,7 +59,6 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
     const createSection = async (e: FormEvent) => {
         e.preventDefault();
 
-        console.log("creting data")
         setIsCreatingTrack(true)
 
         const timeToSeconds = formatFloatHoursToSeconds(timeInputValue)
@@ -145,14 +144,14 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                     className={"flex gap-2.5"}
                 >
                     <button
-                        onClick={() => router.push(`/stats/${props.projectId}`)}
+                        onClick={() => router.push(`/workspaces/settings/project/stats/${props.projectId}`)}
                         className={`${userRole === "Member" ? "hidden" : "flex"}
                         medium-button border flex items-center justify-center gap-1 bg-black-gradient`}>
                         Stats
                         <RiBarChart2Fill className={"mb-0.5"}/>
                     </button>
                     <button
-                        onClick={() => router.push(`/workspaces/settings/projects/${props.projectId}`)}
+                        onClick={() => router.push(`/workspaces/settings/project/${props.projectId}`)}
                         className={`${userRole === "Member" ? "hidden" : "flex"}
                         medium-button border flex items-center justify-center gap-1 bg-black-gradient`}>
                         Settings

@@ -6,20 +6,26 @@ import {Member, Project} from "@/types";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {doc, getDoc} from "firebase/firestore";
 import {format} from "date-fns";
-import {
-    getCurrentMonthDays,
-    getCurrentWeekDays,
-    getCurrentYearMonths,
-    getThisMonthTrackedDates,
-    getThisWeekTrackedDates, getThisYearTrackedDates,
-} from "@/app/stats/[id]/utils";
 import {formateDateToYMD} from "@/features/utilities/date/formateDates";
-import {FullTrackedTimeChart} from "@/app/stats/[id]/components/chartsSections/FullTrackedTimeChart";
-import {EveryUserTotalTimePieChart} from "@/app/stats/[id]/components/chartsSections/EveryUserTotalTimePieChart";
-import {ProjectTimeProgres} from "@/app/stats/[id]/components/chartsSections/ProjectTimeProgres";
 import {db} from "@/app/firebase/config";
 import {documentNotFound} from "@/messages/errors";
 import {secondsToFloatHours} from "@/features/utilities/time/timeOperations";
+import {
+    FullTrackedTimeChart
+} from "@/app/workspaces/settings/project/stats/[id]/components/chartsSections/FullTrackedTimeChart";
+import {
+    EveryUserTotalTimePieChart
+} from "@/app/workspaces/settings/project/stats/[id]/components/chartsSections/EveryUserTotalTimePieChart";
+import {
+    ProjectTimeProgres
+} from "@/app/workspaces/settings/project/stats/[id]/components/chartsSections/ProjectTimeProgres";
+import {
+    getCurrentMonthDays,
+    getCurrentWeekDays, getCurrentYearMonths,
+    getThisMonthTrackedDates,
+    getThisWeekTrackedDates,
+    getThisYearTrackedDates
+} from "@/app/workspaces/settings/project/stats/[id]/utils";
 
 export default function StatsHome() {
 

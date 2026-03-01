@@ -2,8 +2,8 @@
 
 import {SettingsBody} from "@/app/workspaces/settings/components/SettingsBody";
 import {useState} from "react";
-import {WorkspacesProjects} from "@/app/workspaces/settings/components/settingsSections/WorkspacesProjects";
-import {NameAndPassword} from "@/app/workspaces/settings/components/settingsSections/NameAndPassword";
+import {WorkspacesProjects} from "@/app/workspaces/settings/components/settingsBodySections/WorkspacesProjects";
+import {NameAndPassword} from "@/app/workspaces/settings/components/settingsBodySections/NameAndPassword";
 import {DeleteButton} from "@/app/workspaces/settings/components/buttons/DeleteButton";
 
 
@@ -30,7 +30,7 @@ const WorkspaceSettingsHome = () => {
         },
     ]
 
-    const sectionPrimaryBody = () => {
+    const primarySectionBody = () => {
         if (activeNavId === "projects") return <WorkspacesProjects/>
         else if (activeNavId === "edit-name-and-edit-password") return <NameAndPassword/>
         else if (activeNavId === "delete-workspace") {
@@ -50,7 +50,7 @@ const WorkspaceSettingsHome = () => {
                 setActiveNavIdAction={setActiveNavId}
                 navbarLinks={navLinksData}
             >
-                {sectionPrimaryBody()}
+                {primarySectionBody()}
             </SettingsBody>
         </>
     )

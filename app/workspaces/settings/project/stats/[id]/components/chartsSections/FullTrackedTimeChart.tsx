@@ -1,10 +1,10 @@
 'use client'
 
-import {getCurrentMonthDays, getCurrentYearMonths} from "@/app/stats/[id]/utils";
 import {format} from "date-fns";
-import {StatsSectionBody} from "@/app/stats/[id]/components/StatsSectionBody";
-import {LineChart} from "@/app/stats/[id]/components/LineChart";
 import {useEffect, useState} from "react";
+import {StatsSectionBody} from "@/app/workspaces/settings/project/stats/[id]/components/StatsSectionBody";
+import {getCurrentMonthDays, getCurrentYearMonths} from "@/app/workspaces/settings/project/stats/[id]/utils";
+import {LineChart} from "@/app/workspaces/settings/project/stats/[id]/components/LineChart";
 
 
 type FullTrackedTimeChartProps = {

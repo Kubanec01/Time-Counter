@@ -11,7 +11,6 @@ export const LoggingProjectCart = ({...props}: ProjectProps) => {
 
     return (
         <>
-            {/*<ProjectCartNavbar projectName={props.projectName}/>*/}
             <ProjectHero
                 projectSpec={"Logging"}
                 projectName={props.projectName}

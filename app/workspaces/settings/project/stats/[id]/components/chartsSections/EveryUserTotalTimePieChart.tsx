@@ -1,8 +1,9 @@
 'use client'
 
-import {StatsSectionBody} from "@/app/stats/[id]/components/StatsSectionBody";
-import {PieChart} from "@/app/stats/[id]/components/PieChart";
 
+
+import {StatsSectionBody} from "@/app/workspaces/settings/project/stats/[id]/components/StatsSectionBody";
+import {PieChart} from "@/app/workspaces/settings/project/stats/[id]/components/PieChart";
 
 type PieChartProps = {
     membersStats: { value: number, name: string }[]

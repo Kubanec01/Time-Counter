@@ -34,7 +34,7 @@ export const WorkspacesProjects = () => {
                     <NavButton
                         key={project.projectId}
                         id={project.projectId}
-                        navLink={`/workspaces/settings/projects/${project.projectId}`}
+                        navLink={`/workspaces/settings/project/${project.projectId}`}
                         title={project.title}
                         specSubtitle={`${(project.type)[0].toUpperCase()}${(project.type).slice(1)} Project`}/>
                 ))

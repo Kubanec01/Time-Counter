@@ -1,7 +1,7 @@
-import {StatsSectionBody} from "@/app/stats/[id]/components/StatsSectionBody";
-import {AreaChart} from "@/app/stats/[id]/components/AreaChart";
-import {getCurrentYearMonths} from "@/app/stats/[id]/utils";
 import {format} from "date-fns";
+import {StatsSectionBody} from "@/app/workspaces/settings/project/stats/[id]/components/StatsSectionBody";
+import {getCurrentYearMonths} from "@/app/workspaces/settings/project/stats/[id]/utils";
+import {AreaChart} from "@/app/workspaces/settings/project/stats/[id]/components/AreaChart";
 
 type ProjectTimeProgresProps = {
     totalTrackedYearTimes: number[],
