@@ -2,6 +2,7 @@
 
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 import {Dispatch, JSX, ReactNode, SetStateAction} from "react";
+import {useRouter} from "next/navigation";
 
 type SettingsBodyProps = {
     navbarLinks: { id: string, title: string }[]
@@ -17,6 +18,7 @@ export const SettingsBody = ({...props}: SettingsBodyProps) => {
 
 
     const {replace} = useReplaceRouteLink()
+    const router = useRouter()
 
     const navLink = props.navbarLinks || []
 
@@ -25,7 +27,7 @@ export const SettingsBody = ({...props}: SettingsBodyProps) => {
 
     return (
         <div
-            className={"w-11/12 max-w-[900px] mx-auto mt-[200px] flex justify-between"}>
+            className={"w-11/12 max-w-[900px] mx-auto my-[200px] flex justify-between"}>
             {/*Nav Section*/}
             <section
                 className={"pt-10 w-[22%]"}>
@@ -36,6 +38,12 @@ export const SettingsBody = ({...props}: SettingsBodyProps) => {
                 {/*Navbar*/}
                 <ul
                     className={"pt-6 font-medium flex flex-col"}>
+                    <li
+                        key={"back"}
+                        onClick={() => router.back()}
+                        className={navLinkBaseStyle}>
+                        <span className={navLinkDotStyle}>·</span> Go back
+                    </li>
                     <li
                         key={"users"}
                         onClick={() => replace('/workspaces/users')}

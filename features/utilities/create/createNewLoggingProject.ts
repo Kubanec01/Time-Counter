@@ -6,7 +6,6 @@ import {db} from "@/app/firebase/config";
 
 export interface LoggingProject extends Project {
     options: ProjectOption[],
-    inactiveOptions: ProjectOption[]
     trackFormat: "Decimal" | "Range",
     customizedUsersOptions: UserProjectOptions[]
 }
@@ -30,7 +29,6 @@ export const createNewLoggingProject = async (
             totalTrackedTimes: [],
             membersIndividualTimes: {},
             options: projectTasksOptions,
-            inactiveOptions: [],
             customizedUsersOptions: [],
             trackFormat: "Decimal",
         };

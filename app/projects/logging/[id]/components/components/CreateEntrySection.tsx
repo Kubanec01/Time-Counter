@@ -125,7 +125,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                 const classes = usersClasses.find(i => i.id === memberClass)
                 if (classes) setOptions(classes.options)
             } else {
-                setOptions(project.options)
+                setOptions(project.options.filter(o => o.active))
             }
         })
 

@@ -33,7 +33,7 @@ export const WorkspaceForm = ({...props}: WorkspaceFormProps) => {
         e.preventDefault()
         console.log("clicked")
 
-        if (password.trim() === "" || name.trim() === "") return setError('Missing edit-password or edit-name')
+        if (password.trim() === "" || name.trim() === "") return setError('Missing password or name')
 
 
         if (props.workspaceAction === "create") {
@@ -135,7 +135,7 @@ export const WorkspaceForm = ({...props}: WorkspaceFormProps) => {
                             setName(e.target.value)
                             setWorkspaceId(e.target.value)
                         }}
-                        placeholder={"Enter workspace edit-name"}
+                        placeholder={"Enter workspace name"}
                         type="text"/>
                 </div>
                 <div
@@ -151,7 +151,7 @@ export const WorkspaceForm = ({...props}: WorkspaceFormProps) => {
                         className={"w-full border border-black/20 focus:border-black/40 rounded-md text-sm py-1 px-2 mt-1 outline-none"}
                         id={"create-workspace"}
                         onChange={e => setPassword(e.target.value)}
-                        placeholder={"Enter workspace edit-password"}
+                        placeholder={"Enter workspace password"}
                         type="password"/>
                 </div>
                 <p

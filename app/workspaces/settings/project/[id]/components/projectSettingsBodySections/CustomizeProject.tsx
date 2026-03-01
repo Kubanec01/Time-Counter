@@ -9,12 +9,14 @@ import {documentNotFound} from "@/messages/errors";
 import {Project, ProjectOption} from "@/types";
 import {MaxTrackingTime} from "@/app/workspaces/settings/components/buttons/MaxTrackingTime";
 import {updateProjectDailyTrackLimit} from "@/features/utilities/create/updateProjectDailyTrackLimit";
+import {ProjectOptions} from "@/app/workspaces/settings/components/buttons/ProjectOptions";
 
 export const CustomizeProject = () => {
 
 
     const [optionTimeFormat, setOptionTimeFormat] = useState<"Range" | "Decimal">("Decimal");
     const [dailyTrackLimit, setDailyTrackLimit] = useState<number>(86400);
+    const [projectOptions, setProjectOptions] = useState<ProjectOption[]>([]);
 
 
     const {workspaceId} = useWorkSpaceContext()
@@ -52,13 +54,13 @@ export const CustomizeProject = () => {
             const project: LoggingProject = data.projects.find((p: Project) => p.projectId === projectId)
             const dailyTrackLimit = project.dailyTrackTime
             const activeOptions: ProjectOption[] = project.options || []
-            const inactiveOptions = project.inactiveOptions || []
             const trackFormat = project.trackFormat
             setOptionTimeFormat(trackFormat)
             setDailyTrackLimit(dailyTrackLimit)
+            setProjectOptions(activeOptions)
         });
         return () => fetchOptions()
-    }, [docRef, projectId, workspaceId])
+    }, [projectId, workspaceId])
 
     return (
         <section
@@ -90,6 +92,11 @@ export const CustomizeProject = () => {
                 title={"Max. tracking time"}
                 value={String(dailyTrackLimit)}
                 changeFunction={(v) => updateTrackLimit(v)}
+            />
+            <ProjectOptions
+                projectId={projectId}
+                workspaceId={workspaceId}
+                projectOptions={projectOptions}
             />
         </section>
     )
