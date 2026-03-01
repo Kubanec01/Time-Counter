@@ -4,6 +4,11 @@ import {WorkSpaceContextProvider} from "@/features/contexts/workspaceContext";
 import React from "react";
 import {Metadata} from "next";
 import Navbar from "@/components/mainNavbar/Navbar";
+import {Inter} from "next/font/google"
+
+const inter = Inter({
+    subsets: ["latin", "latin-ext"],
+});
 
 export const metadata: Metadata = {
     formatDetection: {
@@ -20,7 +25,8 @@ export default function RootLayout({children}: Readonly<{
 
     return (
         <html lang="en">
-        <body>
+        <body
+            className={`${inter.className} font-sans`}>
         <WorkSpaceContextProvider>
             <ClockTimeContextProvider>
                 <Navbar/>

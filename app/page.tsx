@@ -80,7 +80,7 @@ export default function HomePage() {
                                 <div
                                     className={`flex items-center justify-center`}>
                                     <h1
-                                        className={"text-[48px] font-semibold"}
+                                        className={"text-[48px] font-medium"}
                                     >Projects</h1>
                                     <p
                                         className={"text-base text-black/55 font-medium -mb-5.5 ml-3"}>
