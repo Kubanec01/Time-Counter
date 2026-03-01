@@ -1,7 +1,7 @@
-import {getDoc, updateDoc} from "firebase/firestore";
+import {doc, getDoc, updateDoc} from "firebase/firestore";
 import {Section, TimeCheckout, UserMode, WorkspaceId} from "@/types";
 import React from "react";
-import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
+import {db} from "@/app/firebase/config";
 
 
 export const deleteSubsectionAndTimeCheckoutsData = async (
@@ -15,7 +15,7 @@ export const deleteSubsectionAndTimeCheckoutsData = async (
 ) => {
 
     if (!userId) return
-    const userRef = getFirestoreTargetRef(userId, mode, workspaceId);
+    const userRef = doc(db, "realms", workspaceId);
     const userSnap = await getDoc(userRef);
 
     if (!userSnap.exists()) return;

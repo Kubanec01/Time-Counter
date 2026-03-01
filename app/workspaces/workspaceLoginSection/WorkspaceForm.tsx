@@ -53,14 +53,14 @@ export const WorkspaceForm = ({...props}: WorkspaceFormProps) => {
             const docSnap = await getDoc(docRef)
             const userSnap = await getDoc(userRef)
 
-            if (!docSnap.exists() || !userSnap.exists()) return setError("Wrong edit-password or Id")
+            if (!docSnap.exists() || !userSnap.exists()) return setError("Wrong password or Id")
             const data = docSnap.data()
             const userData = userSnap.data()
             const correctPassword = data.password
             const blackList: Member[] = data.blackList || []
             const members: Member[] = data.members
             const workspacesList: WorkspaceCredentials[] = userData.workspacesList || []
-            if (password !== correctPassword) return setError("Wrong edit-password or Id")
+            if (password !== correctPassword) return setError("Wrong password or Id")
             if (blackList.some(member => member.userId === userId)) return setError("You don't have permission to join this workspace.")
             const workspaceCredential: WorkspaceCredentials = {
                 workspaceId: workspaceInputId,
@@ -134,6 +134,7 @@ export const WorkspaceForm = ({...props}: WorkspaceFormProps) => {
                         onChange={e => {
                             setName(e.target.value)
                             setWorkspaceId(e.target.value)
+                            setWorkspaceInputId(e.target.value)
                         }}
                         placeholder={"Enter workspace name"}
                         type="text"/>

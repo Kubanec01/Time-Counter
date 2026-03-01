@@ -8,11 +8,10 @@ import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef"
 import {onSnapshot} from "firebase/firestore";
 import {
     formatedTwoTimesDifferenceToSeconds,
-    formatFloatHoursToSeconds, secondsToFloatHours
+    formatFloatHoursToSeconds, secondsToFloatHours, updateProjectTotalTime
 } from "@/features/utilities/time/timeOperations";
 import {createNewSection} from "@/features/utilities/create/createNewSection";
 import {updateTotalTrackedTime} from "@/features/utilities/edit/updateTotalTrackedTime";
-import {updateProjectTotalTime} from "@/features/utilities/time/totalTime";
 import {UsersClasses} from "@/data/users";
 import {updateUserIndividualTime} from "@/features/utilities/create/updateUserIndividualTime";
 import {formateDateToYMD} from "@/features/utilities/date/formateDates";
@@ -32,7 +31,6 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
     // States
     const [taskType, setTaskType] = useState<LoggingType>(null)
     const [customType, setCustomType] = useState<string>("")
-    const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
     const [options, setOptions] = useState<ProjectOption[]>([])
     const [nameValue, setNameValue] = useState("");
     const [timeInputValue, setTimeInputValue] = useState(0);
@@ -79,7 +77,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
             return
         }
 
-        await createNewSection(userId, userFullName, props.projectId, nameValue, timeToSeconds, selectedDate, setNameValue, setIsInfoModalOpen, newTaskType, workspaceId)
+        await createNewSection(userId, userFullName, props.projectId, nameValue, timeToSeconds, selectedDate, setNameValue, newTaskType, workspaceId)
         await updateTotalTrackedTime(props.projectId, formateDateToYMD(selectedDate), timeToSeconds, workspaceId, "increase")
         await updateProjectTotalTime(props.projectId, timeToSeconds, workspaceId, "increase")
         setNameValue("")
@@ -135,11 +133,11 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
 
     return (
         <section
-            className={"pb-10 pt-5 mt-8 bg-radial from-vibrant-purple-700/30 to-white to-70% w-[90%] max-w-[1000px] mx-auto"}>
+            className={"pb-6 pt-10 mt-8 bg-radial from-vibrant-purple-700/30 to-white to-70% w-[90%] max-w-[1000px] mx-auto"}>
             <div
                 className={"w-full flex items-center justify-between px-8 pb-2"}>
                 <h1
-                    className={"font-semibold mb-0.5 text-black/70 text-lg"}>
+                    className={"mb-0.5 font-medium text-black/60 text-lg"}>
                     Create a new entry
                 </h1>
                 <div
@@ -172,7 +170,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                         {/* Type of Work */}
                         <div
                             className={"flex flex-col"}>
-                            <label htmlFor="task-type" className={"font-semibold text-sm text-black/60"}>Type of
+                            <label htmlFor="task-type" className={"font-medium text-sm text-black/60"}>Type of
                                 task</label>
                             <select
                                 id="task-type"
@@ -197,7 +195,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                         <div
                             className={"flex flex-col"}>
                             <label htmlFor="name-description"
-                                   className={"font-semibold text-sm text-black/60"}>Name/Description</label>
+                                   className={"font-medium text-sm text-black/60"}>Name/Description</label>
                             <input onChange={e => setNameValue(e.target.value)}
                                    value={nameValue}
                                    id={"edit-name-description"} type="text"
@@ -207,7 +205,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                         {/* Decimal time input */}
                         <div
                             className={`${timeFormat === "Decimal" ? "flex" : "hidden"} flex-col`}>
-                            <label htmlFor="time" className={"font-semibold text-sm text-black/60"}>Hours</label>
+                            <label htmlFor="time" className={"font-medium text-sm text-black/60"}>Hours</label>
                             <input
                                 id="time"
                                 min={0.25}
@@ -224,7 +222,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                             className={`${timeFormat === "Range" ? "flex" : "hidden"} flex gap-6`}>
                             <div
                                 className={"flex flex-col"}>
-                                <label htmlFor="time" className={"font-semibold text-sm text-black/60"}>From</label>
+                                <label htmlFor="time" className={"font-medium text-sm text-black/60"}>From</label>
                                 <input
                                     id="time"
                                     type={"time"}
@@ -237,7 +235,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                             </div>
                             <div
                                 className={"flex flex-col"}>
-                                <label htmlFor="time" className={"font-semibold text-sm text-black/60"}>To</label>
+                                <label htmlFor="time" className={"font-medium text-sm text-black/60"}>To</label>
                                 <input
                                     id="time"
                                     type={"time"}
@@ -251,7 +249,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                         {/*  Date  */}
                         <div
                             className={"flex flex-col"}>
-                            <label className={"font-semibold text-sm text-black/60"}>Date</label>
+                            <label className={"font-medium text-sm text-black/60"}>Date</label>
                             <MaxDateCalendarInput
                                 selectedDate={selectedDate}
                                 setSelectedDate={setSelectedDate}
@@ -260,7 +258,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                         {/* Custom input */}
                         <div
                             className={`${taskType === "custom" ? "flex  flex-col" : "hidden"}`}>
-                            <label htmlFor="name-description" className={"font-semibold text-black/60"}>Custom Type of
+                            <label htmlFor="name-description" className={"font-medium text-black/60"}>Custom Type of
                                 task</label>
                             <input
                                 onChange={(e) => setCustomType(e.target.value)}
@@ -273,7 +271,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                         type={"submit"}
                         disabled={isButtonDisabled()}
                         className={`${isButtonDisabled() ? "bg-black/40  border text-white/80" : "bg-purple-gradient cursor-pointer"}
-                         px-5 py-2 mt-4 text-sm font-semibold rounded-md text-white duration-100`}>
+                         px-5 py-2 mt-4 text-sm font-medium rounded-md text-white duration-100`}>
                         Create entry
                     </button>
                 </form>

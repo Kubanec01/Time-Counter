@@ -22,6 +22,7 @@ export const NameAndPassword = () => {
         <>
             {data.map(item => (
                 <NavButton
+                    bulletPoint={"inactive"}
                     key={item.id}
                     id={item.id}
                     navLink={item.url}

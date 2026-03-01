@@ -96,36 +96,36 @@ const ProjectsBars = () => {
                                     <div
                                         className={"w-[30%]"}>
                                         <p
-                                            className={"text-xs font-bold text-vibrant-purple-700"}
+                                            className={"text-xs font-semibold text-vibrant-purple-700"}
                                         >
                                             Project name
                                         </p>
                                         <h1
-                                            className={"font-semibold break-all"}>
+                                            className={"font-medium break-all"}>
                                             {p.title}
                                         </h1>
                                     </div>
                                     <div
                                         className={""}>
                                         <p
-                                            className={"text-xs font-bold text-black/50"}
+                                            className={"text-xs font-semibold text-black/50"}
                                         >
                                             Total time
                                         </p>
                                         <h1
-                                            className={"font-semibold"}>
+                                            className={"font-medium"}>
                                             {formatSecondsToTimeString(p.totalTime)}
                                         </h1>
                                     </div>
                                     <div
                                         className={""}>
                                         <p
-                                            className={"text-xs font-bold text-black/50"}
+                                            className={"text-xs font-semibold text-black/50"}
                                         >
                                             Members
                                         </p>
                                         <h1
-                                            className={"font-semibold"}>
+                                            className={"font-medium"}>
                                             0
                                         </h1>
                                     </div>

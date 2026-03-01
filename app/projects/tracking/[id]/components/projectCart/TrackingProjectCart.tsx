@@ -1,13 +1,9 @@
 "use client";
 
-import {auth} from "@/app/firebase/config";
 import {onSnapshot} from "firebase/firestore";
 import React, {useEffect, useState} from "react";
 import SectionCart from "./components/SectionCart";
 import {Member, ProjectProps, Section, UpdatedSectionByDate} from "@/types";
-import ProjectCartNavbar from "@/components/ProjectCartNavbar";
-import InformativeModal from "@/components/modals/InformativeModal";
-import {useAuthState} from "react-firebase-hooks/auth";
 import {createNewSection} from "@/features/utilities/create/createNewSection";
 import {setNameByDate} from "@/features/utilities/date/setNameByDate";
 import {setColorByDate} from "@/features/utilities/date/setcolorByDate";
@@ -15,6 +11,8 @@ import {getUniqueDates} from "@/features/utilities/date/getUniqueDates";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 import {sortDatesAscending} from "@/features/utilities/date/sortDates";
+import {ProjectHero} from "@/components/ProjectHero";
+import {useGetProjectName} from "@/features/hooks/useGetProjectName";
 
 const TrackingProjectCart = ({...props}: ProjectProps) => {
 
@@ -23,15 +21,13 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
     const [updatedSectionsByDates, setUpdatedSectionsByDates] = useState<string[]>([]);
     const [selectedUserId, setSelectedUserId] = useState<string | "all">("all");
     const [inputValue, setInputValue] = useState<string>("");
-    const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
     const [members, setMembers] = useState<Member[]>([]);
-
-    const [user] = useAuthState(auth)
-    const {mode, workspaceId, userName, userSurname, userRole} = useWorkSpaceContext()
 
     // Variables
     const projectId = props.projectId;
-    const userId = user?.uid
+
+    const {mode, workspaceId, userName, userSurname, userRole, userId} = useWorkSpaceContext()
+    const {projectName} = useGetProjectName(projectId)
 
 
     // Fetch Sections Data
@@ -86,27 +82,25 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
         e.preventDefault()
 
         const userFullName = `${userName} ${userSurname}`
-        const time = "00:00:00";
-        await createNewSection(userId, userFullName, props.projectId, inputValue, time, new Date(), setInputValue, setIsInfoModalOpen, "unset", mode, workspaceId)
+        const time = 0;
+        await createNewSection(userId, userFullName, props.projectId, inputValue, time, new Date(), setInputValue, "unset", workspaceId)
     }
-
-    console.log(updatedSectionsByDates)
 
     return (
         <>
-            <ProjectCartNavbar projectName={props.projectName}/>
             <section
-                className={"w-[90%] max-w-[876px] mx-auto pt-[198px] border-b-2 border-custom-gray-600/50 pb-3 px-2"}
+                className={"w-[90%] max-w-[876px] mx-auto pt-8 border-b-2 border-custom-gray-600/50 pb-3 px-2"}
             >
+                <ProjectHero projectSpec={"Tracking"} projectName={projectName}/>
                 <div
-                    className={"mx-auto flex justify-center gap-4"}>
+                    className={"mx-auto flex justify-center gap-4 mt-20"}>
                     <select
                         onChange={(event) => {
                             const value = event.target.value as string | "all";
                             setSelectedUserId(value);
                         }}
                         className={` ${members.length < 2 || userRole === "Member" ? "hidden" : "block"}
-                        border border-black/20 outline-none px-2 h-9.5 w-[120px] text-sm rounded-lg bg-white cursor-pointer`}>
+                        border border-black/20 outline-none px-2 py-1.5 w-[120px] text-sm rounded-lg bg-white cursor-pointer`}>
                         <option value="all">All Users</option>
                         {members.map((mem) => (
                             <option key={mem.userId} value={mem.userId}>
@@ -120,16 +114,17 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
                     >
                         <input
                             placeholder={"What do you want to work on?"}
-                            className={"w-[476px] h-9.5 rounded-lg pl-3 text-sm bg-white border border-black/20 outline-none"}
+                            className={"w-[340px] rounded-lg pl-3 text-sm bg-white border border-black/20 outline-none"}
                             type="text"
                             value={inputValue}
                             maxLength={24}
                             onChange={(e) => setInputValue(e.target.value)}
                         />
                         <button
+                            disabled={inputValue.trim().length === 0}
                             type={"submit"}
-                            className={"px-5 py-1 h-9.5 text-nowrap text-sm font-semibold rounded-lg text-white main-button duration-100 cursor-pointer"}>
-                            New Timer
+                            className={"medium-button bg-purple-gradient"}>
+                            Create Timer
                         </button>
                     </form>
                 </div>
@@ -176,8 +171,6 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
                     }
                 </ul>
             </section>
-            <InformativeModal setIsModalOpen={setIsInfoModalOpen} isModalOpen={isInfoModalOpen}
-                              title={"You can’t track time without naming it."}/>
         </>
     );
 };

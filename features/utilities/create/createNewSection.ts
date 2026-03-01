@@ -13,13 +13,11 @@ export const createNewSection = async (
     time: number,
     date: Date | null,
     setInputValue: (value: React.SetStateAction<string>) => void,
-    setIsInfoModalOpen: (value: React.SetStateAction<boolean>) => void,
     category: LoggingType,
     workspaceId: WorkspaceId,
 ) => {
 
     if (inputValue.trim().length < 1) {
-        setIsInfoModalOpen(true);
         setInputValue("")
         return
     }

@@ -1,3 +1,8 @@
+import {Project, WorkspaceId} from "@/types";
+import {doc, getDoc, updateDoc} from "firebase/firestore";
+import {db} from "@/app/firebase/config";
+import {documentNotFound} from "@/messages/errors";
+
 export const formatTimeUnit = (num: number) => num.toString().padStart(2, '0');
 
 export const parseTimeStringToSeconds = (time: string) => {
@@ -32,5 +37,56 @@ export const formatedTwoTimesDifferenceToSeconds = (fromTime: string, toTime: st
     const totalSec2 = formatedTimeToSeconds(toTime)
 
     return totalSec2 - totalSec1
+
+}
+
+
+
+export const getProjectTotalTime = async (
+    projectId: string,
+    workspaceId: WorkspaceId,
+): Promise<number> => {
+
+    const userRef = doc(db, "realms", workspaceId)
+    const docSnap = await getDoc(userRef)
+
+    if (!docSnap.exists()) throw new Error(documentNotFound)
+    const data = docSnap.data()
+    const projects: Project[] = data.projects || []
+
+    const matchedProject = projects.find(p => p.projectId === projectId)
+
+    if (matchedProject) return matchedProject.totalTime
+    else return 0
+
+}
+
+export const updateProjectTotalTime = async (
+    projectId: string,
+    seconds: number,
+    workspaceId: WorkspaceId,
+    changes: "increase" | "decrease",
+) => {
+
+    const userRef = doc(db, "realms", workspaceId)
+    const docSnap = await getDoc(userRef)
+
+    if (!docSnap.exists()) throw new Error(documentNotFound)
+    const data = docSnap.data()
+    const projects: Project[] = data.projects || []
+
+    let projectTime = await getProjectTotalTime(projectId, workspaceId)
+
+    if (changes === "increase") projectTime += seconds
+    else projectTime -= seconds
+
+
+    const updatedProjects = projects.map(p => {
+        if (p.projectId !== projectId) return p
+
+        return {...p, totalTime: projectTime}
+    })
+
+    await updateDoc(userRef, {projects: updatedProjects})
 
 }

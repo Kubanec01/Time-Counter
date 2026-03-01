@@ -1,12 +1,10 @@
 import {doc, getDoc, updateDoc} from "firebase/firestore";
-import {Section, TimeCheckout, UpdatedSectionByDate, UserMode, WorkspaceId} from "@/types";
+import {Section, TimeCheckout, UpdatedSectionByDate, WorkspaceId} from "@/types";
 import {sectionNotFound} from "@/messages/errors";
-import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 import {updateUserIndividualTime} from "@/features/utilities/create/updateUserIndividualTime";
 import {updateTotalTrackedTime} from "@/features/utilities/edit/updateTotalTrackedTime";
-import {formatFloatHoursToSeconds} from "@/features/utilities/time/timeOperations";
 import {db} from "@/app/firebase/config";
-import {updateProjectTotalTime} from "@/features/utilities/time/totalTime";
+import {updateProjectTotalTime} from "@/features/utilities/time/timeOperations";
 
 
 export const deleteAllSectionData = async (
@@ -42,7 +40,7 @@ export const deleteAllSectionData = async (
 
     const updatedSectionsByDates = sectionsByDates.filter((s: UpdatedSectionByDate) => s.sectionId !== sectionId);
 
-    await updateUserIndividualTime(userId, workspaceId, projectId, date, seconds, "decrease")
+    await updateUserIndividualTime(userId, workspaceId, projectId, date, seconds, 10000, "decrease")
     await updateTotalTrackedTime(projectId, date, seconds, workspaceId, "decrease")
 
     await updateDoc(userRef, {

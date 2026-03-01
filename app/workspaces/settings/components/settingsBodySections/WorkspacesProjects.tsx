@@ -32,6 +32,7 @@ export const WorkspacesProjects = () => {
             {
                 projects.map((project: Project) => (
                     <NavButton
+                        bulletPoint={"active"}
                         key={project.projectId}
                         id={project.projectId}
                         navLink={`/workspaces/settings/project/${project.projectId}`}

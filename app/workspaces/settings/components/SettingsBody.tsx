@@ -37,7 +37,7 @@ export const SettingsBody = ({...props}: SettingsBodyProps) => {
                 </div>
                 {/*Navbar*/}
                 <ul
-                    className={"pt-6 font-medium flex flex-col"}>
+                    className={"pt-6 flex flex-col"}>
                     <li
                         key={"back"}
                         onClick={() => router.back()}

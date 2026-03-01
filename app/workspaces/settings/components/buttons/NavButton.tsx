@@ -3,7 +3,13 @@
 import {BsBoxArrowInDownRight} from "react-icons/bs";
 import {useRouter} from "next/navigation";
 
-export const NavButton = ({...props}: { id: string, title: string, specSubtitle: string, navLink: string }) => {
+export const NavButton = ({...props}: {
+    id: string,
+    title: string,
+    specSubtitle: string,
+    navLink: string,
+    bulletPoint: "active" | "inactive"
+}) => {
 
     const router = useRouter()
 
@@ -12,7 +18,7 @@ export const NavButton = ({...props}: { id: string, title: string, specSubtitle:
         <>
             <li
                 onClick={() => router.push(props.navLink)}
-                className={"border-b border-black/20 pt-3 pb-1 pr-5 cursor-pointer hover:translate-x-3 duration-200"}>
+                className={`${props.bulletPoint === "active" ? "pt-3 pb-1" : "py-3"} border-b border-black/20 pr-5 cursor-pointer hover:translate-x-3 duration-200`}>
                 <div
                     className={"flex items-center justify-between"}>
                     <div
@@ -22,8 +28,9 @@ export const NavButton = ({...props}: { id: string, title: string, specSubtitle:
                             {props.title}
                         </h1>
                         <p
-                            className={"flex items-center gap-1 text-xs -mt-1 text-black/50 font-semibold"}>
-                            <span className={"text-4xl mb-0.5"}>·</span> {props.specSubtitle}
+                            className={`${props.bulletPoint === "active" ? "-mt-1" : "mt-1"} flex items-center gap-1 text-xs text-black/50 font-semibold w-[90%]`}>
+                            <span
+                                className={`${props.bulletPoint === "active" ? "block" : "hidden"} text-4xl mb-0.5`}>·</span> {props.specSubtitle}
                         </p>
                     </div>
                     <BsBoxArrowInDownRight

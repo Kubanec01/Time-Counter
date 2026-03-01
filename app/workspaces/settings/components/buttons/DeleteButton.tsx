@@ -12,7 +12,7 @@ export const DeleteButton = ({...props}: { id: string, title: string, specSubtit
         <>
             <li
                 onClick={() => router.push(props.navLink)}
-                className={"border-b border-black/20 pt-3 pb-1 pr-5 cursor-pointer hover:translate-x-3 duration-200"}>
+                className={"border-b border-black/20 py-3 pr-5 cursor-pointer hover:translate-x-3 duration-200"}>
                 <div
                     className={"flex items-center justify-between"}>
                     <div
@@ -22,8 +22,8 @@ export const DeleteButton = ({...props}: { id: string, title: string, specSubtit
                             {props.title}
                         </h1>
                         <p
-                            className={"flex items-center gap-1 text-xs -mt-1 text-black/50 font-semibold"}>
-                            <span className={"text-4xl mb-0.5"}>·</span> {props.specSubtitle}
+                            className={"flex items-center gap-1 text-xs mt-1 text-black/50 font-semibold w-[86%]"}>
+                            {props.specSubtitle}
                         </p>
                     </div>
                     <BsBoxArrowInDownRight

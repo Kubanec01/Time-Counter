@@ -23,7 +23,7 @@ export const ProjectOptions = ({...props}: ProjectOptionsProps) => {
                     Project options
                 </h1>
                 <p
-                    className={"font-medium text-xs text-black/50 w-[70%]"}>
+                    className={"font-medium text-xs text-black/50 w-[70%] mt-1"}>
                     You can choose which basic options you want to have active. To activate or deactivate an option,
                     simply click on it.
                     These are general project options. If you want to assign specific options to individual users, you
@@ -33,7 +33,7 @@ export const ProjectOptions = ({...props}: ProjectOptionsProps) => {
                 </p>
             </div>
             <ul
-                className={"flex flex-wrap items-center gap-5 w-[80%] mt-6"}>
+                className={"flex flex-wrap items-center gap-5 w-[84%] mt-7"}>
                 {props.projectOptions.map(o => (
                     <li
                         key={o.value}
