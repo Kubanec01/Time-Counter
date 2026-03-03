@@ -3,6 +3,7 @@
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 import {Dispatch, JSX, ReactNode, SetStateAction} from "react";
 import {useRouter} from "next/navigation";
+import {Users} from "@/app/workspaces/settings/components/settingsBodySections/users/Users";
 
 type SettingsBodyProps = {
     navbarLinks: { id: string, title: string }[]
@@ -46,8 +47,11 @@ export const SettingsBody = ({...props}: SettingsBodyProps) => {
                     </li>
                     <li
                         key={"users"}
-                        onClick={() => replace('/workspaces/users')}
-                        className={navLinkBaseStyle}>
+                        onClick={() => {
+                            props.setActiveNavIdAction("users")
+                            props.setPrimarySectionTitleAction("Users")
+                        }}
+                        className={`${navLinkBaseStyle} ${props.activeNavId === "users" ? "text-vibrant-purple-600 font-medium" : ""}`}>
                         <span className={navLinkDotStyle}>·</span> Users
                     </li>
                     {navLink.map(navItem => (
@@ -59,7 +63,7 @@ export const SettingsBody = ({...props}: SettingsBodyProps) => {
                                     props.setPrimarySectionTitleAction(navItem.title)
                                 }}
                                 disabled={props.activeNavId === navItem.id}
-                                className={`${navLinkBaseStyle} ${props.activeNavId === navItem.id ? "text-vibrant-purple-600 font-semibold" : ""}`}>
+                                className={`${navLinkBaseStyle} ${props.activeNavId === navItem.id ? "text-vibrant-purple-600 font-medium" : ""}`}>
                                 <span className={navLinkDotStyle}>·</span> {navItem.title}
                             </button>
                         </li>
@@ -80,13 +84,17 @@ export const SettingsBody = ({...props}: SettingsBodyProps) => {
             <section
                 className={"flex-1 pl-6 border-l border-black/20"}>
                 <div
-                    className={"text-3xl font-medium pb-5 pt-13 border-b border-black/20"}>
+                    className={"text-3xl pb-5 pt-13 border-b border-black/20"}>
                     <h1>{props.primarySectionTitle}</h1>
                 </div>
                 <ul
                     className={"w-full"}
                 >
                     {props.children}
+                    <li
+                        className={`${props.activeNavId === "users" ? "block" : "hidden"} w-full`}>
+                        <Users/>
+                    </li>
                 </ul>
             </section>
         </div>

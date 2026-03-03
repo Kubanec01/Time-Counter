@@ -9,6 +9,7 @@ import {UserMenu} from "@/components/mainNavbar/components/userMenu/UserMenu";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 import {getHours} from "date-fns";
+import {ProfileAvatar} from "@/components/ProfileAvatar";
 
 
 const Navbar = () => {
@@ -21,7 +22,7 @@ const Navbar = () => {
     const {userInitials, workspaceName, workspaceId, mode, userId, userName} = useWorkSpaceContext()
     const {replace} = useReplaceRouteLink()
 
-    const btnStyle = "text-black font-semibold text-sm duration-150 ease-in-out cursor-pointer hover:bg-black/5 border border-transparent hover:border-black/10 px-3 py-0.5 rounded-md duration-150"
+    const btnStyle = "text-black text-sm duration-150 ease-in-out cursor-pointer hover:bg-black/5 border border-transparent hover:border-black/10 px-3 py-0.5 rounded-md duration-150"
 
     const welcomeSign = () => {
         const currHour = getHours(new Date())
@@ -99,19 +100,11 @@ const Navbar = () => {
                         Contact us
                     </button>
                 </li>
-                <li>
-                    <button
-                        onClick={() => setIsUserMenuOpen(v => !v)}
-                        style={{
-                            backgroundImage: `url(${userBgImg.src})`,
-                            backgroundSize: "cover",
-                            backgroundRepeat: "no-repeat",
-                        }}
-                        className={`cursor-pointer aspect-square w-[32px] rounded-[100px]
-                         overflow-hidden flex justify-center items-center text-white text-sm font-base ml-3`}
-                    >
-                        {userInitials}
-                    </button>
+                <li
+                    onClick={() => setIsUserMenuOpen(v => !v)}
+                    className={"ml-2"}
+                >
+                    <ProfileAvatar userInitials={userInitials}/>
                 </li>
             </ul>
             <UserMenu

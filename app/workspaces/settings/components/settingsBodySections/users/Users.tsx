@@ -1,19 +1,25 @@
-'use client'
-
 import React, {useEffect, useState} from "react";
 import {Member} from "@/types";
+import {
+    MembersFilterBar,
+    UserRoleFilter
+} from "@/app/workspaces/settings/components/settingsBodySections/users/components/MembersFilterBar";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
-import {auth, db} from "@/app/firebase/config";
-import {doc, onSnapshot} from "firebase/firestore";
 import {useAuthState} from "react-firebase-hooks/auth";
-import {RiArrowGoBackLine} from "react-icons/ri";
+import {auth, db} from "@/app/firebase/config";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
-import {MembersFilterBar, UserRoleFilter} from "@/app/workspaces/users/components/MembersFilterBar";
-import {BannedMembersSection} from "@/app/workspaces/users/components/membersSections/BannedMembersSection";
-import {MembersSection} from "@/app/workspaces/users/components/membersSections/MembersSection";
+import {doc, onSnapshot} from "firebase/firestore";
+import {RiArrowGoBackLine} from "react-icons/ri";
+import {
+    BannedMembersSection
+} from "@/app/workspaces/settings/components/settingsBodySections/users/components/membersSections/BannedMembersSection";
+import {
+    MembersSection
+} from "@/app/workspaces/settings/components/settingsBodySections/users/components/membersSections/MembersSection";
 
 
-const UsersHomePage = () => {
+export const Users = () => {
+
 
     const [mem, setMem] = useState<Member[]>([])
     const [members, setMembers] = useState<Member[]>([])
@@ -25,7 +31,8 @@ const UsersHomePage = () => {
     const {workspaceId, mode, userRole} = useWorkSpaceContext()
     const [user] = useAuthState(auth)
     const userId = user?.uid
-    const {replace} = useReplaceRouteLink()
+
+    const categoryTitleStyle = "text-black w-[32%] text-sm text-black/60"
 
     // Functions
     const selectUser = (role: string) => {
@@ -79,44 +86,41 @@ const UsersHomePage = () => {
 
     return (
         <>
+            <div
+                className={"w-full flex items-center justify-between"}>
+                <MembersFilterBar setRole={setFilteredRole}
+                                  selectUser={selectUser}
+                                  findUser={findUser}
+                                  isBtnDisabled={showBannedMembers}/>
+
+            </div>
             <section
-                className={"w-full h-screen flex flex-col justify-start items-center"}
-            >
-                <section
-                    className={"mx-auto w-11/12 max-w-[900px] mt-[130px] flex flex-col gap-2 my-2 justify-center items-center"}>
-                    <h1 className={"text-xl text-black/70 font-semibold w-full text-start px-4"}>Workspace members</h1>
-                    <section
-                        className={"w-full shadow-lg flex flex-col justify-start items-start p-4 rounded-xl bg-black/12"}
-                    >
-                        <div
-                            className={"w-full flex items-center justify-between"}>
-                            <MembersFilterBar setRole={setFilteredRole} selectUser={selectUser} findUser={findUser}
-                                              isBtnDisabled={showBannedMembers}/>
-                            <button
-                                onClick={() => replace("/")}
-                                className={`cursor-pointer hover:scale-105 duration-100 ease-in
-                                bg-vibrant-purple-600/90 text-white rounded-md py-1.5 px-2.5`}>
-                                <RiArrowGoBackLine/>
-                            </button>
-                        </div>
-                        <section
-                            className={"mx-auto w-full"}>
-                            <ul
-                                className={"w-full flex flex-col gap-2 mt-8 justify-center items-center bg-white" +
-                                    " rounded-lg px-4 py-2 border border-black/10"}>
-                                {showBannedMembers
-                                    ?
-                                    <BannedMembersSection members={bannedMembers}/>
-                                    :
-                                    <MembersSection members={members} admins={admins}/>
-                                }
-                            </ul>
-                        </section>
-                    </section>
-                </section>
+                className={"mx-auto w-full"}>
+                <div
+                    className={"w-full flex justify-start items-center mt-8 border-b border-black/20 pb-1"}>
+                    <p
+                        className={categoryTitleStyle}>
+                        Name
+                    </p>
+                    <p
+                        className={categoryTitleStyle}>
+                        Role
+                    </p>
+                    <p
+                        className={categoryTitleStyle}>
+                        Class
+                    </p>
+                </div>
+                <ul
+                    className={"w-full rounded-lg"}>
+                    {showBannedMembers
+                        ?
+                        <BannedMembersSection members={bannedMembers}/>
+                        :
+                        <MembersSection members={members} admins={admins}/>
+                    }
+                </ul>
             </section>
         </>
     )
 }
-
-export default UsersHomePage;

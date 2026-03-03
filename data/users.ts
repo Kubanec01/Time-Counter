@@ -1,11 +1,10 @@
 import {ProjectOption} from "@/types";
 
-export const options = [
+export const usersFilterOptions = [
     {value: "All", label: "Show all"},
     {value: 'Admin', label: 'Admins'},
     {value: 'Manager', label: 'Managers'},
     {value: 'Member', label: 'Members'},
-    {value: 'Banned', label: 'Banned'},
 ];
 
 export const projectTasksOptions: ProjectOption[] = [

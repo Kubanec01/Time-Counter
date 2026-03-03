@@ -1,7 +1,7 @@
 import {Member} from "@/types";
-import {BannedUserBar} from "@/app/workspaces/users/components/BannedUserBar";
+import {BannedUserBar} from "@/app/workspaces/settings/components/settingsBodySections/users/components/BannedUserBar";
 import React from "react";
-import {noUsersMess} from "@/app/workspaces/users/components/membersSections/noUsersMess";
+import {noUsersMess} from "@/app/workspaces/settings/components/settingsBodySections/users/components/membersSections/noUsersMess";
 
 
 
