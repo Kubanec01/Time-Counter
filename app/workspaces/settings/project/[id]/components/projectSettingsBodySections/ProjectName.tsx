@@ -10,6 +10,7 @@ export const ProjectName = () => {
 
     return (
         <NavButton
+            bulletPoint={"inactive"}
             id={"project-name"}
             title={"Edit project name"}
             specSubtitle={"Changing the project name will not affect any access or functionality. You can change the name at any time without any restrictions."}

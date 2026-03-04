@@ -1,13 +1,7 @@
 'use client'
 
 import {Member, Role, UserClass} from "@/types";
-import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
-import {FaCircleUser} from "react-icons/fa6";
-import {MdEmail, MdOutlineShield, MdStarOutline} from "react-icons/md";
-import {Dispatch, SetStateAction, useEffect, useState} from "react";
-import {db} from "@/app/firebase/config";
-import {UsersClasses} from "@/data/users";
-import {doc, getDoc} from "firebase/firestore";
+import {Dispatch, SetStateAction} from "react";
 import {ProfileAvatar} from "@/components/ProfileAvatar";
 import {RiSettings3Fill} from "react-icons/ri";
 
@@ -29,60 +23,6 @@ interface UserBarProps {
 
 export const UserBar = ({...props}: UserBarProps) => {
 
-    const [userClass, setUserClass] = useState<string>("")
-
-    const {userRole, workspaceId, userId, userInitials} = useWorkSpaceContext()
-
-    const membersClass = props.class ? props.class : "unset"
-
-    const buttons: { id: string, label: string, role: Role }[] = [
-        {
-            id: "admin",
-            label: "Admin",
-            role: "Admin"
-        },
-        {
-            id: "manager",
-            label: "Manager",
-            role: "Manager"
-        },
-        {
-            id: "member",
-            label: "Member",
-            role: "Member"
-        },
-    ]
-
-    // setSelectedUser function
-    const selectUser = () => {
-        props.setSelectedUser({
-            userId: props.userId,
-            email: props.email,
-            name: props.name,
-            surname: props.surname,
-            role: props.role,
-            class: props.class,
-        })
-    }
-
-    const setRole = (role: Role) => {
-        selectUser()
-        props.setNewRole(role)
-        props.setIsConfirmModalOpen(true)
-    }
-
-    useEffect(() => {
-
-        const fetchData = async () => {
-            const docRef = doc(db, "realms", workspaceId)
-            const docSnap = await getDoc(docRef)
-            if (!docSnap.exists()) return
-            const data = docSnap.data()
-            const usersClassName: UsersClasses = data.userClasses.find((c: UsersClasses) => c.id === props.class) || []
-            setUserClass(usersClassName.name)
-        }
-        fetchData()
-    }, [props.class, workspaceId])
 
     return (
         <>

@@ -35,7 +35,7 @@ export const BannedUserBar = ({...props}: UserBarProps) => {
     return (
         <>
             <li
-                className={"w-full h-[50px] p-3 flex flex-col gap-2 border-b border-black/20"}
+                className={"w-full h-[50px] p-3 flex flex-col gap-2 border"}
             >
                 <div
                     className={"flex justify-between items-center"}>

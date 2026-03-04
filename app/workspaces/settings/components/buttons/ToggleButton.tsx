@@ -24,7 +24,7 @@ export const ToggleButton = ({...props}: ToggleButtonProps) => {
                             {props.title}
                         </h1>
                         <p
-                            className={"text-xs  text-black/50 font-semibold w-[92%]"}>
+                            className={"text-xs  text-black/50 font-medium w-[92%]"}>
                             {props.specSubtitle}
                         </p>
                     </div>

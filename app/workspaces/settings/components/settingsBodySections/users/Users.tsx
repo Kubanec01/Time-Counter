@@ -7,9 +7,7 @@ import {
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth, db} from "@/app/firebase/config";
-import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 import {doc, onSnapshot} from "firebase/firestore";
-import {RiArrowGoBackLine} from "react-icons/ri";
 import {
     BannedMembersSection
 } from "@/app/workspaces/settings/components/settingsBodySections/users/components/membersSections/BannedMembersSection";
@@ -97,7 +95,7 @@ export const Users = () => {
             <section
                 className={"mx-auto w-full"}>
                 <div
-                    className={"w-full flex justify-start items-center mt-8 border-b border-black/20 pb-1"}>
+                    className={"w-full flex justify-start items-center border-b border-black/20 pb-1"}>
                     <p
                         className={categoryTitleStyle}>
                         Name

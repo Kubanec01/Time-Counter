@@ -16,7 +16,7 @@ export const ChangeFormModal = ({...props}: ChangeFormModalProps) => {
     return (
         <>
             <div
-                className={"w-[290px] border border-black/16 shadow-lg  rounded-xl bg-white/90 p-6 mx-auto"}
+                className={"w-[290px] border border-black/16 shadow-lg rounded-xl bg-white p-6 mx-auto"}
             >
                 <section
                     className={`${props.isFormSent ? "hidden" : "block"}`}>

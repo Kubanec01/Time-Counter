@@ -19,7 +19,7 @@ export const MembersFilterBar = ({...props}: MembersFilterBarProps) => {
 
     return (
         <div
-            className={"flex items-center gap-2 mt-10"}>
+            className={"flex items-center gap-2 my-7"}>
             <select
                 onChange={(event) => {
                     const value = event.target.value as UserRoleFilter;
