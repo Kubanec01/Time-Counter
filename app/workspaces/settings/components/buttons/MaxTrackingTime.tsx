@@ -14,7 +14,7 @@ export const MaxTrackingTime = ({...props}: MaxTrackingTimeProps) => {
             <div
                 className={"border-b border-black/20 pt-3 pb-5"}>
                 <h1
-                    className={"text-[20px] font-medium"}>
+                    className={"text-[20px]"}>
                     {props.title}
                 </h1>
                 <select

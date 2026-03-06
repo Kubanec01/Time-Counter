@@ -3,8 +3,8 @@
 import {format} from "date-fns";
 import {useEffect, useState} from "react";
 import {StatsSectionBody} from "@/app/workspaces/settings/project/stats/[id]/components/StatsSectionBody";
-import {getCurrentMonthDays, getCurrentYearMonths} from "@/app/workspaces/settings/project/stats/[id]/utils";
-import {LineChart} from "@/app/workspaces/settings/project/stats/[id]/components/LineChart";
+import {getCurrentMonthDays, getCurrentYearMonths} from "@/app/workspaces/settings/project/stats/[id]/features/utils";
+import {LineChart} from "@/app/workspaces/settings/project/stats/[id]/components/chartsTemplates/LineChart";
 
 
 type FullTrackedTimeChartProps = {
@@ -15,7 +15,7 @@ type FullTrackedTimeChartProps = {
 
 export const FullTrackedTimeChart = ({...props}: FullTrackedTimeChartProps) => {
 
-    const [activeBtnId, setActiveBtnId] = useState<string>("week");
+    const [filteredPeriod, setFilteredPeriod] = useState<string>("week");
     const [currData, setCurrData] = useState<number[]>([]);
     const [chartStats, setChartStats] = useState<string[]>(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']);
 
@@ -48,43 +48,30 @@ export const FullTrackedTimeChart = ({...props}: FullTrackedTimeChartProps) => {
 
     return (
         <>
-            <StatsSectionBody>
+            <div
+                className={"border h-[286] rounded-xl p-4"}
+            >
                 <div
-                    className={"h-full flex-1 text-xl pt-8"}>
-                    <h1 className={"font-semibold"}>
-                        This are stats for this project.
-                    </h1>
-                    <p
-                        className={"text-base w-[70%] mt-1"}>
-                        Here you can see how many total hours you tracked in the project.
-                    </p>
-                    <div
-                        className={"flex gap-2 py-4"}>
-                        {chartData.map(i => (
-                            <button
-                                onClick={() => {
-                                    setActiveBtnId(i.id)
-                                    setCurrData(i.data)
-                                    setChartStats(i.stats)
-                                }}
-                                key={i.id}
-                                className={`${activeBtnId === i.id ? "bg-vibrant-purple-600 text-white" : "bg-transparent text-vibrant-purple-600 font-semibold"}
-                                text-sm border border-vibrant-purple-600 px-3 py-1 rounded-full cursor-pointer`}
-                            >
-                                {i.title}
-                            </button>
-                        ))}
+                    className={"w-full flex justify-between "}>
+                    <div>
+                        <h1>Total time</h1>
+                        <p>
+                            {"00:00:00"}
+                        </p>
                     </div>
+                    <select>
+
+                    </select>
                 </div>
                 <div
-                    className={"w-[60%] h-full flex justify-end items-center"}>
+                    className={"w-full"}>
                     <LineChart
                         yAxisTitle={'Hours'}
                         yAxisData={currData}
                         xAxisData={chartStats}
                     />
                 </div>
-            </StatsSectionBody>
+            </div>
         </>
     )
 }

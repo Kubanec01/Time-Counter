@@ -71,7 +71,7 @@ export default function HomePage() {
 
                         {/*Projects Hero*/}
                         <div
-                            className={"w-[90%] max-w-[790px] mx-auto border-l flex flex-col justify-center items-start border-black/20 h-[600px] pl-7"}
+                            className={"w-[90%] max-w-small mx-auto border-l flex flex-col justify-center items-start border-black/20 h-[600px] pl-7"}
                         >
                             <section
                                 className={"flex justify-between items-center w-full border-b border-black/20"}

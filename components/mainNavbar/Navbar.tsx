@@ -45,7 +45,7 @@ const Navbar = () => {
 
     return (
         <div
-            className={`${userId ? "block" : "hidden"} w-[90%] max-w-[1100px] backdrop-blur-sm px-4 fixed top-2 left-2/4 -translate-x-2/4 h-[46px]
+            className={`${userId ? "block" : "hidden"} w-[90%] max-w-medium backdrop-blur-sm px-4 fixed top-2 left-2/4 -translate-x-2/4 h-[46px]
              rounded-xl z-[40] bg-[#F8F8F8E6] border border-black/20 shadow-xs flex justify-between items-center`}
         >
             {/*Left Side*/}
@@ -69,13 +69,13 @@ const Navbar = () => {
                         </div>
                         :
                         <>
-                            <span className={"text-black font-semibold text-sm ml-[22px]"}>
+                            <span className={"text-black font-medium text-sm ml-[22px]"}>
                                 {"Workspace >"}
                             </span>
                             <div className={`flex items-center justify-center gap-[30px] pl-3 h-full w-auto`}>
                             <span
                                 className={"text-black/50 font-medium text-sm"}>
-                            {workspaceName} / <span className={"text-sm"}>{workspaceId}</span>
+                            {workspaceName} / <span className={"text-xs"}>{workspaceId}</span>
                             </span>
                             </div>
                         </>

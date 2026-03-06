@@ -12,7 +12,7 @@ import {documentNotFound} from "@/messages/errors";
 import {secondsToFloatHours} from "@/features/utilities/time/timeOperations";
 import {
     FullTrackedTimeChart
-} from "@/app/workspaces/settings/project/stats/[id]/components/chartsSections/FullTrackedTimeChart";
+} from "@/app/workspaces/settings/project/stats/[id]/components/chartsSections/fullTrackedTimeChart/FullTrackedTimeChart";
 import {
     EveryUserTotalTimePieChart
 } from "@/app/workspaces/settings/project/stats/[id]/components/chartsSections/EveryUserTotalTimePieChart";
@@ -25,7 +25,7 @@ import {
     getThisMonthTrackedDates,
     getThisWeekTrackedDates,
     getThisYearTrackedDates
-} from "@/app/workspaces/settings/project/stats/[id]/utils";
+} from "@/app/workspaces/settings/project/stats/[id]/features/utils";
 
 export default function StatsHome() {
 
@@ -100,19 +100,15 @@ export default function StatsHome() {
 
     return (
         <>
-            <section
-                className={"w-full flex justify-center"}
-            >
-                <h1 className={"mt-30"}>
-                    Project name {projectId}
-                </h1>
-            </section>
+            <div
+                className={"bg-red-500 w-11/12 max-w-medium mx-auto grid grid-cols-3 gap-2 my-100"}>
+                <FullTrackedTimeChart
+                    totalTrackedWeekTimes={totalTrackedWeekTimes}
+                    totalTrackedMonthTimes={totalTrackedMonthTimes}
+                    totalTrackedYearTimes={totalTrackedYearTimes}
+                />
+            </div>
             {/*Weekly Times*/}
-            <FullTrackedTimeChart
-                totalTrackedWeekTimes={totalTrackedWeekTimes}
-                totalTrackedMonthTimes={totalTrackedMonthTimes}
-                totalTrackedYearTimes={totalTrackedYearTimes}
-            />
             <EveryUserTotalTimePieChart
                 membersStats={membersStats}
             />

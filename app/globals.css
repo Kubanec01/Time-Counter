@@ -52,6 +52,14 @@
         @apply bg-linear-to-t from-black to-black/60 hover:to-black/55 text-white;
     }
 
+    .max-w-small {
+        @apply max-w-[900px];
+    }
+
+    .max-w-medium {
+        @apply max-w-[1000px];
+    }
+
 }
 
 

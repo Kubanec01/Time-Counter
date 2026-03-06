@@ -109,17 +109,17 @@ export const ProjectOptions = ({...props}: ProjectOptionsProps) => {
             className={"border-b border-black/20 py-4"}>
             <div>
                 <h1
-                    className={"text-[22px] font-medium"}>
+                    className={"text-[22px]"}>
                     Project options
                 </h1>
                 <p
-                    className={"font-medium text-xs text-black/50 w-[70%] mt-1"}>
+                    className={"text-xs text-black/50 w-[70%] mt-1"}>
                     You can choose which basic options you want to have active. To activate or deactivate an option,
                     simply click on it.
                     These are general project options. If you want to assign specific options to individual users, you
                     can do so in the <button
                     onClick={() => replace('/workspaces/users')}
-                    className={"text-vibrant-purple-700 font-semibold underline cursor-pointer"}>users</button> settings.
+                    className={"text-vibrant-purple-700 font-medium underline cursor-pointer"}>users</button> settings.
                 </p>
             </div>
             <ul

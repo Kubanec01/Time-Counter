@@ -20,11 +20,11 @@ export const ToggleButton = ({...props}: ToggleButtonProps) => {
                     <div
                         className={"w-[80%]"}>
                         <h1
-                            className={"text-[20px] font-medium"}>
+                            className={"text-[20px]"}>
                             {props.title}
                         </h1>
                         <p
-                            className={"text-xs  text-black/50 font-medium w-[92%]"}>
+                            className={"text-xs  text-black/50 w-[92%]"}>
                             {props.specSubtitle}
                         </p>
                     </div>

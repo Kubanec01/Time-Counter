@@ -1,6 +1,6 @@
 'use client'
 
-import {Member, Project, ProjectType} from "@/types";
+import {Project} from "@/types";
 import {onSnapshot} from "firebase/firestore";
 import React, {useEffect, useState} from "react";
 import RenameModal from "@/components/modals/RenameModal";
@@ -26,13 +26,8 @@ const ProjectsBars = () => {
     const [editingProjectId, setEditingProjectId] = useState<string | null>(null);
 
     const {replace} = useReplaceRouteLink()
-    const {mode, workspaceId,} = useWorkSpaceContext()
+    const {mode, workspaceId, userId} = useWorkSpaceContext()
     const mounted = useMounted()
-
-
-    // User Data
-    const [user] = useAuthState(auth)
-    const userId = user?.uid
 
 
     // Fetch Projects
@@ -101,12 +96,12 @@ const ProjectsBars = () => {
                                             Project name
                                         </p>
                                         <h1
-                                            className={"font-medium break-all"}>
+                                            className={"font-medium truncate"}>
                                             {p.title}
                                         </h1>
                                     </div>
                                     <div
-                                        className={""}>
+                                        className={"w-[20%]"}>
                                         <p
                                             className={"text-xs font-semibold text-black/50"}
                                         >
@@ -118,7 +113,7 @@ const ProjectsBars = () => {
                                         </h1>
                                     </div>
                                     <div
-                                        className={""}>
+                                        className={"w-[20%]"}>
                                         <p
                                             className={"text-xs font-semibold text-black/50"}
                                         >

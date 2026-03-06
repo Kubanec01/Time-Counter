@@ -24,11 +24,11 @@ export const NavButton = ({...props}: {
                     <div
                         className={"w-[80%]"}>
                         <h1
-                            className={"text-[20px] font-medium"}>
+                            className={"text-[20px]"}>
                             {props.title}
                         </h1>
                         <p
-                            className={`${props.bulletPoint === "active" ? "-mt-1" : "mt-1"} flex items-center gap-1 text-xs text-black/50 font-semibold w-[90%]`}>
+                            className={`${props.bulletPoint === "active" ? "-mt-1" : "mt-1"} flex items-center gap-1 text-xs text-black/50 w-[90%]`}>
                             <span
                                 className={`${props.bulletPoint === "active" ? "block" : "hidden"} text-4xl mb-0.5`}>·</span> {props.specSubtitle}
                         </p>

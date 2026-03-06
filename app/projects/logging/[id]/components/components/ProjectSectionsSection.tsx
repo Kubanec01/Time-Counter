@@ -5,7 +5,6 @@ import {SectionCart} from "@/app/projects/logging/[id]/components/components/Sec
 import React, {useEffect, useState} from "react";
 import {Member, Section} from "@/types";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
-import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 import {doc, onSnapshot} from "firebase/firestore";
 import {formateDateToYMD} from "@/features/utilities/date/formateDates";
 import {db} from "@/app/firebase/config";
@@ -80,7 +79,7 @@ export const ProjectSectionsSection = ({...props}: ProjectSectionsSectionProps) 
 
     return (
         <section
-            className={"w-[90%] max-w-[1000px] border border-black/5 p-8 mb-30 mx-auto flex flex-col gap-4 rounded-xl shadow-lg bg-white/60"}>
+            className={"w-[90%] max-w-medium border border-black/5 p-8 mb-30 mx-auto flex flex-col gap-4 rounded-xl shadow-lg bg-white/60"}>
             <div
                 className={"flex gap-3"}>
                 {members.length < 2 || userRole !== "Member" &&

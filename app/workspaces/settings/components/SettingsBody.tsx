@@ -28,7 +28,7 @@ export const SettingsBody = ({...props}: SettingsBodyProps) => {
 
     return (
         <div
-            className={"w-11/12 max-w-[900px] mx-auto my-[200px] flex justify-between"}>
+            className={"w-11/12 max-w-small mx-auto my-[200px] flex justify-between"}>
             {/*Nav Section*/}
             <section
                 className={"pt-10 w-[22%]"}>

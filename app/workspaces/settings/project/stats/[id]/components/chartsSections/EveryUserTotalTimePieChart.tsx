@@ -3,7 +3,7 @@
 
 
 import {StatsSectionBody} from "@/app/workspaces/settings/project/stats/[id]/components/StatsSectionBody";
-import {PieChart} from "@/app/workspaces/settings/project/stats/[id]/components/PieChart";
+import {PieChart} from "@/app/workspaces/settings/project/stats/[id]/components/chartsTemplates/PieChart";
 
 type PieChartProps = {
     membersStats: { value: number, name: string }[]

@@ -24,7 +24,7 @@ export const updateUserIndividualTime = async (
 
     if (membersData[userId]) {
         const dataTime = membersData[userId].daily[date] ?? 0
-        if (dataTime + seconds > maxDailyTime) {
+        if (dataTime + seconds > maxDailyTime || seconds > maxDailyTime) {
             return false
         }
     }

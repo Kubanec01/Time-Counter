@@ -68,11 +68,11 @@ export const CustomizeProject = () => {
             <div
                 className={"py-5"}>
                 <h1
-                    className={"text-[22px] font-medium"}>
+                    className={"text-[22px]"}>
                     Customize your project
                 </h1>
                 <p
-                    className={"font-medium text-xs text-black/50 w-[70%]"}>
+                    className={" text-xs text-black/50 w-[70%]"}>
                     Here you can modify your project’s features and appearance, set strict rules, or simply fine-tune
                     everything to your liking. All settings can be restored at any time.
                 </p>
