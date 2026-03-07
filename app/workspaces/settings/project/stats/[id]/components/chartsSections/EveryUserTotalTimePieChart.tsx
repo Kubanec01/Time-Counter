@@ -1,36 +1,68 @@
 'use client'
 
 
-
-import {StatsSectionBody} from "@/app/workspaces/settings/project/stats/[id]/components/StatsSectionBody";
 import {PieChart} from "@/app/workspaces/settings/project/stats/[id]/components/chartsTemplates/PieChart";
+import {formatSecondsToTimeString} from "@/features/utilities/time/timeOperations";
+
 
 type PieChartProps = {
     membersStats: { value: number, name: string }[]
+    projectTotalTimeValue: number
 }
 
 export const EveryUserTotalTimePieChart = ({...props}: PieChartProps) => {
 
+    const totalTime = formatSecondsToTimeString(props.projectTotalTimeValue as number)
+
     return (
         <>
-            <StatsSectionBody>
-                <div
-                    className={"h-full flex-1 text-xl pt-8"}>
-                    <h1 className={"font-semibold"}>
-                        This are stats for this project.
+            <div
+                className={"bg-white rounded-xl row-span-2 p-4 flex flex-col border border-black/15"}>
+                {/* Pie data */}
+                <section
+                    className={"h-[64%] flex flex-col items-center justify-between border-b border-black/20"}>
+                    <div
+                        className={"w-full"}>
+                        <h1
+                            className={"text-sm text-black/60 font-medium"}>
+                            Users individual time</h1>
+                        <p
+                            className={"text-xs text-black/50 w-[75%] mt-1"}>
+                            View the tracked time of each user and understand their activity across projects.</p>
+                    </div>
+                    <div
+                        className={"h-[50%] mt-2 w-full flex flex-col items-center justify-center"}>
+                        <PieChart
+                            data={props.membersStats}
+                        />
+                    </div>
+                    <div
+                        className={"w-full mb-2"}>
+                        <h1
+                            className={"text-sm text-black/60"}>
+                            Total time</h1>
+                        <p
+                            className={"text-xl"}>
+                            {totalTime}
+                        </p>
+                    </div>
+                </section>
+                {/*  Most active members  */}
+                <section
+                    className={"w-full flex flex-1 flex-col items-start pt-3"}>
+                    <h1
+                        className={"text-black/60 text-[15px]"}>
+                        Most active users
                     </h1>
-                    <p
-                        className={"text-base w-[70%] mt-1"}>
-                        Here you can see how many total hours you tracked in the project.
-                    </p>
-                </div>
-                <div
-                    className={"w-[60%] h-full flex justify-end items-center"}>
-                    <PieChart
-                        data={props.membersStats}
-                    />
-                </div>
-            </StatsSectionBody>
+                    <div
+                        className={"w-full flex-1 flex justify-center items-center"}>
+                        <h1
+                            className={"text-sm text-black/40 -mt-4"}>
+                            No data found :/
+                        </h1>
+                    </div>
+                </section>
+            </div>
         </>
     )
 }

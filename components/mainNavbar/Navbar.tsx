@@ -53,9 +53,9 @@ const Navbar = () => {
                 className={"h-full flex justify-start items-center w-[50%]"}>
                 <div
                     onClick={() => replace("/")}
-                    className={"h-full w-[38px] flex items-center cursor-pointer justify-start border-r border-black/10 flex-shrink-0"}
+                    className={"h-full w-[38px] flex items-center justify-center cursor-pointer pl-0.5 justify-start border-r border-black/10 flex-shrink-0"}
                 >
-                    <img src={"/Logo.png"} alt={"Logo image"} className={"w-[22px] aspect-square"}/>
+                    <img src={"/Logo.png"} alt={"Logo image"} className={"w-[20px] aspect-square"}/>
                 </div>
                 <div
                     className={"h-full flex items-center justify-start overflow-hidden text-nowrap"}

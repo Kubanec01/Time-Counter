@@ -1,11 +1,11 @@
 import {format} from "date-fns";
-import {StatsSectionBody} from "@/app/workspaces/settings/project/stats/[id]/components/StatsSectionBody";
 import {getCurrentYearMonths} from "@/app/workspaces/settings/project/stats/[id]/features/utils";
 import {AreaChart} from "@/app/workspaces/settings/project/stats/[id]/components/chartsTemplates/AreaChart";
+import {formatSecondsToTimeString} from "@/features/utilities/time/timeOperations";
 
 type ProjectTimeProgresProps = {
-    totalTrackedYearTimes: number[],
-
+    totalTrackedYearTimes: (number | null)[],
+    projectTotalTimeValue: number
 }
 
 export const ProjectTimeProgres = ({...props}: ProjectTimeProgresProps) => {
@@ -15,26 +15,29 @@ export const ProjectTimeProgres = ({...props}: ProjectTimeProgresProps) => {
         data: props.totalTrackedYearTimes
     }
 
+    const totalTime = formatSecondsToTimeString(props.projectTotalTimeValue)
 
     return (
-        <StatsSectionBody>
+        <div
+            className={"bg-white rounded-xl col-span-2 p-4 flex flex-col"}>
             <div
-                className={"h-full flex-1 text-xl pt-8"}>
-                <h1 className={"font-semibold"}>
-                    This are stats for this project.
+                className={"w-full"}>
+                <h1
+                    className={"text-sm text-black/60 font-medium"}>
+                    Long-term tracking progres
                 </h1>
                 <p
-                    className={"text-base w-[70%] mt-1"}>
-                    Here you can see how many total progres in the project per year.
+                    className={"text-2xl mt-1"}>
+                    {totalTime}
                 </p>
             </div>
             <div
-                className={"w-[60%] h-full flex justify-end items-center"}>
+                className={"flex-1 pt-4 pr-4"}>
                 <AreaChart
                     yAxisData={data.data}
                     xAxisData={data.stats}
                 />
             </div>
-        </StatsSectionBody>
+        </div>
     )
 }

@@ -3,7 +3,7 @@
 import ReactECharts from 'echarts-for-react'
 
 type LineChartProps = {
-    yAxisData: number[],
+    yAxisData: (number | null)[],
     yAxisTitle: string,
     xAxisData: string[] | number[],
 }
@@ -12,6 +12,12 @@ export const LineChart = ({...props}: LineChartProps) => {
 
 
     const option = {
+        grid: {
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+        },
         tooltip: {
             trigger: 'axis',
         },

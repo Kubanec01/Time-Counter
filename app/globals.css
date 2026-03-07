@@ -24,6 +24,7 @@
     --color-vibrant-purple-600: #6C47FF;
     --color-vibrant-purple-500: #8A6BFF;
     --color-vibrant-purple-400: #9781F1;
+    --color-vibrant-purple-300: #DDD4FF;
     --color-gradient-yellow: #FCF0DA;
     --color-gradient-purple: #E5DFFF;
     --color-gradient-green: #CEF2EC;
@@ -33,7 +34,7 @@
 @layer components {
 
     .small-button {
-        @apply font-medium flex items-center justify-center text-xs p-1 px-1.5 rounded-md cursor-pointer;
+        @apply flex items-center justify-center text-xs p-1 px-1.5 rounded-md cursor-pointer;
     }
 
     .medium-button {

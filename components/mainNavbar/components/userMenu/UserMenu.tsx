@@ -114,9 +114,9 @@ export const UserMenu = ({...props}: Props) => {
                 </span>
                         <div
                             className={"text-black"}>
-                            <h1 className={"text-sm font-semibold"}>{userName} {userSurname}</h1>
+                            <h1 className={"text-sm"}>{userName} {userSurname}</h1>
                             <p
-                                className={"text-[13px] font-semibold -mt-0.5 text-black/75"}>
+                                className={"text-xs -mt-0.5 text-black/65"}>
                                 {userRole}</p>
                         </div>
                     </div>
@@ -143,9 +143,10 @@ export const UserMenu = ({...props}: Props) => {
                         <li
                             key={workspace.workspaceId}
                             onClick={() => joinWorkspace(userId, workspace.workspaceId, workspace.password)}
-                            className={"flex items-center justify-between px-3 py-2.5 gap-2 border border-black/15 hover:bg-black/2 rounded-lg cursor-pointer"}>
+                            className={"flex items-center justify-between px-3 py-2.5 gap-2 border border-black/10 hover:bg-black/2 rounded-lg cursor-pointer" +
+                                " bg-linear-to-b from-white from-30% to-black/6"}>
                             <div
-                                className={"text-black text-xs font-medium"}>
+                                className={"text-black text-xs"}>
                                 <h1>{workspace.workspaceId}</h1>
                             </div>
                             <button
@@ -164,14 +165,14 @@ export const UserMenu = ({...props}: Props) => {
                             display: mode === "solo" || userRole === "Member" ? "none" : "flex",
                         }}
                         onClick={() => router.push("/workspaces/settings")}
-                        className={"items-center w-full px-3 py-2.5 gap-1  text-black/90 text-xs font-medium border-b border-white/50 hover:bg-white/10 cursor-pointer"}>
+                        className={"items-center w-full px-3 py-2.5 gap-1  text-black/90 text-xs border-b border-white/50 hover:bg-white/10 cursor-pointer"}>
                         <MdOutlineSettings className={"text-sm"}/> Manage workspace
                     </button>
                     {/* Member btn */}
                     <button
                         style={{display: mode === "workspace" ? "flex" : "none"}}
                         onClick={() => setIsLeaveWorkspaceModalOpen(true)}
-                        className={"items-center gap-1 w-full px-3 py-2.5  text-black/90 hover:bg-white/10 font-medium cursor-pointer text-xs"}>
+                        className={"items-center gap-1 w-full px-3 py-2.5  text-black/90 hover:bg-white/10 cursor-pointer text-xs"}>
                         <PiSignOutLight className={"text-sm"}/> Leave workspace
                     </button>
                 </section>

@@ -2,43 +2,56 @@
 
 import {format} from "date-fns";
 import {useEffect, useState} from "react";
-import {StatsSectionBody} from "@/app/workspaces/settings/project/stats/[id]/components/StatsSectionBody";
 import {getCurrentMonthDays, getCurrentYearMonths} from "@/app/workspaces/settings/project/stats/[id]/features/utils";
 import {LineChart} from "@/app/workspaces/settings/project/stats/[id]/components/chartsTemplates/LineChart";
+import {
+    SelectDataFilterButton
+} from "@/app/workspaces/settings/project/stats/[id]/components/chartsSections/fullTrackedTimeChart/components/SelectDataFilterButton";
 
 
 type FullTrackedTimeChartProps = {
     totalTrackedWeekTimes: number[],
     totalTrackedMonthTimes: number[],
-    totalTrackedYearTimes: number[],
+    totalTrackedYearTimes: (number | null)[],
 }
 
 export const FullTrackedTimeChart = ({...props}: FullTrackedTimeChartProps) => {
 
-    const [filteredPeriod, setFilteredPeriod] = useState<string>("week");
-    const [currData, setCurrData] = useState<number[]>([]);
+    const [currData, setCurrData] = useState<(number | null)[]>([]);
     const [chartStats, setChartStats] = useState<string[]>(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']);
 
+    const updateFilteredPeriod = (value: "week" | "month" | "year") => {
+        if (value === "week") {
+            setCurrData(props.totalTrackedWeekTimes)
+            setChartStats(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'])
+        } else if (value === "month") {
+            setCurrData(props.totalTrackedMonthTimes)
+            setChartStats(getCurrentMonthDays.map(d => format(d, "dd")))
+        } else {
+            setCurrData(props.totalTrackedYearTimes)
+            setChartStats(getCurrentYearMonths.map(d => format(d, "M")))
+        }
+
+    }
+
+    const totalPeriodHours = currData.reduce((a, b) => (a ?? 0) + (b ?? 0), 0)
+
+
     // Data
-    const chartData: { id: string, title: string, data: number[], stats: string[] }[] = [
+    const filteredPeriodOptions: { value: string, title: string }[] = [
         {
-            id: "week",
+            value: "week",
             title: "Week",
-            stats: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-            data: props.totalTrackedWeekTimes
         },
         {
-            id: "month",
+            value: "month",
             title: "Month",
-            stats: getCurrentMonthDays.map(d => format(d, "dd")),
-            data: props.totalTrackedMonthTimes
         },
         {
-            id: "year",
+            value: "year",
             title: "Year",
-            stats: getCurrentYearMonths.map(d => format(d, "M")),
-            data: props.totalTrackedYearTimes
         },
+
     ]
 
     useEffect(() => {
@@ -49,22 +62,26 @@ export const FullTrackedTimeChart = ({...props}: FullTrackedTimeChartProps) => {
     return (
         <>
             <div
-                className={"border h-[286] rounded-xl p-4"}
+                className={"bg-white flex flex-col items-center justify-between rounded-xl p-4 border border-black/15"}
             >
                 <div
                     className={"w-full flex justify-between "}>
                     <div>
-                        <h1>Total time</h1>
-                        <p>
-                            {"00:00:00"}
+                        <h1
+                            className={"text-sm text-black/60 font-medium"}>
+                            Total time</h1>
+                        <p
+                            className={"text-2xl mt-0.5"}>
+                            {totalPeriodHours} h
                         </p>
                     </div>
-                    <select>
-
-                    </select>
+                    <SelectDataFilterButton
+                        options={filteredPeriodOptions}
+                        updateFilter={(v) => updateFilteredPeriod(v)}
+                    />
                 </div>
                 <div
-                    className={"w-full"}>
+                    className={"flex-1 w-full flex items-center justify-center pt-3 pr-2"}>
                     <LineChart
                         yAxisTitle={'Hours'}
                         yAxisData={currData}

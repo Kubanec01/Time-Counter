@@ -41,12 +41,11 @@ export const formatedTwoTimesDifferenceToSeconds = (fromTime: string, toTime: st
 }
 
 
-
 export const getProjectTotalTime = async (
     projectId: string,
     workspaceId: WorkspaceId,
 ): Promise<number> => {
-
+    if (workspaceId === "unused") return 0
     const userRef = doc(db, "realms", workspaceId)
     const docSnap = await getDoc(userRef)
 
