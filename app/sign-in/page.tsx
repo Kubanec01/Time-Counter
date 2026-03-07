@@ -16,6 +16,9 @@ const SignInPage = () => {
 
     const {replace} = useReplaceRouteLink()
 
+    // Style
+    const inputStyle = "w-full py-1.5 border border-custom-gray-800 text-custom-gray-600 rounded-lg px-3 outline-none"
+
 
     const handleSignIn = async (e: FormEvent) => {
         e.preventDefault()
@@ -48,23 +51,46 @@ const SignInPage = () => {
     }, []);
 
     return (
-        <section className="w-full h-screen bg-black flex flex-col justify-center items-center">
-            <div className="flex flex-col">
-                <div
-                    className={"flex items-center justify-center mb-4"}
-                >
-                    <h1
-                        className={"font-pacifico text-3xl text-gray-200"}
-                    >Welcome back</h1>
-                </div>
+        <div className="w-full h-screen bg-black flex relative">
+            <h1
+                className={"text-white/40 text-sm absolute right-[24px] top-[24px]"}>
+                Synto
+            </h1>
+            <section
+                style={{
+                    backgroundImage: `url(/signIn-img.png)`,
+                    backgroundSize: 'cover',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                }}
+                className={"w-[36%] max-w-[600px] pl-11 pt-14"}>
+                <h1
+                    className={"text-white/90 text-2xl w-[70%]"}>
+                    Measure, analyze, and optimize your work with confidence.
+                </h1>
+                <p
+                    className={"text-sm text-white/52 w-[80%] mt-2"}>
+                    Create a workspace. Build projects. Track time, solo or with your team. Increase your efficiency and
+                    organization with precise data.
+                </p>
+            </section>
+            <section className="h-full flex flex-col justify-center items-center flex-1">
+                <h1
+                    className={"text-white/90 font- text-2xl"}>
+                    Welcome back
+                </h1>
+                <p
+                    className={"text-xs text-white/50 mt-2"}>
+                    Sign in and take control of your time again.
+                </p>
                 <form
                     onSubmit={handleSignIn}
-                    className="w-[312px] flex flex-col justify-center items-center flex-1 gap-[8px]">
+                    className="w-[312px] flex flex-col justify-center items-center gap-2 mt-12">
                     {/* Email Input */}
                     <input
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Your email..."
-                        className="w-full h-[46px] border border-custom-gray-800 text-custom-gray-600 rounded-[4px] tetx-base px-3"
+                        className={inputStyle}
                         type="text"
                     />
                     {/* Password Input */}
@@ -73,7 +99,7 @@ const SignInPage = () => {
                         <input
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="Your password..."
-                            className="w-full h-[46px] border border-custom-gray-800 text-custom-gray-600 rounded-[4px] text-base px-3"
+                            className={`${inputStyle} mt-0.5`}
                             type={`${isPasswordHidden ? "password" : "text"}`}
                         />
                         <IoMdEyeOff
@@ -86,30 +112,30 @@ const SignInPage = () => {
                             className={"absolute text-custom-gray-800 text-lg right-2.5 cursor-pointer"}/>
                     </div>
                     <h1
-                        className={"text-red-500/90 text-sm"}>
-                        {errorMess}</h1>
+                        className={"text-red-500/90 text-xs mb-2"}>
+                        {errorMess}
+                    </h1>
                     <button
                         type={"submit"}
                         disabled={isLoading}
-                        className={`${isLoading ? "bg-white/25 text-white/60 cursor-base" : "cursor-pointer text-white bg-linear-to-t from-vibrant-purple-500 to-vibrant-purple-400 hover:from-vibrant-purple-600"}
-                         w-full h-[43px] mt-[8px] font-medium text-base  rounded-[8px]`}
+                        className={`${isLoading ? "bg-white/30" : "bg-purple-gradient border"} large-button py-2 w-full`}
                     >
                         Log in
                     </button>
                     <button
                         type={"button"}
-                        className="cursor-pointer hover:underline text-[14px] text-white mt-[18px]"
+                        className="cursor-pointer hover:underline text-xs text-white mt-6"
                     >
                         Forgot your password?
                     </button>
                     <span
-                        className={"text-custom-gray-700/80 text-base mt-[8px]"}>
-                        Or don't have an account?
-                        <Link className={"text-pastel-purple-700 hover:underline"}
+                        className={"text-custom-gray-700/80 text-base text-sm mt-1"}>
+                        {"Or don't have an account?"}
+                        <Link className={"text-vibrant-purple-400 hover:underline"}
                               href="/sign-up"> Sign up</Link></span>
                 </form>
-            </div>
-        </section>
+            </section>
+        </div>
     );
 };
 
