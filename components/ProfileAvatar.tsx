@@ -11,7 +11,7 @@ export const ProfileAvatar = ({userInitials}: { userInitials: string }) => {
                 backgroundSize: "cover",
                 backgroundRepeat: "no-repeat",
             }}
-            className={`cursor-pointer aspect-square w-[32px] rounded-[100px]
+            className={`aspect-square w-[32px] rounded-[100px]
                          overflow-hidden flex justify-center items-center text-white text-sm font-base`}
         >
             {userInitials}

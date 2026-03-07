@@ -102,7 +102,7 @@ const Navbar = () => {
                 </li>
                 <li
                     onClick={() => setIsUserMenuOpen(v => !v)}
-                    className={"ml-2"}
+                    className={"ml-2 cursor-pointer"}
                 >
                     <ProfileAvatar userInitials={userInitials}/>
                 </li>
