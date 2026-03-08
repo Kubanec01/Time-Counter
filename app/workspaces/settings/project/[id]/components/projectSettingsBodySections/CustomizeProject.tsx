@@ -15,7 +15,8 @@ export const CustomizeProject = () => {
 
 
     const [optionTimeFormat, setOptionTimeFormat] = useState<"Range" | "Decimal">("Decimal");
-    const [dailyTrackLimitValue, setDailyTrackLimitValue] = useState<number>(86400);
+    const [trackLimitValue, setTrackLimitValue] = useState<number>(86400);
+    const [activatedTrackLimitType, setActivatedTrackLimitType] = useState<"daily" | "weekly">("daily");
     const [projectOptions, setProjectOptions] = useState<ProjectOption[]>([]);
 
 
@@ -41,10 +42,9 @@ export const CustomizeProject = () => {
         await updateDoc(docRef, {projects: updatedProjects})
     }
 
-    const updateDailyTrackTimeLimit = () => {
-        console.log("update daily track limit")
+    const updateTrackTimeLimit = () => {
 
-        updateProjectDailyTrackLimit(workspaceId, projectId, dailyTrackLimitValue)
+        updateProjectDailyTrackLimit(workspaceId, projectId, trackLimitValue)
     }
 
     useEffect(() => {
@@ -55,7 +55,7 @@ export const CustomizeProject = () => {
             const trackFormat = project.trackFormat
             // eslint-disable-next-line react-hooks/set-state-in-effect
             setOptionTimeFormat(trackFormat)
-            setDailyTrackLimitValue(dailyTrackLimit)
+            setTrackLimitValue(dailyTrackLimit)
             setProjectOptions(activeOptions)
         }, [project]
     )
@@ -89,9 +89,10 @@ export const CustomizeProject = () => {
             <MaxTrackingTime
                 title={"Max. tracking time"}
                 specSubtitle={"The daily limit setting alerts and notifies you when time entries exceed the allowed limit. The maximum limit can be set to 24 hours, while the minimum limit is 1 hour."}
-                value={String(dailyTrackLimitValue / 3600)}
-                setValue={setDailyTrackLimitValue}
-                formSubmitFunction={updateDailyTrackTimeLimit}
+                value={String(trackLimitValue / 3600)}
+                setValueAction={setTrackLimitValue}
+                formSubmitFunctionAction={updateTrackTimeLimit}
+                activatedButton={activatedTrackLimitType}
             />
             <ProjectOptions
                 projectId={projectId}
