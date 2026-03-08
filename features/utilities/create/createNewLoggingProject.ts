@@ -1,14 +1,8 @@
 import {throwRandomNum} from "@/features/utilities/throwRandomNum";
-import {Project, ProjectOption, ProjectType, UserProjectOptions, WorkspaceId} from "@/types";
+import {Project, ProjectType, WorkspaceId} from "@/types";
 import {arrayUnion, doc, updateDoc} from "firebase/firestore";
 import {projectTasksOptions} from "@/data/users";
 import {db} from "@/app/firebase/config";
-
-export interface LoggingProject extends Project {
-    options: ProjectOption[],
-    trackFormat: "Decimal" | "Range",
-    customizedUsersOptions: UserProjectOptions[]
-}
 
 export const createNewLoggingProject = async (
         inputValue: string,
@@ -20,7 +14,7 @@ export const createNewLoggingProject = async (
         // Random Num Variable
         const randomNum = throwRandomNum(10_000_000).toString();
 
-        const newProject: LoggingProject = {
+        const newProject: Project = {
             projectId: `${inputValue.replace(/\s+/g, "")}_${randomNum}`,
             title: inputValue,
             totalTime: 0,

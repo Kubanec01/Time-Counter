@@ -65,6 +65,9 @@ export interface Project {
     type: ProjectType
     totalTrackedTimes: TotalTrackedTime[];
     membersIndividualTimes: UserIndividualTimes
+    options: ProjectOption[],
+    trackFormat: "Decimal" | "Range",
+    customizedUsersOptions: UserProjectOptions[]
 }
 
 export interface SectionCartProps {

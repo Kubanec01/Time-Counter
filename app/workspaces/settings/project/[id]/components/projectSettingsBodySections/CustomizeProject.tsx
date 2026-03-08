@@ -1,27 +1,28 @@
 import {ToggleButton} from "@/app/workspaces/settings/components/buttons/ToggleButton";
 import {useEffect, useState} from "react";
-import {doc, getDoc, onSnapshot, updateDoc} from "firebase/firestore";
+import {doc, getDoc, updateDoc} from "firebase/firestore";
 import {db} from "@/app/firebase/config";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
-import {LoggingProject} from "@/features/utilities/create/createNewLoggingProject";
 import {useParams} from "next/navigation";
 import {documentNotFound} from "@/messages/errors";
 import {Project, ProjectOption} from "@/types";
 import {MaxTrackingTime} from "@/app/workspaces/settings/components/buttons/MaxTrackingTime";
 import {updateProjectDailyTrackLimit} from "@/features/utilities/create/updateProjectDailyTrackLimit";
 import {ProjectOptions} from "@/app/workspaces/settings/components/buttons/ProjectOptions";
+import {useProjectSettings} from "@/features/hooks/useProjectSettings";
 
 export const CustomizeProject = () => {
 
 
     const [optionTimeFormat, setOptionTimeFormat] = useState<"Range" | "Decimal">("Decimal");
-    const [dailyTrackLimit, setDailyTrackLimit] = useState<number>(86400);
+    const [dailyTrackLimitValue, setDailyTrackLimitValue] = useState<number>(86400);
     const [projectOptions, setProjectOptions] = useState<ProjectOption[]>([]);
 
 
     const {workspaceId} = useWorkSpaceContext()
     const projectId = useParams().id as string;
     const docRef = doc(db, "realms", workspaceId);
+    const project = useProjectSettings(workspaceId, projectId);
 
     const updateTrackFormat = async (value: "Decimal" | "Range") => {
         setOptionTimeFormat(value)
@@ -31,7 +32,7 @@ export const CustomizeProject = () => {
 
         const data = docSnap.data()
         const projects = data.projects
-        const updatedProjects = projects.map((p: LoggingProject) => {
+        const updatedProjects = projects.map((p: Project) => {
             if (p.projectId !== projectId) return p
 
             return {...p, trackFormat: value}
@@ -40,27 +41,24 @@ export const CustomizeProject = () => {
         await updateDoc(docRef, {projects: updatedProjects})
     }
 
-    const updateTrackLimit = (v: number) => {
-        setDailyTrackLimit(v)
-        updateProjectDailyTrackLimit(workspaceId, projectId, v)
+    const updateDailyTrackTimeLimit = () => {
+        console.log("update daily track limit")
+
+        updateProjectDailyTrackLimit(workspaceId, projectId, dailyTrackLimitValue)
     }
 
     useEffect(() => {
+            if (!project) return
 
-        const fetchOptions = onSnapshot(docRef, snap => {
-            if (!snap.exists()) return
-
-            const data = snap.data()
-            const project: LoggingProject = data.projects.find((p: Project) => p.projectId === projectId)
             const dailyTrackLimit = project.dailyTrackTime
             const activeOptions: ProjectOption[] = project.options || []
             const trackFormat = project.trackFormat
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setOptionTimeFormat(trackFormat)
-            setDailyTrackLimit(dailyTrackLimit)
+            setDailyTrackLimitValue(dailyTrackLimit)
             setProjectOptions(activeOptions)
-        });
-        return () => fetchOptions()
-    }, [projectId, workspaceId])
+        }, [project]
+    )
 
     return (
         <section
@@ -69,7 +67,7 @@ export const CustomizeProject = () => {
                 className={"py-5"}>
                 <h1
                     className={"text-[22px]"}>
-                    Customize your project
+                    Personalize your project
                 </h1>
                 <p
                     className={" text-xs text-black/50 w-[70%]"}>
@@ -90,8 +88,10 @@ export const CustomizeProject = () => {
             {/* Set max tracking time */}
             <MaxTrackingTime
                 title={"Max. tracking time"}
-                value={String(dailyTrackLimit)}
-                changeFunction={(v) => updateTrackLimit(v)}
+                specSubtitle={"The daily limit setting alerts and notifies you when time entries exceed the allowed limit. The maximum limit can be set to 24 hours, while the minimum limit is 1 hour."}
+                value={String(dailyTrackLimitValue / 3600)}
+                setValue={setDailyTrackLimitValue}
+                formSubmitFunction={updateDailyTrackTimeLimit}
             />
             <ProjectOptions
                 projectId={projectId}
