@@ -1,20 +1,16 @@
 import {Project, TotalTrackedTime, WorkspaceId} from "@/types";
 import {doc, getDoc, updateDoc} from "firebase/firestore";
-import {formateDateToYMD} from "@/features/utilities/date/formateDates";
 import {db} from "@/app/firebase/config";
+import {projectNotFound} from "@/messages/errors";
 
 
 export const updateTotalTrackedTime = async (
     projectId: string,
-    date: string | null | undefined,
+    formatedDateToYMD: string,
     seconds: number,
     workspaceId: WorkspaceId,
     changes: "increase" | "decrease",
 ) => {
-    if(date === undefined) return console.error("Date is undefined");
-
-    // Curr Date Variable
-    if (date === null) date = formateDateToYMD(new Date())
 
     const docRef = doc(db, "realms", workspaceId);
     const docSnap = await getDoc(docRef)
@@ -23,19 +19,19 @@ export const updateTotalTrackedTime = async (
     const data = docSnap.data();
     const projects: Project[] = data.projects
     const project = projects.find(p => p.projectId === projectId);
-    if (!project) return console.log("Project not found");
+    if (!project) return console.error(projectNotFound);
 
-    const trackedTimes = project.totalTrackedTimes ?? []
+    const trackedTimes = project.totalTrackedTimes
 
     const validTrackedTime = trackedTimes.find(
-        t => t.date === date
+        t => t.date === formatedDateToYMD
     )
 
     let updatedTrackedTimes: TotalTrackedTime[]
 
     if (validTrackedTime) {
         updatedTrackedTimes = trackedTimes.map(t => {
-            if (t.date !== date) return t
+            if (t.date !== formatedDateToYMD) return t
 
             let updatedTime = 0
 
@@ -50,7 +46,7 @@ export const updateTotalTrackedTime = async (
     } else {
         updatedTrackedTimes = [
             ...trackedTimes,
-            {date: date, time: seconds}
+            {date: formatedDateToYMD, time: seconds}
         ]
     }
 

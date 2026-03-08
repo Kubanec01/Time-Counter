@@ -30,34 +30,35 @@ export const SectionCart = ({...props}: Section) => {
         <>
             <li key={props.sectionId}
                 className={`w-full rounded-md bg-white text-black/70 text-sm font-medium items-center px-4 py-1.5 relative
-                ${(mode === "solo" || !isWorkspaceRoleAdmin) ? "" : "pt-5"}`}>
+                ${(mode === "solo" || !isWorkspaceRoleAdmin) ? "" : "pt-7"}`}>
                 {/*User Name*/}
                 <span
-                    className={`${isWorkspaceRoleAdmin ? "flex" : "hidden"} gap-0.5 items-center text-xs font-semibold absolute top-1 left-2 text-custom-gray-800`}>
+                    className={`${isWorkspaceRoleAdmin ? "flex" : "hidden"} gap-0.5 items-center text-xs font-semibold absolute bg-black/10 py-0.5 px-1 rounded-full top-1.5 left-2 text-custom-gray-800`}>
                     <HiMiniUserCircle className={"text-sm"}/>
                     {props.userName}
                 </span>
                 <div
                     className={"w-full flex justify-between"}>
-
                     <h1 className={"w-[25%]"}>{props.title}</h1>
                     <h2 className={"w-[25%]"}>{props.category}</h2>
                     <span className={"w-[25%]"}>{formatSecondsToTimeString(props.time)}</span>
                     <span
-                        className={"w-[25%]"}>{formateYMDToDMY(props.updateDate)}</span>
-                    <span
-                        className={"absolute right-4 h-full top-0 flex items-center justify-center gap-4"}>
-                <button
-                    className={"text-sm text-black/40 hover:text-vibrant-purple-500 cursor-pointer"}
-                    onClick={() => setIsEditModalOpen(true)}>
-                    <FaRegEdit/>
-                </button>
-                    <button
-                        className={"text-sm text-black/40 hover:text-red-300 cursor-pointer"}
-                        onClick={() => setIsDeleteModalOpen(true)}>
-                        <FaRegTrashCan/>
-                    </button>
-                </span>
+                        className={"w-[25%] flex justify-between"}>
+                        {formateYMDToDMY(props.updateDate)}
+                        <div
+                            className={"flex items-center justify-center gap-4"}>
+                        <button
+                            className={"text-sm text-black/40 hover:text-vibrant-purple-500 cursor-pointer"}
+                            onClick={() => setIsEditModalOpen(true)}>
+                            <FaRegEdit/>
+                        </button>
+                        <button
+                            className={"text-sm text-black/40 hover:text-red-300 cursor-pointer"}
+                            onClick={() => setIsDeleteModalOpen(true)}>
+                            <FaRegTrashCan/>
+                        </button>
+                    </div>
+                    </span>
                 </div>
             </li>
             <RenameModal
@@ -77,7 +78,7 @@ export const SectionCart = ({...props}: Section) => {
                 isModalOpen={isDeleteModalOpen}
                 title={"Delete track?"}
                 desc={"Are you sure you want to delete this track? This step is irreversible and everything stored in this track will be deleted."}
-                btnFunction={() => deleteAllSectionData(userId,props.projectId, props.sectionId, workspaceId, props.updateDate, props.time,)}
+                btnFunction={() => deleteAllSectionData(userId, props.projectId, props.sectionId, workspaceId, props.updateDate, props.time,)}
                 deleteBtnText={"Delete track"}
                 topDistance={400}
             />

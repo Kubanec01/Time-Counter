@@ -4,13 +4,12 @@ import CreateProjectModal from "@/components/modals/CreateProjectModal";
 import ProjectsBars from "@/components/ProjectsBars";
 import React, {useEffect, useState} from "react";
 import {ProjectType} from "@/types";
-import {createNewProject} from "@/features/utilities/create/createNewProject";
 import {useAuthRedirect} from "@/features/hooks/useAuthRedirect";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
-import {createNewLoggingProject} from "@/features/utilities/create/createNewLoggingProject";
 import WorkspacesPage from "@/app/workspaces/page";
 import {LoadingPage} from "@/components/LoadingPage";
 import {OnboardingModal} from "@/components/modals/OnboardingModal";
+import {createNewProject} from "@/features/utilities/create/createNewProject";
 
 export default function HomePage() {
 
@@ -32,8 +31,7 @@ export default function HomePage() {
     const setNewProject = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        if (typeofProject === "tracking") await createNewProject(inputValue, typeofProject, workspaceId);
-        if (typeofProject === "logging") await createNewLoggingProject(inputValue, typeofProject, workspaceId);
+        await createNewProject(inputValue, typeofProject, workspaceId);
         setInputValue("");
         setIsModalOpen(false);
         setTypeOfProject("tracking");

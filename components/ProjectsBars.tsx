@@ -14,6 +14,7 @@ import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 import {useMounted} from "@/features/hooks/useMounted";
 import {formatSecondsToTimeString} from "@/features/utilities/time/timeOperations";
+import {useRouter} from "next/navigation";
 
 
 const ProjectsBars = () => {
@@ -25,7 +26,7 @@ const ProjectsBars = () => {
     const [inputValue, setInputValue] = useState("");
     const [editingProjectId, setEditingProjectId] = useState<string | null>(null);
 
-    const {replace} = useReplaceRouteLink()
+    const router = useRouter()
     const {mode, workspaceId, userId} = useWorkSpaceContext()
     const mounted = useMounted()
 
@@ -84,48 +85,48 @@ const ProjectsBars = () => {
                             {projectsData.map((p: Project) => (
                                 <li
                                     key={p.projectId}
-                                    onClick={() => replace(`/projects/${p.type}/${p.projectId}`)}
+                                    onClick={() => router.push(`/projects/${p.type}/${p.projectId}`)}
                                     className={"cursor-pointer ease-in border mb-4 border-black/20 shadow-md rounded-xl" +
                                         " bg-linear-to-t from-black/2 to-white hover:from-black/4 duration-100 w-full flex items-center justify-between px-6 py-4"}
                                 >
                                     <div
                                         className={"w-[30%]"}>
                                         <p
-                                            className={"text-xs font-semibold text-vibrant-purple-700"}
+                                            className={"text-xs font-medium text-vibrant-purple-700"}
                                         >
                                             Project name
                                         </p>
                                         <h1
-                                            className={"font-medium truncate"}>
+                                            className={"truncate"}>
                                             {p.title}
                                         </h1>
                                     </div>
                                     <div
                                         className={"w-[20%]"}>
                                         <p
-                                            className={"text-xs font-semibold text-black/50"}
+                                            className={"text-xs font-medium text-black/50"}
                                         >
                                             Total time
                                         </p>
                                         <h1
-                                            className={"font-medium"}>
+                                            className={""}>
                                             {formatSecondsToTimeString(p.totalTime)}
                                         </h1>
                                     </div>
                                     <div
                                         className={"w-[20%]"}>
                                         <p
-                                            className={"text-xs font-semibold text-black/50"}
+                                            className={"text-xs font-medium text-black/50"}
                                         >
                                             Members
                                         </p>
                                         <h1
-                                            className={"font-medium"}>
+                                            className={""}>
                                             0
                                         </h1>
                                     </div>
                                     <h1
-                                        className={"text-sm font-medium"}>
+                                        className={"text-sm"}>
                                         {'Enter project >'}
                                     </h1>
                                 </li>

@@ -2,7 +2,6 @@ import React from "react";
 import {arrayUnion, doc, updateDoc} from "firebase/firestore";
 import {throwRandomNum} from "@/features/utilities/throwRandomNum";
 import {LoggingType, Section, UpdatedSectionByDate, WorkspaceId} from "@/types";
-import {formateDateToYMD} from "@/features/utilities/date/formateDates";
 import {db} from "@/app/firebase/config";
 
 export const createNewSection = async (
@@ -11,7 +10,7 @@ export const createNewSection = async (
     projectId: string,
     inputValue: string,
     time: number,
-    date: Date | null,
+    formatedDateToYMD: string,
     setInputValue: (value: React.SetStateAction<string>) => void,
     category: LoggingType,
     workspaceId: WorkspaceId,
@@ -30,10 +29,6 @@ export const createNewSection = async (
     const sectionId = `${inputValue.replace(/\s+/g, "")}_${randomNum}`
 
 
-    if (date === null) date = new Date();
-    const dateData: string = formateDateToYMD(date)
-
-
     const newSection: Section = {
         projectId: projectId,
         sectionId: sectionId,
@@ -41,14 +36,14 @@ export const createNewSection = async (
         userId: userId,
         title: inputValue,
         time: time,
-        updateDate: dateData,
+        updateDate: formatedDateToYMD,
         category: category
     };
 
     const newSectionUpdate: UpdatedSectionByDate = {
         projectId: projectId,
         sectionId: sectionId,
-        date: dateData,
+        date: formatedDateToYMD,
     }
 
     await updateDoc(userRef, {projectsSections: arrayUnion(newSection)});

@@ -6,17 +6,12 @@ import {useRouter} from "next/navigation";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 import {onSnapshot} from "firebase/firestore";
-import {
-    formatedTwoTimesDifferenceToSeconds,
-    formatFloatHoursToSeconds, secondsToFloatHours, updateProjectTotalTime
-} from "@/features/utilities/time/timeOperations";
+import {formatFloatHoursToSeconds} from "@/features/utilities/time/timeOperations";
 import {createNewSection} from "@/features/utilities/create/createNewSection";
-import {updateTotalTrackedTime} from "@/features/utilities/edit/updateTotalTrackedTime";
 import {UsersClasses} from "@/data/users";
 import {updateUserIndividualTime} from "@/features/utilities/create/updateUserIndividualTime";
 import {formateDateToYMD} from "@/features/utilities/date/formateDates";
 import InformativeModal from "@/components/modals/InformativeModal";
-import {getHours, getMinutes} from "date-fns";
 
 type CreateEntrySectionProps = {
     projectId: string;
@@ -24,36 +19,19 @@ type CreateEntrySectionProps = {
 
 export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
 
-    const currDate = new Date();
-    const currTime = `${String(getHours(currDate)).padStart(2, "0")}:${String(getMinutes(currDate)).padStart(2, "0")}`
-
     // States
     const [taskType, setTaskType] = useState<LoggingType>(null)
     const [customType, setCustomType] = useState<string>("")
     const [options, setOptions] = useState<ProjectOption[]>([])
     const [nameValue, setNameValue] = useState("");
     const [timeInputValue, setTimeInputValue] = useState(0);
-    const [selectedDate, setSelectedDate] = useState<Date | null>(currDate);
     const [isMaxTimeModalOpen, setIsMaxTimeModalOpen] = useState(false);
-    const [timeFormat, setTimeFormat] = useState<"Decimal" | "Range">("Decimal")
-    const [fromTime, setFromTime] = useState(currTime);
-    const [toTime, setToTime] = useState(currTime);
     const [isCreatingTrack, setIsCreatingTrack] = useState(false);
     const [maxDailyTime, setMaxDailyTime] = useState(100);
 
-
-    const setTimeDifference = (firstTime: string, secondTime: string) => {
-        setFromTime(firstTime)
-        setToTime(secondTime)
-
-        const timeDifference = formatedTwoTimesDifferenceToSeconds(firstTime, secondTime);
-
-        setTimeInputValue(secondsToFloatHours(timeDifference));
-    }
-
     const router = useRouter();
-
     const {mode, workspaceId, userName, userSurname, userRole, userId} = useWorkSpaceContext()
+    const currFormatedDate = formateDateToYMD(new Date());
 
     const createSection = async (e: FormEvent) => {
         e.preventDefault();
@@ -66,7 +44,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
 
         const userFullName = `${userName} ${userSurname}`
 
-        const canContinue = await updateUserIndividualTime(userId, workspaceId, props.projectId, formateDateToYMD(selectedDate), timeToSeconds, maxDailyTime, "increase")
+        const canContinue = await updateUserIndividualTime(userId, workspaceId, props.projectId, currFormatedDate, timeToSeconds, maxDailyTime, "increase")
         if (canContinue === false) {
             setIsMaxTimeModalOpen(true);
             setNameValue("")
@@ -76,22 +54,17 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
             return
         }
 
-        await createNewSection(userId, userFullName, props.projectId, nameValue, timeToSeconds, formateDateToYMD(selectedDate), setNameValue, newTaskType, workspaceId)
-        await updateTotalTrackedTime(props.projectId, formateDateToYMD(selectedDate), timeToSeconds, workspaceId, "increase")
-        await updateProjectTotalTime(props.projectId, timeToSeconds, workspaceId, "increase")
+        await createNewSection(userId, userFullName, props.projectId, nameValue, timeToSeconds, currFormatedDate, setNameValue, newTaskType, workspaceId)
         setNameValue("")
         setTaskType(null)
         setTimeInputValue(0)
-        setFromTime(currTime)
-        setToTime(currTime)
+
 
         setIsCreatingTrack(false)
     }
 
     const isButtonDisabled = () => {
-        return nameValue.trim() === "" || taskType === null || timeInputValue <= 0 ||
-            selectedDate === null || (taskType === "custom" && customType?.trim() === "")
-            || isCreatingTrack;
+        return nameValue.trim() === "" || taskType === null || (taskType === "custom" && customType?.trim() === "") || isCreatingTrack;
     }
 
     // Fetch Data
@@ -108,13 +81,8 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
             const memberClass = member.class
             const usersClasses: UsersClasses[] = data.userClasses
             const project: Project = data.projects.find((project: Project) => project.projectId === props.projectId)
-            const maxDailyTime = project.dailyTrackTime;
             const customized = project.customizedUsersOptions ?? [];
             const userOptions = customized.find((o: UserProjectOptions) => o.userId === userId);
-            const trackFormat = project.trackFormat
-
-            setTimeFormat(trackFormat)
-            setMaxDailyTime(maxDailyTime)
 
             if (userOptions) {
                 setOptions(userOptions.activeOptions)
@@ -131,9 +99,9 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
     }, [mode, props.projectId, userId, workspaceId])
 
     return (
-        <section
-            className={"pb-6 pt-10 mt-8 bg-radial from-vibrant-purple-700/30 to-white to-70% w-[90%] max-w-medium mx-auto"}>
-            <div
+        <div
+            className={"pb-6 pt-10 mt-8 bg-radial from-vibrant-purple-400/50 to-white to-66% mx-auto"}>
+            <section
                 className={"w-full flex items-center justify-between px-8 pb-2"}>
                 <h1
                     className={"mb-0.5 font-medium text-black/60 text-lg"}>
@@ -157,12 +125,12 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                         <RiSettings3Fill/>
                     </button>
                 </div>
-            </div>
-            <div
+            </section>
+            <section
                 className={"w-full p-8 rounded-xl shadow-lg mx-auto bg-white border border-black/5"}>
                 <form
                     onSubmit={createSection}
-                    className={"p-6 rounded-xl bg-black/2 flex flex-col justify-between gap-8 items-start mx-auto"}>
+                    className={"p-6 rounded-xl bg-black/2 mx-auto flex items-end justify-between"}>
                     {/* Main inputs Section */}
                     <div
                         className={"w-full flex justify-start gap-10 flex-wrap"}>
@@ -201,63 +169,11 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                                    placeholder={"What are you going to work on?"}
                                    className={"border border-black/20 w-[300px] focus:outline-vibrant-purple-600 p-1 px-2 rounded-md bg-white"}/>
                         </div>
-                        {/* Decimal time input */}
-                        <div
-                            className={`${timeFormat === "Decimal" ? "flex" : "hidden"} flex-col`}>
-                            <label htmlFor="time" className={"font-medium text-sm text-black/60"}>Hours</label>
-                            <input
-                                id="time"
-                                min={0.25}
-                                max={24}
-                                step={0.25}
-                                value={timeInputValue}
-                                onChange={(e) => setTimeInputValue(Number(e.target.value))}
-                                type={"number"}
-                                placeholder={"0.25"}
-                                className={"border border-black/20 text-sm focus:outline-vibrant-purple-600 p-1.5 px-2 rounded-md bg-white"}/>
-                        </div>
-                        {/* Range time inputs */}
-                        <div
-                            className={`${timeFormat === "Range" ? "flex" : "hidden"} flex gap-6`}>
-                            <div
-                                className={"flex flex-col"}>
-                                <label htmlFor="time" className={"font-medium text-sm text-black/60"}>From</label>
-                                <input
-                                    id="time"
-                                    type={"time"}
-                                    value={fromTime}
-                                    onChange={(e) => {
-                                        setFromTime(e.target.value)
-                                        setTimeDifference(e.target.value, toTime)
-                                    }}
-                                    className={"border border-black/20 text-sm focus:outline-vibrant-purple-600 p-1.5 px-2 rounded-md bg-white"}/>
-                            </div>
-                            <div
-                                className={"flex flex-col"}>
-                                <label htmlFor="time" className={"font-medium text-sm text-black/60"}>To</label>
-                                <input
-                                    id="time"
-                                    type={"time"}
-                                    value={toTime}
-                                    onChange={(e) => {
-                                        setTimeDifference(fromTime, e.target.value)
-                                    }}
-                                    className={"border border-black/20 text-sm focus:outline-vibrant-purple-600 p-1.5 px-2 rounded-md bg-white"}/>
-                            </div>
-                        </div>
-                        {/*  Date  */}
-                        <div
-                            className={"flex flex-col"}>
-                            <label className={"font-medium text-sm text-black/60"}>Date</label>
-                            <MaxDateCalendarInput
-                                selectedDate={selectedDate}
-                                setSelectedDate={setSelectedDate}
-                            />
-                        </div>
                         {/* Custom input */}
                         <div
                             className={`${taskType === "custom" ? "flex  flex-col" : "hidden"}`}>
-                            <label htmlFor="name-description" className={"font-medium text-black/60"}>Custom Type of
+                            <label htmlFor="name-description" className={"font-medium text-sm text-black/60"}>Custom
+                                Type of
                                 task</label>
                             <input
                                 onChange={(e) => setCustomType(e.target.value)}
@@ -270,13 +186,13 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                         type={"submit"}
                         disabled={isButtonDisabled()}
                         className={`${isButtonDisabled() ? "bg-black/40  border text-white/80" : "bg-purple-gradient cursor-pointer"}
-                         px-5 py-2 mt-4 text-sm font-medium rounded-md text-white duration-100`}>
+                         px-5 py-2 text-sm font-medium rounded-md text-white duration-100 text-nowrap`}>
                         Create entry
                     </button>
                 </form>
                 <InformativeModal setIsModalOpen={setIsMaxTimeModalOpen} isModalOpen={isMaxTimeModalOpen}
                                   title={"You can't track more than the daily limit."}/>
-            </div>
-        </section>
+            </section>
+        </div>
     )
 }

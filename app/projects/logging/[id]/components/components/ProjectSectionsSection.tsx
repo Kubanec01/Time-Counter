@@ -121,11 +121,11 @@ export const ProjectSectionsSection = ({...props}: ProjectSectionsSectionProps) 
             <section
                 className={"w-full rounded-md mx-auto flex flex-col bg-black/18"}>
                 <div
-                    className={"w-full rounded-t-md bg-gradient-to-b from-vibrant-purple-400 to-vibrant-purple-700 text-white font-semibold flex justify-between items-center px-4 py-2"}>
-                    <h1 className={"w-[25%] text-sm"}>Name</h1>
-                    <h2 className={"w-[25%] text-sm"}>Type</h2>
-                    <span className={"w-[25%] text-sm"}>Time</span>
-                    <span className={"w-[25%] text-sm"}>Date</span>
+                    className={"w-full text-sm rounded-t-md bg-gradient-to-b from-vibrant-purple-400 to-vibrant-purple-700 text-white flex justify-between items-center px-4 py-2"}>
+                    <h1 className={"w-1/4"}>Name</h1>
+                    <h2 className={"w-1/4"}>Type</h2>
+                    <span className={"w-1/4"}>Time</span>
+                    <span className={"w-1/4"}>Date</span>
                 </div>
                 <ul
                     className={"flex flex-col gap-1 p-1"}>

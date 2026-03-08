@@ -1,8 +1,8 @@
 "use client";
 
 import {useParams} from "next/navigation";
-import ProjectCart from "./components/projectCart/TrackingProjectCart";
 import {useGetProjectName} from "@/features/hooks/useGetProjectName";
+import TrackingProjectCart from "./components/projectCart/TrackingProjectCart";
 
 
 const TrackingProjectPage = () => {
@@ -12,12 +12,11 @@ const TrackingProjectPage = () => {
     }
 
 
-
     const projectId = id.toString()
     const {projectName} = useGetProjectName(projectId)
 
     return (
-        <ProjectCart projectId={projectId} projectName={projectName}/>
+        <TrackingProjectCart projectId={projectId} projectName={projectName}/>
     );
 };
 

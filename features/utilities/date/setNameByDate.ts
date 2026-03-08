@@ -1,17 +1,21 @@
-import {formateDateToDMY} from "@/features/utilities/date/formateDates";
+import {formateDateToYMD} from "@/features/utilities/date/formateDates";
 
-export const setNameByDate = (sectionName: string) => {
+export const setNameByDate = (dateToYMD: string) => {
     let sectionValidName = ""
 
-    const date = new Date()
-    const todayDateString = formateDateToDMY(date)
-    const yesterdayDateString = `${date.getDate() - 1}.${date.getMonth() + 1}.${date.getFullYear()}`
+    console.log(dateToYMD)
 
-    if (sectionName === todayDateString) {
+    const date = new Date()
+    const todayDateToYMD = formateDateToYMD(date)
+    const yesterdayDateToYMD = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate() - 1}`
+
+    console.log(todayDateToYMD)
+
+    if (dateToYMD === todayDateToYMD) {
         sectionValidName = "Today"
-    } else if (sectionName === yesterdayDateString) {
+    } else if (dateToYMD === yesterdayDateToYMD) {
         sectionValidName = "Yesterday"
-    } else sectionValidName = sectionName
+    } else sectionValidName = dateToYMD
 
     return sectionValidName
 }

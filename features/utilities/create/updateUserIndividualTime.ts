@@ -7,7 +7,7 @@ export const updateUserIndividualTime = async (
     userId: string | undefined,
     workspaceId: string,
     projectId: string,
-    date: string,
+    formatedDateToYMD: string,
     seconds: number,
     maxDailyTime: number,
     changes: "increase" | "decrease"
@@ -23,7 +23,7 @@ export const updateUserIndividualTime = async (
     const membersData = currProject.membersIndividualTimes
 
     if (membersData[userId]) {
-        const dataTime = membersData[userId].daily[date] ?? 0
+        const dataTime = membersData[userId].daily[formatedDateToYMD] ?? 0
         if (dataTime + seconds > maxDailyTime || seconds > maxDailyTime) {
             return false
         }
@@ -32,16 +32,16 @@ export const updateUserIndividualTime = async (
     if (!membersData[userId]) {
         membersData[userId] = {
             daily: {
-                [date]: seconds
+                [formatedDateToYMD]: seconds
             },
             total: seconds
         }
     } else {
         if (changes === "increase") {
-            membersData[userId].daily[date] += seconds
+            membersData[userId].daily[formatedDateToYMD] += seconds
             membersData[userId].total += seconds
         } else {
-            membersData[userId].daily[date] -= seconds
+            membersData[userId].daily[formatedDateToYMD] -= seconds
             membersData[userId].total -= seconds
         }
     }

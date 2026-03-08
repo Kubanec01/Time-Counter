@@ -2,7 +2,7 @@ import {ProjectOption} from "@/types";
 import {db} from "@/app/firebase/config";
 import {doc, getDoc, updateDoc} from "firebase/firestore";
 import {documentNotFound} from "@/messages/errors";
-import {LoggingProject} from "@/features/utilities/create/createNewLoggingProject";
+import {LoggingProject} from "@/features/utilities/create/createNewProject";
 
 
 export const updateProjectOptions = async (workspaceId: string, projectId: string, selectedOption: ProjectOption) => {

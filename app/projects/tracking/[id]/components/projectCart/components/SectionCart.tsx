@@ -38,7 +38,6 @@ const SectionCart = ({...props}: SectionCartProps) => {
     const [startTime, setStartTime] = useState("");
     const [subSections, setSubSections] = useState<TimeCheckout[] | []>([]);
     const [inputValue, setInputValue] = useState<string>("");
-    const isAnySections = subSections.length > 0;
     const [lastStopClockTime, setLastStopClockTime] = useState(0)
 
     // Context
@@ -138,60 +137,75 @@ const SectionCart = ({...props}: SectionCartProps) => {
     }, [props.userId, props.sectionId, mode, workspaceId]);
 
     return (
-        <li
+        <div
             key={props.sectionId}
-            className={`w-full rounded-2xl flex flex-col flex-between bg-white relative ${!isAnySections && "pb-1.5"}
-             ${(mode === "solo" || userRole === "Member") ? "pt-1.5" : "pt-3"} px-[16px] mb-[8px]`}>
+            className={`w-full rounded-lg flex flex-col flex-between relative bg-white p-2 mb-[8px]`}>
             {/*User Name*/}
+            <div
+                className={`${isWorkspaceRoleAdmin ? "flex" : "hidden"}`}>
             <span
-                className={`${isWorkspaceRoleAdmin ? "flex" : "hidden"} items-center text-xs font-semibold absolute top-2 left-2.5 text-custom-gray-800`}>
+                className={`flex gap-0.5 px-1.5 py-0.5 mb-1 rounded-full font-medium bg-black/10 text-xs text-custom-gray-800`}>
                     <HiMiniUserCircle className={"text-sm"}/>
                 {props.userName}
-                </span>
+            </span>
+            </div>
             <div
-                className={"flex justify-between gap-10 items-center px-2 h-[52px] border-b-1 border-custom-gray-600"}
-            >
-                <h1
-                    className={"text-base text-black w-2/6"}
-                >{props.title}</h1>
-                <span
-                    className={"text-[20px] font-medium text-black w-2/6"}
-                >{newTime}</span>
+                className={"px-2"}>
                 <div
-                    className={"flex items-center justify-center text-base text-custom-gray-600 gap-[24px]"}>
-                    <span className={"w-[1px] h-[36px] bg-custom-gray-600"}/>
-                    <>
-                        {/*Start & Pause Button*/}
+                    className={"w-full border-b border-black/16 flex items-center"}>
+                    <p
+                        className={"text-vibrant-purple-700 text-sm font-medium w-1/4"}>
+                        Name
+                    </p>
+                    <p
+                        className={"text-vibrant-purple-700 text-sm font-medium w-1/4"}>
+                        Type
+                    </p>
+                    <p
+                        className={"text-vibrant-purple-700 text-sm font-medium w-1/4"}>
+                        Time
+                    </p>
+                </div>
+                <div
+                    className={"flex items-center pt-1.5"}>
+                    <p
+                        className={"text-black text-sm w-1/4"}>
+                        {props.title}
+                    </p>
+                    <p
+                        className={"text-black text-sm w-1/4"}>
+                        {props.type}
+                    </p>
+                    <p
+                        className={"text-black text-sm w-1/4 font-medium"}>
+                        {newTime}
+                    </p>
+                    {/*Buttons*/}
+                    <div
+                        className={"flex items-center justify-end pr-10 gap-0.5 flex-1"}>
                         <button
                             onClick={() => toggleTimer()}
-                            className={`cursor-pointer hover:text-custom-gray-800 duration-150 text-lg`}>
+                            className={`cursor-pointer p-1.5 border bg-purple-gradient border-vibrant-purple-700 rounded-l-md flex items-center justify-center pl-2`}>
                             {isRunning ? <FiPause/> : <FiPlay/>}
                         </button>
-                        <span className={`w-[1px] h-[36px] bg-custom-gray-600`}/>
-                    </>
-                    {/*Rename Button*/}
-                    <button
-                        disabled={isRunning}
-                        onClick={() => setIsEditModalOpen(true)}
-                        className={`${isRunning ? "cursor-not-allowed" : "cursor-pointer hover:text-custom-gray-800"}  duration-150`}
-                    >
-                        <FiEdit/>
-                    </button>
-                    <span className={"w-[1px] h-[36px] bg-custom-gray-600"}/>
-                    {/*Delete Button*/}
-                    <button
-                        disabled={isRunning}
-                        onClick={() => setIsDeleteModalOpen(true)}
-                        className={`${isRunning ? "cursor-not-allowed" : "cursor-pointer hover:text-custom-gray-800"}  duration-150`}
-                    >
-                        <FiDelete/>
-                    </button>
-                    <span className={"w-[1px] h-[36px] bg-custom-gray-600"}/>
+                        <button
+                            disabled={isRunning}
+                            onClick={() => setIsEditModalOpen(true)}
+                            className={`cursor-pointer p-1.5 border border-black/22 bg-linear-to-b from-white from-50% to-black/10 text-black/40 hover:from-black/2 flex items-center justify-center pl-2`}>
+                            <FiEdit/>
+                        </button>
+                        <button
+                            disabled={isRunning}
+                            onClick={() => setIsDeleteModalOpen(true)}
+                            className={`cursor-pointer p-1.5 pr-2 border border-black/22 bg-linear-to-b from-white from-50% to-black/10 text-black/40  hover:from-black/2 rounded-r-md flex items-center justify-center`}>
+                            <FiDelete/>
+                        </button>
+                    </div>
                 </div>
             </div>
             <ul
                 className={`${
-                    isAnySections ? "flex-1" : "hidden"
+                    subSections.length > 0 ? "flex-1" : "hidden"
                 } w-full flex items-center overflow-x-auto overflow-y-hidden gap-3 py-2`}
             >
                 {subSections.map((s, index) => (
@@ -236,7 +250,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
                 setIsModalOpen={setIsInfoModalOpen}
                 title={"You cannot run 2 tracks at the same time."}
             />
-        </li>
+        </div>
     )
         ;
 };

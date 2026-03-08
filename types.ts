@@ -21,7 +21,7 @@ export interface Section {
     title: string;
     time: number;
     updateDate?: string
-    category?: LoggingType
+    category: LoggingType
 }
 
 export interface UpdatedSectionByDate {
@@ -76,6 +76,7 @@ export interface SectionCartProps {
     userName: string;
     title: string;
     userId: string | undefined;
+    type: string | LoggingType
 }
 
 export type LoggingType =
