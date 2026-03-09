@@ -20,7 +20,12 @@ export const ProjectSections = ({...props}: ProjectSectionsProps) => {
             {/*</div>*/}
 
             <section>
-                <ul className="w-full flex flex-col gap-[20px]">
+                <h1
+                    className={`${props.sections.length === 0 ? "block" : "hidden"} text-black/44 text-sm w-full text-center`}>
+                    No data found 0.o
+                </h1>
+                <ul className={`${props.sections.length === 0 ? "hidden" : "flex"}
+                w-full flex-col gap-[20px]`}>
                     {props.updatedSectionsByDates.length > 0 && (
                         <>
                             {props.updatedSectionsByDates.map((section, index) => (

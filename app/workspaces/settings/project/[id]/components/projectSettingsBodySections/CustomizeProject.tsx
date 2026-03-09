@@ -16,7 +16,7 @@ export const CustomizeProject = () => {
 
     const [optionTimeFormat, setOptionTimeFormat] = useState<"Range" | "Decimal">("Decimal");
     const [trackLimitValue, setTrackLimitValue] = useState<number>(86400);
-    const [activatedTrackLimitType, setActivatedTrackLimitType] = useState<"daily" | "weekly">("daily");
+    const [activatedTrackLimitPeriod, setActivatedTrackLimitPeriod] = useState<"daily" | "weekly">("daily");
     const [projectOptions, setProjectOptions] = useState<ProjectOption[]>([]);
 
 
@@ -44,18 +44,24 @@ export const CustomizeProject = () => {
 
     const updateTrackTimeLimit = () => {
 
-        updateProjectDailyTrackLimit(workspaceId, projectId, trackLimitValue)
+        updateProjectDailyTrackLimit(workspaceId, projectId, activatedTrackLimitPeriod, trackLimitValue)
     }
 
     useEffect(() => {
             if (!project) return
 
-            const dailyTrackLimit = project.dailyTrackTime
+            const dailyTrackLimit = project.dailyMaxTrackTime
+            const weeklyTrackLimit = project.weeklyMaxTrackTime
             const activeOptions: ProjectOption[] = project.options || []
             const trackFormat = project.trackFormat
             // eslint-disable-next-line react-hooks/set-state-in-effect
             setOptionTimeFormat(trackFormat)
-            setTrackLimitValue(dailyTrackLimit)
+
+            if (dailyTrackLimit === 0) {
+                setActivatedTrackLimitPeriod("weekly")
+                setTrackLimitValue(weeklyTrackLimit)
+            } else setTrackLimitValue(dailyTrackLimit)
+
             setProjectOptions(activeOptions)
         }, [project]
     )
@@ -88,11 +94,12 @@ export const CustomizeProject = () => {
             {/* Set max tracking time */}
             <MaxTrackingTime
                 title={"Max. tracking time"}
-                specSubtitle={"The daily limit setting alerts and notifies you when time entries exceed the allowed limit. The maximum limit can be set to 24 hours, while the minimum limit is 1 hour."}
+                specSubtitle={"The daily limit alerts you when time entries exceed the allowed amount. By selecting a daily or weekly limit, you can define the maximum tracked time. If the limit is exceeded, the timer will be highlighted in red."}
                 value={String(trackLimitValue / 3600)}
                 setValueAction={setTrackLimitValue}
                 formSubmitFunctionAction={updateTrackTimeLimit}
-                activatedButton={activatedTrackLimitType}
+                activatedButton={activatedTrackLimitPeriod}
+                setActivatedButtonAction={setActivatedTrackLimitPeriod}
             />
             <ProjectOptions
                 projectId={projectId}

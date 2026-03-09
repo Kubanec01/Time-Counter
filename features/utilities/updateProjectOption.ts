@@ -1,8 +1,7 @@
-import {ProjectOption} from "@/types";
+import {Project, ProjectOption} from "@/types";
 import {db} from "@/app/firebase/config";
 import {doc, getDoc, updateDoc} from "firebase/firestore";
 import {documentNotFound} from "@/messages/errors";
-import {LoggingProject} from "@/features/utilities/create/createNewProject";
 
 
 export const updateProjectOptions = async (workspaceId: string, projectId: string, selectedOption: ProjectOption) => {
@@ -11,7 +10,7 @@ export const updateProjectOptions = async (workspaceId: string, projectId: strin
     const snapDoc = await getDoc(docRef)
     if (!snapDoc.exists()) return console.error(documentNotFound)
     const data = snapDoc.data()
-    const updatedProjects = data.projects.map((project: LoggingProject) => {
+    const updatedProjects = data.projects.map((project: Project) => {
         if (project.projectId !== projectId) return project
 
         const updatedOptions = project.options.map((option: ProjectOption) => {

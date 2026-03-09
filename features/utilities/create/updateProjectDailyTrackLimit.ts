@@ -7,6 +7,7 @@ import {Project} from "@/types";
 export const updateProjectDailyTrackLimit = async (
     workspaceId: string,
     projectId: string,
+    limitPeriodType: "daily" | "weekly",
     limitValue: number,
 ) => {
 
@@ -16,7 +17,9 @@ export const updateProjectDailyTrackLimit = async (
     const data = docSnap.data()
     const updatedProjects = data.projects.map((project: Project) => {
         if (project.projectId !== projectId) return project
-        return {...project, dailyTrackTime: limitValue}
+
+        if (limitPeriodType === "daily") return {...project, dailyMaxTrackTime: limitValue, weeklyMaxTrackTime: 0}
+        else return {...project, weeklyMaxTrackTime: limitValue, dailyMaxTrackTime: 0}
     })
 
     await updateDoc(docRef, {projects: updatedProjects})

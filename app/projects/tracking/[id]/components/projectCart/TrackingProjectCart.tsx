@@ -89,48 +89,6 @@ const TrackingProjectCart = ({...props}: ProjectProps) => {
                     projectId={projectId}
                     userId={userId}
                 />
-
-                {/*<section*/}
-                {/*    className={"w-[90%] max-w-[756px] mx-auto mt-[30] mb-[20]"}>*/}
-                {/*    <ul className="w-full flex flex-col gap-[20px]">*/}
-                {/*        {updatedSectionsByDates.length > 0*/}
-                {/*            ?*/}
-                {/*            <>*/}
-                {/*                {updatedSectionsByDates.map((section, index) => (*/}
-                {/*                    <ul*/}
-                {/*                        className={`w-full px-[12px] pt-[12px] pb-[4px] rounded-[12px] shadow-lg ${setColorByDate(section)}`}*/}
-                {/*                        key={index}>*/}
-                {/*                        <h1*/}
-                {/*                            className={"text-sm text-black/50 font-semibold  ml-[24px] mb-[12px]"}*/}
-                {/*                        >*/}
-                {/*                            {setNameByDate(section)}*/}
-                {/*                        </h1>*/}
-                {/*                        {sections.map((i) => {*/}
-                {/*                            if (i.updateDate === section) {*/}
-                {/*                                return (*/}
-                {/*                                    <SectionCart*/}
-                {/*                                        key={i.sectionId}*/}
-                {/*                                        userName={i.userName}*/}
-                {/*                                        sectionId={i.sectionId}*/}
-                {/*                                        projectId={i.projectId}*/}
-                {/*                                        title={i.title}*/}
-                {/*                                        userId={userId}*/}
-                {/*                                    />*/}
-                {/*                                );*/}
-                {/*                            }*/}
-                {/*                            return null;*/}
-                {/*                        })}*/}
-                {/*                    </ul>*/}
-                {/*                ))}*/}
-                {/*            </>*/}
-
-                {/*            :*/}
-                {/*            <h1*/}
-                {/*                className={"w-full h-full flex justify-center items-center text-xl text-gray-500"}>*/}
-                {/*                You have no sections created 0.o*/}
-                {/*            </h1>*/}
-                {/*        }*/}
-                {/*    </ul>*/}
             </section>
         </>
     );
