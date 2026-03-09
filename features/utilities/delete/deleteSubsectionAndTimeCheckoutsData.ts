@@ -1,20 +1,17 @@
 import {doc, getDoc, updateDoc} from "firebase/firestore";
-import {Section, TimeCheckout, UserMode, WorkspaceId} from "@/types";
+import {Section, TimeCheckout, WorkspaceId} from "@/types";
 import React from "react";
 import {db} from "@/app/firebase/config";
 
 
 export const deleteSubsectionAndTimeCheckoutsData = async (
-    userId: string | undefined,
     subSectionId: string,
     sectionId: string,
-    updatedClockTime: string,
+    updatedClockTime: number,
     setSubSections: React.Dispatch<React.SetStateAction<[] | TimeCheckout[]>>,
-    mode: UserMode,
     workspaceId: WorkspaceId,
 ) => {
 
-    if (!userId) return
     const userRef = doc(db, "realms", workspaceId);
     const userSnap = await getDoc(userRef);
 
@@ -24,7 +21,6 @@ export const deleteSubsectionAndTimeCheckoutsData = async (
     const sections = data.projectsSections || []
 
     const updatedCheckouts = timeCheckouts.filter((s: TimeCheckout) => s.subSectionId !== subSectionId)
-    const validUpdatedCheckouts = updatedCheckouts.filter((s: TimeCheckout) => s.sectionId === sectionId)
     const updatedSections = sections.map((s: Section) => {
         if (s.sectionId !== sectionId) return s;
 
@@ -34,6 +30,5 @@ export const deleteSubsectionAndTimeCheckoutsData = async (
 
     await updateDoc(userRef, {timeCheckouts: updatedCheckouts});
     await updateDoc(userRef, {projectsSections: updatedSections})
-    setSubSections(validUpdatedCheckouts);
 }
 

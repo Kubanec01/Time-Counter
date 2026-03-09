@@ -6,7 +6,7 @@ import {Member, Project} from "@/types";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {doc, getDoc} from "firebase/firestore";
 import {format} from "date-fns";
-import {formateDateToYMD} from "@/features/utilities/date/formateDates";
+import {formateDateToYMD} from "@/features/utilities/date/dateOperations";
 import {db} from "@/app/firebase/config";
 import {documentNotFound} from "@/messages/errors";
 import {secondsToFloatHours} from "@/features/utilities/time/timeOperations";

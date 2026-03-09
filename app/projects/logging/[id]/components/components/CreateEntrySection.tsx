@@ -14,7 +14,7 @@ import {createNewSection} from "@/features/utilities/create/createNewSection";
 import {updateTotalTrackedTime} from "@/features/utilities/edit/updateTotalTrackedTime";
 import {UsersClasses} from "@/data/users";
 import {updateUserIndividualTime} from "@/features/utilities/create/updateUserIndividualTime";
-import {formateDateToYMD} from "@/features/utilities/date/formateDates";
+import {formateDateToYMD} from "@/features/utilities/date/dateOperations";
 import InformativeModal from "@/components/modals/InformativeModal";
 import {getHours, getMinutes} from "date-fns";
 
@@ -108,7 +108,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
             const memberClass = member.class
             const usersClasses: UsersClasses[] = data.userClasses
             const project: Project = data.projects.find((project: Project) => project.projectId === props.projectId)
-            const maxDailyTime = project.dailyTrackTime;
+            const maxDailyTime = project.dailyMaxTrackTime;
             const customized = project.customizedUsersOptions ?? [];
             const userOptions = customized.find((o: UserProjectOptions) => o.userId === userId);
             const trackFormat = project.trackFormat

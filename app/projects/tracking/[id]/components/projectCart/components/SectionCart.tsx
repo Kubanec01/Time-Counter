@@ -1,10 +1,10 @@
 "use client";
 
 import DeleteModal from "@/components/modals/DeleteModal";
-import {getDoc, onSnapshot,} from "firebase/firestore";
+import {doc, onSnapshot,} from "firebase/firestore";
 import React, {useEffect, useState} from "react";
 import {useStopwatch} from "react-timer-hook";
-import {Section, SectionCartProps, TimeCheckout} from "@/types";
+import {SectionCartProps, TimeCheckout} from "@/types";
 import {useClockTimeContext} from "@/features/contexts/clockCountContext";
 import InformativeModal from "@/components/modals/InformativeModal";
 import {FiDelete, FiEdit, FiPause, FiPlay} from "react-icons/fi";
@@ -12,23 +12,23 @@ import RenameModal from "@/components/modals/RenameModal";
 import {resetClockTime} from "@/features/utilities/time/resetClockTime";
 import {deleteAllSectionData} from "@/features/utilities/delete/deleteAllSectionData";
 import {createNewTimeCheckout} from "@/features/utilities/create/createNewTimeCheckout";
-import {sendTimeData} from "@/features/utilities/time/updateTimeData";
+import {updateTimeData} from "@/features/utilities/time/updateTimeData";
 import {editSectionName} from "@/features/utilities/edit/editSectionName";
-import {stopTimeDifference} from "@/features/utilities/time/stopTimeDifference";
 import {deleteSubsectionAndTimeCheckoutsData} from "@/features/utilities/delete/deleteSubsectionAndTimeCheckoutsData";
 import SubSectionCart from "@/app/projects/tracking/[id]/components/projectCart/components/SubSectionCart";
 import {
-    formatSecondsToTimeString,
-    formatTimeUnit,
-    parseTimeStringToSeconds, updateProjectTotalTime
+    formatTimeUnit, updateProjectTotalTime
 } from "@/features/utilities/time/timeOperations";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
-import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 import {HiMiniUserCircle} from "react-icons/hi2";
-import {formateDateToDMY, formateDateToYMD} from "@/features/utilities/date/formateDates";
+import {formateDateToYMD, formateYMDToDMY} from "@/features/utilities/date/dateOperations";
+import {db} from "@/app/firebase/config";
+import {useSectionSettings} from "@/features/hooks/useSectionSettings";
 
 
 const SectionCart = ({...props}: SectionCartProps) => {
+
+    const currDate = new Date()
 
     // States
     const [isRunning, setIsRunning] = useState(false);
@@ -51,32 +51,35 @@ const SectionCart = ({...props}: SectionCartProps) => {
 
     // Hooks
     const {seconds, minutes, hours, start, pause, reset, totalSeconds} = useStopwatch({autoStart: false});
+    const section = useSectionSettings(props.sectionId, workspaceId)
+
+    const isWorkspaceRoleAdmin = mode === "workspace" && (userRole === "Admin" || userRole === "Manager");
 
     // Clock Time
     const newTime = `${formatTimeUnit(hours)}:${formatTimeUnit(minutes)}:${formatTimeUnit(seconds)}`;
 
 
     // Functions
-    const deleteSubSection = async (subSectionId: string, difference: string, sectionId: string) => {
+    const deleteSubSection = async (subSectionId: string, durationTime: number, sectionId: string) => {
 
-        const updatedClockTime = totalSeconds - parseTimeStringToSeconds(difference)
-        const formatedUpdatedClockTime = formatSecondsToTimeString(updatedClockTime)
+        const updatedClockTime = totalSeconds - durationTime
         resetClockTime(updatedClockTime, reset)
         setLastStopClockTime(updatedClockTime)
 
-        await deleteSubsectionAndTimeCheckoutsData(props.userId, subSectionId, sectionId, formatedUpdatedClockTime, setSubSections, mode, workspaceId)
+        await deleteSubsectionAndTimeCheckoutsData(subSectionId, sectionId, updatedClockTime, setSubSections, workspaceId)
     }
     const toggleTimer = async () => {
         if (isClocktimeRunning && (activeClockTimeSectionId !== props.sectionId)) return setIsInfoModalOpen(true);
 
-        const now = new Date();
-        const formattedTime = `${formatTimeUnit(now.getHours())}:${formatTimeUnit(now.getMinutes())}`;
+
+        const formatedDate = formateDateToYMD(currDate);
+        const formatedTime = `${currDate.getHours().toString().padStart(2, "0")}:${currDate.getMinutes().toString().padStart(2, "0")}`;
 
         if (!isRunning) {
             setIsClocktimeRunning(true)
             setActiveClockTimeSectionId(props.sectionId)
             setIsRunning(true);
-            setStartTime(formattedTime);
+            setStartTime(formatedTime);
             start();
         } else {
             pause();
@@ -84,44 +87,32 @@ const SectionCart = ({...props}: SectionCartProps) => {
             setActiveClockTimeSectionId("")
             setIsRunning(false);
             setLastStopClockTime(totalSeconds)
-            await updateProjectTotalTime(props.projectId, seconds, workspaceId, "decrease")
-            await sendTimeData(props.userId, props.sectionId, newTime, formateDateToDMY(now), mode, workspaceId);
-            await createNewTimeCheckout(props.userId, formattedTime, props.projectId, props.sectionId, startTime, stopTimeDifference(totalSeconds, lastStopClockTime), mode, workspaceId);
+            await updateProjectTotalTime(props.projectId, totalSeconds, workspaceId, "decrease")
+            await updateTimeData(props.sectionId, totalSeconds, formatedDate, workspaceId);
+            await createNewTimeCheckout(props.projectId, props.sectionId, formatedDate, startTime, formatedTime, (totalSeconds - lastStopClockTime), workspaceId);
         }
     };
-    const isWorkspaceRoleAdmin = mode === "workspace" && (userRole === "Admin" || userRole === "Manager");
 
 
     // Fetch Initial ClockTime
     useEffect(() => {
+        if (section === undefined) return
+
         const fetchInitialClockTime = async () => {
-            if (!props.userId || !props.projectId) return;
-
-            const userRef = getFirestoreTargetRef(props.userId, mode, workspaceId);
-            const userSnap = await getDoc(userRef);
-
-            if (!userSnap.exists()) return;
-
-            const data = userSnap.data();
-            const section = data.projectsSections.find(
-                (s: Section) => s.sectionId === props.sectionId
-            );
 
             if (section.time) {
-                const timeToSeconds = parseTimeStringToSeconds(section.time);
-                setLastStopClockTime(timeToSeconds)
-                resetClockTime(timeToSeconds, reset)
+                setLastStopClockTime(section.time)
+                resetClockTime(section.time, reset)
             }
         };
         fetchInitialClockTime();
 
-    }, [props.userId, props.projectId, props.sectionId, mode, workspaceId, reset]);
+    }, [props.userId, props.projectId, props.sectionId, mode, workspaceId, reset, section]);
 
     // Fetch Time Checkouts
     useEffect(() => {
-        if (!props.userId || !props.sectionId) return;
 
-        const userRef = getFirestoreTargetRef(props.userId, mode, workspaceId);
+        const userRef = doc(db, "realms", workspaceId);
 
         const fetchTimeCheckouts = onSnapshot(userRef, (snap) => {
             if (!snap.exists()) return;
@@ -152,7 +143,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
             <div
                 className={"px-2"}>
                 <div
-                    className={"w-full border-b border-black/16 flex items-center"}>
+                    className={"w-full border-b border-black/16 flex items-center pb-0.5"}>
                     <p
                         className={"text-vibrant-purple-700 text-sm font-medium w-1/4"}>
                         Name
@@ -182,7 +173,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
                     </p>
                     {/*Buttons*/}
                     <div
-                        className={"flex items-center justify-end pr-10 gap-0.5 flex-1"}>
+                        className={"flex items-center justify-end pr-8 gap-0.5 flex-1"}>
                         <button
                             onClick={() => toggleTimer()}
                             className={`cursor-pointer p-1.5 border bg-purple-gradient border-vibrant-purple-700 rounded-l-md flex items-center justify-center pl-2`}>
@@ -206,7 +197,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
             <ul
                 className={`${
                     subSections.length > 0 ? "flex-1" : "hidden"
-                } w-full flex items-center overflow-x-auto overflow-y-hidden gap-3 py-2`}
+                } w-full flex flex-col justify-center items-center mt-2 border-t border-black/12`}
             >
                 {subSections.map((s, index) => (
                     <SubSectionCart
@@ -215,7 +206,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
                         startTime={s.startTime}
                         stopTime={s.stopTime}
                         clockDifference={s.clockDifference}
-                        date={s.date}
+                        date={formateYMDToDMY(s.date)}
                         deleteFunction={() => deleteSubSection(s.subSectionId, s.clockDifference, s.sectionId)}
                     />
                 ))}

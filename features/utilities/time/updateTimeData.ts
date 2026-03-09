@@ -1,19 +1,16 @@
-import {getDoc, updateDoc} from "firebase/firestore";
-import {Section, UpdatedSectionByDate, UserMode, WorkspaceId} from "@/types";
-import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
+import {doc, getDoc, updateDoc} from "firebase/firestore";
+import {Section, UpdatedSectionByDate, WorkspaceId} from "@/types";
+import {db} from "@/app/firebase/config";
 
 
-export const sendTimeData = async (
-    userId: string | undefined,
+export const updateTimeData = async (
     sectionId: string,
-    newTime: string,
-    date: string,
-    mode: UserMode,
+    newTime: number,
+    formatedDate: string,
     workspaceId: WorkspaceId,
 ) => {
-    if (!userId) return;
 
-    const userRef = getFirestoreTargetRef(userId, mode, workspaceId);
+    const userRef = doc(db, "realms", workspaceId);
     const userSnap = await getDoc(userRef);
 
     if (!userSnap.exists()) return;
@@ -24,13 +21,13 @@ export const sendTimeData = async (
     const updatedSections = sections.map((s: Section) => {
         if (s.sectionId !== sectionId) return s;
 
-        return {...s, time: newTime, updateDate: date};
+        return {...s, time: newTime, updateDate: formatedDate};
     });
 
     const updatedSectionsByDates = sectionsByDates.map((s: UpdatedSectionByDate) => {
         if (s.sectionId !== sectionId) return s;
 
-        return {...s, date: date}
+        return {...s, date: formatedDate}
     })
 
     const orderedSections = () => {

@@ -5,12 +5,6 @@ import {documentNotFound} from "@/messages/errors";
 
 export const formatTimeUnit = (num: number) => num.toString().padStart(2, '0');
 
-export const parseTimeStringToSeconds = (time: string) => {
-    const timeArr = time.split(':').map(Number);
-    const [h, m, s] = timeArr
-    return (h * 3600 + m * 60 + s)
-}
-
 export const formatSecondsToTimeString = (timeSeconds: number) => {
     if (timeSeconds < 0) timeSeconds = 0
 

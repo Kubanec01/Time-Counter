@@ -11,7 +11,7 @@ import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import DeleteModal from "@/components/modals/DeleteModal";
 import {HiMiniUserCircle} from "react-icons/hi2";
 import {formatSecondsToTimeString} from "@/features/utilities/time/timeOperations";
-import {formateYMDToDMY} from "@/features/utilities/date/formateDates";
+import {formateYMDToDMY} from "@/features/utilities/date/dateOperations";
 
 
 export const SectionCart = ({...props}: Section) => {

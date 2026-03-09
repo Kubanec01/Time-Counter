@@ -1,35 +1,64 @@
 import React from "react";
 import {FiTrash2} from "react-icons/fi";
-import {FaCalendarDay, FaClock, FaStopwatch} from "react-icons/fa";
+import {formatSecondsToTimeString} from "@/features/utilities/time/timeOperations";
 
 interface SubSectionCartProps {
     index: number;
-    startTime: string
-    stopTime: string
-    clockDifference: string
-    date: string
+    startTime: string;
+    stopTime: string;
+    clockDifference: number;
+    date: string;
     deleteFunction: () => Promise<void>
 }
 
 const SubSectionCart = (props: SubSectionCartProps) => {
 
+    const labelStyle = "text-xs text-black/60"
+    const textStyle = "text-sm text-black/70"
+
+
     return (
         <li
             key={props.index}
-            className="w-[132px] shrink-0 rounded-xl font-medium text-sm flex flex-col justify-between items-start
-             p-[10px] bg-black/6  relative">
-            <span className="flex flex-nowrap items-center justify-center gap-1">
-                <FaClock className={"text-xs ml-[1.5px]"}/> {props.startTime} - {props.stopTime}
-            </span>
-            <span className="flex items-center justify-center gap-1">
-                <FaStopwatch/> {props.clockDifference}
-            </span>
-            <span className="flex items-center justify-center gap-1">
-                <FaCalendarDay className={"text-[13px]"}/> {props.date}
-            </span>
-            <button
-                onClick={() => props.deleteFunction()}
-                className={"absolute bottom-[12px] right-[8px] text-sm cursor-pointer"}><FiTrash2/></button>
+            className="w-full shrink-0 flex p-2 border-b border-black/14 bg-linear-to-b from-white from-60% to-black/3 justify-between items-center">
+            <div className="w-1/4">
+                <h1
+                    className={labelStyle}>
+                    Time Range
+                </h1>
+                <p
+                    className={textStyle}>
+                    {props.startTime} - {props.stopTime}
+                </p>
+            </div>
+            <div className="w-1/4">
+                <h1
+                    className={labelStyle}>
+                    Duration
+                </h1>
+                <p
+                    className={textStyle}>
+                    {formatSecondsToTimeString(props.clockDifference)}
+                </p>
+            </div>
+            <div className="w-1/4">
+                <h1
+                    className={labelStyle}>
+                    Date
+                </h1>
+                <p
+                    className={textStyle}>
+                    {props.date}
+                </p>
+            </div>
+            <div
+                className={"w-1/4 flex items-center justify-end pr-8"}>
+                <button
+                    onClick={() => props.deleteFunction()}
+                    className={"text-sm text-black/30 hover:text-red-300 cursor-pointer"}>
+                    <FiTrash2/>
+                </button>
+            </div>
         </li>
     )
 }

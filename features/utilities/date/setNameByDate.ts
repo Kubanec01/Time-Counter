@@ -1,4 +1,4 @@
-import {formateDateToYMD} from "@/features/utilities/date/formateDates";
+import {formateDateToYMD} from "@/features/utilities/date/dateOperations";
 
 export const setNameByDate = (dateToYMD: string) => {
     let sectionValidName = ""

@@ -9,7 +9,7 @@ export interface TimeCheckout {
     projectId: string;
     startTime: string;
     stopTime: string;
-    clockDifference: string;
+    clockDifference: number;
     date: string;
 }
 

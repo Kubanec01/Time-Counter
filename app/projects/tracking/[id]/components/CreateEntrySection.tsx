@@ -10,7 +10,7 @@ import {formatFloatHoursToSeconds} from "@/features/utilities/time/timeOperation
 import {createNewSection} from "@/features/utilities/create/createNewSection";
 import {UsersClasses} from "@/data/users";
 import {updateUserIndividualTime} from "@/features/utilities/create/updateUserIndividualTime";
-import {formateDateToYMD} from "@/features/utilities/date/formateDates";
+import {formateDateToYMD} from "@/features/utilities/date/dateOperations";
 import InformativeModal from "@/components/modals/InformativeModal";
 
 type CreateEntrySectionProps = {

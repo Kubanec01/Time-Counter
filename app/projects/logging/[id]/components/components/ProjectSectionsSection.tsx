@@ -6,7 +6,7 @@ import React, {useEffect, useState} from "react";
 import {Member, Section} from "@/types";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {doc, onSnapshot} from "firebase/firestore";
-import {formateDateToYMD} from "@/features/utilities/date/formateDates";
+import {formateDateToYMD} from "@/features/utilities/date/dateOperations";
 import {db} from "@/app/firebase/config";
 
 interface ProjectSectionsSectionProps {

@@ -1,4 +1,4 @@
-import {formateDateToDMY} from "@/features/utilities/date/formateDates";
+import {formateDateToDMY} from "@/features/utilities/date/dateOperations";
 
 export const setColorByDate = (sectionName: string) => {
 
