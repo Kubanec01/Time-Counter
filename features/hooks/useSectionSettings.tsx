@@ -5,7 +5,6 @@ import {useEffect, useState} from "react";
 import {doc, onSnapshot} from "firebase/firestore";
 import {db} from "@/app/firebase/config";
 import {Section} from "@/types";
-import {sectionNotFound} from "@/messages/errors";
 
 export const useSectionSettings = (
     sectionId: string,
@@ -25,13 +24,13 @@ export const useSectionSettings = (
             const data = snap.data();
             const sections = data.projectsSections
             const section = sections.find((s: Section) => s.sectionId === sectionId);
-            if (!section) return console.error(sectionNotFound);
+            if (!section) return;
             setValue(section);
         })
 
         return () => fetchData()
 
-    }, [sectionId, workspaceId]);
+    }, []);
 
     if (value !== null) return value
 }

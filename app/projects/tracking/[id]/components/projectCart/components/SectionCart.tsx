@@ -1,10 +1,10 @@
 "use client";
 
 import DeleteModal from "@/components/modals/DeleteModal";
-import {doc, onSnapshot,} from "firebase/firestore";
+import {doc, getDoc, onSnapshot,} from "firebase/firestore";
 import React, {useEffect, useState} from "react";
 import {useStopwatch} from "react-timer-hook";
-import {SectionCartProps, TimeCheckout} from "@/types";
+import {Section, SectionCartProps, TimeCheckout} from "@/types";
 import {useClockTimeContext} from "@/features/contexts/clockCountContext";
 import InformativeModal from "@/components/modals/InformativeModal";
 import {FiDelete, FiEdit, FiPause, FiPlay} from "react-icons/fi";
@@ -49,13 +49,11 @@ const SectionCart = ({...props}: SectionCartProps) => {
     } = useClockTimeContext()
     const {mode, workspaceId, userRole} = useWorkSpaceContext()
 
-    // Hooks
-    const {seconds, minutes, hours, start, pause, reset, totalSeconds} = useStopwatch({autoStart: false});
     const section = useSectionSettings(props.sectionId, workspaceId)
-
     const isWorkspaceRoleAdmin = mode === "workspace" && (userRole === "Admin" || userRole === "Manager");
 
     // Clock Time
+    const {seconds, minutes, hours, start, pause, reset, totalSeconds} = useStopwatch({autoStart: false});
     const newTime = `${formatTimeUnit(hours)}:${formatTimeUnit(minutes)}:${formatTimeUnit(seconds)}`;
 
 
@@ -66,8 +64,9 @@ const SectionCart = ({...props}: SectionCartProps) => {
         resetClockTime(updatedClockTime, reset)
         setLastStopClockTime(updatedClockTime)
 
-        await deleteSubsectionAndTimeCheckoutsData(subSectionId, sectionId, updatedClockTime, setSubSections, workspaceId)
+        await deleteSubsectionAndTimeCheckoutsData(subSectionId, sectionId, updatedClockTime, workspaceId)
     }
+
     const toggleTimer = async () => {
         if (isClocktimeRunning && (activeClockTimeSectionId !== props.sectionId)) return setIsInfoModalOpen(true);
 
@@ -76,11 +75,11 @@ const SectionCart = ({...props}: SectionCartProps) => {
         const formatedTime = `${currDate.getHours().toString().padStart(2, "0")}:${currDate.getMinutes().toString().padStart(2, "0")}`;
 
         if (!isRunning) {
+            start();
             setIsClocktimeRunning(true)
             setActiveClockTimeSectionId(props.sectionId)
             setIsRunning(true);
             setStartTime(formatedTime);
-            start();
         } else {
             pause();
             setIsClocktimeRunning(false)
@@ -96,18 +95,32 @@ const SectionCart = ({...props}: SectionCartProps) => {
 
     // Fetch Initial ClockTime
     useEffect(() => {
-        if (section === undefined) return
+        // if (section === undefined) return
+        //
+        // const fetchInitialClockTime = async () => {
+        //
+        //     if (section.time) {
+        //         setLastStopClockTime(section.time)
+        //         resetClockTime(section.time, reset)
+        //         console.log("toto sa zavolalo")
+        //     }
+        // };
+        // fetchInitialClockTime();
 
-        const fetchInitialClockTime = async () => {
+        const fetchData = async () => {
+            const docRef = doc(db, 'realms', workspaceId)
+            const snap = await getDoc(docRef)
+            if (!snap.exists()) return
+            const data = snap.data()
+            const section = data.projectsSections.find((s: Section) => s.sectionId === props.sectionId)
+            setLastStopClockTime(section.time)
+            resetClockTime(section.time, reset)
+            console.log("toto sa zavolalo")
+        }
 
-            if (section.time) {
-                setLastStopClockTime(section.time)
-                resetClockTime(section.time, reset)
-            }
-        };
-        fetchInitialClockTime();
+        fetchData()
 
-    }, [props.userId, props.projectId, props.sectionId, mode, workspaceId, reset, section]);
+    }, [props.sectionId, reset, workspaceId]);
 
     // Fetch Time Checkouts
     useEffect(() => {
@@ -205,9 +218,9 @@ const SectionCart = ({...props}: SectionCartProps) => {
                         index={index}
                         startTime={s.startTime}
                         stopTime={s.stopTime}
-                        clockDifference={s.clockDifference}
+                        durationTime={s.durationTime}
                         date={formateYMDToDMY(s.date)}
-                        deleteFunction={() => deleteSubSection(s.subSectionId, s.clockDifference, s.sectionId)}
+                        deleteFunction={() => deleteSubSection(s.subSectionId, s.durationTime, s.sectionId)}
                     />
                 ))}
             </ul>

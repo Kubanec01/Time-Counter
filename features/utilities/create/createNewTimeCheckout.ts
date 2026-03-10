@@ -1,6 +1,6 @@
 import {throwRandomNum} from "@/features/utilities/throwRandomNum";
 import {arrayUnion, doc, updateDoc} from "firebase/firestore";
-import {TimeCheckout, UserMode, WorkspaceId} from "@/types";
+import {TimeCheckout, WorkspaceId} from "@/types";
 import {db} from "@/app/firebase/config";
 
 
@@ -24,7 +24,7 @@ export const createNewTimeCheckout = async (
         subSectionId: `subSection${randomNum}_of_${sectionId}`,
         startTime: startTime,
         stopTime: stopTime,
-        clockDifference: clockTimeDifference,
+        durationTime: clockTimeDifference,
         date: formatedDateToYMD,
     };
 

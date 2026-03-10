@@ -6,7 +6,7 @@ interface SubSectionCartProps {
     index: number;
     startTime: string;
     stopTime: string;
-    clockDifference: number;
+    durationTime: number;
     date: string;
     deleteFunction: () => Promise<void>
 }
@@ -38,7 +38,7 @@ const SubSectionCart = (props: SubSectionCartProps) => {
                 </h1>
                 <p
                     className={textStyle}>
-                    {formatSecondsToTimeString(props.clockDifference)}
+                    {formatSecondsToTimeString(props.durationTime)}
                 </p>
             </div>
             <div className="w-1/4">

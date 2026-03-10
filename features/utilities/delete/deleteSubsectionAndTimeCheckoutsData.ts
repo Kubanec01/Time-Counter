@@ -1,6 +1,5 @@
 import {doc, getDoc, updateDoc} from "firebase/firestore";
 import {Section, TimeCheckout, WorkspaceId} from "@/types";
-import React from "react";
 import {db} from "@/app/firebase/config";
 
 
@@ -8,7 +7,6 @@ export const deleteSubsectionAndTimeCheckoutsData = async (
     subSectionId: string,
     sectionId: string,
     updatedClockTime: number,
-    setSubSections: React.Dispatch<React.SetStateAction<[] | TimeCheckout[]>>,
     workspaceId: WorkspaceId,
 ) => {
 
@@ -19,6 +17,8 @@ export const deleteSubsectionAndTimeCheckoutsData = async (
     const data = userSnap.data();
     const timeCheckouts = data.timeCheckouts || []
     const sections = data.projectsSections || []
+
+    if (updatedClockTime < 0) updatedClockTime = 0;
 
     const updatedCheckouts = timeCheckouts.filter((s: TimeCheckout) => s.subSectionId !== subSectionId)
     const updatedSections = sections.map((s: Section) => {
