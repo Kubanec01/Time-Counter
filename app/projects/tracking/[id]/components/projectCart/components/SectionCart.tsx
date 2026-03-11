@@ -24,6 +24,7 @@ import {HiMiniUserCircle} from "react-icons/hi2";
 import {formateDateToYMD, formateYMDToDMY} from "@/features/utilities/date/dateOperations";
 import {db} from "@/app/firebase/config";
 import {useSectionSettings} from "@/features/hooks/useSectionSettings";
+import {updateUserIndividualTime} from "@/features/utilities/create/updateUserIndividualTime";
 
 
 const SectionCart = ({...props}: SectionCartProps) => {
@@ -55,6 +56,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
     // Clock Time
     const {seconds, minutes, hours, start, pause, reset, totalSeconds} = useStopwatch({autoStart: false});
     const newTime = `${formatTimeUnit(hours)}:${formatTimeUnit(minutes)}:${formatTimeUnit(seconds)}`;
+    const formatedDate = formateDateToYMD(currDate);
 
 
     // Functions
@@ -64,6 +66,8 @@ const SectionCart = ({...props}: SectionCartProps) => {
         resetClockTime(updatedClockTime, reset)
         setLastStopClockTime(updatedClockTime)
 
+        await updateProjectTotalTime(props.projectId, durationTime, workspaceId, "decrease")
+        await updateUserIndividualTime(props.userId, workspaceId, props.projectId, formatedDate, durationTime, 1000, "decrease")
         await deleteSubsectionAndTimeCheckoutsData(subSectionId, sectionId, updatedClockTime, workspaceId)
     }
 
@@ -71,7 +75,6 @@ const SectionCart = ({...props}: SectionCartProps) => {
         if (isClocktimeRunning && (activeClockTimeSectionId !== props.sectionId)) return setIsInfoModalOpen(true);
 
 
-        const formatedDate = formateDateToYMD(currDate);
         const formatedTime = `${currDate.getHours().toString().padStart(2, "0")}:${currDate.getMinutes().toString().padStart(2, "0")}`;
 
         if (!isRunning) {
@@ -86,26 +89,17 @@ const SectionCart = ({...props}: SectionCartProps) => {
             setActiveClockTimeSectionId("")
             setIsRunning(false);
             setLastStopClockTime(totalSeconds)
-            await updateProjectTotalTime(props.projectId, totalSeconds, workspaceId, "decrease")
+            const difference = totalSeconds - lastStopClockTime
+            await updateProjectTotalTime(props.projectId, difference, workspaceId, "increase")
             await updateTimeData(props.sectionId, totalSeconds, formatedDate, workspaceId);
-            await createNewTimeCheckout(props.projectId, props.sectionId, formatedDate, startTime, formatedTime, (totalSeconds - lastStopClockTime), workspaceId);
+            await createNewTimeCheckout(props.projectId, props.sectionId, formatedDate, startTime, formatedTime, difference, workspaceId);
+            await updateUserIndividualTime(props.userId, workspaceId, props.projectId, formatedDate, difference, 1000, "increase")
         }
     };
 
 
     // Fetch Initial ClockTime
     useEffect(() => {
-        // if (section === undefined) return
-        //
-        // const fetchInitialClockTime = async () => {
-        //
-        //     if (section.time) {
-        //         setLastStopClockTime(section.time)
-        //         resetClockTime(section.time, reset)
-        //         console.log("toto sa zavolalo")
-        //     }
-        // };
-        // fetchInitialClockTime();
 
         const fetchData = async () => {
             const docRef = doc(db, 'realms', workspaceId)
@@ -115,7 +109,6 @@ const SectionCart = ({...props}: SectionCartProps) => {
             const section = data.projectsSections.find((s: Section) => s.sectionId === props.sectionId)
             setLastStopClockTime(section.time)
             resetClockTime(section.time, reset)
-            console.log("toto sa zavolalo")
         }
 
         fetchData()

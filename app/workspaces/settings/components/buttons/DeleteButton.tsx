@@ -18,11 +18,11 @@ export const DeleteButton = ({...props}: { id: string, title: string, specSubtit
                     <div
                         className={"w-[80%]"}>
                         <h1
-                            className={"text-[20px] font-medium text-red-500"}>
+                            className={"text-[20px] text-red-500"}>
                             {props.title}
                         </h1>
                         <p
-                            className={"flex items-center gap-1 text-xs mt-1 text-black/50 font-semibold w-[86%]"}>
+                            className={"flex items-center gap-1 text-xs mt-1 text-black/50 w-[86%]"}>
                             {props.specSubtitle}
                         </p>
                     </div>
