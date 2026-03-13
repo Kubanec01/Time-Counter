@@ -6,20 +6,6 @@
     --color-custom-gray-700: #919191;
     --color-custom-gray-600: #C7C7C7;
     --color-custom-dark-gray-800: #262626;
-    --color-pastel-purple-800: #8B7FCC;
-    --color-pastel-purple-700: #A99DD9;
-    --color-pastel-purple-600: #C2B6E6;
-    --color-pastel-purple-500: #E0D8F4;
-    --color-pastel-purple-400: #F5F2FB;
-    --color-pastel-blue-700: #7FA6C7;
-    --color-pastel-blue-600: #A1C1DA;
-    --color-pastel-blue-500: #C4D9EB;
-    --color-pastel-blue-400: #E6F2F8;
-    --color-pastel-green-800: #86C6B6;
-    --color-pastel-green-700: #A8DED1;
-    --color-pastel-green-600: #C2E9E0;
-    --color-pastel-green-500: #E0F6F2;
-    --color-pastel-green-400: #F5FBFA;
     --color-vibrant-purple-700: #5b33fd;
     --color-vibrant-purple-600: #6C47FF;
     --color-vibrant-purple-500: #8A6BFF;
@@ -29,6 +15,9 @@
     --color-gradient-purple: #E5DFFF;
     --color-gradient-green: #CEF2EC;
     --color-cloud-white: #ffffff;
+    --color-light-green: #94F2CD;
+    --color-dark-green: #124C0F;
+    --color-light-purple: #919191;
 }
 
 @layer components {

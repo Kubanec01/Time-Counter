@@ -18,7 +18,6 @@ type SettingsBodyProps = {
 export const SettingsBody = ({...props}: SettingsBodyProps) => {
 
 
-    const {replace} = useReplaceRouteLink()
     const router = useRouter()
 
     const navLink = props.navbarLinks || []
@@ -87,15 +86,15 @@ export const SettingsBody = ({...props}: SettingsBodyProps) => {
                     className={"text-3xl pb-5 pt-13 border-b border-black/20"}>
                     <h1>{props.primarySectionTitle}</h1>
                 </div>
-                <ul
+                <section
                     className={"w-full"}
                 >
                     {props.children}
-                    <li
+                    <div
                         className={`${props.activeNavId === "users" ? "block" : "hidden"} w-full`}>
                         <Users/>
-                    </li>
-                </ul>
+                    </div>
+                </section>
             </section>
         </div>
     );

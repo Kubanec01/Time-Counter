@@ -6,7 +6,7 @@ import {documentNotFound} from "@/messages/errors";
 export const getWorkspaceName = async (
     workspaceId: string | null,
 ) => {
-    if (!workspaceId) return;
+    if (!workspaceId || workspaceId === "unset") return;
 
     const docRef = doc(db, "realms", workspaceId);
     const docSnap = await getDoc(docRef);

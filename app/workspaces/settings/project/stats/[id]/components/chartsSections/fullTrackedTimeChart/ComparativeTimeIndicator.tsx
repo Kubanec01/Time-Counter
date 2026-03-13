@@ -16,7 +16,7 @@ export const ComparativeTimeIndicator = () => {
                     className={"flex items-center justify-center w-[170px] gap-2 rounded-xl text-black/80 bg-white/94 py-1.5 text-xl font-medium mt-4"}>
                     02:20:04
                     <span
-                        className={"text-xs p-0.5 rounded-sm bg-[#94F2CD] text-[#124C0F] font-semibold"}>
+                        className={"text-xs p-0.5 rounded-sm bg-light-green text-dark-green font-semibold"}>
                         +200%
                     </span>
                 </div>

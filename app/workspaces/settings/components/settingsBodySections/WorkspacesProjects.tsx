@@ -29,17 +29,27 @@ export const WorkspacesProjects = () => {
 
     return (
         <>
-            {
-                projects.map((project: Project) => (
-                    <NavButton
-                        bulletPoint={"active"}
-                        key={project.projectId}
-                        id={project.projectId}
-                        navLink={`/workspaces/settings/project/${project.projectId}`}
-                        title={project.title}
-                        specSubtitle={`${(project.type)[0].toUpperCase()}${(project.type).slice(1)} Project`}/>
-                ))
-            }
+            <div
+                className={"w-full"}>
+                <h1
+                    className={"text-center mt-10 text-sm text-black/40"}>
+                    No projects found :/
+                </h1>
+            </div>
+            <div
+                className={`${projects.length > 0 ? "block" : "hidden"}`}>
+                {
+                    projects.map((project: Project) => (
+                        <NavButton
+                            bulletPoint={"active"}
+                            key={project.projectId}
+                            id={project.projectId}
+                            navLink={`/workspaces/settings/project/${project.projectId}`}
+                            title={project.title}
+                            specSubtitle={`${(project.type)[0].toUpperCase()}${(project.type).slice(1)} Project`}/>
+                    ))
+                }
+            </div>
         </>
     )
 }

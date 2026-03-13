@@ -24,6 +24,7 @@ import {invalidUserId} from "@/messages/errors";
 import {useRouter} from "next/navigation";
 import {FaPlusCircle} from "react-icons/fa";
 import {PiSignOutLight} from "react-icons/pi";
+import {useLeaveWorkspace} from "@/features/hooks/useLeaveWorkspace";
 
 interface Props {
     isUserMenuOpen: boolean
@@ -40,13 +41,11 @@ export const UserMenu = ({...props}: Props) => {
     const {userName, userSurname, userInitials, userRole, userId, setMode, setWorkspaceId, mode} = useWorkSpaceContext()
     const {replace} = useReplaceRouteLink()
     const router = useRouter();
+    const {leaveWorkspace} = useLeaveWorkspace()
 
     const handleLeaveWorkspace = () => {
-        setMode("solo")
-        setWorkspaceId("unused")
+        leaveWorkspace()
         setIsLeaveWorkspaceModalOpen(false);
-        removeLocalStorageWorkspaceIdAndUserMode()
-        replace("/")
     }
 
     const joinWorkspace = async (

@@ -2,14 +2,12 @@
 
 
 import {useEffect, useState} from "react";
-import {RxQuestionMarkCircled} from "react-icons/rx";
-import {LuMessageCircleMore} from "react-icons/lu";
-import userBgImg from "@/public/gradient-bg.jpg"
 import {UserMenu} from "@/components/mainNavbar/components/userMenu/UserMenu";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 import {getHours} from "date-fns";
 import {ProfileAvatar} from "@/components/ProfileAvatar";
+import {CopyTextButton} from "@/components/CopyTextButton/CopyTextButton";
 
 
 const Navbar = () => {
@@ -50,15 +48,15 @@ const Navbar = () => {
         >
             {/*Left Side*/}
             <div
-                className={"h-full flex justify-start items-center w-[50%]"}>
+                className={"h-full flex justify-start items-center"}>
                 <div
                     onClick={() => replace("/")}
-                    className={"h-full w-[38px] flex items-center justify-center cursor-pointer pl-0.5 justify-start border-r border-black/10 flex-shrink-0"}
+                    className={"h-full flex items-center justify-center pr-4 cursor-pointer border-r border-black/10"}
                 >
                     <img src={"/Logo.png"} alt={"Logo image"} className={"w-[20px] aspect-square"}/>
                 </div>
                 <div
-                    className={"h-full flex items-center justify-start overflow-hidden text-nowrap"}
+                    className={"h-full flex items-center justify-start text-nowrap"}
                 >
                     {mode === "solo"
                         ?
@@ -72,10 +70,13 @@ const Navbar = () => {
                             <span className={"text-black font-medium text-sm ml-[22px]"}>
                                 {"Workspace >"}
                             </span>
-                            <div className={`flex items-center justify-center gap-[30px] pl-3 h-full w-auto`}>
+                            <div
+                                className={`flex flex-1 items-center justify-center gap-[30px] pl-1.5 h-full w-auto`}>
                             <span
-                                className={"text-black/50 font-medium text-sm"}>
-                            {workspaceName} / <span className={"text-xs"}>{workspaceId}</span>
+                                className={"text-black/50 font-medium text-sm flex items-center justify-center"}>
+                                {workspaceName} /
+                                <span className={"text-xs"}> {workspaceId}</span>
+                                <CopyTextButton value={workspaceId}/>
                             </span>
                             </div>
                         </>
@@ -84,7 +85,7 @@ const Navbar = () => {
             </div>
             {/*Right Side*/}
             <ul
-                className={"h-full w-[50%] flex items-center justify-end gap-2"}
+                className={"h-full flex items-center justify-end gap-2"}
             >
                 <li>
                     <button

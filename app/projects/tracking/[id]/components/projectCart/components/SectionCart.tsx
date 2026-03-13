@@ -136,7 +136,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
     return (
         <div
             key={props.sectionId}
-            className={`w-full rounded-lg flex flex-col flex-between relative bg-white p-2 mb-[8px]`}>
+            className={`w-full rounded-lg flex flex-col flex-between bg-white p-2 mb-[8px]`}>
             {/*User Name*/}
             <div
                 className={`${isWorkspaceRoleAdmin ? "flex" : "hidden"}`}>

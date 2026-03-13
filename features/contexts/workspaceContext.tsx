@@ -6,6 +6,7 @@ import {getUserNameData, getUserRoleData} from "@/features/utilities/userInfoDat
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth} from "@/app/firebase/config";
 import {getWorkspaceName} from "@/features/utilities/getWorkspaceName";
+import {removeLocalStorageWorkspaceIdAndUserMode} from "@/features/utilities/localStorage";
 
 interface Context {
     mode: UserMode
@@ -66,16 +67,19 @@ export const WorkSpaceContextProvider = ({children}: { children: ReactNode }) =>
                 setUserMail(resp.email)
                 setUserInitials(`${resp.name.charAt(0).toUpperCase()}${resp.surname.charAt(0).toUpperCase()}`)
             } else {
-                setUserName("")
-                setUserSurname("")
+                removeLocalStorageWorkspaceIdAndUserMode()
+                setWorkspaceId("unused")
+                setUserRole("Admin")
                 console.error("Error fetching user edit-name!")
             }
         }).catch(err => console.log(err))
         getUserRoleData(userId, mode, workspaceId).then(resp => {
-            if (resp) {
+            if (resp || resp !== undefined) {
                 setUserRole(resp)
             } else {
-                setUserRole(null)
+                removeLocalStorageWorkspaceIdAndUserMode()
+                setWorkspaceId("unused")
+                setUserRole("Admin")
                 console.error("Error fetching user role!")
             }
         }).catch(err => console.log(err))

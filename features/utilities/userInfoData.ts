@@ -1,7 +1,8 @@
 import {documentNotFound, invalidUserId, memberNotFound} from "@/messages/errors";
-import {getDoc} from "firebase/firestore";
+import {doc, getDoc} from "firebase/firestore";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 import {Member, UserMode, WorkspaceId} from "@/types";
+import {db} from "@/app/firebase/config";
 
 
 export const getUserNameData = async (
@@ -11,27 +12,19 @@ export const getUserNameData = async (
 ) => {
 
     if (!userId) throw new Error(invalidUserId)
-    const userRef = getFirestoreTargetRef(userId, mode, workspaceId);
-    const docSnap = await getDoc(userRef);
-    if (!docSnap.exists()) throw new Error(documentNotFound)
+    const docRef = doc(db, "users", userId);
+    const docSnap = await getDoc(docRef);
+    if (!docSnap.exists()) console.error(documentNotFound)
     const data = docSnap.data();
 
-    if (mode === "solo") {
+    if (data) {
+
         const name = data.name
         const surname = data.surname
         const email = data.email
-
         if (name && surname && email) return {name, surname, email}
-    }
-
-    const matchedUser: Member = data.members.find((member: Member) => member.userId === userId)
-    if (!matchedUser) throw new Error("Error getting user with user userId from Realms/Workspace")
-
-    const name = matchedUser.name
-    const surname = matchedUser.surname
-    const email = matchedUser.email
-
-    if (name && surname && email) return {name, surname, email}
+        else return undefined
+    } else return undefined
 }
 
 export const getUserRoleData = async (
@@ -49,6 +42,5 @@ export const getUserRoleData = async (
     const data = docSnap.data();
     const member: Member = data.members.find((member: Member) => member.userId === userId)
 
-    if (!member) return console.error(memberNotFound)
     return member.role
 }
