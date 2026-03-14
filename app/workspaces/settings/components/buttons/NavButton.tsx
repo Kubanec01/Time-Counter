@@ -30,7 +30,10 @@ export const NavButton = ({...props}: {
                         <p
                             className={`${props.bulletPoint === "active" ? "-mt-1" : "mt-1"} flex items-center gap-1 text-xs text-black/50 w-[90%]`}>
                             <span
-                                className={`${props.bulletPoint === "active" ? "block" : "hidden"} text-4xl mb-0.5`}>·</span> {props.specSubtitle}
+                                className={`${props.bulletPoint === "active" ? "block" : "hidden"} text-4xl mb-0.5`}>
+                                ·
+                            </span>
+                            {props.specSubtitle}
                         </p>
                     </div>
                     <BsBoxArrowInDownRight

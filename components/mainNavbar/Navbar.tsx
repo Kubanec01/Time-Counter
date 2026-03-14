@@ -75,8 +75,8 @@ const Navbar = () => {
                             <span
                                 className={"text-black/50 font-medium text-sm flex items-center justify-center"}>
                                 {workspaceName} /
-                                <span className={"text-xs"}> {workspaceId}</span>
-                                <CopyTextButton value={workspaceId}/>
+                                <span className={"text-xs ml-1"}> {workspaceId}</span> <CopyTextButton
+                                value={workspaceId}/>
                             </span>
                             </div>
                         </>

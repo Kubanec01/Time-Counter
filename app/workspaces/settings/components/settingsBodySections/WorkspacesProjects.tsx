@@ -30,7 +30,7 @@ export const WorkspacesProjects = () => {
     return (
         <>
             <div
-                className={"w-full"}>
+                className={`${projects.length > 0 ? "hidden" : "block"} w-full`}>
                 <h1
                     className={"text-center mt-10 text-sm text-black/40"}>
                     No projects found :/
