@@ -1,20 +1,19 @@
 'use client'
 
 import {Project} from "@/types";
-import {onSnapshot} from "firebase/firestore";
+import {collection, doc, onSnapshot} from "firebase/firestore";
 import React, {useEffect, useState} from "react";
 import RenameModal from "@/components/modals/RenameModal";
 import {editProjectName} from "@/features/utilities/edit/editProjectName";
 import DeleteModal from "@/components/modals/DeleteModal";
 import {deleteProjectCascade} from "@/features/utilities/delete/deleteProjectCascade";
-import {useAuthState} from "react-firebase-hooks/auth";
-import {auth} from "@/app/firebase/config";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
-import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 import {useMounted} from "@/features/hooks/useMounted";
 import {formatSecondsToTimeString} from "@/features/utilities/time/timeOperations";
 import {useRouter} from "next/navigation";
+import {ProjectBar} from "@/components/ProjectBar/ProjectBar";
+import {db} from "@/app/firebase/config";
 
 
 const ProjectsBars = () => {
@@ -26,7 +25,6 @@ const ProjectsBars = () => {
     const [inputValue, setInputValue] = useState("");
     const [editingProjectId, setEditingProjectId] = useState<string | null>(null);
 
-    const router = useRouter()
     const {mode, workspaceId, userId} = useWorkSpaceContext()
     const mounted = useMounted()
 
@@ -35,15 +33,11 @@ const ProjectsBars = () => {
     useEffect(() => {
 
         if (!userId) return;
-        const userRef = getFirestoreTargetRef(userId, mode, workspaceId);
+        const userRef = collection(db, "realms", workspaceId, "projects")
 
         const fetchProjects = onSnapshot(userRef, (snap) => {
-            if (snap.exists()) {
-                const data = snap.data();
-                setProjectsData(data.projects || []);
-            } else {
-                setProjectsData([]);
-            }
+            const projects = snap.docs.map(doc => doc.data()) as Project[];
+            setProjectsData(projects)
         });
 
         return () => fetchProjects();
@@ -67,6 +61,7 @@ const ProjectsBars = () => {
         setEditingProjectId(null)
     }
 
+
     if (!mounted) return null;
 
     return (
@@ -83,53 +78,15 @@ const ProjectsBars = () => {
                     {projectsData.length > 0 ?
                         <>
                             {projectsData.map((p: Project) => (
-                                <li
+                                <ProjectBar
                                     key={p.projectId}
-                                    onClick={() => router.push(`/projects/${p.type}/${p.projectId}`)}
-                                    className={"cursor-pointer ease-in border mb-4 border-black/20 shadow-md rounded-xl" +
-                                        " bg-linear-to-t from-black/2 to-white hover:from-black/4 duration-100 w-full flex items-center justify-between px-6 py-4"}
-                                >
-                                    <div
-                                        className={"w-[30%]"}>
-                                        <p
-                                            className={"text-xs font-medium text-vibrant-purple-700"}
-                                        >
-                                            Project name
-                                        </p>
-                                        <h1
-                                            className={"truncate"}>
-                                            {p.title}
-                                        </h1>
-                                    </div>
-                                    <div
-                                        className={"w-[20%]"}>
-                                        <p
-                                            className={"text-xs font-medium text-black/50"}
-                                        >
-                                            Total time
-                                        </p>
-                                        <h1
-                                            className={""}>
-                                            {formatSecondsToTimeString(p.totalTime)}
-                                        </h1>
-                                    </div>
-                                    <div
-                                        className={"w-[20%]"}>
-                                        <p
-                                            className={"text-xs font-medium text-black/50"}
-                                        >
-                                            Members
-                                        </p>
-                                        <h1
-                                            className={""}>
-                                            0
-                                        </h1>
-                                    </div>
-                                    <h1
-                                        className={"text-sm"}>
-                                        {'Enter project >'}
-                                    </h1>
-                                </li>
+                                    projectId={p.projectId}
+                                    title={p.title}
+                                    projectTotalTimeString={formatSecondsToTimeString(p.totalTime)}
+                                    membersValue={Object.keys(p.membersList).length}
+                                    workspaceId={workspaceId}
+                                    userId={userId}
+                                />
                             ))}
                             <DeleteModal
                                 setIsModalOpen={setIsDeleteModalOpen}

@@ -2,7 +2,7 @@
 
 import {Member, Role, UserClass} from "@/types";
 import {Dispatch, SetStateAction} from "react";
-import {ProfileAvatar} from "@/components/ProfileAvatar";
+import {ProfileAvatar} from "@/components/ProfileAvatar/ProfileAvatar";
 import {RiSettings3Fill} from "react-icons/ri";
 import {useRouter} from "next/navigation";
 

@@ -6,10 +6,10 @@ import React, {useEffect, useState} from "react";
 import {ProjectType} from "@/types";
 import {useAuthRedirect} from "@/features/hooks/useAuthRedirect";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
-import WorkspacesPage from "@/app/workspaces/page";
-import {LoadingPage} from "@/components/LoadingPage";
+import {LoadingPage} from "@/app/LoadingPage/LoadingPage";
 import {OnboardingModal} from "@/components/modals/OnboardingModal";
 import {createNewProject} from "@/features/utilities/create/createNewProject";
+import LoginWorkspacesPage from "@/app/workspaces/page";
 
 export default function HomePage() {
 
@@ -17,7 +17,7 @@ export default function HomePage() {
     const {user, loading} = useAuthRedirect()
 
     // User Data
-    const {mode, workspaceId, userRole} = useWorkSpaceContext()
+    const {mode, workspaceId, userRole, userId} = useWorkSpaceContext()
 
 
     //   States
@@ -31,7 +31,7 @@ export default function HomePage() {
     const setNewProject = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        await createNewProject(inputValue, typeofProject, workspaceId);
+        await createNewProject(userId, inputValue, typeofProject, workspaceId);
         setInputValue("");
         setIsModalOpen(false);
         setTypeOfProject("tracking");
@@ -54,7 +54,7 @@ export default function HomePage() {
             {mode === "solo"
                 ?
                 <>
-                    <WorkspacesPage/>
+                    <LoginWorkspacesPage/>
                 </>
                 :
                 <>
@@ -66,7 +66,6 @@ export default function HomePage() {
                             className={"fixed top-0 left-0 w-full h-[25%] bg-linear-to-b from-gradient-purple to-transparent z-10"}/>
                         <span
                             className={"fixed bottom-0 left-0 w-full h-[12%] bg-linear-to-t from-gradient-green to-transparent z-50"}/>
-
                         {/*Projects Hero*/}
                         <div
                             className={"w-[90%] max-w-small mx-auto border-l flex flex-col justify-center items-start border-black/20 h-[600px] pl-7"}

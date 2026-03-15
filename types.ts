@@ -1,8 +1,3 @@
-export interface ProjectProps {
-    projectId: string;
-    projectName: string
-}
-
 export interface TimeCheckout {
     subSectionId: string;
     sectionId: string;
@@ -41,10 +36,6 @@ export type UserProjectOptions = {
     inactiveOptions: ProjectOption[];
 };
 
-export interface ProjectWithCustomOptions extends Project {
-    customizedUsersOptions: UserProjectOptions[]
-}
-
 export type TotalTrackedTime = {
     date: string;
     time: number;
@@ -68,6 +59,16 @@ export interface Project {
     membersIndividualTimes: UserIndividualTimes
     options: ProjectOption[],
     trackFormat: "Decimal" | "Range",
+    customizedUsersOptions: UserProjectOptions[]
+    membersList: string[]
+}
+
+export interface ProjectProps {
+    projectId: string;
+    projectName: string
+}
+
+export interface ProjectWithCustomOptions extends Project {
     customizedUsersOptions: UserProjectOptions[]
 }
 

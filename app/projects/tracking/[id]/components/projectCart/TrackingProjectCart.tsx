@@ -8,7 +8,7 @@ import {getUniqueDates} from "@/features/utilities/date/getUniqueDates";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 import {sortDatesAscending} from "@/features/utilities/date/sortDates";
-import {ProjectHero} from "@/components/ProjectHero";
+import {ProjectHero} from "@/components/ProjectHero/ProjectHero";
 import {useGetProjectName} from "@/features/hooks/useGetProjectName";
 import {CreateEntrySection} from "@/app/projects/tracking/[id]/components/CreateEntrySection";
 import {ProjectSections} from "@/app/projects/tracking/[id]/components/ProjectSections";

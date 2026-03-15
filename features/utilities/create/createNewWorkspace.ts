@@ -46,7 +46,6 @@ export const createNewWorkspace = async (
         workspaceName: workspaceName,
         password: password,
         members: [member],
-        projects: [],
         userClasses: usersClasses,
     })
 

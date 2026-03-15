@@ -3,7 +3,7 @@
 import {Hero} from "@/app/workspaces/workspaceLoginSection/Hero";
 import {WorkspacesLoginSection} from "@/app/workspaces/workspaceLoginSection/WorkspacesLoginSection";
 
-export default function WorkspacesPage() {
+export default function LoginWorkspacesPage() {
 
     return (
         <section

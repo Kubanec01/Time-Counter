@@ -6,7 +6,7 @@ import {UserMenu} from "@/components/mainNavbar/components/userMenu/UserMenu";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 import {getHours} from "date-fns";
-import {ProfileAvatar} from "@/components/ProfileAvatar";
+import {ProfileAvatar} from "@/components/ProfileAvatar/ProfileAvatar";
 import {CopyTextButton} from "@/components/CopyTextButton/CopyTextButton";
 
 

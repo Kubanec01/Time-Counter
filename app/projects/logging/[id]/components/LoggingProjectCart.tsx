@@ -3,7 +3,7 @@
 import {ProjectProps} from "@/types";
 import {CreateEntrySection} from "@/app/projects/logging/[id]/components/components/CreateEntrySection";
 import {ProjectSectionsSection} from "@/app/projects/logging/[id]/components/components/ProjectSectionsSection";
-import {ProjectHero} from "@/components/ProjectHero";
+import {ProjectHero} from "@/components/ProjectHero/ProjectHero";
 
 
 export const LoggingProjectCart = ({...props}: ProjectProps) => {
