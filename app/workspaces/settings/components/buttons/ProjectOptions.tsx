@@ -10,7 +10,7 @@ import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {db} from "@/app/firebase/config";
 import {doc, getDoc, updateDoc} from "firebase/firestore";
 import {documentNotFound} from "@/messages/errors";
-import {LoggingProject} from "@/features/utilities/create/createNewProject";
+import {LoggingProject} from "@/features/utilities/create-&-update/createNewProject";
 
 
 type ProjectOptionsProps = {

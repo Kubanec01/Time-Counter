@@ -8,7 +8,7 @@ import {useAuthRedirect} from "@/features/hooks/useAuthRedirect";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {LoadingPage} from "@/app/LoadingPage/LoadingPage";
 import {OnboardingModal} from "@/components/modals/OnboardingModal";
-import {createNewProject} from "@/features/utilities/create/createNewProject";
+import {createNewProject} from "@/features/utilities/create-&-update/createNewProject";
 import LoginWorkspacesPage from "@/app/workspaces/page";
 
 export default function HomePage() {

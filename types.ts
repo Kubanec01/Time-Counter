@@ -97,7 +97,7 @@ export type LoggingType =
 
 export type ProjectOption = { value: string, label: string, active: boolean }
 
-export type Role = "Admin" | "Member" | "Manager" | null
+export type Role = "Admin" | "Member" | "Manager" | "unset" | null
 
 export type UserClass =
     | "Frontend"

@@ -1,96 +1,111 @@
 import React, {useEffect, useState} from "react";
 import {Member} from "@/types";
-import {
-    MembersFilterBar,
-    UserRoleFilter
-} from "@/app/workspaces/settings/components/settingsBodySections/users/components/MembersFilterBar";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth, db} from "@/app/firebase/config";
-import {doc, onSnapshot} from "firebase/firestore";
+import {collection, doc, getDoc, getDocs, onSnapshot} from "firebase/firestore";
 import {
     BannedMembersSection
 } from "@/app/workspaces/settings/components/settingsBodySections/users/components/membersSections/BannedMembersSection";
 import {
     MembersSection
 } from "@/app/workspaces/settings/components/settingsBodySections/users/components/membersSections/MembersSection";
+import {getAllWorkspaceMembers} from "@/features/utilities/getAllWorkspaceMembers";
+import {documentNotFound} from "@/messages/errors";
+import {SelectBar} from "@/components/SelectBar/SelectBar";
+import {usersFilterOptions} from "@/data/users";
+import {SearchInput} from "@/components/SearchInput/SearchInput";
 
+type UserRoleFilter = "All" | "Member" | "Manager" | "Admin" | "Blocked"
 
 export const Users = () => {
 
 
-    const [mem, setMem] = useState<Member[]>([])
     const [members, setMembers] = useState<Member[]>([])
+    const [filteredMembers, setFilteredMembers] = useState<Member[]>([])
     const [filteredRole, setFilteredRole] = useState<UserRoleFilter>("All")
     const [bannedMembers, setBannedMembers] = useState<Member[]>([])
     const [showBannedMembers, setShowBannedMembers] = useState<boolean>(false)
     const [admins, setAdmins] = useState<Member[]>([])
 
-    const {workspaceId, mode, userRole} = useWorkSpaceContext()
-    const [user] = useAuthState(auth)
-    const userId = user?.uid
+    const {workspaceId} = useWorkSpaceContext()
 
     const categoryTitleStyle = "text-black w-[32%] text-sm text-black/60"
 
     // Functions
     const selectUser = (role: string) => {
         if (role === "All") {
-            setShowBannedMembers(false)
-            setMembers(mem)
+            setFilteredMembers(members)
             return
         }
-        if (role === "Banned") return setShowBannedMembers(true)
 
-        setShowBannedMembers(false)
-        const filteredUsers = mem.filter(member => member.role === role)
-        setMembers(filteredUsers)
+        const filteredUsers = members.filter(member => member.role === role)
+        setFilteredMembers(filteredUsers)
     }
-    const findUser = (text: string) => {
-        if (text.trim() === "") return selectUser(filteredRole)
 
-        let filteredUsers = []
+
+    const findUser = (text: string) => {
+        if (text.trim() === "" || text.length === 0) return selectUser(filteredRole)
+
+        let filteredUsers
 
         if (filteredRole === "All") {
-            filteredUsers = mem.filter(member => (`${member.name}`.toLowerCase().startsWith(text.toLowerCase()))
+            filteredUsers = filteredMembers.filter(member => (`${member.name}`.toLowerCase().startsWith(text.toLowerCase()))
                 || (`${member.surname}`.toLowerCase().startsWith(text.toLowerCase())))
         } else {
-            filteredUsers = mem.filter(member => ((`${member.name} ${member.surname}`.toLowerCase().startsWith(text.toLowerCase())) ||
+            filteredUsers = filteredMembers.filter(member => ((`${member.name} ${member.surname}`.toLowerCase().startsWith(text.toLowerCase())) ||
                 `${member.surname}`.toLowerCase().startsWith(text.toLowerCase())) && member.role === filteredRole)
         }
 
-        setMembers(filteredUsers)
+        setFilteredMembers(filteredUsers)
     }
 
     // Fetch Workspace Members
     useEffect(() => {
-        if (!workspaceId || !userId) return
-        const docRef = doc(db, "realms", workspaceId)
+        if (workspaceId === 'unused') return
 
-        const getWorkspaceUsers = onSnapshot(docRef, docSnap => {
-            if (!docSnap.exists()) return
+        const fetchData = async () => {
+            const docSnap = await getDoc(doc(db, "realms", workspaceId))
+            if (!docSnap.exists()) return console.error(documentNotFound)
             const data = docSnap.data()
-            const members: Member[] = data.members
-            const bannedMembers: Member[] = data.blackList || []
-            setAdmins(members.filter(m => m.role === "Admin"))
-
-            setBannedMembers(bannedMembers)
+            setBannedMembers(data.blackList || [])
+            const members = await getAllWorkspaceMembers(workspaceId)
             setMembers(members)
-            setMem(members)
-        })
+            setFilteredMembers(members)
+        }
 
-        return () => getWorkspaceUsers()
+        fetchData()
 
-    }, [workspaceId, mode, userId, userRole]);
+    }, [workspaceId]);
 
     return (
         <>
             <div
                 className={"w-full flex items-center justify-between"}>
-                <MembersFilterBar setRole={setFilteredRole}
-                                  selectUser={selectUser}
-                                  findUser={findUser}
-                                  isBtnDisabled={showBannedMembers}/>
-
+                <div
+                    className={"flex items-center gap-2 my-7"}>
+                    <SelectBar
+                        value={filteredRole}
+                        options={usersFilterOptions}
+                        onChange={(e) => {
+                            const role = e as UserRoleFilter;
+                            setFilteredRole(role)
+                            selectUser(role)
+                        }}
+                    />
+                    <button
+                        onClick={() => {
+                            setFilteredRole("Blocked")
+                            selectUser("Banned")
+                        }}
+                        className={"medium-button bg-gradient-to-b from-white from-30% to-black/8 border border-black/15 text-black outline-none"}>
+                        Blocked users
+                    </button>
+                    <SearchInput
+                        placeholder={"Search for members..."}
+                        OnChange={(e) => findUser(e)}
+                    />
+                </div>
             </div>
             <section
                 className={"mx-auto w-full"}>
@@ -115,7 +130,7 @@ export const Users = () => {
                         ?
                         <BannedMembersSection members={bannedMembers}/>
                         :
-                        <MembersSection members={members} admins={admins}/>
+                        <MembersSection members={filteredMembers} admins={admins}/>
                     }
                 </ul>
             </section>

@@ -1,7 +1,7 @@
 import {doc, getDoc, updateDoc} from "firebase/firestore";
 import {Section, TimeCheckout, UpdatedSectionByDate, WorkspaceId} from "@/types";
 import {sectionNotFound} from "@/messages/errors";
-import {updateUserIndividualTime} from "@/features/utilities/create/updateUserIndividualTime";
+import {updateUserIndividualTime} from "@/features/utilities/create-&-update/updateUserIndividualTime";
 import {updateTotalTrackedTime} from "@/features/utilities/edit/updateTotalTrackedTime";
 import {db} from "@/app/firebase/config";
 import {updateProjectTotalTime} from "@/features/utilities/time/timeOperations";

@@ -1,15 +1,13 @@
 import {useEffect, useState} from "react";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
-import {db} from "@/app/firebase/config";
-import {doc, getDoc} from "firebase/firestore";
-import {documentNotFound} from "@/messages/errors";
 import {NavButton} from "@/app/workspaces/settings/components/buttons/NavButton";
 import {Project} from "@/types";
+import {getAllProjects} from "@/features/utilities/getAllProjects";
 
 
 export const WorkspacesProjects = () => {
 
-    const [projects, setProjects] = useState([]);
+    const [projects, setProjects] = useState<Project[]>([]);
 
     const {workspaceId} = useWorkSpaceContext()
 
@@ -17,11 +15,8 @@ export const WorkspacesProjects = () => {
     useEffect(() => {
         if (workspaceId === "unused") return
         const fetchProjects = async () => {
-            const docRef = doc(db, "realms", workspaceId)
-            const docSnap = await getDoc(docRef)
-            if (!docSnap.exists()) return console.error(documentNotFound)
-            const data = docSnap.data()
-            setProjects(data.projects)
+            const projects = await getAllProjects(workspaceId)
+            setProjects(projects)
         }
         fetchProjects()
 

@@ -7,9 +7,9 @@ import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
 import {onSnapshot} from "firebase/firestore";
 import {formatFloatHoursToSeconds} from "@/features/utilities/time/timeOperations";
-import {createNewSection} from "@/features/utilities/create/createNewSection";
+import {createNewSection} from "@/features/utilities/create-&-update/createNewSection";
 import {UsersClasses} from "@/data/users";
-import {updateUserIndividualTime} from "@/features/utilities/create/updateUserIndividualTime";
+import {updateUserIndividualTime} from "@/features/utilities/create-&-update/updateUserIndividualTime";
 import {formateDateToYMD} from "@/features/utilities/date/dateOperations";
 import InformativeModal from "@/components/modals/InformativeModal";
 

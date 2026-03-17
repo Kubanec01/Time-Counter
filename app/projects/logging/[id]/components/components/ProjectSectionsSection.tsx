@@ -8,6 +8,7 @@ import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {doc, onSnapshot} from "firebase/firestore";
 import {formateDateToYMD} from "@/features/utilities/date/dateOperations";
 import {db} from "@/app/firebase/config";
+import {getAllWorkspaceMembers} from "@/features/utilities/getAllWorkspaceMembers";
 
 interface ProjectSectionsSectionProps {
     projectId: string;
@@ -38,13 +39,16 @@ export const ProjectSectionsSection = ({...props}: ProjectSectionsSectionProps) 
 
         const userRef = doc(db, "realms", workspaceId)
 
+        const load = async () => {
+            const membersData = await getAllWorkspaceMembers(workspaceId)
+            setMembers(membersData)
+        }
+        load()
+
         const unsubscribe = onSnapshot(userRef, snap => {
             if (!snap.exists()) return
 
             const data = snap.data()
-            const members = data.members
-
-            setMembers(members)
 
             // === SECTIONS ===
             const sections: Section[] = data.projectsSections || []

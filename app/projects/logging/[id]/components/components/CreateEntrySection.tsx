@@ -10,13 +10,15 @@ import {
     formatedTwoTimesDifferenceToSeconds,
     formatFloatHoursToSeconds, secondsToFloatHours, updateProjectTotalTime
 } from "@/features/utilities/time/timeOperations";
-import {createNewSection} from "@/features/utilities/create/createNewSection";
+import {createNewSection} from "@/features/utilities/create-&-update/createNewSection";
 import {updateTotalTrackedTime} from "@/features/utilities/edit/updateTotalTrackedTime";
 import {UsersClasses} from "@/data/users";
-import {updateUserIndividualTime} from "@/features/utilities/create/updateUserIndividualTime";
+import {updateUserIndividualTime} from "@/features/utilities/create-&-update/updateUserIndividualTime";
 import {formateDateToYMD} from "@/features/utilities/date/dateOperations";
 import InformativeModal from "@/components/modals/InformativeModal";
 import {getHours, getMinutes} from "date-fns";
+import {useProjectSettings} from "@/features/hooks/useProjectSettings";
+import {useMemberData} from "@/features/hooks/useMemberData";
 
 type CreateEntrySectionProps = {
     projectId: string;
@@ -54,6 +56,9 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
     const router = useRouter();
 
     const {mode, workspaceId, userName, userSurname, userRole, userId} = useWorkSpaceContext()
+
+    const projectData = useProjectSettings(workspaceId, props.projectId)
+    const member = useMemberData(workspaceId, userId)
 
     const createSection = async (e: FormEvent) => {
         e.preventDefault();
@@ -96,7 +101,16 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
 
     // Fetch Data
     useEffect(() => {
-        if (!userId) return
+        if (!userId || !projectData || !member) return
+
+        const update = () => {
+
+            const maxDailyTrackTime = projectData.dailyMaxTrackTime
+            setMaxDailyTime(maxDailyTrackTime)
+        }
+
+        update()
+
 
         const userRef = getFirestoreTargetRef(userId, mode, workspaceId)
 
@@ -104,31 +118,22 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
             if (!snap.exists()) return
 
             const data = snap.data()
-            const member: Member = data.members.find((m: Member) => m.userId === userId)
-            const memberClass = member.class
             const usersClasses: UsersClasses[] = data.userClasses
-            const project: Project = data.projects.find((project: Project) => project.projectId === props.projectId)
-            const maxDailyTime = project.dailyMaxTrackTime;
-            const customized = project.customizedUsersOptions ?? [];
-            const userOptions = customized.find((o: UserProjectOptions) => o.userId === userId);
-            const trackFormat = project.trackFormat
+            const trackFormat = projectData.trackFormat
 
             setTimeFormat(trackFormat)
-            setMaxDailyTime(maxDailyTime)
 
-            if (userOptions) {
-                setOptions(userOptions.activeOptions)
-            } else if (memberClass && memberClass !== "unset") {
-                const classes = usersClasses.find(i => i.id === memberClass)
+            if (member.role && member.role !== "unset") {
+                const classes = usersClasses.find(i => i.id === member.class)
                 if (classes) setOptions(classes.options)
             } else {
-                setOptions(project.options.filter((o: ProjectOption) => o.active))
+                setOptions(projectData.options.filter(options => options.active))
             }
         })
 
         return () => fetchOptions()
 
-    }, [mode, props.projectId, userId, workspaceId])
+    }, [member, mode, projectData, props.projectId, userId, workspaceId])
 
     return (
         <section

@@ -11,7 +11,7 @@ import {FiDelete, FiEdit, FiPause, FiPlay} from "react-icons/fi";
 import RenameModal from "@/components/modals/RenameModal";
 import {resetClockTime} from "@/features/utilities/time/resetClockTime";
 import {deleteAllSectionData} from "@/features/utilities/delete/deleteAllSectionData";
-import {createNewTimeCheckout} from "@/features/utilities/create/createNewTimeCheckout";
+import {createNewTimeCheckout} from "@/features/utilities/create-&-update/createNewTimeCheckout";
 import {updateTimeData} from "@/features/utilities/time/updateTimeData";
 import {editSectionName} from "@/features/utilities/edit/editSectionName";
 import {deleteSubsectionAndTimeCheckoutsData} from "@/features/utilities/delete/deleteSubsectionAndTimeCheckoutsData";
@@ -24,7 +24,7 @@ import {HiMiniUserCircle} from "react-icons/hi2";
 import {formateDateToYMD, formateYMDToDMY} from "@/features/utilities/date/dateOperations";
 import {db} from "@/app/firebase/config";
 import {useSectionSettings} from "@/features/hooks/useSectionSettings";
-import {updateUserIndividualTime} from "@/features/utilities/create/updateUserIndividualTime";
+import {updateUserIndividualTime} from "@/features/utilities/create-&-update/updateUserIndividualTime";
 
 
 const SectionCart = ({...props}: SectionCartProps) => {
