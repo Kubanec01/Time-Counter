@@ -4,6 +4,7 @@ import {db} from "@/app/firebase/config";
 import {Member, WorkspaceCredentials} from "@/types";
 import {setLocalStorageUserMode, setLocalStorageWorkspaceId} from "@/features/utilities/localStorage";
 import {usersClasses} from "@/data/users";
+import {createNewMember} from "@/features/utilities/create-&-update/createNewMember";
 
 
 export const createNewWorkspace = async (
@@ -12,12 +13,12 @@ export const createNewWorkspace = async (
     workspaceId: string,
     password: string,
 ) => {
-    if (!userId) throw new Error(invalidUserId)
+    if (!userId) return console.error(invalidUserId)
 
     const userRef = doc(db, "users", userId)
     const userSnap = await getDoc(userRef)
 
-    if (!userSnap.exists()) throw new Error(documentNotFound)
+    if (!userSnap.exists()) return console.error(documentNotFound)
     const data = userSnap.data()
     const name: string = data.name
     const surname: string = data.surname
@@ -33,21 +34,22 @@ export const createNewWorkspace = async (
         class: "unset"
     }
 
-    const docRef = doc(db, "realms", workspaceId)
+    const projectRef = doc(db, "realms", workspaceId)
+
+    await setDoc(projectRef, {
+        adminId: userId,
+        workSpaceId: workspaceId,
+        workspaceName: workspaceName,
+        password: password,
+        userClasses: usersClasses,
+    })
+
+    await createNewMember(workspaceId, member)
 
     const workspaceCredentials: WorkspaceCredentials = {
         workspaceId: workspaceId,
         password: password,
     }
-
-    await setDoc(docRef, {
-        adminId: userId,
-        workSpaceId: workspaceId,
-        workspaceName: workspaceName,
-        password: password,
-        members: [member],
-        userClasses: usersClasses,
-    })
 
     await updateDoc(userRef, {workspacesList: arrayUnion(workspaceCredentials)},)
     setLocalStorageUserMode("workspace")

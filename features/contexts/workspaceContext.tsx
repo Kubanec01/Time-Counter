@@ -60,7 +60,7 @@ export const WorkSpaceContextProvider = ({children}: { children: ReactNode }) =>
 
         if (!userId || !mode || !isMatched || !workspaceId) return
 
-        getUserNameData(userId, mode, workspaceId).then(resp => {
+        getUserNameData(userId).then(resp => {
             if (resp) {
                 setUserName(resp.name)
                 setUserSurname(resp.surname)
@@ -73,6 +73,7 @@ export const WorkSpaceContextProvider = ({children}: { children: ReactNode }) =>
                 console.error("Error fetching user edit-name!")
             }
         }).catch(err => console.log(err))
+
         getUserRoleData(userId, mode, workspaceId).then(resp => {
             if (resp || resp !== undefined) {
                 setUserRole(resp)
@@ -83,6 +84,7 @@ export const WorkSpaceContextProvider = ({children}: { children: ReactNode }) =>
                 console.error("Error fetching user role!")
             }
         }).catch(err => console.log(err))
+
         getWorkspaceName(workspaceId).then(workspaceName => {
             if (workspaceName) {
                 setWorkspaceName(workspaceName)

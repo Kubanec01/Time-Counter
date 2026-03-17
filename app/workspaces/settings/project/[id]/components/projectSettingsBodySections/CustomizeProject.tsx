@@ -7,7 +7,7 @@ import {useParams} from "next/navigation";
 import {documentNotFound} from "@/messages/errors";
 import {Project, ProjectOption} from "@/types";
 import {MaxTrackingTime} from "@/app/workspaces/settings/components/buttons/MaxTrackingTime";
-import {updateProjectDailyTrackLimit} from "@/features/utilities/create/updateProjectDailyTrackLimit";
+import {updateProjectDailyTrackLimit} from "@/features/utilities/create-&-update/updateProjectDailyTrackLimit";
 import {ProjectOptions} from "@/app/workspaces/settings/components/buttons/ProjectOptions";
 import {useProjectSettings} from "@/features/hooks/useProjectSettings";
 

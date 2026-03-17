@@ -3,7 +3,7 @@
 import {onSnapshot} from "firebase/firestore";
 import React, {useEffect, useState} from "react";
 import {Member, ProjectProps, Section, UpdatedSectionByDate} from "@/types";
-import {createNewSection} from "@/features/utilities/create/createNewSection";
+import {createNewSection} from "@/features/utilities/create-&-update/createNewSection";
 import {getUniqueDates} from "@/features/utilities/date/getUniqueDates";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";

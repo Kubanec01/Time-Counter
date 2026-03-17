@@ -1,7 +1,7 @@
 import {GiSunSpear} from "react-icons/gi";
 import {FormEvent, useState} from "react";
 import {throwRandomNum} from "@/features/utilities/throwRandomNum";
-import {createNewWorkspace} from "@/features/utilities/create/createNewWorkspace";
+import {createNewWorkspace} from "@/features/utilities/create-&-update/createNewWorkspace";
 import {invalidUserId} from "@/messages/errors";
 import {arrayUnion, doc, getDoc, updateDoc} from "firebase/firestore";
 import {db} from "@/app/firebase/config";
@@ -130,7 +130,7 @@ export const WorkspaceForm = ({...props}: WorkspaceFormProps) => {
                     </label>
                     <input
                         className={"w-full border border-black/20 focus:border-black/40 rounded-md text-sm py-1 px-2 mt-1 outline-none"}
-                        id={"create-workspace"}
+                        id={"create-&-update-workspace"}
                         onChange={e => {
                             setName(e.target.value)
                             setWorkspaceId(e.target.value)
@@ -150,7 +150,7 @@ export const WorkspaceForm = ({...props}: WorkspaceFormProps) => {
                     </label>
                     <input
                         className={"w-full border border-black/20 focus:border-black/40 rounded-md text-sm py-1 px-2 mt-1 outline-none"}
-                        id={"create-workspace"}
+                        id={"create-&-update-workspace"}
                         onChange={e => setPassword(e.target.value)}
                         placeholder={"Enter workspace password"}
                         type="password"/>
