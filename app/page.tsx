@@ -1,7 +1,7 @@
 "use client";
 
 import CreateProjectModal from "@/components/modals/CreateProjectModal";
-import ProjectsBars from "@/components/ProjectsBars";
+import ProjectsBars from "@/components/ProjectsBars/ProjectsBars";
 import React, {useEffect, useState} from "react";
 import {ProjectType} from "@/types";
 import {useAuthRedirect} from "@/features/hooks/useAuthRedirect";

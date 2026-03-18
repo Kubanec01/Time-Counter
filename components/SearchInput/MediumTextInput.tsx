@@ -8,7 +8,7 @@ type SearchInputProps<T> = {
     wrapperClassname?: string;
 }
 
-export const SearchInput = <T extends string>({...props}: SearchInputProps<T>) => {
+export const MediumTextInput = <T extends string>({...props}: SearchInputProps<T>) => {
 
     return (
         <div className={`relative ${props.wrapperClassname}`}>
