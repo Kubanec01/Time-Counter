@@ -1,24 +1,24 @@
 import {RiBarChart2Fill, RiSettings3Fill} from "react-icons/ri";
-import {LoggingType, Member, Project, ProjectOption, UserProjectOptions} from "@/types";
+import {BaseOption, LoggingType, ProjectOption, UsersClasses} from "@/types";
 import {MaxDateCalendarInput} from "@/features/utilities/date/MaxDateCalendarInput";
 import React, {FormEvent, useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
-import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
-import {onSnapshot} from "firebase/firestore";
 import {
     formatedTwoTimesDifferenceToSeconds,
     formatFloatHoursToSeconds, secondsToFloatHours, updateProjectTotalTime
 } from "@/features/utilities/time/timeOperations";
 import {createNewSection} from "@/features/utilities/create-&-update/createNewSection";
 import {updateTotalTrackedTime} from "@/features/utilities/edit/updateTotalTrackedTime";
-import {UsersClasses} from "@/data/users";
 import {updateUserIndividualTime} from "@/features/utilities/create-&-update/updateUserIndividualTime";
 import {formateDateToYMD} from "@/features/utilities/date/dateOperations";
 import InformativeModal from "@/components/modals/InformativeModal";
 import {getHours, getMinutes} from "date-fns";
 import {useProjectSettings} from "@/features/hooks/useProjectSettings";
 import {useMemberData} from "@/features/hooks/useMemberData";
+import {MediumButton} from "@/components/MediumButton/MediumButton";
+import {MediumSelectBar} from "@/components/MediumSelectBar/MediumSelectBar";
+import {useWorkspaceData} from "@/features/hooks/useWorkspaceData";
 
 type CreateEntrySectionProps = {
     projectId: string;
@@ -43,7 +43,22 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
     const [isCreatingTrack, setIsCreatingTrack] = useState(false);
     const [maxDailyTime, setMaxDailyTime] = useState(100);
 
+    // Hooks
+    const router = useRouter();
+    const {workspaceId, userName, userSurname, userRole, userId} = useWorkSpaceContext()
+    const projectData = useProjectSettings(workspaceId, props.projectId)
+    const memberData = useMemberData(workspaceId, userId)
+    const workspaceData = useWorkspaceData(workspaceId)
 
+    // Variables
+    const selectOptions: BaseOption[] = [
+        {label: 'Select...', value: ""},
+        ...options.map(option => ({label: option.label, value: option.value})),
+        {label: 'Custom', value: "custom"},
+        {label: 'Unset', value: "unset"},
+    ]
+
+    // Functions
     const setTimeDifference = (firstTime: string, secondTime: string) => {
         setFromTime(firstTime)
         setToTime(secondTime)
@@ -52,13 +67,6 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
 
         setTimeInputValue(secondsToFloatHours(timeDifference));
     }
-
-    const router = useRouter();
-
-    const {mode, workspaceId, userName, userSurname, userRole, userId} = useWorkSpaceContext()
-
-    const projectData = useProjectSettings(workspaceId, props.projectId)
-    const member = useMemberData(workspaceId, userId)
 
     const createSection = async (e: FormEvent) => {
         e.preventDefault();
@@ -101,39 +109,22 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
 
     // Fetch Data
     useEffect(() => {
-        if (!userId || !projectData || !member) return
+        if (!userId || !projectData || !memberData || !workspaceData) return
 
-        const update = () => {
+        const updateData = () => {
 
-            const maxDailyTrackTime = projectData.dailyMaxTrackTime
-            setMaxDailyTime(maxDailyTrackTime)
+            if (memberData.class && memberData.class !== 'unset') {
+                const classOptions = workspaceData.userClasses.find((c: UsersClasses) => c.id === memberData.class)
+                if (classOptions) setOptions(classOptions)
+            } else setOptions(projectData.options.filter(o => o.active))
+
+            setTimeFormat(projectData.trackFormat)
+            setMaxDailyTime(projectData.dailyMaxTrackTime)
         }
 
-        update()
+        updateData()
 
-
-        const userRef = getFirestoreTargetRef(userId, mode, workspaceId)
-
-        const fetchOptions = onSnapshot(userRef, snap => {
-            if (!snap.exists()) return
-
-            const data = snap.data()
-            const usersClasses: UsersClasses[] = data.userClasses
-            const trackFormat = projectData.trackFormat
-
-            setTimeFormat(trackFormat)
-
-            if (member.role && member.role !== "unset") {
-                const classes = usersClasses.find(i => i.id === member.class)
-                if (classes) setOptions(classes.options)
-            } else {
-                setOptions(projectData.options.filter(options => options.active))
-            }
-        })
-
-        return () => fetchOptions()
-
-    }, [member, mode, projectData, props.projectId, userId, workspaceId])
+    }, [memberData, projectData, userId, workspaceData])
 
     return (
         <section
@@ -145,22 +136,24 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                     Create a new entry
                 </h1>
                 <div
-                    className={"flex gap-2.5"}
+                    className={`${userRole === "Member" ? "hidden" : "flex"} gap-2.5`}
                 >
-                    <button
+                    <MediumButton
                         onClick={() => router.push(`/workspaces/settings/project/stats/${props.projectId}`)}
-                        className={`${userRole === "Member" ? "hidden" : "flex"}
-                        medium-button border flex items-center justify-center gap-1 bg-black-gradient`}>
-                        Stats
-                        <RiBarChart2Fill className={"mb-0.5"}/>
-                    </button>
-                    <button
+                        className={"bg-black-gradient"}>
+                        <span className={"flex items-center gap-1"}>
+                            Stats
+                            <RiBarChart2Fill className={"mb-0.5"}/>
+                        </span>
+                    </MediumButton>
+                    <MediumButton
                         onClick={() => router.push(`/workspaces/settings/project/${props.projectId}`)}
-                        className={`${userRole === "Member" ? "hidden" : "flex"}
-                        medium-button border flex items-center justify-center gap-1 bg-black-gradient`}>
-                        Settings
-                        <RiSettings3Fill/>
-                    </button>
+                        className={"bg-black-gradient"}>
+                        <span className={"flex items-center gap-1"}>
+                            Settings
+                            <RiSettings3Fill/>
+                        </span>
+                    </MediumButton>
                 </div>
             </div>
             <div
@@ -172,30 +165,14 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                     <div
                         className={"w-full flex justify-start gap-10 flex-wrap"}>
                         {/* Type of Work */}
-                        <div
-                            className={"flex flex-col"}>
-                            <label htmlFor="task-type" className={"font-medium text-sm text-black/60"}>Type of
-                                task</label>
-                            <select
-                                id="task-type"
-                                value={taskType ?? ""}
-                                onChange={(e) => setTaskType(e.target.value as LoggingType)}
-                                className="border border-black/20 w-[130px] focus:outline-vibrant-purple-600 p-1 px-2
-                                 rounded-md bg-white cursor-pointer"
-                            >
-                                <option value="" disabled>
-                                    Select...
-                                </option>
-                                {options.map((option) => (
-                                    <option key={option.value} value={option.value}>
-                                        {option.label}
-                                    </option>
-                                ))}
-                                <option value="custom">Custom</option>
-                                <option value="unset">Unset</option>
-                            </select>
-                        </div>
-                        {/* Name/Description */}
+                        <MediumSelectBar
+                            options={selectOptions}
+                            value={taskType || ""}
+                            onChange={(e) => setTaskType(e)}
+                            labelChildren={"Type of task"}
+                            inputClassname={"border border-black/20 w-[130px] py-1.5 px-2 rounded-md bg-white cursor-pointer bg-white"}
+                            inputId={"timer-name-input"}
+                        />
                         <div
                             className={"flex flex-col"}>
                             <label htmlFor="name-description"
@@ -270,7 +247,8 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                                 className={"border border-black/20 w-[300px] focus:outline-vibrant-purple-600 p-1 px-2 rounded-md bg-white"}/>
                         </div>
                     </div>
-                    {/*Submit Button*/}
+                    {/*Submit Button*/
+                    }
                     <button
                         type={"submit"}
                         disabled={isButtonDisabled()}
