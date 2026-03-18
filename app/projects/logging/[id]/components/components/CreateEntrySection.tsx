@@ -1,24 +1,22 @@
 import {RiBarChart2Fill, RiSettings3Fill} from "react-icons/ri";
-import {LoggingType, Member, Project, ProjectOption, UserProjectOptions} from "@/types";
+import {LoggingType, ProjectOption, UsersClasses} from "@/types";
 import {MaxDateCalendarInput} from "@/features/utilities/date/MaxDateCalendarInput";
 import React, {FormEvent, useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
-import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
-import {onSnapshot} from "firebase/firestore";
 import {
     formatedTwoTimesDifferenceToSeconds,
     formatFloatHoursToSeconds, secondsToFloatHours, updateProjectTotalTime
 } from "@/features/utilities/time/timeOperations";
 import {createNewSection} from "@/features/utilities/create-&-update/createNewSection";
 import {updateTotalTrackedTime} from "@/features/utilities/edit/updateTotalTrackedTime";
-import {UsersClasses} from "@/data/users";
 import {updateUserIndividualTime} from "@/features/utilities/create-&-update/updateUserIndividualTime";
 import {formateDateToYMD} from "@/features/utilities/date/dateOperations";
 import InformativeModal from "@/components/modals/InformativeModal";
 import {getHours, getMinutes} from "date-fns";
 import {useProjectSettings} from "@/features/hooks/useProjectSettings";
 import {useMemberData} from "@/features/hooks/useMemberData";
+import {useWorkspaceData} from "@/features/hooks/useWorkspaceData";
 
 type CreateEntrySectionProps = {
     projectId: string;
@@ -43,7 +41,14 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
     const [isCreatingTrack, setIsCreatingTrack] = useState(false);
     const [maxDailyTime, setMaxDailyTime] = useState(100);
 
+    // Hooks
+    const router = useRouter();
+    const {workspaceId, userName, userSurname, userRole, userId} = useWorkSpaceContext()
+    const projectData = useProjectSettings(workspaceId, props.projectId)
+    const memberData = useMemberData(workspaceId, userId)
+    const workspaceData = useWorkspaceData(workspaceId)
 
+    // Functions
     const setTimeDifference = (firstTime: string, secondTime: string) => {
         setFromTime(firstTime)
         setToTime(secondTime)
@@ -52,13 +57,6 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
 
         setTimeInputValue(secondsToFloatHours(timeDifference));
     }
-
-    const router = useRouter();
-
-    const {mode, workspaceId, userName, userSurname, userRole, userId} = useWorkSpaceContext()
-
-    const projectData = useProjectSettings(workspaceId, props.projectId)
-    const member = useMemberData(workspaceId, userId)
 
     const createSection = async (e: FormEvent) => {
         e.preventDefault();
@@ -101,39 +99,30 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
 
     // Fetch Data
     useEffect(() => {
-        if (!userId || !projectData || !member) return
+        if (!userId || !projectData || !memberData || !workspaceData) return
 
-        const update = () => {
+        const updateData = () => {
 
-            const maxDailyTrackTime = projectData.dailyMaxTrackTime
-            setMaxDailyTime(maxDailyTrackTime)
+            if (memberData.class && memberData.class !== 'unset') {
+                const classOptions = workspaceData.userClasses.find((c: UsersClasses) => c.id === memberData.class)
+                if (classOptions) setOptions(classOptions)
+            } else setOptions(projectData.options.filter(o => o.active))
+
+            setTimeFormat(projectData.trackFormat)
+            setMaxDailyTime(projectData.dailyMaxTrackTime)
         }
 
-        update()
+        updateData()
+
+    }, [memberData, projectData, userId, workspaceData])
 
 
-        const userRef = getFirestoreTargetRef(userId, mode, workspaceId)
+    // !!!!
 
-        const fetchOptions = onSnapshot(userRef, snap => {
-            if (!snap.exists()) return
+    // V tejto componente spravim z tabulky, inputs, buttonu atd samostatne components pre znovupouzitelnost
+    // Button, Inputs, Dates, Vrchna tabulka, spodna tabulka
 
-            const data = snap.data()
-            const usersClasses: UsersClasses[] = data.userClasses
-            const trackFormat = projectData.trackFormat
-
-            setTimeFormat(trackFormat)
-
-            if (member.role && member.role !== "unset") {
-                const classes = usersClasses.find(i => i.id === member.class)
-                if (classes) setOptions(classes.options)
-            } else {
-                setOptions(projectData.options.filter(options => options.active))
-            }
-        })
-
-        return () => fetchOptions()
-
-    }, [member, mode, projectData, props.projectId, userId, workspaceId])
+    // !!!!
 
     return (
         <section

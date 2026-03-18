@@ -1,4 +1,4 @@
-import {ProjectOption} from "@/types";
+import {ProjectOption, UsersClasses} from "@/types";
 
 export const usersFilterOptions = [
     {value: "All", label: "Show all"},
@@ -18,12 +18,6 @@ export const projectTasksOptions: ProjectOption[] = [
     {value: 'learning', label: 'Learning', active: true},
     {value: 'break', label: 'Break / Rest', active: true},
 ];
-
-export interface UsersClasses {
-    id: string,
-    name: string,
-    options: ProjectOption[],
-}
 
 export const usersClasses: UsersClasses[] = [
     {
