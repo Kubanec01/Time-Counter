@@ -26,7 +26,6 @@ export interface UpdatedSectionByDate {
 }
 
 export type UserMode = "solo" | "workspace"
-export type WorkspaceId = string | "unused"
 
 export type ProjectType = "tracking" | "logging"
 
@@ -107,6 +106,12 @@ export type UserClass =
     | "Full stack"
     | "unset";
 
+export type UsersClasses = {
+    id: string,
+    name: string,
+    options: ProjectOption[],
+}
+
 export type Member = {
     userId: string;
     email: string;
@@ -116,17 +121,9 @@ export type Member = {
     class: UserClass;
 }
 
+export type WorkspaceId = string | 'unused';
+
 export interface WorkspaceCredentials {
     workspaceId: string;
     password: string;
-}
-
-
-export interface WorkSpace {
-    adminId: string;
-    workSpaceId: string;
-    workspaceName: string;
-    password: string;
-    members: Member[];
-    projects: Project[];
 }
