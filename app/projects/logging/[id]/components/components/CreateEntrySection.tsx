@@ -19,8 +19,6 @@ import InformativeModal from "@/components/modals/InformativeModal";
 import {getHours, getMinutes} from "date-fns";
 import {useProjectSettings} from "@/features/hooks/useProjectSettings";
 import {useMemberData} from "@/features/hooks/useMemberData";
-import {MediumButton} from "@/components/MediumButton/MediumButton";
-import {MediumSelectBar} from "@/components/MediumSelectBar/MediumSelectBar";
 
 type CreateEntrySectionProps = {
     projectId: string;
@@ -98,7 +96,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
     const isButtonDisabled = () => {
         return nameValue.trim() === "" || taskType === null || timeInputValue <= 0 ||
             selectedDate === null || (taskType === "custom" && customType?.trim() === "")
-            || isCreatingTrack
+            || isCreatingTrack;
     }
 
     // Fetch Data
@@ -147,24 +145,22 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                     Create a new entry
                 </h1>
                 <div
-                    className={`${userRole === "Member" ? "hidden" : "flex"} gap-2.5`}
+                    className={"flex gap-2.5"}
                 >
-                    <MediumButton
+                    <button
                         onClick={() => router.push(`/workspaces/settings/project/stats/${props.projectId}`)}
-                        className={"bg-black-gradient"}>
-                        <span className={"flex items-center gap-1"}>
-                            Stats
-                            <RiBarChart2Fill className={"mb-0.5"}/>
-                        </span>
-                    </MediumButton>
-                    <MediumButton
+                        className={`${userRole === "Member" ? "hidden" : "flex"}
+                        medium-button border flex items-center justify-center gap-1 bg-black-gradient`}>
+                        Stats
+                        <RiBarChart2Fill className={"mb-0.5"}/>
+                    </button>
+                    <button
                         onClick={() => router.push(`/workspaces/settings/project/${props.projectId}`)}
-                        className={"bg-black-gradient"}>
-                        <span className={"flex items-center gap-1"}>
-                            Settings
-                            <RiSettings3Fill/>
-                        </span>
-                    </MediumButton>
+                        className={`${userRole === "Member" ? "hidden" : "flex"}
+                        medium-button border flex items-center justify-center gap-1 bg-black-gradient`}>
+                        Settings
+                        <RiSettings3Fill/>
+                    </button>
                 </div>
             </div>
             <div
@@ -176,19 +172,10 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                     <div
                         className={"w-full flex justify-start gap-10 flex-wrap"}>
                         {/* Type of Work */}
-                        <MediumSelectBar
-                            options={options.map(option => ({label: option.label, value: option.value}))}
-                            value={taskType || ""}
-                            onChange={(e) => setTaskType(e)}
-                            labelClassname={""}
-                            labelChildren={"Type of task"}
-                            inputId={"timer-name-input"}
-                        />
                         <div
                             className={"flex flex-col"}>
-                            <label htmlFor="task-type" className={"font-medium text-sm text-black/60"}>
-                                Type of task
-                            </label>
+                            <label htmlFor="task-type" className={"font-medium text-sm text-black/60"}>Type of
+                                task</label>
                             <select
                                 id="task-type"
                                 value={taskType ?? ""}
@@ -283,8 +270,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                                 className={"border border-black/20 w-[300px] focus:outline-vibrant-purple-600 p-1 px-2 rounded-md bg-white"}/>
                         </div>
                     </div>
-                    {/*Submit Button*/
-                    }
+                    {/*Submit Button*/}
                     <button
                         type={"submit"}
                         disabled={isButtonDisabled()}
