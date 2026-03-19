@@ -12,9 +12,9 @@ import {
 } from "@/app/workspaces/settings/components/settingsBodySections/users/components/membersSections/MembersSection";
 import {getAllWorkspaceMembers} from "@/features/utilities/getAllWorkspaceMembers";
 import {documentNotFound} from "@/messages/errors";
-import {MediumSelectBar} from "@/components/MediumSelectBar/MediumSelectBar";
+import {SelectBar} from "@/components/SelectBar/SelectBar";
 import {usersFilterOptions} from "@/data/users";
-import {MediumTextInput} from "@/components/SearchInput/MediumTextInput";
+import {TextInput} from "@/components/TextInput/TextInput";
 
 type UserRoleFilter = "All" | "Member" | "Manager" | "Admin" | "Blocked"
 
@@ -84,7 +84,7 @@ export const Users = () => {
                 className={"w-full flex items-center justify-between"}>
                 <div
                     className={"flex items-center gap-2 my-7"}>
-                    <MediumSelectBar
+                    <SelectBar
                         inputId={"users-list"}
                         labelChildren={""}
                         labelClassname={"hidden"}
@@ -104,7 +104,9 @@ export const Users = () => {
                         className={"medium-button bg-gradient-to-b from-white from-30% to-black/8 border border-black/15 text-black outline-none"}>
                         Blocked users
                     </button>
-                    <MediumTextInput
+                    <TextInput
+                        inputId={"users-search"}
+                        isIconVisible={true}
                         placeholder={"Search for members..."}
                         OnChange={(e) => findUser(e)}
                     />

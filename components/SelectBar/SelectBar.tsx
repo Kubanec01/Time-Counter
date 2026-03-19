@@ -5,25 +5,30 @@ import {BaseOption} from "@/types";
 type SelectBarProps<T> = {
     options: BaseOption[]
     value: T,
+    inputValue: T
     onChange: (value: T) => void,
     inputClassname?: string,
     labelClassname?: string,
-    labelChildren: JSX.Element | string
+    labelText: JSX.Element | string
     inputId: string,
 }
 
-export const MediumSelectBar = <T extends string>({...props}: SelectBarProps<T>) => {
+export const SelectBar = <T extends string>({...props}: SelectBarProps<T>) => {
 
 
     return (
         <div
             className={"flex flex-col"}>
             <label htmlFor={props.inputId}
-                   className={`font-medium text-sm text-black/60 ${props.labelClassname}`}>
-                {props.labelChildren}
+                   className={twMerge(
+                       `font-medium text-sm text-black/60`,
+                       props.labelClassname)}
+            >
+                {props.labelText}
             </label>
             <select
                 id={props.inputId}
+                value={props.value}
                 onChange={(e) => props.onChange(e.target.value as T)}
                 className={twMerge(
                     "medium-button bg-gradient-to-b from-white from-30% to-black/8 border border-black/15 text-black outline-none",

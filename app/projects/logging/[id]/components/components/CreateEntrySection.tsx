@@ -17,8 +17,13 @@ import {getHours, getMinutes} from "date-fns";
 import {useProjectSettings} from "@/features/hooks/useProjectSettings";
 import {useMemberData} from "@/features/hooks/useMemberData";
 import {MediumButton} from "@/components/MediumButton/MediumButton";
-import {MediumSelectBar} from "@/components/MediumSelectBar/MediumSelectBar";
+import {SelectBar} from "@/components/SelectBar/SelectBar";
 import {useWorkspaceData} from "@/features/hooks/useWorkspaceData";
+import {TextInput} from "@/components/TextInput/TextInput";
+import {NumberInput} from "@/components/NumberInput/NumberInput";
+import {ClockTimeInput} from "@/components/ClockTimeInput/ClockTimeInput";
+import {LargeButton} from "@/components/LargeButton/LargeButton";
+import {EntryCreatorPanel} from "@/components/EntryCreatorPanel/EntryCreatorPanel";
 
 type CreateEntrySectionProps = {
     projectId: string;
@@ -127,139 +132,123 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
     }, [memberData, projectData, userId, workspaceData])
 
     return (
-        <section
-            className={"pb-6 pt-10 mt-8 bg-radial from-vibrant-purple-700/30 to-white to-70% w-[90%] max-w-medium mx-auto"}>
-            <div
-                className={"w-full flex items-center justify-between px-8 pb-2"}>
-                <h1
-                    className={"mb-0.5 font-medium text-black/60 text-lg"}>
-                    Create a new entry
-                </h1>
-                <div
-                    className={`${userRole === "Member" ? "hidden" : "flex"} gap-2.5`}
-                >
-                    <MediumButton
-                        onClick={() => router.push(`/workspaces/settings/project/stats/${props.projectId}`)}
-                        className={"bg-black-gradient"}>
+        <>
+            <EntryCreatorPanel
+                title={"Create a new entry"}
+                buttonsSectionChildren={
+                    <div
+                        className={`${userRole === "Member" ? "hidden" : "flex"} gap-2.5`}>
+                        <MediumButton
+                            onClick={() => router.push(`/workspaces/settings/project/stats/${props.projectId}`)}
+                            className={"bg-black-gradient"}>
                         <span className={"flex items-center gap-1"}>
                             Stats
                             <RiBarChart2Fill className={"mb-0.5"}/>
                         </span>
-                    </MediumButton>
-                    <MediumButton
-                        onClick={() => router.push(`/workspaces/settings/project/${props.projectId}`)}
-                        className={"bg-black-gradient"}>
+                        </MediumButton>
+                        <MediumButton
+                            onClick={() => router.push(`/workspaces/settings/project/${props.projectId}`)}
+                            className={"bg-black-gradient"}>
                         <span className={"flex items-center gap-1"}>
                             Settings
                             <RiSettings3Fill/>
                         </span>
-                    </MediumButton>
-                </div>
-            </div>
-            <div
-                className={"w-full p-8 rounded-xl shadow-lg mx-auto bg-white border border-black/5"}>
+                        </MediumButton>
+                    </div>
+                }
+            >
                 <form
                     onSubmit={createSection}
-                    className={"p-6 rounded-xl bg-black/2 flex flex-col justify-between gap-8 items-start mx-auto"}>
+                    className={"p-6 flex flex-col justify-between gap-8 items-start"}>
                     {/* Main inputs Section */}
                     <div
                         className={"w-full flex justify-start gap-10 flex-wrap"}>
                         {/* Type of Work */}
-                        <MediumSelectBar
+                        <SelectBar
                             options={selectOptions}
                             value={taskType || ""}
                             onChange={(e) => setTaskType(e)}
-                            labelChildren={"Type of task"}
+                            labelText={"Type of task"}
                             inputClassname={"border border-black/20 w-[130px] py-1.5 px-2 rounded-md bg-white cursor-pointer bg-white"}
                             inputId={"timer-name-input"}
                         />
+                        <TextInput
+                            inputId={"timer-name"}
+                            value={nameValue}
+                            placeholder={"What are you going to work on?"}
+                            isIconVisible={false}
+                            labelText={"Name/Description"}
+                            inputClassname={"py-1.5 w-[270px]"}
+                            OnChange={e => setNameValue(e)}
+                        />
                         <div
-                            className={"flex flex-col"}>
-                            <label htmlFor="name-description"
-                                   className={"font-medium text-sm text-black/60"}>Name/Description</label>
-                            <input onChange={e => setNameValue(e.target.value)}
-                                   value={nameValue}
-                                   id={"edit-name-description"} type="text"
-                                   placeholder={"What are you going to work on?"}
-                                   className={"border border-black/20 w-[300px] focus:outline-vibrant-purple-600 p-1 px-2 rounded-md bg-white"}/>
-                        </div>
-                        {/* Decimal time input */}
-                        <div
-                            className={`${timeFormat === "Decimal" ? "flex" : "hidden"} flex-col`}>
-                            <label htmlFor="time" className={"font-medium text-sm text-black/60"}>Hours</label>
-                            <input
-                                id="time"
+                            className={`${timeFormat === "Decimal" ? "flex" : "hidden"}`}>
+                            <NumberInput
+                                inputId={"time-input"}
+                                value={timeInputValue}
+                                labelChildren={"Hours"}
+                                placeholder={'0.25'}
+                                step={0.25}
                                 min={0.25}
                                 max={24}
-                                step={0.25}
-                                value={timeInputValue}
-                                onChange={(e) => setTimeInputValue(Number(e.target.value))}
-                                type={"number"}
-                                placeholder={"0.25"}
-                                className={"border border-black/20 text-sm focus:outline-vibrant-purple-600 p-1.5 px-2 rounded-md bg-white"}/>
+                                onChange={(e) => setTimeInputValue(e)}
+                            />
                         </div>
                         {/* Range time inputs */}
                         <div
                             className={`${timeFormat === "Range" ? "flex" : "hidden"} flex gap-6`}>
-                            <div
-                                className={"flex flex-col"}>
-                                <label htmlFor="time" className={"font-medium text-sm text-black/60"}>From</label>
-                                <input
-                                    id="time"
-                                    type={"time"}
-                                    value={fromTime}
-                                    onChange={(e) => {
-                                        setFromTime(e.target.value)
-                                        setTimeDifference(e.target.value, toTime)
-                                    }}
-                                    className={"border border-black/20 text-sm focus:outline-vibrant-purple-600 p-1.5 px-2 rounded-md bg-white"}/>
-                            </div>
-                            <div
-                                className={"flex flex-col"}>
-                                <label htmlFor="time" className={"font-medium text-sm text-black/60"}>To</label>
-                                <input
-                                    id="time"
-                                    type={"time"}
-                                    value={toTime}
-                                    onChange={(e) => {
-                                        setTimeDifference(fromTime, e.target.value)
-                                    }}
-                                    className={"border border-black/20 text-sm focus:outline-vibrant-purple-600 p-1.5 px-2 rounded-md bg-white"}/>
-                            </div>
-                        </div>
-                        {/*  Date  */}
-                        <div
-                            className={"flex flex-col"}>
-                            <label className={"font-medium text-sm text-black/60"}>Date</label>
-                            <MaxDateCalendarInput
-                                selectedDate={selectedDate}
-                                setSelectedDate={setSelectedDate}
+                            <ClockTimeInput
+                                inputId={"from-time"}
+                                value={fromTime}
+                                labelText={"From"}
+                                onChange={(fromTimeValue) => {
+                                    setFromTime(fromTimeValue)
+                                    setTimeDifference(fromTimeValue, toTime)
+                                }}
+                            />
+                            <ClockTimeInput
+                                inputId={"to-time"}
+                                value={toTime}
+                                labelText={"To"}
+                                onChange={(toTimeValue) => {
+                                    setFromTime(toTimeValue)
+                                    setTimeDifference(fromTime, toTimeValue)
+                                }}
                             />
                         </div>
+                        {/*  Date  */}
+                        <MaxDateCalendarInput
+                            inputId={"date-input"}
+                            labelText={"Date"}
+                            selectedDate={selectedDate}
+                            setSelectedDate={setSelectedDate}
+                        />
                         {/* Custom input */}
                         <div
                             className={`${taskType === "custom" ? "flex  flex-col" : "hidden"}`}>
-                            <label htmlFor="name-description" className={"font-medium text-black/60"}>Custom Type of
-                                task</label>
-                            <input
-                                onChange={(e) => setCustomType(e.target.value)}
-                                id={"edit-name-description"} type="text" placeholder={"Write your custom type..."}
-                                className={"border border-black/20 w-[300px] focus:outline-vibrant-purple-600 p-1 px-2 rounded-md bg-white"}/>
+                            <TextInput
+                                inputId={"custom-option-input"}
+                                value={customType}
+                                labelText={"Custom Type of task"}
+                                placeholder={"Write your custom type..."}
+                                inputClassname={"py-1.5"}
+                                OnChange={(e) => setCustomType(e)}
+                                isIconVisible={false}
+                            />
                         </div>
                     </div>
-                    {/*Submit Button*/
-                    }
-                    <button
+                    <LargeButton
                         type={"submit"}
                         disabled={isButtonDisabled()}
                         className={`${isButtonDisabled() ? "bg-black/40  border text-white/80" : "bg-purple-gradient cursor-pointer"}
-                         px-5 py-2 mt-4 text-sm font-medium rounded-md text-white duration-100`}>
+                        px-5 py-2 mt-4`}
+                    >
                         Create entry
-                    </button>
+                    </LargeButton>
                 </form>
-                <InformativeModal setIsModalOpen={setIsMaxTimeModalOpen} isModalOpen={isMaxTimeModalOpen}
-                                  title={"You can't track more than the daily limit."}/>
-            </div>
-        </section>
+            </EntryCreatorPanel>
+            <InformativeModal setIsModalOpen={setIsMaxTimeModalOpen} isModalOpen={isMaxTimeModalOpen}
+                              title={"You can't track more than the daily limit."}/>
+        </>
     )
 }

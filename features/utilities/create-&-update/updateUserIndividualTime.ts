@@ -1,6 +1,7 @@
 import {db} from "@/app/firebase/config";
-import {doc, getDoc, updateDoc} from "firebase/firestore";
+import {arrayUnion, doc, getDoc, updateDoc} from "firebase/firestore";
 import {Project} from "@/types";
+import {documentNotFound} from "@/messages/errors";
 
 
 export const updateUserIndividualTime = async (
@@ -14,13 +15,11 @@ export const updateUserIndividualTime = async (
 ) => {
     if (!userId) return
 
-    const docRef = doc(db, "realms", workspaceId)
+    const docRef = doc(db, "realms", workspaceId, 'projects', projectId);
     const docSnap = await getDoc(docRef)
-    if (!docSnap.exists()) return
+    if (!docSnap.exists()) return console.error(documentNotFound)
     const data = docSnap.data();
-    const projects: Project[] = data.projects
-    const currProject: Project = data.projects.find((p: Project) => p.projectId === projectId)
-    const membersData = currProject.membersIndividualTimes
+    const membersData = data.membersIndividualTimes
 
     if (membersData[userId]) {
         const dataTime = membersData[userId].daily[formatedDateToYMD] ?? 0
@@ -46,11 +45,6 @@ export const updateUserIndividualTime = async (
         }
     }
 
-    const updatedProjects = projects.map((p: Project) => {
-        if (p.projectId !== projectId) return p
 
-        return {...p, membersIndividualTimes: membersData}
-    })
-
-    await updateDoc(docRef, {projects: updatedProjects})
+    await updateDoc(docRef, {membersIndividualTimes: arrayUnion(membersData)})
 }
