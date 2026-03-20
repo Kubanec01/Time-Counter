@@ -54,7 +54,7 @@ export default function StatsHome() {
             if (!docSnap.exists()) return console.error(documentNotFound)
             const data = docSnap.data()
             const project: Project = data.projects.find((p: Project) => p.projectId === projectId)
-            const totalTrackedTimes = project.totalTrackedTimes
+            const totalTrackedTimes = project.totalDailyTrackedTimes
             setProjectTotalTime(project.totalTime)
 
             const thisWeekData = getThisWeekTrackedDates(totalTrackedTimes)

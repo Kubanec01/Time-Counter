@@ -40,7 +40,7 @@ export const deleteAllSectionData = async (
 
     const updatedSectionsByDates = sectionsByDates.filter((s: UpdatedSectionByDate) => s.sectionId !== sectionId);
 
-    await updateUserIndividualTime(userId, workspaceId, projectId, date, seconds, 10000, "decrease")
+    await updateUserIndividualTime(userId, workspaceId, projectId, date, seconds, "decrease")
     await updateTotalTrackedTime(projectId, date, seconds, workspaceId, "decrease")
 
     await updateDoc(userRef, {

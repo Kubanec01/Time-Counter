@@ -1,7 +1,7 @@
 import {UpdatedSectionByDate} from "@/types";
 
 
-export const getUniqueDates = (arr: UpdatedSectionByDate[]) => {
+export const getUniqueDatesFromSectionByDates = (arr: UpdatedSectionByDate[]) => {
     if (arr.length === 0) return []
 
     let newDate = arr[0].date

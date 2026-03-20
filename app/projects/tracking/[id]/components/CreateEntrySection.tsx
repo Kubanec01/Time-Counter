@@ -1,23 +1,24 @@
+'use client'
+
+
 import {RiBarChart2Fill, RiSettings3Fill} from "react-icons/ri";
-import {LoggingType, Member, Project, ProjectOption, UserProjectOptions} from "@/types";
-import {MaxDateCalendarInput} from "@/features/utilities/date/MaxDateCalendarInput";
+import {LoggingType, ProjectOption, UsersClasses} from "@/types";
 import React, {FormEvent, useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
-import {getFirestoreTargetRef} from "@/features/utilities/getFirestoreTargetRef";
-import {onSnapshot} from "firebase/firestore";
 import {formatFloatHoursToSeconds} from "@/features/utilities/time/timeOperations";
 import {createNewSection} from "@/features/utilities/create-&-update/createNewSection";
-import {UsersClasses} from "@/data/users";
 import {updateUserIndividualTime} from "@/features/utilities/create-&-update/updateUserIndividualTime";
 import {formateDateToYMD} from "@/features/utilities/date/dateOperations";
-import InformativeModal from "@/components/modals/InformativeModal";
+import {useProjectData} from "@/features/hooks/useProjectData";
+import {useWorkspaceData} from "@/features/hooks/useWorkspaceData";
+import {useMemberData} from "@/features/hooks/useMemberData";
 
 type CreateEntrySectionProps = {
     projectId: string;
 }
 
-export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
+const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
 
     // States
     const [taskType, setTaskType] = useState<LoggingType>(null)
@@ -25,14 +26,16 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
     const [options, setOptions] = useState<ProjectOption[]>([])
     const [nameValue, setNameValue] = useState("");
     const [timeInputValue, setTimeInputValue] = useState(0);
-    const [isMaxTimeModalOpen, setIsMaxTimeModalOpen] = useState(false);
     const [isCreatingTrack, setIsCreatingTrack] = useState(false);
-    const [maxDailyTime, setMaxDailyTime] = useState(100);
 
+    // Hooks
+    const {workspaceId, userName, userSurname, userRole, userId} = useWorkSpaceContext()
     const router = useRouter();
-    const {mode, workspaceId, userName, userSurname, userRole, userId} = useWorkSpaceContext()
-    const currFormatedDate = formateDateToYMD(new Date());
+    const projectData = useProjectData(workspaceId, props.projectId)
+    const workspaceData = useWorkspaceData(workspaceId)
+    const memberData = useMemberData(workspaceId, userId)
 
+    const currFormatedDate = formateDateToYMD(new Date());
     const createSection = async (e: FormEvent) => {
         e.preventDefault();
 
@@ -44,22 +47,12 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
 
         const userFullName = `${userName} ${userSurname}`
 
-        const canContinue = await updateUserIndividualTime(userId, workspaceId, props.projectId, currFormatedDate, timeToSeconds, maxDailyTime, "increase")
-        if (canContinue === false) {
-            setIsMaxTimeModalOpen(true);
-            setNameValue("")
-            setTaskType(null)
-            setTimeInputValue(0)
-            setIsCreatingTrack(false)
-            return
-        }
-
+        await updateUserIndividualTime(userId, workspaceId, props.projectId, currFormatedDate, timeToSeconds, "increase")
         await createNewSection(userId, userFullName, props.projectId, nameValue, timeToSeconds, currFormatedDate, setNameValue, newTaskType, workspaceId)
+
         setNameValue("")
         setTaskType(null)
         setTimeInputValue(0)
-
-
         setIsCreatingTrack(false)
     }
 
@@ -69,34 +62,19 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
 
     // Fetch Data
     useEffect(() => {
-        if (!userId) return
+        if (!userId || !workspaceData || !projectData || !memberData) return
 
-        const userRef = getFirestoreTargetRef(userId, mode, workspaceId)
+        const updateData = () => {
 
-        const fetchOptions = onSnapshot(userRef, snap => {
-            if (!snap.exists()) return
+            if (memberData.class && memberData.class !== 'unset') {
+                const classOptions = workspaceData.userClasses.find((c: UsersClasses) => c.id === memberData.class)
+                if (classOptions) setOptions(classOptions)
+            } else setOptions(projectData.options.filter(o => o.active))
+        }
 
-            const data = snap.data()
-            const member: Member = data.members.find((m: Member) => m.userId === userId)
-            const memberClass = member.class
-            const usersClasses: UsersClasses[] = data.userClasses
-            const project: Project = data.projects.find((project: Project) => project.projectId === props.projectId)
-            const customized = project.customizedUsersOptions ?? [];
-            const userOptions = customized.find((o: UserProjectOptions) => o.userId === userId);
+        updateData()
 
-            if (userOptions) {
-                setOptions(userOptions.activeOptions)
-            } else if (memberClass && memberClass !== "unset") {
-                const classes = usersClasses.find(i => i.id === memberClass)
-                if (classes) setOptions(classes.options)
-            } else {
-                setOptions(project.options.filter((o: ProjectOption) => o.active))
-            }
-        })
-
-        return () => fetchOptions()
-
-    }, [mode, props.projectId, userId, workspaceId])
+    }, [memberData, projectData, userId, workspaceData])
 
     return (
         <div
@@ -190,9 +168,9 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                         Create entry
                     </button>
                 </form>
-                <InformativeModal setIsModalOpen={setIsMaxTimeModalOpen} isModalOpen={isMaxTimeModalOpen}
-                                  title={"You can't track more than the daily limit."}/>
             </section>
         </div>
     )
 }
+
+export default CreateEntrySection

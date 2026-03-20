@@ -1,3 +1,5 @@
+'use client'
+
 import {RiBarChart2Fill, RiSettings3Fill} from "react-icons/ri";
 import {BaseOption, LoggingType, ProjectOption, UsersClasses} from "@/types";
 import {MaxDateCalendarInput} from "@/features/utilities/date/MaxDateCalendarInput";
@@ -75,21 +77,17 @@ export const CreateEntrySection = ({projectId}: { projectId: string }) => {
         const newTaskType = taskType === "custom" ? customType : taskType
         const userFullName = `${userName} ${userSurname}`
 
-        function resetStates() {
-            setNameValue("")
-            setTaskType(null)
-            setTimeInputValue(0)
-            setFromTime(currTime)
-            setToTime(currTime)
-            setIsCreatingTrack(false)
-        }
-
-
         await updateUserIndividualTime(userId, workspaceId, projectId, formateDateToYMD(selectedDate), timeToSeconds, "increase")
         await createNewSection(userId, userFullName, projectId, nameValue, timeToSeconds, formateDateToYMD(selectedDate), setNameValue, newTaskType, workspaceId)
         await updateTotalTrackedTime(projectId, formateDateToYMD(selectedDate), timeToSeconds, workspaceId, "increase")
         await updateProjectTotalTime(projectId, timeToSeconds, workspaceId, "increase")
-        resetStates()
+
+        setNameValue("")
+        setTaskType(null)
+        setTimeInputValue(0)
+        setFromTime(currTime)
+        setToTime(currTime)
+        setIsCreatingTrack(false)
     }
 
     const isButtonDisabled = () => {

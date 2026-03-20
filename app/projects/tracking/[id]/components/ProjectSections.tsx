@@ -1,18 +1,48 @@
 'use client'
 
-import React from "react";
-import {Section} from "@/types";
+import React, {useEffect} from "react";
+import {Section, UpdatedSectionByDate} from "@/types";
 import {setNameByDate} from "@/features/utilities/date/setNameByDate";
 import SectionCart from "@/app/projects/tracking/[id]/components/projectCart/components/SectionCart";
+import {useProjectData} from "@/features/hooks/useProjectData";
+import {workerData} from "node:worker_threads";
+import {useWorkspaceData} from "@/features/hooks/useWorkspaceData";
+import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {sortDatesAscending} from "@/features/utilities/date/sortDates";
+import {getUniqueDates, getUniqueDatesFromSectionByDates} from "@/features/utilities/date/getUniqueDates";
 
 type ProjectSectionsProps = {
     projectId: string;
-    updatedSectionsByDates: string[];
-    sections: Section[];
-    userId: string | undefined;
 };
 
 export const ProjectSections = ({...props}: ProjectSectionsProps) => {
+
+    // States
+    const [sectionsDates, setSectionsDates] = React.useState<string[]>([])
+    const [sections, setSections] = React.useState<Section[]>([])
+
+    // Hooks
+    const {workspaceId, userId, userRole} = useWorkSpaceContext()
+    const projectData = useProjectData(workspaceId, props.projectId)
+    const workspaceData = useWorkspaceData(workspaceId)
+
+    useEffect(() => {
+        if (!workspaceData || !projectData) return
+
+        const updateData = () => {
+            const validSectionsByDates = workspaceData.updatedSectionsByDates.filter((s: UpdatedSectionByDate) => s.projectId === props.projectId)
+
+            const ascendedSectionsByDates = sortDatesAscending(getUniqueDatesFromSectionByDates(validSectionsByDates))
+            setSections(workspaceData.projectsSections.filter((s: Section) => s.projectId === props.projectId))
+            setSectionsDates(ascendedSectionsByDates)
+
+        }
+
+        updateData()
+
+    }, [projectData, props.projectId, workspaceData])
+
+
     return (
         <div className="border border-black/5 p-8 mb-30 mx-auto flex flex-col gap-4 rounded-xl shadow-lg bg-white/60">
             {/*<div className="w-full border">*/}
@@ -21,25 +51,25 @@ export const ProjectSections = ({...props}: ProjectSectionsProps) => {
 
             <section>
                 <h1
-                    className={`${props.sections.length === 0 ? "block" : "hidden"} text-black/44 text-sm w-full text-center`}>
+                    className={`${sections.length === 0 ? "block" : "hidden"} text-black/44 text-sm w-full text-center`}>
                     No data found 0.o
                 </h1>
-                <ul className={`${props.sections.length === 0 ? "hidden" : "flex"}
+                <ul className={`${sections.length === 0 ? "hidden" : "flex"}
                 w-full flex-col gap-[20px]`}>
-                    {props.updatedSectionsByDates.length > 0 && (
+                    {sectionsDates.length > 0 && (
                         <>
-                            {props.updatedSectionsByDates.map((section, index) => (
+                            {sectionsDates.map((date, index) => (
                                 <li
                                     className="w-full"
                                     key={index}
                                 >
                                     <h1 className="text-sm text-black/50 font-medium ml-2 mb-2">
-                                        {setNameByDate(section)}
+                                        {setNameByDate(date)}
                                     </h1>
                                     <div
                                         className={"rounded-xl bg-black/10 p-2 pb-0.5"}>
-                                        {props.sections.map((i) => {
-                                            if (i.updateDate === section) {
+                                        {sections.map((i) => {
+                                            if (i.updateDate === date) {
                                                 return (
                                                     <SectionCart
                                                         key={i.sectionId}
@@ -47,7 +77,7 @@ export const ProjectSections = ({...props}: ProjectSectionsProps) => {
                                                         sectionId={i.sectionId}
                                                         projectId={i.projectId}
                                                         title={i.title}
-                                                        userId={props.userId}
+                                                        userId={userId}
                                                         type={i.category}
                                                     />
                                                 );
