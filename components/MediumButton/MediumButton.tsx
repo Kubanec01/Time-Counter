@@ -13,9 +13,7 @@ export const MediumButton = ({...props}: ButtonProps) => {
         <button
             onClick={() => props.onClick()}
             className={twMerge(
-                `medium-button border flex items-center justify-center`,
-                props.className
-            )}>
+                `medium-button border flex items-center justify-center`, props.className)}>
             {props.children}
         </button>
     )

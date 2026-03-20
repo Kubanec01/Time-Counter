@@ -35,10 +35,7 @@ export type UserProjectOptions = {
     inactiveOptions: ProjectOption[];
 };
 
-export type TotalTrackedTime = {
-    date: string;
-    time: number;
-}
+export type TotalDailyTrackedTime = Record<string, number>
 
 export type MemberTime = {
     daily: Record<string, number>
@@ -54,7 +51,7 @@ export interface Project {
     dailyMaxTrackTime: number;
     weeklyMaxTrackTime: number;
     type: ProjectType
-    totalTrackedTimes: TotalTrackedTime[];
+    totalDailyTrackedTimes: TotalDailyTrackedTime;
     membersIndividualTimes: UserIndividualTimes
     options: ProjectOption[],
     trackFormat: "Decimal" | "Range",

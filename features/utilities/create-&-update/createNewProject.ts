@@ -27,7 +27,7 @@ export const createNewProject = async (
             dailyMaxTrackTime: 86400,
             weeklyMaxTrackTime: 604_800,
             type: typeOfProject,
-            totalTrackedTimes: [],
+            totalDailyTrackedTimes: {},
             membersIndividualTimes: {},
             options: projectTasksOptions,
             customizedUsersOptions: [],

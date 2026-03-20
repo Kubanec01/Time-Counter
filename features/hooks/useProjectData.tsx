@@ -5,7 +5,7 @@ import {doc, onSnapshot} from "firebase/firestore";
 import {documentNotFound} from "@/messages/errors";
 
 
-export const useProjectSettings = (workspaceId: string, projectId: string) => {
+export const useProjectData = (workspaceId: string, projectId: string) => {
 
     const [project, setProject] = useState<Project | null>(null);
 

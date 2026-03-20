@@ -9,7 +9,7 @@ import {Project, ProjectOption} from "@/types";
 import {MaxTrackingTime} from "@/app/workspaces/settings/components/buttons/MaxTrackingTime";
 import {updateProjectDailyTrackLimit} from "@/features/utilities/create-&-update/updateProjectDailyTrackLimit";
 import {ProjectOptions} from "@/app/workspaces/settings/components/buttons/ProjectOptions";
-import {useProjectSettings} from "@/features/hooks/useProjectSettings";
+import {useProjectData} from "@/features/hooks/useProjectData";
 
 export const CustomizeProject = () => {
 
@@ -23,7 +23,7 @@ export const CustomizeProject = () => {
     const {workspaceId} = useWorkSpaceContext()
     const projectId = useParams().id as string;
     const docRef = doc(db, "realms", workspaceId);
-    const project = useProjectSettings(workspaceId, projectId);
+    const project = useProjectData(workspaceId, projectId);
 
     const updateTrackFormat = async (value: "Decimal" | "Range") => {
         setOptionTimeFormat(value)

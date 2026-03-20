@@ -12,9 +12,8 @@ import {createNewSection} from "@/features/utilities/create-&-update/createNewSe
 import {updateTotalTrackedTime} from "@/features/utilities/edit/updateTotalTrackedTime";
 import {updateUserIndividualTime} from "@/features/utilities/create-&-update/updateUserIndividualTime";
 import {formateDateToYMD} from "@/features/utilities/date/dateOperations";
-import InformativeModal from "@/components/modals/InformativeModal";
 import {getHours, getMinutes} from "date-fns";
-import {useProjectSettings} from "@/features/hooks/useProjectSettings";
+import {useProjectData} from "@/features/hooks/useProjectData";
 import {useMemberData} from "@/features/hooks/useMemberData";
 import {MediumButton} from "@/components/MediumButton/MediumButton";
 import {SelectBar} from "@/components/SelectBar/SelectBar";
@@ -25,11 +24,7 @@ import {ClockTimeInput} from "@/components/ClockTimeInput/ClockTimeInput";
 import {LargeButton} from "@/components/LargeButton/LargeButton";
 import {EntryCreatorPanel} from "@/components/EntryCreatorPanel/EntryCreatorPanel";
 
-type CreateEntrySectionProps = {
-    projectId: string;
-}
-
-export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
+export const CreateEntrySection = ({projectId}: { projectId: string }) => {
 
     const currDate = new Date();
     const currTime = `${String(getHours(currDate)).padStart(2, "0")}:${String(getMinutes(currDate)).padStart(2, "0")}`
@@ -41,17 +36,15 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
     const [nameValue, setNameValue] = useState("");
     const [timeInputValue, setTimeInputValue] = useState(0);
     const [selectedDate, setSelectedDate] = useState<Date | null>(currDate);
-    const [isMaxTimeModalOpen, setIsMaxTimeModalOpen] = useState(false);
     const [timeFormat, setTimeFormat] = useState<"Decimal" | "Range">("Decimal")
     const [fromTime, setFromTime] = useState(currTime);
     const [toTime, setToTime] = useState(currTime);
     const [isCreatingTrack, setIsCreatingTrack] = useState(false);
-    const [maxDailyTime, setMaxDailyTime] = useState(100);
 
     // Hooks
     const router = useRouter();
     const {workspaceId, userName, userSurname, userRole, userId} = useWorkSpaceContext()
-    const projectData = useProjectSettings(workspaceId, props.projectId)
+    const projectData = useProjectData(workspaceId, projectId)
     const memberData = useMemberData(workspaceId, userId)
     const workspaceData = useWorkspaceData(workspaceId)
 
@@ -79,38 +72,31 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
         setIsCreatingTrack(true)
 
         const timeToSeconds = formatFloatHoursToSeconds(timeInputValue)
-
         const newTaskType = taskType === "custom" ? customType : taskType
-
         const userFullName = `${userName} ${userSurname}`
 
-        const canContinue = await updateUserIndividualTime(userId, workspaceId, props.projectId, formateDateToYMD(selectedDate), timeToSeconds, maxDailyTime, "increase")
-        if (canContinue === false) {
-            setIsMaxTimeModalOpen(true);
+        function resetStates() {
             setNameValue("")
             setTaskType(null)
             setTimeInputValue(0)
+            setFromTime(currTime)
+            setToTime(currTime)
             setIsCreatingTrack(false)
-            return
         }
 
-        await createNewSection(userId, userFullName, props.projectId, nameValue, timeToSeconds, formateDateToYMD(selectedDate), setNameValue, newTaskType, workspaceId)
-        await updateTotalTrackedTime(props.projectId, formateDateToYMD(selectedDate), timeToSeconds, workspaceId, "increase")
-        await updateProjectTotalTime(props.projectId, timeToSeconds, workspaceId, "increase")
-        setNameValue("")
-        setTaskType(null)
-        setTimeInputValue(0)
-        setFromTime(currTime)
-        setToTime(currTime)
 
-        setIsCreatingTrack(false)
+        await updateUserIndividualTime(userId, workspaceId, projectId, formateDateToYMD(selectedDate), timeToSeconds, "increase")
+        await createNewSection(userId, userFullName, projectId, nameValue, timeToSeconds, formateDateToYMD(selectedDate), setNameValue, newTaskType, workspaceId)
+        await updateTotalTrackedTime(projectId, formateDateToYMD(selectedDate), timeToSeconds, workspaceId, "increase")
+        await updateProjectTotalTime(projectId, timeToSeconds, workspaceId, "increase")
+        resetStates()
     }
 
     const isButtonDisabled = () => {
         return nameValue.trim() === "" || taskType === null || timeInputValue <= 0 ||
-            selectedDate === null || (taskType === "custom" && customType?.trim() === "")
-            || isCreatingTrack;
+            selectedDate === null || (taskType === "custom" && customType?.trim() === "") || isCreatingTrack;
     }
+
 
     // Fetch Data
     useEffect(() => {
@@ -124,7 +110,6 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
             } else setOptions(projectData.options.filter(o => o.active))
 
             setTimeFormat(projectData.trackFormat)
-            setMaxDailyTime(projectData.dailyMaxTrackTime)
         }
 
         updateData()
@@ -139,7 +124,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                     <div
                         className={`${userRole === "Member" ? "hidden" : "flex"} gap-2.5`}>
                         <MediumButton
-                            onClick={() => router.push(`/workspaces/settings/project/stats/${props.projectId}`)}
+                            onClick={() => router.push(`/workspaces/settings/project/stats/${projectId}`)}
                             className={"bg-black-gradient"}>
                         <span className={"flex items-center gap-1"}>
                             Stats
@@ -147,7 +132,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                         </span>
                         </MediumButton>
                         <MediumButton
-                            onClick={() => router.push(`/workspaces/settings/project/${props.projectId}`)}
+                            onClick={() => router.push(`/workspaces/settings/project/${projectId}`)}
                             className={"bg-black-gradient"}>
                         <span className={"flex items-center gap-1"}>
                             Settings
@@ -185,7 +170,7 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                             className={`${timeFormat === "Decimal" ? "flex" : "hidden"}`}>
                             <NumberInput
                                 inputId={"time-input"}
-                                value={timeInputValue}
+                                value={String(timeInputValue)}
                                 labelChildren={"Hours"}
                                 placeholder={'0.25'}
                                 step={0.25}
@@ -221,7 +206,9 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                             inputId={"date-input"}
                             labelText={"Date"}
                             selectedDate={selectedDate}
-                            setSelectedDate={setSelectedDate}
+                            onChange={(e) => {
+                                setSelectedDate(e)
+                            }}
                         />
                         {/* Custom input */}
                         <div
@@ -247,8 +234,6 @@ export const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                     </LargeButton>
                 </form>
             </EntryCreatorPanel>
-            <InformativeModal setIsModalOpen={setIsMaxTimeModalOpen} isModalOpen={isMaxTimeModalOpen}
-                              title={"You can't track more than the daily limit."}/>
         </>
     )
 }

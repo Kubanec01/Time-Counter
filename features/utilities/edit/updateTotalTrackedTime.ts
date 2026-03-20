@@ -1,7 +1,7 @@
-import {Project, TotalTrackedTime, WorkspaceId} from "@/types";
+import {Project, WorkspaceId} from "@/types";
 import {doc, getDoc, updateDoc} from "firebase/firestore";
 import {db} from "@/app/firebase/config";
-import {projectNotFound} from "@/messages/errors";
+import {documentNotFound} from "@/messages/errors";
 
 
 export const updateTotalTrackedTime = async (
@@ -12,53 +12,18 @@ export const updateTotalTrackedTime = async (
     changes: "increase" | "decrease",
 ) => {
 
-    const docRef = doc(db, "realms", workspaceId);
-    const docSnap = await getDoc(docRef)
-    if (!docSnap.exists()) return;
+    const docSnap = await getDoc(doc(db, "realms", workspaceId, 'projects', projectId))
+    if (!docSnap.exists()) return console.error(documentNotFound);
 
-    const data = docSnap.data();
-    const projects: Project[] = data.projects
-    const project = projects.find(p => p.projectId === projectId);
-    if (!project) return console.error(projectNotFound);
+    const data = docSnap.data() as Project;
 
-    const trackedTimes = project.totalTrackedTimes
+    let updatedTotalDailyTrackedTime = data.totalDailyTrackedTimes[formatedDateToYMD] ?? 0
 
-    const validTrackedTime = trackedTimes.find(
-        t => t.date === formatedDateToYMD
-    )
+    if (changes === 'increase') updatedTotalDailyTrackedTime += seconds
+    else updatedTotalDailyTrackedTime -= seconds
 
-    let updatedTrackedTimes: TotalTrackedTime[]
+    data.totalDailyTrackedTimes[formatedDateToYMD] = updatedTotalDailyTrackedTime
 
-    if (validTrackedTime) {
-        updatedTrackedTimes = trackedTimes.map(t => {
-            if (t.date !== formatedDateToYMD) return t
-
-            let updatedTime = 0
-
-            if (changes === "increase") updatedTime = t.time + seconds
-            else if (changes === "decrease") updatedTime = t.time - seconds
-
-            return {
-                ...t,
-                time: updatedTime,
-            }
-        })
-    } else {
-        updatedTrackedTimes = [
-            ...trackedTimes,
-            {date: formatedDateToYMD, time: seconds}
-        ]
-    }
-
-
-    const updatedProjects = projects.map((p: Project) => {
-        if (p.projectId !== projectId) return p
-
-        return {...p, totalTrackedTimes: updatedTrackedTimes}
-
-    })
-
-    await updateDoc(docRef, {projects: updatedProjects})
-
-
+    await updateDoc(doc(db, "realms", workspaceId, 'projects', projectId),
+        {[`totalDailyTrackedTimes.${formatedDateToYMD}`]: updatedTotalDailyTrackedTime})
 }

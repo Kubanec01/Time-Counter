@@ -22,7 +22,7 @@ export const createNewSection = async (
     }
 
     if (!userId) return;
-    const userRef = doc(db, "realms", workspaceId);
+    const userRef = doc(db, "realms", workspaceId,);
 
     // Random Num Variable
     const randomNum = throwRandomNum(10_000_000).toString()

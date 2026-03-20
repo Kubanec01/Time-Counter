@@ -61,25 +61,15 @@ export const updateProjectTotalTime = async (
     changes: "increase" | "decrease",
 ) => {
 
-    const userRef = doc(db, "realms", workspaceId)
+    const userRef = doc(db, "realms", workspaceId, 'projects', projectId)
     const docSnap = await getDoc(userRef)
-
     if (!docSnap.exists()) throw new Error(documentNotFound)
-    const data = docSnap.data()
-    const projects: Project[] = data.projects || []
 
-    let projectTime = await getProjectTotalTime(projectId, workspaceId)
+    const data = docSnap.data() as Project
 
-    if (changes === "increase") projectTime += seconds
-    else projectTime -= seconds
+    if (changes === 'increase') data.totalTime += seconds
+    else data.totalTime -= seconds
 
-
-    const updatedProjects = projects.map(p => {
-        if (p.projectId !== projectId) return p
-
-        return {...p, totalTime: projectTime}
-    })
-
-    await updateDoc(userRef, {projects: updatedProjects})
-
+    await updateDoc(userRef,
+        {totalTime: data.totalTime})
 }

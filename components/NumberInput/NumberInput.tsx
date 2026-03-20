@@ -32,6 +32,7 @@ export const NumberInput = ({...props}: NumberInputProps) => {
                 min={props.min}
                 max={props.max}
                 step={props.step}
+                value={props.value}
                 onChange={(e) => props.onChange(Number(e.target.value))}
                 type={"number"}
                 placeholder={props.placeholder}

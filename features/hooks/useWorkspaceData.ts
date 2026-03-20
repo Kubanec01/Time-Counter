@@ -2,7 +2,7 @@
 
 import {useEffect, useState} from "react";
 import {db} from "@/app/firebase/config";
-import {doc, DocumentData, getDoc} from "firebase/firestore";
+import {doc, DocumentData,onSnapshot} from "firebase/firestore";
 import {documentNotFound} from "@/messages/errors";
 import {WorkspaceId} from "@/types";
 
@@ -15,14 +15,14 @@ export const useWorkspaceData = (workspaceId: WorkspaceId) => {
 
         if (!workspaceId || workspaceId === 'unused') return
 
+        const docRef = doc(db, "realms", workspaceId);
 
-        const fetchData = async () => {
-            const docSnap = await getDoc(doc(db, 'realms', workspaceId))
-            if (!docSnap.exists()) return console.error(documentNotFound)
-            setData(docSnap.data())
-        }
+        const fetchData = onSnapshot(docRef, snap => {
+            if (!snap.exists()) return console.error(documentNotFound)
+            setData(snap.data())
+        })
 
-        fetchData()
+        return () => fetchData()
 
     }, [workspaceId])
 

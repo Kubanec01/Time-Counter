@@ -1,6 +1,6 @@
 import React from "react";
 import {useRouter} from "next/navigation";
-import {useProjectSettings} from "@/features/hooks/useProjectSettings";
+import {useProjectData} from "@/features/hooks/useProjectData";
 import {arrayUnion, doc, updateDoc} from "firebase/firestore";
 import {db} from "@/app/firebase/config";
 
@@ -15,7 +15,7 @@ type ProjectBarProps = {
 
 export const ProjectBar = ({...props}: ProjectBarProps) => {
 
-    const project = useProjectSettings(props.workspaceId, props.projectId)
+    const project = useProjectData(props.workspaceId, props.projectId)
     const router = useRouter();
 
     const enterProject = async () => {

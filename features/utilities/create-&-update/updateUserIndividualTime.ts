@@ -1,6 +1,5 @@
 import {db} from "@/app/firebase/config";
-import {arrayUnion, doc, getDoc, updateDoc} from "firebase/firestore";
-import {Project} from "@/types";
+import {doc, getDoc, updateDoc} from "firebase/firestore";
 import {documentNotFound} from "@/messages/errors";
 
 
@@ -10,7 +9,6 @@ export const updateUserIndividualTime = async (
     projectId: string,
     formatedDateToYMD: string,
     seconds: number,
-    maxDailyTime: number,
     changes: "increase" | "decrease"
 ) => {
     if (!userId) return
@@ -20,13 +18,6 @@ export const updateUserIndividualTime = async (
     if (!docSnap.exists()) return console.error(documentNotFound)
     const data = docSnap.data();
     const membersData = data.membersIndividualTimes
-
-    if (membersData[userId]) {
-        const dataTime = membersData[userId].daily[formatedDateToYMD] ?? 0
-        if (dataTime + seconds > maxDailyTime || seconds > maxDailyTime) {
-            return false
-        }
-    }
 
     if (!membersData[userId]) {
         membersData[userId] = {
@@ -46,5 +37,5 @@ export const updateUserIndividualTime = async (
     }
 
 
-    await updateDoc(docRef, {membersIndividualTimes: arrayUnion(membersData)})
+    await updateDoc(docRef, {membersIndividualTimes: membersData})
 }

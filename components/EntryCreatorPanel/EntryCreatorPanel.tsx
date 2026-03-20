@@ -4,7 +4,7 @@ import {twMerge} from "tailwind-merge";
 type EntryCreatorPanelProps = {
     title?: string
     titleClassname?: string
-    buttonsSectionChildren?: JXS.Element
+    buttonsSectionChildren?: JSX.Element
     children: JSX.Element
     mainBodyClassname?: string
     panelBodyClassname?: string
