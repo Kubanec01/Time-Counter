@@ -4,7 +4,7 @@ import {deleteAllSectionData} from "@/features/utilities/delete/deleteAllSection
 import {FaRegTrashCan} from "react-icons/fa6";
 import RenameModal from "@/components/modals/RenameModal";
 import {editSectionName} from "@/features/utilities/edit/editSectionName";
-import React, {useState} from "react";
+import React, {JSX, ReactNode, useState} from "react";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth} from "@/app/firebase/config";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
@@ -12,76 +12,92 @@ import DeleteModal from "@/components/modals/DeleteModal";
 import {HiMiniUserCircle} from "react-icons/hi2";
 import {formatSecondsToTimeString} from "@/features/utilities/time/timeOperations";
 import {formateYMDToDMY} from "@/features/utilities/date/dateOperations";
+import SectionCartContainer from "@/components/SectionCart/SectionCartContainer";
+import UserBadge from "@/components/UserBadge/UserBadge";
 
 
 export const SectionCart = ({...props}: Section) => {
 
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-    const [editModalInputValue, setEditModalInputValue] = useState<string>("");
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-    const [user] = useAuthState(auth)
-    const userId = user?.uid
-    const {mode, workspaceId, userRole} = useWorkSpaceContext()
+    const {mode, userRole} = useWorkSpaceContext()
     const isWorkspaceRoleAdmin = mode === "workspace" && (userRole === "Admin" || userRole === "Manager");
 
 
+    const sectionList: { id: string, content: JSX.Element | ReactNode }[] = [
+        {
+            id: "title",
+            content: <p>{props.title}</p>
+        },
+        {
+            id: "category",
+            content: <p>{props.category}</p>
+        },
+        {
+            id: "time",
+            content: <p>{formatSecondsToTimeString(props.time)}</p>
+        },
+        {
+            id: "date",
+            content: <p>{formateYMDToDMY(props.updateDate)}</p>
+        },
+    ]
+
     return (
         <>
-            <li key={props.sectionId}
-                className={`w-full rounded-md bg-white text-black/70 text-sm font-medium items-center px-4 py-1.5 relative
-                ${(mode === "solo" || !isWorkspaceRoleAdmin) ? "" : "pt-7"}`}>
-                {/*User Name*/}
-                <span
-                    className={`${isWorkspaceRoleAdmin ? "flex" : "hidden"} gap-0.5 items-center text-xs font-semibold absolute bg-black/10 py-0.5 px-1 rounded-full top-1.5 left-2 text-custom-gray-800`}>
-                    <HiMiniUserCircle className={"text-sm"}/>
-                    {props.userName}
-                </span>
-                <div
-                    className={"w-full flex justify-between"}>
-                    <h1 className={"w-[25%]"}>{props.title}</h1>
-                    <h2 className={"w-[25%]"}>{props.category}</h2>
-                    <span className={"w-[25%]"}>{formatSecondsToTimeString(props.time)}</span>
-                    <span
-                        className={"w-[25%] flex justify-between"}>
-                        {formateYMDToDMY(props.updateDate)}
-                        <div
-                            className={"flex items-center justify-center gap-4"}>
-                        <button
-                            className={"text-sm text-black/40 hover:text-vibrant-purple-500 cursor-pointer"}
-                            onClick={() => setIsEditModalOpen(true)}>
-                            <FaRegEdit/>
-                        </button>
-                        <button
-                            className={"text-sm text-black/40 hover:text-red-300 cursor-pointer"}
-                            onClick={() => setIsDeleteModalOpen(true)}>
-                            <FaRegTrashCan/>
-                        </button>
-                    </div>
-                    </span>
-                </div>
-            </li>
-            <RenameModal
-                setIsModalOpen={setIsEditModalOpen}
-                isModalOpen={isEditModalOpen}
-                setInputValue={setEditModalInputValue}
-                inputValue={editModalInputValue}
-                title={"Rename track?"}
-                desc={"You can rename your track anytime, anywhere."}
-                inputPlaceholder={"What is a new track edit-name?"}
-                formFunction={(e) => {
-                    e.preventDefault()
-                    editSectionName(props.projectId, props.sectionId, editModalInputValue, setEditModalInputValue, setIsEditModalOpen, workspaceId)
-                }}/>
-            <DeleteModal
-                setIsModalOpen={setIsDeleteModalOpen}
-                isModalOpen={isDeleteModalOpen}
-                title={"Delete track?"}
-                desc={"Are you sure you want to delete this track? This step is irreversible and everything stored in this track will be deleted."}
-                btnFunction={() => deleteAllSectionData(userId, props.projectId, props.sectionId, workspaceId, props.updateDate, props.time,)}
-                deleteBtnText={"Delete track"}
-                topDistance={400}
-            />
+
+            <SectionCartContainer
+                sectionList={sectionList}
+                bodyClassname={`${(mode === "solo" || !isWorkspaceRoleAdmin) ? "" : "pt-7"}`}
+            >
+                <UserBadge
+                    className={isWorkspaceRoleAdmin ? "flex" : "hidden"}
+                    userName={props.userName}
+                />
+            </SectionCartContainer>
         </>
     )
+}
+
+
+{/*<RenameModal*/
+}
+{/*    setIsModalOpen={setIsEditModalOpen}*/
+}
+{/*    isModalOpen={isEditModalOpen}*/
+}
+{/*    setInputValue={setEditModalInputValue}*/
+}
+{/*    inputValue={editModalInputValue}*/
+}
+{/*    title={"Rename track?"}*/
+}
+{/*    desc={"You can rename your track anytime, anywhere."}*/
+}
+{/*    inputPlaceholder={"What is a new track edit-name?"}*/
+}
+{/*    formFunction={(e) => {*/
+}
+{/*        e.preventDefault()*/
+}
+{/*        editSectionName(props.projectId, props.sectionId, editModalInputValue, setEditModalInputValue, setIsEditModalOpen, workspaceId)*/
+}
+{/*    }}/>*/
+}
+{/*<DeleteModal*/
+}
+{/*    setIsModalOpen={setIsDeleteModalOpen}*/
+}
+{/*    isModalOpen={isDeleteModalOpen}*/
+}
+{/*    title={"Delete track?"}*/
+}
+{/*    desc={"Are you sure you want to delete this track? This step is irreversible and everything stored in this track will be deleted."}*/
+}
+{/*    btnFunction={() => deleteAllSectionData(userId, props.projectId, props.sectionId, workspaceId, props.updateDate, props.time,)}*/
+}
+{/*    deleteBtnText={"Delete track"}*/
+}
+{/*    topDistance={400}*/
+}
+{/*/>*/
 }

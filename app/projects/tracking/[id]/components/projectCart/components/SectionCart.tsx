@@ -2,7 +2,7 @@
 
 import DeleteModal from "@/components/modals/DeleteModal";
 import {doc, getDoc, onSnapshot,} from "firebase/firestore";
-import React, {useEffect, useState} from "react";
+import React, {JSX, ReactNode, useEffect, useState} from "react";
 import {useStopwatch} from "react-timer-hook";
 import {Section, SectionCartProps, TimeCheckout} from "@/types";
 import {useClockTimeContext} from "@/features/contexts/clockCountContext";
@@ -25,6 +25,9 @@ import {formateDateToYMD, formateYMDToDMY} from "@/features/utilities/date/dateO
 import {db} from "@/app/firebase/config";
 import {useSectionSettings} from "@/features/hooks/useSectionSettings";
 import {updateUserIndividualTime} from "@/features/utilities/create-&-update/updateUserIndividualTime";
+import SectionCartContainer from "@/components/SectionCart/SectionCartContainer";
+import ListContainer from "@/components/List-Components/ListContainer/ListContainer";
+import {LargeButton} from "@/components/LargeButton/LargeButton";
 
 
 const SectionCart = ({...props}: SectionCartProps) => {
@@ -67,7 +70,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
         setLastStopClockTime(updatedClockTime)
 
         await updateProjectTotalTime(props.projectId, durationTime, workspaceId, "decrease")
-        await updateUserIndividualTime(props.userId, workspaceId, props.projectId, formatedDate, durationTime, 1000, "decrease")
+        await updateUserIndividualTime(props.userId, workspaceId, props.projectId, formatedDate, durationTime, "decrease")
         await deleteSubsectionAndTimeCheckoutsData(subSectionId, sectionId, updatedClockTime, workspaceId)
     }
 
@@ -93,7 +96,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
             await updateProjectTotalTime(props.projectId, difference, workspaceId, "increase")
             await updateTimeData(props.sectionId, totalSeconds, formatedDate, workspaceId);
             await createNewTimeCheckout(props.projectId, props.sectionId, formatedDate, startTime, formatedTime, difference, workspaceId);
-            await updateUserIndividualTime(props.userId, workspaceId, props.projectId, formatedDate, difference, 1000, "increase")
+            await updateUserIndividualTime(props.userId, workspaceId, props.projectId, formatedDate, difference, "increase")
         }
     };
 
@@ -133,121 +136,139 @@ const SectionCart = ({...props}: SectionCartProps) => {
         return () => fetchTimeCheckouts();
     }, [props.userId, props.sectionId, mode, workspaceId]);
 
+
+    const sectionList: { id: string, content: JSX.Element | ReactNode }[] = [
+        {
+            id: 'name',
+            content: <p>{props.title}</p>
+        },
+        {
+            id: 'type',
+            content: <p>{props.type}</p>
+        },
+        {
+            id: 'time',
+            content: <p className={"font-bold"}>{newTime}</p>
+        },
+        {
+            id: 'button',
+            content: <>
+                <LargeButton
+                    onClick={() => toggleTimer()}
+                    className={'cursor-pointer p-1 bg-purple-gradient border-vibrant-purple-700 rounded-md pl-4.5 pr-4'}
+                    type={'button'}>
+                    {isRunning ? <FiPause/> : <FiPlay/>}
+                </LargeButton>
+            </>
+        },
+    ]
+
     return (
-        <div
-            key={props.sectionId}
-            className={`w-full rounded-lg flex flex-col flex-between bg-white p-2 mb-[8px]`}>
-            {/*User Name*/}
-            <div
-                className={`${isWorkspaceRoleAdmin ? "flex" : "hidden"}`}>
-            <span
-                className={`flex gap-0.5 px-1.5 py-0.5 mb-1 rounded-full font-medium bg-black/10 text-xs text-custom-gray-800`}>
-                    <HiMiniUserCircle className={"text-sm"}/>
-                {props.userName}
-            </span>
-            </div>
-            <div
-                className={"px-2"}>
-                <div
-                    className={"w-full border-b border-black/16 flex items-center pb-0.5"}>
-                    <p
-                        className={"text-vibrant-purple-700 text-sm font-medium w-1/4"}>
-                        Name
-                    </p>
-                    <p
-                        className={"text-vibrant-purple-700 text-sm font-medium w-1/4"}>
-                        Type
-                    </p>
-                    <p
-                        className={"text-vibrant-purple-700 text-sm font-medium w-1/4"}>
-                        Time
-                    </p>
-                </div>
-                <div
-                    className={"flex items-center pt-1.5"}>
-                    <p
-                        className={"text-black text-sm w-1/4"}>
-                        {props.title}
-                    </p>
-                    <p
-                        className={"text-black text-sm w-1/4"}>
-                        {props.type}
-                    </p>
-                    <p
-                        className={"text-black text-sm w-1/4 font-medium"}>
-                        {newTime}
-                    </p>
-                    {/*Buttons*/}
-                    <div
-                        className={"flex items-center justify-end pr-8 gap-0.5 flex-1"}>
-                        <button
-                            onClick={() => toggleTimer()}
-                            className={`cursor-pointer p-1.5 border bg-purple-gradient border-vibrant-purple-700 rounded-l-md flex items-center justify-center pl-2`}>
-                            {isRunning ? <FiPause/> : <FiPlay/>}
-                        </button>
-                        <button
-                            disabled={isRunning}
-                            onClick={() => setIsEditModalOpen(true)}
-                            className={`cursor-pointer p-1.5 border border-black/22 bg-linear-to-b from-white from-50% to-black/10 text-black/40 hover:from-black/2 flex items-center justify-center pl-2`}>
-                            <FiEdit/>
-                        </button>
-                        <button
-                            disabled={isRunning}
-                            onClick={() => setIsDeleteModalOpen(true)}
-                            className={`cursor-pointer p-1.5 pr-2 border border-black/22 bg-linear-to-b from-white from-50% to-black/10 text-black/40  hover:from-black/2 rounded-r-md flex items-center justify-center`}>
-                            <FiDelete/>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <ul
-                className={`${
-                    subSections.length > 0 ? "flex-1" : "hidden"
-                } w-full flex flex-col justify-center items-center mt-2 border-t border-black/12`}
+        <>
+            <SectionCartContainer
+                bodyClassname={"py-2"}
+                sectionList={sectionList}
             >
-                {subSections.map((s, index) => (
-                    <SubSectionCart
-                        key={s.subSectionId}
-                        index={index}
-                        startTime={s.startTime}
-                        stopTime={s.stopTime}
-                        durationTime={s.durationTime}
-                        date={formateYMDToDMY(s.date)}
-                        deleteFunction={() => deleteSubSection(s.subSectionId, s.durationTime, s.sectionId)}
-                    />
-                ))}
-            </ul>
-            {/*Modals*/
-            }
-            <DeleteModal
-                isModalOpen={isDeleteModalOpen}
-                setIsModalOpen={setIsDeleteModalOpen}
-                title={"Delete track?"}
-                desc={"Are you sure you want to delete this track? This step is irreversible and everything stored in this track will be deleted."}
-                deleteBtnText={"Delete Track"}
-                btnFunction={() => deleteAllSectionData(props.userId, props.projectId, props.sectionId, workspaceId, formateDateToYMD(new Date()), seconds)}
-                topDistance={300}
-            />
-            <RenameModal
-                setIsModalOpen={() => setIsEditModalOpen(false)}
-                isModalOpen={isEditModalOpen}
-                setInputValue={setInputValue}
-                inputValue={inputValue}
-                title={"Rename track?"}
-                inputPlaceholder={"What is new edit-name?"}
-                desc={"You can rename your track anytime, anywhere. Name must contain a maximum of 24 characters."}
-                formFunction={(e) => {
-                    e.preventDefault()
-                    editSectionName(props.projectId, props.sectionId, inputValue, setInputValue, setIsEditModalOpen, workspaceId)
-                }
-                }
-            />
-            <InformativeModal
-                isModalOpen={isInfoModalOpen}
-                setIsModalOpen={setIsInfoModalOpen}
-                title={"You cannot run 2 tracks at the same time."}
-            />
-        </div>
+                <ul
+                    className={`${
+                        subSections.length > 0 ? "flex-1" : "hidden"} w-full flex flex-col justify-center items-center mt-2`}
+                >
+                    {subSections.map((s) => (
+                        <SubSectionCart
+                            key={s.subSectionId}
+                            startTime={s.startTime}
+                            stopTime={s.stopTime}
+                            durationTime={s.durationTime}
+                            date={formateYMDToDMY(s.date)}
+                            deleteFunction={() => deleteSubSection(s.subSectionId, s.durationTime, s.sectionId)}
+                        />
+                    ))}
+                </ul>
+            </SectionCartContainer>
+            {/*<div*/}
+            {/*    key={props.sectionId}*/}
+            {/*    className={`w-full rounded-lg flex flex-col flex-between bg-white p-2 mb-[8px]`}>*/}
+            {/*    /!*User Name*!/*/}
+            {/*    <div*/}
+            {/*        className={`${isWorkspaceRoleAdmin ? "flex" : "hidden"}`}>*/}
+            {/*<span*/}
+            {/*    className={`flex gap-0.5 px-1.5 py-0.5 mb-1 rounded-full font-medium bg-black/10 text-xs text-custom-gray-800`}>*/}
+            {/*        <HiMiniUserCircle className={"text-sm"}/>*/}
+            {/*    {props.userName}*/}
+            {/*</span>*/}
+            {/*    </div>*/}
+            {/*    <div*/}
+            {/*        className={"px-2"}>*/}
+            {/*        <div*/}
+            {/*            className={"w-full border-b border-black/16 flex items-center pb-0.5"}>*/}
+            {/*            <p*/}
+            {/*                className={"text-vibrant-purple-700 text-sm font-medium w-1/4"}>*/}
+            {/*                Name*/}
+            {/*            </p>*/}
+            {/*            <p*/}
+            {/*                className={"text-vibrant-purple-700 text-sm font-medium w-1/4"}>*/}
+            {/*                Type*/}
+            {/*            </p>*/}
+            {/*            <p*/}
+            {/*                className={"text-vibrant-purple-700 text-sm font-medium w-1/4"}>*/}
+            {/*                Time*/}
+            {/*            </p>*/}
+            {/*        </div>*/}
+            {/*        <div*/}
+            {/*            className={"flex items-center pt-1.5"}>*/}
+            {/*            <p*/}
+            {/*                className={"text-black text-sm w-1/4"}>*/}
+            {/*                {props.title}*/}
+            {/*            </p>*/}
+            {/*            <p*/}
+            {/*                className={"text-black text-sm w-1/4"}>*/}
+            {/*                {props.type}*/}
+            {/*            </p>*/}
+            {/*            <p*/}
+            {/*                className={"text-black text-sm w-1/4 font-medium"}>*/}
+            {/*                {newTime}*/}
+            {/*            </p>*/}
+            {/*            /!*Buttons*!/*/}
+            {/*            <div*/}
+            {/*                className={"flex items-center justify-end pr-8 gap-0.5 flex-1"}>*/}
+            {/*                <button*/}
+            {/*                    onClick={() => toggleTimer()}*/}
+            {/*                    className={`cursor-pointer p-1.5 border bg-purple-gradient border-vibrant-purple-700 rounded-l-md flex items-center justify-center pl-2`}>*/}
+            {/*                    {isRunning ? <FiPause/> : <FiPlay/>}*/}
+            {/*                </button>*/}
+            {/*                <button*/}
+            {/*                    disabled={isRunning}*/}
+            {/*                    onClick={() => setIsEditModalOpen(true)}*/}
+            {/*                    className={`cursor-pointer p-1.5 border border-black/22 bg-linear-to-b from-white from-50% to-black/10 text-black/40 hover:from-black/2 flex items-center justify-center pl-2`}>*/}
+            {/*                    <FiEdit/>*/}
+            {/*                </button>*/}
+            {/*                <button*/}
+            {/*                    disabled={isRunning}*/}
+            {/*                    onClick={() => setIsDeleteModalOpen(true)}*/}
+            {/*                    className={`cursor-pointer p-1.5 pr-2 border border-black/22 bg-linear-to-b from-white from-50% to-black/10 text-black/40  hover:from-black/2 rounded-r-md flex items-center justify-center`}>*/}
+            {/*                    <FiDelete/>*/}
+            {/*                </button>*/}
+            {/*            </div>*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
+            {/*    <ul*/}
+            {/*        className={`${*/}
+            {/*            subSections.length > 0 ? "flex-1" : "hidden"*/}
+            {/*        } w-full flex flex-col justify-center items-center mt-2 border-t border-black/12`}*/}
+            {/*    >*/}
+            {/*        {subSections.map((s) => (*/}
+            {/*            <SubSectionCart*/}
+            {/*                key={s.subSectionId}*/}
+            {/*                startTime={s.startTime}*/}
+            {/*                stopTime={s.stopTime}*/}
+            {/*                durationTime={s.durationTime}*/}
+            {/*                date={formateYMDToDMY(s.date)}*/}
+            {/*                deleteFunction={() => deleteSubSection(s.subSectionId, s.durationTime, s.sectionId)}*/}
+            {/*            />*/}
+            {/*        ))}*/}
+            {/*    </ul>*/}
+            {/*</div>*/}
+        </>
     )
         ;
 };

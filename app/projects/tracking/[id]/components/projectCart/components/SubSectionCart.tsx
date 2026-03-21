@@ -3,7 +3,6 @@ import {FiTrash2} from "react-icons/fi";
 import {formatSecondsToTimeString} from "@/features/utilities/time/timeOperations";
 
 interface SubSectionCartProps {
-    index: number;
     startTime: string;
     stopTime: string;
     durationTime: number;
@@ -19,8 +18,7 @@ const SubSectionCart = (props: SubSectionCartProps) => {
 
     return (
         <li
-            key={props.index}
-            className="w-full shrink-0 flex p-2 border-b border-black/14 bg-linear-to-b from-white from-60% to-black/3 justify-between items-center">
+            className="w-full shrink-0 flex py-1.5 border-t border-black/14 bg-linear-to-b to-white from-black/2 from-5% justify-between items-center">
             <div className="w-1/4">
                 <h1
                     className={labelStyle}>
@@ -52,7 +50,7 @@ const SubSectionCart = (props: SubSectionCartProps) => {
                 </p>
             </div>
             <div
-                className={"w-1/4 flex items-center justify-end pr-8"}>
+                className={"w-1/4 flex items-center justify-end pr-7"}>
                 <button
                     onClick={() => props.deleteFunction()}
                     className={"text-sm text-black/30 hover:text-red-300 cursor-pointer"}>

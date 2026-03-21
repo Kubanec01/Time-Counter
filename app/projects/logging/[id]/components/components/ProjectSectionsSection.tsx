@@ -3,7 +3,7 @@ import {FaAngleLeft, FaAngleRight} from "react-icons/fa";
 import {MaxDateCalendarInput} from "@/features/utilities/date/MaxDateCalendarInput";
 import {SectionCart} from "@/app/projects/logging/[id]/components/components/SectionCart";
 import React, {useEffect, useState} from "react";
-import {BaseOption, Member, ProjectOption, Section} from "@/types";
+import {BaseOption, Member, Section} from "@/types";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {formateDateToYMD} from "@/features/utilities/date/dateOperations";
 import {getAllWorkspaceMembers} from "@/features/utilities/getAllWorkspaceMembers";
@@ -13,6 +13,7 @@ import {EntryListPanel} from "@/components/EntryListPanel/EntryListPanel";
 import {SelectBar} from "@/components/SelectBar/SelectBar";
 import {LargeButton} from "@/components/LargeButton/LargeButton";
 import {NoResultBar} from "@/components/NoTracksFoundBar/NoResultBar";
+import ListContainer from "@/components/List-Components/ListContainer/ListContainer";
 
 
 export const ProjectSectionsSection = ({projectId}: { projectId: string }) => {
@@ -122,17 +123,11 @@ export const ProjectSectionsSection = ({projectId}: { projectId: string }) => {
                         </LargeButton>
                         {/* Plus date btn */}
                     </section>
-                    <section
-                        className={"w-full rounded-md mx-auto flex flex-col bg-black/18"}>
-                        <div
-                            className={"w-full text-sm rounded-t-md bg-gradient-to-b from-vibrant-purple-400 to-vibrant-purple-700 text-white flex justify-between items-center px-4 py-2"}>
-                            <h1 className={"w-1/4"}>Name</h1>
-                            <h2 className={"w-1/4"}>Type</h2>
-                            <span className={"w-1/4"}>Time</span>
-                            <span className={"w-1/4"}>Date</span>
-                        </div>
+                    <ListContainer
+                        headerTitles={['Name', 'Type', 'Time', 'Date']}
+                    >
                         <ul
-                            className={"flex flex-col gap-1 p-1"}>
+                            className={"flex flex-col gap-1"}>
                             {filteredSections.length > 0 ?
                                 <>
                                     {filteredSections.map(s => (
@@ -158,7 +153,7 @@ export const ProjectSectionsSection = ({projectId}: { projectId: string }) => {
                                 </>
                             }
                         </ul>
-                    </section>
+                    </ListContainer>
                 </div>
             </EntryListPanel>
         </>

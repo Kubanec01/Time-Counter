@@ -1,13 +1,14 @@
 import {formateDateToYMD} from "@/features/utilities/date/dateOperations";
+import {subDays} from "date-fns";
 
 export const setNameByDate = (dateToYMD: string) => {
     let sectionValidName = ""
 
     const date = new Date()
-    const todayDateToYMD = formateDateToYMD(date)
-    const yesterdayDateToYMD = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate() - 1}`
+    const currDateToYMD = formateDateToYMD(date)
+    const yesterdayDateToYMD = formateDateToYMD(subDays(date, 1))
 
-    if (dateToYMD === todayDateToYMD) {
+    if (dateToYMD === currDateToYMD) {
         sectionValidName = "Today"
     } else if (dateToYMD === yesterdayDateToYMD) {
         sectionValidName = "Yesterday"

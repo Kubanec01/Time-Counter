@@ -78,7 +78,7 @@ const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
 
     return (
         <div
-            className={"pb-6 pt-10 mt-8 bg-radial from-vibrant-purple-400/50 to-white to-66% mx-auto"}>
+            className={"pb-6 pt-10 max-w-medium mt-8 bg-radial from-vibrant-purple-400/50 to-white to-66% mx-auto"}>
             <section
                 className={"w-full flex items-center justify-between px-8 pb-2"}>
                 <h1
