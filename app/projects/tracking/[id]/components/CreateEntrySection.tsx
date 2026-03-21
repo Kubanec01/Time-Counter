@@ -2,7 +2,7 @@
 
 
 import {RiBarChart2Fill, RiSettings3Fill} from "react-icons/ri";
-import {LoggingType, ProjectOption, UsersClasses} from "@/types";
+import {BaseOption, LoggingType, ProjectOption, UsersClasses} from "@/types";
 import React, {FormEvent, useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
@@ -13,6 +13,11 @@ import {formateDateToYMD} from "@/features/utilities/date/dateOperations";
 import {useProjectData} from "@/features/hooks/useProjectData";
 import {useWorkspaceData} from "@/features/hooks/useWorkspaceData";
 import {useMemberData} from "@/features/hooks/useMemberData";
+import {EntryCreatorPanel} from "@/components/EntryCreatorPanel/EntryCreatorPanel";
+import {MediumButton} from "@/components/MediumButton/MediumButton";
+import {LargeButton} from "@/components/LargeButton/LargeButton";
+import {SelectBar} from "@/components/SelectBar/SelectBar";
+import {TextInput} from "@/components/TextInput/TextInput";
 
 type CreateEntrySectionProps = {
     projectId: string;
@@ -28,6 +33,13 @@ const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
     const [timeInputValue, setTimeInputValue] = useState(0);
     const [isCreatingTrack, setIsCreatingTrack] = useState(false);
 
+    const optionsData: BaseOption[] = [
+        {label: 'Select...', value: ''},
+        ...options.map(o => ({label: o.label, value: o.value})),
+        {label: 'Custom', value: "custom"},
+        {label: 'Unset', value: "unset"},
+    ]
+
     // Hooks
     const {workspaceId, userName, userSurname, userRole, userId} = useWorkSpaceContext()
     const router = useRouter();
@@ -35,6 +47,7 @@ const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
     const workspaceData = useWorkspaceData(workspaceId)
     const memberData = useMemberData(workspaceId, userId)
 
+    // Functions
     const currFormatedDate = formateDateToYMD(new Date());
     const createSection = async (e: FormEvent) => {
         e.preventDefault();
@@ -71,105 +84,84 @@ const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                 if (classOptions) setOptions(classOptions)
             } else setOptions(projectData.options.filter(o => o.active))
         }
-
         updateData()
 
     }, [memberData, projectData, userId, workspaceData])
 
     return (
-        <div
-            className={"pb-6 pt-10 max-w-medium mt-8 bg-radial from-vibrant-purple-400/50 to-white to-66% mx-auto"}>
-            <section
-                className={"w-full flex items-center justify-between px-8 pb-2"}>
-                <h1
-                    className={"mb-0.5 font-medium text-black/60 text-lg"}>
-                    Create a new entry
-                </h1>
-                <div
-                    className={"flex gap-2.5"}
-                >
-                    <button
-                        onClick={() => router.push(`/workspaces/settings/project/stats/${props.projectId}`)}
-                        className={`${userRole === "Member" ? "hidden" : "flex"}
-                        medium-button border flex items-center justify-center gap-1 bg-black-gradient`}>
-                        Stats
-                        <RiBarChart2Fill className={"mb-0.5"}/>
-                    </button>
-                    <button
-                        onClick={() => router.push(`/workspaces/settings/project/${props.projectId}`)}
-                        className={`${userRole === "Member" ? "hidden" : "flex"}
-                        medium-button border flex items-center justify-center gap-1 bg-black-gradient`}>
-                        Settings
-                        <RiSettings3Fill/>
-                    </button>
-                </div>
-            </section>
-            <section
-                className={"w-full p-8 rounded-xl shadow-lg mx-auto bg-white border border-black/5"}>
+        <>
+            <EntryCreatorPanel
+                title={'Create a new entry'}
+                buttonsSectionChildren={
+                    <div
+                        className={`${userRole === "Member" ? "hidden" : "flex"} gap-2.5`}>
+                        <MediumButton
+                            onClick={() => router.push(`/workspaces/settings/project/stats/${props.projectId}`)}
+                            className={"bg-black-gradient"}>
+                        <span className={"flex items-center gap-1"}>
+                            Stats
+                            <RiBarChart2Fill className={"mb-0.5"}/>
+                        </span>
+                        </MediumButton>
+                        <MediumButton
+                            onClick={() => router.push(`/workspaces/settings/project/${props.projectId}`)}
+                            className={"bg-black-gradient"}>
+                        <span className={"flex items-center gap-1"}>
+                            Settings
+                            <RiSettings3Fill/>
+                        </span>
+                        </MediumButton>
+                    </div>
+                }
+            >
                 <form
                     onSubmit={createSection}
                     className={"p-6 rounded-xl bg-black/2 mx-auto flex items-end justify-between"}>
-                    {/* Main inputs Section */}
                     <div
                         className={"w-full flex justify-start gap-10 flex-wrap"}>
                         {/* Type of Work */}
+                        <SelectBar
+                            inputId={"Select-option-input"}
+                            options={optionsData}
+                            value={taskType || ''}
+                            labelText={"Type of task"}
+                            inputClassname={"border border-black/20 w-[130px] py-1.5 px-2 rounded-md bg-white cursor-pointer bg-white"}
+                            onChange={(e) => setTaskType(e)}
+                        />
+                        <TextInput
+                            inputId={"timer-name"}
+                            value={nameValue}
+                            placeholder={"What are you going to work on?"}
+                            isIconVisible={false}
+                            labelText={"Name/Description"}
+                            inputClassname={"py-1.5 w-[270px]"}
+                            OnChange={e => setNameValue(e)}
+                        />
                         <div
-                            className={"flex flex-col"}>
-                            <label htmlFor="task-type" className={"font-medium text-sm text-black/60"}>Type of
-                                task</label>
-                            <select
-                                id="task-type"
-                                value={taskType ?? ""}
-                                onChange={(e) => setTaskType(e.target.value as LoggingType)}
-                                className="border border-black/20 w-[130px] focus:outline-vibrant-purple-600 p-1 px-2
-                                 rounded-md bg-white cursor-pointer"
-                            >
-                                <option value="" disabled>
-                                    Select...
-                                </option>
-                                {options.map((option) => (
-                                    <option key={option.value} value={option.value}>
-                                        {option.label}
-                                    </option>
-                                ))}
-                                <option value="custom">Custom</option>
-                                <option value="unset">Unset</option>
-                            </select>
-                        </div>
-                        {/* Name/Description */}
-                        <div
-                            className={"flex flex-col"}>
-                            <label htmlFor="name-description"
-                                   className={"font-medium text-sm text-black/60"}>Name/Description</label>
-                            <input onChange={e => setNameValue(e.target.value)}
-                                   value={nameValue}
-                                   id={"edit-name-description"} type="text"
-                                   placeholder={"What are you going to work on?"}
-                                   className={"border border-black/20 w-[300px] focus:outline-vibrant-purple-600 p-1 px-2 rounded-md bg-white"}/>
-                        </div>
-                        {/* Custom input */}
-                        <div
-                            className={`${taskType === "custom" ? "flex  flex-col" : "hidden"}`}>
-                            <label htmlFor="name-description" className={"font-medium text-sm text-black/60"}>Custom
-                                Type of
-                                task</label>
-                            <input
-                                onChange={(e) => setCustomType(e.target.value)}
-                                id={"edit-name-description"} type="text" placeholder={"Write your custom type..."}
-                                className={"border border-black/20 w-[300px] focus:outline-vibrant-purple-600 p-1 px-2 rounded-md bg-white"}/>
+                            className={`${taskType === "custom" ? "flex  flex-col" : "hidden"}`}
+                        >
+                            <TextInput
+                                inputId={"custom-option-input"}
+                                value={customType}
+                                labelText={"Custom Type of task"}
+                                placeholder={"Write your custom type..."}
+                                inputClassname={"py-1.5"}
+                                OnChange={(e) => setCustomType(e)}
+                                isIconVisible={false}
+                            />
                         </div>
                     </div>
-                    {/*Submit Button*/}
-                    <button
+                    <LargeButton
                         type={"submit"}
                         disabled={isButtonDisabled()}
                         className={`${isButtonDisabled() ? "bg-black/40  border text-white/80" : "bg-purple-gradient cursor-pointer"}
-                         px-5 py-2 text-sm font-medium rounded-md text-white duration-100 text-nowrap`}>
+                        px-5 py-2 mt-4 text-nowrap`}
+                    >
                         Create entry
-                    </button>
+                    </LargeButton>
                 </form>
-            </section>
-        </div>
+            </EntryCreatorPanel>
+        </>
     )
 }
 

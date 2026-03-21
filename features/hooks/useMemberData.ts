@@ -21,7 +21,7 @@ export const useMemberData = (
             setData(docSnap.data() as Member)
         }
         fetchData()
-    })
+    }, [userId, workspaceId])
 
     return data
 }

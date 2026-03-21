@@ -210,7 +210,8 @@ export const CreateEntrySection = ({projectId}: { projectId: string }) => {
                         />
                         {/* Custom input */}
                         <div
-                            className={`${taskType === "custom" ? "flex  flex-col" : "hidden"}`}>
+                            className={`${taskType === "custom" ? "flex  flex-col" : "hidden"}`}
+                        >
                             <TextInput
                                 inputId={"custom-option-input"}
                                 value={customType}
