@@ -1,7 +1,7 @@
 import {twMerge} from "tailwind-merge";
 import React, {JSX, ReactNode} from "react";
 import {FaRegEdit} from "react-icons/fa";
-import {FaRegTrashCan} from "react-icons/fa6";
+import {FiTrash2} from "react-icons/fi";
 
 
 type SectionCartProps = {
@@ -9,6 +9,7 @@ type SectionCartProps = {
     children?: JSX.Element | ReactNode;
     listClassName?: string;
     bodyClassname?: string;
+    menuButtonsClassname?: string
     listItemClassName?: string;
 }
 
@@ -17,6 +18,7 @@ const SectionCartContainer = ({...props}: SectionCartProps) => {
     const bodyClass = "w-full rounded-md bg-white text-black/70 text-sm font-medium items-center px-4 py-1.5 relative"
     const listClass = "w-full flex items-center justify-start"
     const listItemClass = `w-1/${props.sectionList.length}`
+    const menuButtonClass = `text-sm text-black/40 cursor-pointer`
 
     return (
         <div
@@ -35,14 +37,16 @@ const SectionCartContainer = ({...props}: SectionCartProps) => {
                 ))}
             </ul>
             <section
-                className={"absolute top-2.5 right-3.5 flex items-center justify-center gap-4"}>
+                className={"absolute top-2.5 right-3.5 flex items-center justify-center gap-3.5"}>
                 <button
-                    className={"text-sm text-black/40 hover:text-vibrant-purple-500 cursor-pointer"}>
+                    className={twMerge(`${menuButtonClass} hover:text-vibrant-purple-500`, props.menuButtonsClassname)}
+                >
                     <FaRegEdit/>
                 </button>
                 <button
-                    className={"text-sm text-black/40 hover:text-red-300 cursor-pointer"}>
-                    <FaRegTrashCan/>
+                    className={twMerge(`${menuButtonClass} hover:text-red-300`, props.menuButtonsClassname)}
+                >
+                    <FiTrash2/>
                 </button>
             </section>
             {props.children}

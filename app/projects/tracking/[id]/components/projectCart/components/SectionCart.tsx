@@ -1,33 +1,25 @@
 "use client";
 
-import DeleteModal from "@/components/modals/DeleteModal";
 import {doc, getDoc, onSnapshot,} from "firebase/firestore";
 import React, {JSX, ReactNode, useEffect, useState} from "react";
 import {useStopwatch} from "react-timer-hook";
 import {Section, SectionCartProps, TimeCheckout} from "@/types";
 import {useClockTimeContext} from "@/features/contexts/clockCountContext";
-import InformativeModal from "@/components/modals/InformativeModal";
-import {FiDelete, FiEdit, FiPause, FiPlay} from "react-icons/fi";
-import RenameModal from "@/components/modals/RenameModal";
+import {FiPause, FiPlay} from "react-icons/fi";
 import {resetClockTime} from "@/features/utilities/time/resetClockTime";
-import {deleteAllSectionData} from "@/features/utilities/delete/deleteAllSectionData";
 import {createNewTimeCheckout} from "@/features/utilities/create-&-update/createNewTimeCheckout";
 import {updateTimeData} from "@/features/utilities/time/updateTimeData";
-import {editSectionName} from "@/features/utilities/edit/editSectionName";
 import {deleteSubsectionAndTimeCheckoutsData} from "@/features/utilities/delete/deleteSubsectionAndTimeCheckoutsData";
 import SubSectionCart from "@/app/projects/tracking/[id]/components/projectCart/components/SubSectionCart";
-import {
-    formatTimeUnit, updateProjectTotalTime
-} from "@/features/utilities/time/timeOperations";
+import {formatTimeUnit, updateProjectTotalTime} from "@/features/utilities/time/timeOperations";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
-import {HiMiniUserCircle} from "react-icons/hi2";
 import {formateDateToYMD, formateYMDToDMY} from "@/features/utilities/date/dateOperations";
 import {db} from "@/app/firebase/config";
 import {useSectionSettings} from "@/features/hooks/useSectionSettings";
 import {updateUserIndividualTime} from "@/features/utilities/create-&-update/updateUserIndividualTime";
 import SectionCartContainer from "@/components/SectionCart/SectionCartContainer";
-import ListContainer from "@/components/List-Components/ListContainer/ListContainer";
 import {LargeButton} from "@/components/LargeButton/LargeButton";
+import UserBadge from "@/components/UserBadge/UserBadge";
 
 
 const SectionCart = ({...props}: SectionCartProps) => {
@@ -36,12 +28,9 @@ const SectionCart = ({...props}: SectionCartProps) => {
 
     // States
     const [isRunning, setIsRunning] = useState(false);
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
     const [startTime, setStartTime] = useState("");
     const [subSections, setSubSections] = useState<TimeCheckout[] | []>([]);
-    const [inputValue, setInputValue] = useState<string>("");
     const [lastStopClockTime, setLastStopClockTime] = useState(0)
 
     // Context
@@ -53,7 +42,6 @@ const SectionCart = ({...props}: SectionCartProps) => {
     } = useClockTimeContext()
     const {mode, workspaceId, userRole} = useWorkSpaceContext()
 
-    const section = useSectionSettings(props.sectionId, workspaceId)
     const isWorkspaceRoleAdmin = mode === "workspace" && (userRole === "Admin" || userRole === "Manager");
 
     // Clock Time
@@ -101,6 +89,32 @@ const SectionCart = ({...props}: SectionCartProps) => {
     };
 
 
+    const sectionList: { id: string, content: JSX.Element | ReactNode }[] = [
+        {
+            id: 'name',
+            content: <p>{props.title}</p>
+        },
+        {
+            id: 'type',
+            content: <p>{props.type}</p>
+        },
+        {
+            id: 'time',
+            content: <p className={"font-semibold"}>{newTime}</p>
+        },
+        {
+            id: 'button',
+            content: <>
+                <LargeButton
+                    onClick={() => toggleTimer()}
+                    className={'cursor-pointer p-1 bg-purple-gradient border-vibrant-purple-700 rounded-md pl-4.5 pr-4'}
+                    type={'button'}>
+                    {isRunning ? <FiPause/> : <FiPlay/>}
+                </LargeButton>
+            </>
+        },
+    ]
+
     // Fetch Initial ClockTime
     useEffect(() => {
 
@@ -136,141 +150,34 @@ const SectionCart = ({...props}: SectionCartProps) => {
         return () => fetchTimeCheckouts();
     }, [props.userId, props.sectionId, mode, workspaceId]);
 
-
-    const sectionList: { id: string, content: JSX.Element | ReactNode }[] = [
-        {
-            id: 'name',
-            content: <p>{props.title}</p>
-        },
-        {
-            id: 'type',
-            content: <p>{props.type}</p>
-        },
-        {
-            id: 'time',
-            content: <p className={"font-bold"}>{newTime}</p>
-        },
-        {
-            id: 'button',
-            content: <>
-                <LargeButton
-                    onClick={() => toggleTimer()}
-                    className={'cursor-pointer p-1 bg-purple-gradient border-vibrant-purple-700 rounded-md pl-4.5 pr-4'}
-                    type={'button'}>
-                    {isRunning ? <FiPause/> : <FiPlay/>}
-                </LargeButton>
-            </>
-        },
-    ]
-
     return (
-        <>
-            <SectionCartContainer
-                bodyClassname={"py-2"}
-                sectionList={sectionList}
+        <SectionCartContainer
+            listClassName={userRole === 'Member' ? "" : "pt-5"}
+            menuButtonsClassname={isRunning ? 'cursor-not-allowed' : ''}
+            bodyClassname={"py-2"}
+            sectionList={sectionList}
+        >
+            <UserBadge
+                className={isWorkspaceRoleAdmin ? "flex" : "hidden"}
+                userName={props.userName}
+            />
+            <ul
+                className={`${
+                    subSections.length > 0 ? "flex-1" : "hidden"} w-full flex flex-col justify-center items-center mt-2`}
             >
-                <ul
-                    className={`${
-                        subSections.length > 0 ? "flex-1" : "hidden"} w-full flex flex-col justify-center items-center mt-2`}
-                >
-                    {subSections.map((s) => (
-                        <SubSectionCart
-                            key={s.subSectionId}
-                            startTime={s.startTime}
-                            stopTime={s.stopTime}
-                            durationTime={s.durationTime}
-                            date={formateYMDToDMY(s.date)}
-                            deleteFunction={() => deleteSubSection(s.subSectionId, s.durationTime, s.sectionId)}
-                        />
-                    ))}
-                </ul>
-            </SectionCartContainer>
-            {/*<div*/}
-            {/*    key={props.sectionId}*/}
-            {/*    className={`w-full rounded-lg flex flex-col flex-between bg-white p-2 mb-[8px]`}>*/}
-            {/*    /!*User Name*!/*/}
-            {/*    <div*/}
-            {/*        className={`${isWorkspaceRoleAdmin ? "flex" : "hidden"}`}>*/}
-            {/*<span*/}
-            {/*    className={`flex gap-0.5 px-1.5 py-0.5 mb-1 rounded-full font-medium bg-black/10 text-xs text-custom-gray-800`}>*/}
-            {/*        <HiMiniUserCircle className={"text-sm"}/>*/}
-            {/*    {props.userName}*/}
-            {/*</span>*/}
-            {/*    </div>*/}
-            {/*    <div*/}
-            {/*        className={"px-2"}>*/}
-            {/*        <div*/}
-            {/*            className={"w-full border-b border-black/16 flex items-center pb-0.5"}>*/}
-            {/*            <p*/}
-            {/*                className={"text-vibrant-purple-700 text-sm font-medium w-1/4"}>*/}
-            {/*                Name*/}
-            {/*            </p>*/}
-            {/*            <p*/}
-            {/*                className={"text-vibrant-purple-700 text-sm font-medium w-1/4"}>*/}
-            {/*                Type*/}
-            {/*            </p>*/}
-            {/*            <p*/}
-            {/*                className={"text-vibrant-purple-700 text-sm font-medium w-1/4"}>*/}
-            {/*                Time*/}
-            {/*            </p>*/}
-            {/*        </div>*/}
-            {/*        <div*/}
-            {/*            className={"flex items-center pt-1.5"}>*/}
-            {/*            <p*/}
-            {/*                className={"text-black text-sm w-1/4"}>*/}
-            {/*                {props.title}*/}
-            {/*            </p>*/}
-            {/*            <p*/}
-            {/*                className={"text-black text-sm w-1/4"}>*/}
-            {/*                {props.type}*/}
-            {/*            </p>*/}
-            {/*            <p*/}
-            {/*                className={"text-black text-sm w-1/4 font-medium"}>*/}
-            {/*                {newTime}*/}
-            {/*            </p>*/}
-            {/*            /!*Buttons*!/*/}
-            {/*            <div*/}
-            {/*                className={"flex items-center justify-end pr-8 gap-0.5 flex-1"}>*/}
-            {/*                <button*/}
-            {/*                    onClick={() => toggleTimer()}*/}
-            {/*                    className={`cursor-pointer p-1.5 border bg-purple-gradient border-vibrant-purple-700 rounded-l-md flex items-center justify-center pl-2`}>*/}
-            {/*                    {isRunning ? <FiPause/> : <FiPlay/>}*/}
-            {/*                </button>*/}
-            {/*                <button*/}
-            {/*                    disabled={isRunning}*/}
-            {/*                    onClick={() => setIsEditModalOpen(true)}*/}
-            {/*                    className={`cursor-pointer p-1.5 border border-black/22 bg-linear-to-b from-white from-50% to-black/10 text-black/40 hover:from-black/2 flex items-center justify-center pl-2`}>*/}
-            {/*                    <FiEdit/>*/}
-            {/*                </button>*/}
-            {/*                <button*/}
-            {/*                    disabled={isRunning}*/}
-            {/*                    onClick={() => setIsDeleteModalOpen(true)}*/}
-            {/*                    className={`cursor-pointer p-1.5 pr-2 border border-black/22 bg-linear-to-b from-white from-50% to-black/10 text-black/40  hover:from-black/2 rounded-r-md flex items-center justify-center`}>*/}
-            {/*                    <FiDelete/>*/}
-            {/*                </button>*/}
-            {/*            </div>*/}
-            {/*        </div>*/}
-            {/*    </div>*/}
-            {/*    <ul*/}
-            {/*        className={`${*/}
-            {/*            subSections.length > 0 ? "flex-1" : "hidden"*/}
-            {/*        } w-full flex flex-col justify-center items-center mt-2 border-t border-black/12`}*/}
-            {/*    >*/}
-            {/*        {subSections.map((s) => (*/}
-            {/*            <SubSectionCart*/}
-            {/*                key={s.subSectionId}*/}
-            {/*                startTime={s.startTime}*/}
-            {/*                stopTime={s.stopTime}*/}
-            {/*                durationTime={s.durationTime}*/}
-            {/*                date={formateYMDToDMY(s.date)}*/}
-            {/*                deleteFunction={() => deleteSubSection(s.subSectionId, s.durationTime, s.sectionId)}*/}
-            {/*            />*/}
-            {/*        ))}*/}
-            {/*    </ul>*/}
-            {/*</div>*/}
-        </>
+                {subSections.map((s) => (
+                    <SubSectionCart
+                        key={s.subSectionId}
+                        startTime={s.startTime}
+                        stopTime={s.stopTime}
+                        durationTime={s.durationTime}
+                        date={formateYMDToDMY(s.date)}
+                        deleteFunction={() => deleteSubSection(s.subSectionId, s.durationTime, s.sectionId)}
+                    />
+                ))}
+            </ul>
+        </SectionCartContainer>
     )
-        ;
 };
 
 export default SectionCart;

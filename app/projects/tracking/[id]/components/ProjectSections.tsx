@@ -64,7 +64,7 @@ export const ProjectSections = ({...props}: ProjectSectionsProps) => {
                                 {setNameByDate(date)}
                             </h1>
                             <ListContainer
-                                headerTitles={['Name', 'Type', 'Time', 'Play / Pause']}
+                                headerTitles={['Name', 'Type', 'Time', '']}
                             >
                                 <>
                                     <ul
