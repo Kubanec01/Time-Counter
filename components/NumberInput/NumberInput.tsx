@@ -17,11 +17,11 @@ type NumberInputProps = {
 export const NumberInput = ({...props}: NumberInputProps) => {
 
     const labelClass = "font-medium text-sm text-black/60"
-    const inputClass = "border border-black/20 text-sm focus:outline-vibrant-purple-600 p-1.5 px-2 rounded-md bg-white"
+    const inputClass = "w-full border border-black/20 text-sm focus:outline-vibrant-purple-600 p-1.5 px-2 rounded-md bg-white"
 
     return (
         <div
-            className={`flex flex-col`}>
+            className={`flex flex-col w-full`}>
             <label
                 htmlFor="time"
                 className={twMerge(labelClass, props.labelClassname)}>

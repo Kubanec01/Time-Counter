@@ -1,6 +1,8 @@
 'use client'
 
 import {Dispatch, SetStateAction} from "react";
+import {MediumButton} from "@/components/MediumButton/MediumButton";
+import {NumberInput} from "@/components/NumberInput/NumberInput";
 
 type MaxTrackingTimeProps = {
     title: string;
@@ -12,7 +14,8 @@ type MaxTrackingTimeProps = {
     formSubmitFunctionAction: () => void
 }
 
-export const MaxTrackingTime = ({...props}: MaxTrackingTimeProps) => {
+const MaxTrackingTime = ({...props}: MaxTrackingTimeProps) => {
+
 
     const isValueInvalid = () => {
         let isButtonDisabled: boolean
@@ -26,10 +29,12 @@ export const MaxTrackingTime = ({...props}: MaxTrackingTimeProps) => {
             maxValue = 168
         }
 
-        console.log(isButtonDisabled, maxValue)
-
         return {isButtonDisabled, maxValue}
     }
+
+    const limitBtbClass = (value: string) => `${props.activatedButton === value ? "bg-vibrant-purple-600 border-vibrant-purple-600 text-white" : "text-vibrant-purple-600 font-medium"} py-0.5 border rounded-full`
+    const submitBtnClass = `${isValueInvalid().isButtonDisabled ? " border border-white/10 bg-black/20 text-black/40" : "border border-vibrant-purple-600 text-white bg-vibrant-purple-600 " +
+        "hover:bg-vibrant-purple-700 duration-150 cursor-pointer"} text-sm rounded-full py-0.5`
 
     return (
         <>
@@ -41,18 +46,18 @@ export const MaxTrackingTime = ({...props}: MaxTrackingTimeProps) => {
                 </h1>
                 <div
                     className={"flex gap-4 mt-2"}>
-                    <button
+                    <MediumButton
                         onClick={() => props.setActivatedButtonAction("daily")}
-                        className={`${props.activatedButton === "daily" ? "bg-vibrant-purple-600 border-vibrant-purple-600 text-white" : "text-vibrant-purple-600 font-medium"}
-                        px-3 py-0.5 border rounded-full text-sm cursor-pointer`}>
+                        className={limitBtbClass('daily')}
+                    >
                         Daily
-                    </button>
-                    <button
+                    </MediumButton>
+                    <MediumButton
                         onClick={() => props.setActivatedButtonAction("weekly")}
-                        className={`${props.activatedButton === "weekly" ? "bg-vibrant-purple-600 border-vibrant-purple-600 text-white" : "text-vibrant-purple-600 font-medium"}
-                        px-3 py-0.5 border rounded-full text-sm cursor-pointer`}>
+                        className={limitBtbClass('weekly')}
+                    >
                         Weekly
-                    </button>
+                    </MediumButton>
                 </div>
                 <p
                     className={"text-xs  text-black/50 w-[72%] mt-4"}>
@@ -63,24 +68,27 @@ export const MaxTrackingTime = ({...props}: MaxTrackingTimeProps) => {
                         e.preventDefault();
                         props.formSubmitFunctionAction()
                     }}
-                    className={"w-[226px] flex gap-2 items-start mt-4"}>
-                    <input
+                    className={"w-[226px] flex gap-2 items-start mt-4"}
+                >
+                    <NumberInput
                         min={1}
                         max={isValueInvalid().maxValue}
-                        step={1}
+                        inputId={"number-limit-input"}
                         value={props.value}
-                        onChange={(v) => props.setValueAction(Number(v.target.value) * 3600)}
-                        className={"border border-black/20 px-2.5 w-2/3 text-sm py-0.5 rounded-full outline-none"}
-                        type="number"/>
-                    <button
-                        type="submit"
+                        inputClassname={'border border-black/20 px-2.5 text-sm py-0.5 rounded-full outline-none'}
+                        onChange={(value) => props.setValueAction(Number(value) * 3600)}
+                    />
+                    <MediumButton
+                        buttonType={"submit"}
                         disabled={isValueInvalid().isButtonDisabled}
-                        className={`${isValueInvalid().isButtonDisabled ? " border border-white/10 bg-black/20 text-black/40" : "border border-vibrant-purple-600 text-white bg-vibrant-purple-600 " +
-                            "hover:bg-vibrant-purple-700 duration-150 cursor-pointer"} text-sm rounded-full px-3 py-0.5`}>
+                        className={submitBtnClass}
+                    >
                         Update
-                    </button>
+                    </MediumButton>
                 </form>
             </div>
         </>
     )
 }
+
+export default MaxTrackingTime

@@ -10,6 +10,8 @@ import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {db} from "@/app/firebase/config";
 import {doc, getDoc, updateDoc} from "firebase/firestore";
 import {documentNotFound} from "@/messages/errors";
+import {useProjectData} from "@/features/hooks/useProjectData";
+import {MediumButton} from "@/components/MediumButton/MediumButton";
 
 
 type ProjectOptionsProps = {
@@ -26,32 +28,33 @@ export const ProjectOptions = ({...props}: ProjectOptionsProps) => {
     const [errorMess, setErrorMess] = useState<string>("");
     const [isCreateLoading, setIsCreateLoading] = useState(false);
 
+    // Hooks
     const {workspaceId} = useWorkSpaceContext()
-
-
+    const projectData = useProjectData(workspaceId, props.projectId)
     const {replace} = useReplaceRouteLink()
-    const docRef = doc(db, "realms", workspaceId)
+
 
     const createNewOption = async (option: ProjectOption) => {
+        if (!projectData) return
+
         setIsCreateLoading(true);
 
         if (optionName.trim() === "") {
             setIsCreateLoading(false);
             return setErrorMess("Something went wrong, try again.")
+        } else if (projectData.options.find(o => o.value === option.value)) {
+            setIsCreateLoading(false);
+            return setErrorMess("This option already exists.")
         }
 
-        const docSnap = await getDoc(docRef)
-        if (!docSnap.exists()) return console.error(documentNotFound)
-        const data = docSnap.data()
-        const projects = data.projects || []
-        const updatedProjects = projects.map((project: LoggingProject) => {
-            if (project.projectId !== props.projectId) return project
+        const docRef = doc(db, 'realms', workspaceId, 'projects', props.projectId)
 
-            return {...project, options: [...project.options, option]}
-        })
+        const updatedOptions = [...projectData.options, option]
 
-        await updateDoc(docRef, {projects: updatedProjects})
+        await updateDoc(docRef, {options: updatedOptions})
+
         setOptionName("")
+        setErrorMess("")
         setIsCreateModalOpen(false)
         setIsCreateLoading(false)
     }
@@ -77,6 +80,7 @@ export const ProjectOptions = ({...props}: ProjectOptionsProps) => {
                     Custom option
                 </label>
                 <input
+                    value={optionName}
                     onChange={(e) => setOptionName(e.target.value)}
                     className={"w-full border border-black/20 focus:border-black/40 rounded-md text-sm py-1 px-2 mt-1 outline-none"}
                     id={"custom-option"}
@@ -123,20 +127,24 @@ export const ProjectOptions = ({...props}: ProjectOptionsProps) => {
             </div>
             <ul
                 className={"flex flex-wrap items-center gap-5 w-[84%] mt-7"}>
-                <li
-                    onClick={() => setIsCreateModalOpen(!isCreateModalOpen)}
-                    className={`text-sm px-4 py-0.5 font-medium border border-vibrant-purple-600 text-vibrant-purple-600 hover:bg-vibrant-purple-600 hover:text-white duration-150 rounded-full cursor-pointer`}
-                >
-                    Custom +
+                <li>
+                    <MediumButton
+                        onClick={() => setIsCreateModalOpen(!isCreateModalOpen)}
+                        className={"py-0.5 font-medium border-vibrant-purple-600 text-vibrant-purple-600 hover:bg-vibrant-purple-600 hover:text-white duration-150 rounded-full"}
+                    >
+                        {"Custom +"}
+                    </MediumButton>
                 </li>
                 {props.projectOptions.map(o => (
                     <li
                         key={o.value}
-                        onClick={() => updateProjectOptions(props.workspaceId, props.projectId, o)}
-                        className={`${o.active ? "" : "border-black/20 text-black/20 hover:text-black hover:border-black duration-150"}
-                        text-sm px-4 py-0.5 font-medium border rounded-full cursor-pointer`}
                     >
-                        {o.label}
+                        <MediumButton
+                            onClick={() => updateProjectOptions(props.workspaceId, props.projectId, projectData?.options, o)}
+                            className={`${o.active ? "" : "border-black/20 text-black/20 hover:text-black hover:border-black duration-150"} py-0.5 font-medium border rounded-full`}
+                        >
+                            {o.label}
+                        </MediumButton>
                     </li>
                 ))}
             </ul>

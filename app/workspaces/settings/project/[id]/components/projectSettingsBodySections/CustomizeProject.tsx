@@ -1,15 +1,13 @@
 import {ToggleButton} from "@/app/workspaces/settings/components/buttons/ToggleButton";
 import {useEffect, useState} from "react";
-import {doc, getDoc, updateDoc} from "firebase/firestore";
-import {db} from "@/app/firebase/config";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {useParams} from "next/navigation";
-import {documentNotFound} from "@/messages/errors";
-import {Project, ProjectOption} from "@/types";
-import {MaxTrackingTime} from "@/app/workspaces/settings/components/buttons/MaxTrackingTime";
+import {ProjectOption} from "@/types";
+import MaxTrackingTime from "@/app/workspaces/settings/components/buttons/MaxTrackingTime";
 import {updateProjectDailyTrackLimit} from "@/features/utilities/create-&-update/updateProjectDailyTrackLimit";
 import {ProjectOptions} from "@/app/workspaces/settings/components/buttons/ProjectOptions";
 import {useProjectData} from "@/features/hooks/useProjectData";
+import {updateTrackFormatData} from "@/features/utilities/create-&-update/updateTrackFormatData";
 
 export const CustomizeProject = () => {
 
@@ -22,24 +20,11 @@ export const CustomizeProject = () => {
 
     const {workspaceId} = useWorkSpaceContext()
     const projectId = useParams().id as string;
-    const docRef = doc(db, "realms", workspaceId);
-    const project = useProjectData(workspaceId, projectId);
+    const projectData = useProjectData(workspaceId, projectId);
 
     const updateTrackFormat = async (value: "Decimal" | "Range") => {
         setOptionTimeFormat(value)
-
-        const docSnap = await getDoc(docRef)
-        if (!docSnap.exists()) return console.error(documentNotFound);
-
-        const data = docSnap.data()
-        const projects = data.projects
-        const updatedProjects = projects.map((p: Project) => {
-            if (p.projectId !== projectId) return p
-
-            return {...p, trackFormat: value}
-        })
-
-        await updateDoc(docRef, {projects: updatedProjects})
+        await updateTrackFormatData(workspaceId, projectId, value)
     }
 
     const updateTrackTimeLimit = () => {
@@ -48,12 +33,12 @@ export const CustomizeProject = () => {
     }
 
     useEffect(() => {
-            if (!project) return
+            if (!projectData) return
 
-            const dailyTrackLimit = project.dailyMaxTrackTime
-            const weeklyTrackLimit = project.weeklyMaxTrackTime
-            const activeOptions: ProjectOption[] = project.options || []
-            const trackFormat = project.trackFormat
+            const dailyTrackLimit = projectData.dailyMaxTrackTime
+            const weeklyTrackLimit = projectData.weeklyMaxTrackTime
+            const activeOptions: ProjectOption[] = projectData.options || []
+            const trackFormat = projectData.trackFormat
             // eslint-disable-next-line react-hooks/set-state-in-effect
             setOptionTimeFormat(trackFormat)
 
@@ -63,7 +48,7 @@ export const CustomizeProject = () => {
             } else setTrackLimitValue(dailyTrackLimit)
 
             setProjectOptions(activeOptions)
-        }, [project]
+        }, [projectData]
     )
 
     return (
