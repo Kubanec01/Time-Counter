@@ -1,4 +1,3 @@
-import {TotalTrackedTime} from "@/types";
 import {
     eachDayOfInterval, eachMonthOfInterval,
     endOfMonth,
@@ -9,33 +8,41 @@ import {
     startOfWeek,
     startOfYear
 } from "date-fns";
+import {TotalDailyTrackedTime} from "@/types";
 
 const currDate = new Date()
 
-export const getThisWeekTrackedDates = (trackedTimes: TotalTrackedTime[]) => {
+export const getThisWeekTrackedDates = (trackedTimes: TotalDailyTrackedTime) => {
+    return Object.keys(trackedTimes).filter(date => isThisWeek(date, {weekStartsOn: 1}))
 
-    return trackedTimes.filter(t => isThisWeek(t.date, {weekStartsOn: 1}))
+    // return trackedTimes.filter(t => isThisWeek(t.date, {weekStartsOn: 1}))
 }
 
-export function getThisMonthTrackedDates(trackedTimes: TotalTrackedTime[]) {
-    return trackedTimes.filter(t => isThisMonth(t.date))
+export function getThisMonthTrackedDates(trackedTimes: TotalDailyTrackedTime) {
+
+    return Object.keys(trackedTimes).filter(date => isThisMonth(date))
+
+    // return trackedTimes.filter(t => isThisMonth(t.date))
 }
 
-export const getThisYearTrackedDates = (trackedTimes: TotalTrackedTime[]) => {
-    return trackedTimes.filter(t => isThisYear(t.date))
+export const getThisYearTrackedDates = (trackedTimes: TotalDailyTrackedTime) => {
+
+    return Object.keys(trackedTimes).filter(date => isThisYear(date))
+
+    // return trackedTimes.filter(t => isThisYear(t.date))
 }
 
-export const getCurrentWeekDays = eachDayOfInterval({
+export const currentWeekDays = eachDayOfInterval({
     start: startOfWeek(currDate, {weekStartsOn: 1}),
     end: endOfWeek(currDate, {weekStartsOn: 1})
 })
 
-export const getCurrentMonthDays = eachDayOfInterval({
+export const currentMonthDays = eachDayOfInterval({
     start: startOfMonth(currDate),
     end: endOfMonth(currDate),
 })
 
-export const getCurrentYearMonths = eachMonthOfInterval({
+export const currentYearMonths = eachMonthOfInterval({
     start: startOfYear(currDate),
     end: endOfYear(currDate),
 })

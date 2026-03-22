@@ -8,7 +8,7 @@ import {useRouter} from "next/navigation";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {
     formatedTwoTimesDifferenceToSeconds,
-    formatFloatHoursToSeconds, secondsToFloatHours, updateProjectTotalTime
+    formatFloatHoursToSeconds, formatSecondsToFloatHours, updateProjectTotalTime
 } from "@/features/utilities/time/timeOperations";
 import {createNewSection} from "@/features/utilities/create-&-update/createNewSection";
 import {updateTotalTrackedTime} from "@/features/utilities/edit/updateTotalTrackedTime";
@@ -65,7 +65,7 @@ export const CreateEntrySection = ({projectId}: { projectId: string }) => {
 
         const timeDifference = formatedTwoTimesDifferenceToSeconds(firstTime, secondTime);
 
-        setTimeInputValue(secondsToFloatHours(timeDifference));
+        setTimeInputValue(formatSecondsToFloatHours(timeDifference));
     }
 
     const createSection = async (e: FormEvent) => {

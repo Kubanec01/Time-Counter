@@ -2,11 +2,11 @@
 
 import {format} from "date-fns";
 import {useEffect, useState} from "react";
-import {getCurrentMonthDays, getCurrentYearMonths} from "@/app/workspaces/settings/project/stats/[id]/features/utils";
 import {LineChart} from "@/app/workspaces/settings/project/stats/[id]/components/chartsTemplates/LineChart";
 import {
     SelectDataFilterButton
 } from "@/app/workspaces/settings/project/stats/[id]/components/chartsSections/fullTrackedTimeChart/components/SelectDataFilterButton";
+import {currentMonthDays, currentYearMonths} from "@/app/workspaces/settings/project/stats/[id]/features/utils";
 
 
 type FullTrackedTimeChartProps = {
@@ -26,10 +26,10 @@ export const FullTrackedTimeChart = ({...props}: FullTrackedTimeChartProps) => {
             setChartStats(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'])
         } else if (value === "month") {
             setCurrData(props.totalTrackedMonthTimes)
-            setChartStats(getCurrentMonthDays.map(d => format(d, "dd")))
+            setChartStats(currentMonthDays.map(d => format(d, "dd")))
         } else {
             setCurrData(props.totalTrackedYearTimes)
-            setChartStats(getCurrentYearMonths.map(d => format(d, "M")))
+            setChartStats(currentYearMonths.map(d => format(d, "M")))
         }
 
     }

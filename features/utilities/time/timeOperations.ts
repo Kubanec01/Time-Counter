@@ -2,6 +2,7 @@ import {Project, WorkspaceId} from "@/types";
 import {doc, getDoc, updateDoc} from "firebase/firestore";
 import {db} from "@/app/firebase/config";
 import {documentNotFound} from "@/messages/errors";
+import {format} from "date-fns";
 
 export const formatTimeUnit = (num: number) => num.toString().padStart(2, '0');
 
@@ -18,7 +19,7 @@ export const formatSecondsToTimeString = (timeSeconds: number) => {
 
 export const formatFloatHoursToSeconds = (hours: number) => hours * 60 * 60
 
-export const secondsToFloatHours = (seconds: number) => Number(Math.round(seconds / 3600 * 4) / 4)
+export const formatSecondsToFloatHours = (seconds: number) => Number(Math.round(seconds / 3600 * 4) / 4)
 
 export const formatedTimeToSeconds = (time: string) => {
     const [h, m] = time.split(':').map(Number);
@@ -33,6 +34,8 @@ export const formatedTwoTimesDifferenceToSeconds = (fromTime: string, toTime: st
     return totalSec2 - totalSec1
 
 }
+
+export const formatDateToMM = (date: Date | string) => format(date, "MM")
 
 
 export const getProjectTotalTime = async (

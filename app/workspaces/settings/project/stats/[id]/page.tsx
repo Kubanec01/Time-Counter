@@ -2,14 +2,11 @@
 
 import {useParams} from "next/navigation";
 import {useEffect, useState} from "react";
-import {Member, Project} from "@/types";
+import {Member} from "@/types";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
-import {doc, getDoc} from "firebase/firestore";
 import {format} from "date-fns";
 import {formateDateToYMD} from "@/features/utilities/date/dateOperations";
-import {db} from "@/app/firebase/config";
-import {documentNotFound} from "@/messages/errors";
-import {secondsToFloatHours} from "@/features/utilities/time/timeOperations";
+import {formatDateToMM, formatSecondsToFloatHours} from "@/features/utilities/time/timeOperations";
 import {
     FullTrackedTimeChart
 } from "@/app/workspaces/settings/project/stats/[id]/components/chartsSections/fullTrackedTimeChart/FullTrackedTimeChart";
@@ -20,92 +17,88 @@ import {
     ProjectTimeProgres
 } from "@/app/workspaces/settings/project/stats/[id]/components/chartsSections/ProjectTimeProgres";
 import {
-    getCurrentMonthDays,
-    getCurrentWeekDays, getCurrentYearMonths,
-    getThisMonthTrackedDates,
-    getThisWeekTrackedDates,
-    getThisYearTrackedDates
+    currentMonthDays,
+    currentWeekDays,
+    currentYearMonths
 } from "@/app/workspaces/settings/project/stats/[id]/features/utils";
 import {
     ComparativeTimeIndicator
 } from "@/app/workspaces/settings/project/stats/[id]/components/chartsSections/fullTrackedTimeChart/ComparativeTimeIndicator";
+import {useProjectData} from "@/features/hooks/useProjectData";
+import {getAllWorkspaceMembers} from "@/features/utilities/getAllWorkspaceMembers";
 
 export default function StatsHome() {
 
+    // States
     const [totalTrackedWeekTimes, setTotalTrackedWeekTimes] = useState<number[]>([]);
     const [totalTrackedMonthTimes, setTotalTrackedMonthTimes] = useState<number[]>([]);
     const [totalTrackedYearTimes, setTotalTrackedYearTimes] = useState<(number | null)[]>([]);
     const [membersStats, setMembersStats] = useState<{ value: number, name: string }[]>([]);
     const [projectTotalTime, setProjectTotalTime] = useState<number>(0);
 
-
-    const {mode, workspaceId, userId} = useWorkSpaceContext()
+    // Hooks
     const params = useParams()
     const projectId = params.id as string
+    const {mode, workspaceId, userId} = useWorkSpaceContext()
+    const projectdata = useProjectData(workspaceId, projectId)
 
 
     useEffect(() => {
-        if (!userId) return
+        if (!userId || !projectdata || workspaceId === 'unused') return
 
-        const fetchData = async () => {
+        const updateData = async () => {
+            const members = await getAllWorkspaceMembers(workspaceId)
+            const membersIndividualTimes = projectdata.membersIndividualTimes
+            const currMonth = format(new Date(), "MM")
+            const totalDailyTrackedTimes = projectdata.totalDailyTrackedTimes
+            const totalDailyTrackedArray = Object.entries(totalDailyTrackedTimes).map(([key, value]) => ({
+                date: key,
+                value: value
+            }))
 
-            const docRef = doc(db, "realms", workspaceId)
-            const docSnap = await getDoc(docRef)
-            if (!docSnap.exists()) return console.error(documentNotFound)
-            const data = docSnap.data()
-            const project: Project = data.projects.find((p: Project) => p.projectId === projectId)
-            const totalTrackedTimes = project.totalDailyTrackedTimes
-            setProjectTotalTime(project.totalTime)
-
-            const thisWeekData = getThisWeekTrackedDates(totalTrackedTimes)
-            const thisMonthData = getThisMonthTrackedDates(totalTrackedTimes)
-            const thisYearData = getThisYearTrackedDates(totalTrackedTimes)
-
-            const weekResult = getCurrentWeekDays.map(d => {
-                const date = formateDateToYMD(d);
-                const item = thisWeekData.find(i => i.date === date)
-                return item ? secondsToFloatHours(item.time) : 0
-            });
-
-            const monthResult = getCurrentMonthDays.map(d => {
-                const date = formateDateToYMD(d);
-                const item = thisMonthData.find(i => i.date === date)
-                return item ? secondsToFloatHours(item.time) : 0
+            const weeklyStats = currentWeekDays.map(date => {
+                const formatedDate = formateDateToYMD(date)
+                const matchedWeekData = totalDailyTrackedTimes[formatedDate]
+                if (matchedWeekData) return matchedWeekData
+                else return 0
             })
 
-            const currDate = format(new Date(), "MM")
+            const monthlyStats = currentMonthDays.map(date => {
+                const formatedDate = formateDateToYMD(date)
+                const matchedMonthData = totalDailyTrackedTimes[formatedDate]
+                if (matchedMonthData) return matchedMonthData
+                else return 0
+            })
 
-            const yearResults = getCurrentYearMonths.map(d => {
-                let hours = 0
-                const date = format(d, "MM")
-                const items = thisYearData.filter(i => format(i.date, "MM") === date)
-                if (items.find(i => Number(format(i.date, "MM")) <= Number(currDate))) {
-                    items.forEach(i => hours += secondsToFloatHours(i.time))
-                    return hours
+            const yearlyStats = currentYearMonths.map(date => {
+                let seconds: number = 0
+                const month = format(date, "MM")
+                const matchedData = totalDailyTrackedArray.filter(track => formatDateToMM(track.date) === month)
+
+                // Is matchedDate lesser than current Date
+                if (matchedData.find(track => Number(formatDateToMM(track.date)) <= Number(currMonth))) {
+                    matchedData.forEach(track => seconds += track.value)
+                    return formatSecondsToFloatHours(seconds)
                 } else return null
             })
 
-            setTotalTrackedWeekTimes(weekResult)
-            setTotalTrackedMonthTimes(monthResult)
-            setTotalTrackedYearTimes(yearResults)
-
-            const members: Member[] = data.members
-            const membersIndividualTimes = project.membersIndividualTimes
-
             const membersStates: { value: number, name: string }[] =
-                members.filter(m => membersIndividualTimes[m.userId] !== undefined).map((m: Member) => {
-                    return {
-                        value: secondsToFloatHours(membersIndividualTimes[m.userId].total),
-                        name: `${m.name} ${m.surname}`,
-                    }
-                })
+                members.filter(m => membersIndividualTimes[m.userId] !== undefined).map((m: Member) => ({
+                    value: formatSecondsToFloatHours(membersIndividualTimes[m.userId].total),
+                    name: `${m.name} ${m.surname}`,
+                }))
 
+            setProjectTotalTime(projectdata.totalTime)
+            setTotalTrackedWeekTimes(weeklyStats)
+            setTotalTrackedMonthTimes(monthlyStats)
+            setTotalTrackedYearTimes(yearlyStats)
             setMembersStats(membersStates)
+
         }
 
-        fetchData()
+        updateData()
 
-    }, [mode, projectId, userId, workspaceId])
+    }, [mode, projectId, projectdata, userId, workspaceId])
 
     return (
         <>

@@ -1,7 +1,7 @@
 import {format} from "date-fns";
-import {getCurrentYearMonths} from "@/app/workspaces/settings/project/stats/[id]/features/utils";
 import {AreaChart} from "@/app/workspaces/settings/project/stats/[id]/components/chartsTemplates/AreaChart";
 import {formatSecondsToTimeString} from "@/features/utilities/time/timeOperations";
+import {currentYearMonths} from "@/app/workspaces/settings/project/stats/[id]/features/utils";
 
 type ProjectTimeProgresProps = {
     totalTrackedYearTimes: (number | null)[],
@@ -11,7 +11,7 @@ type ProjectTimeProgresProps = {
 export const ProjectTimeProgres = ({...props}: ProjectTimeProgresProps) => {
 
     const data = {
-        stats: getCurrentYearMonths.map(d => format(d, "M")),
+        stats: currentYearMonths.map(d => format(d, "M")),
         data: props.totalTrackedYearTimes
     }
 
