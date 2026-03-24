@@ -2,13 +2,13 @@ import {GiSunSpear} from "react-icons/gi";
 import {FormEvent, useState} from "react";
 import {throwRandomNum} from "@/features/utilities/throwRandomNum";
 import {createNewWorkspace} from "@/features/utilities/create-&-update/createNewWorkspace";
-import {invalidUserId} from "@/messages/errors";
-import {arrayUnion, doc, getDoc, updateDoc} from "firebase/firestore";
-import {db} from "@/app/firebase/config";
-import {Member, WorkspaceCredentials} from "@/types";
+import {fetchMessages} from "@/messages/errors";
+import {Member} from "@/types";
 import {setLocalStorageUserMode, setLocalStorageWorkspaceId} from "@/features/utilities/localStorage";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {getAllWorkspaceMembers} from "@/features/utilities/getAllWorkspaceMembers";
+import {logIntoWorkspace} from "@/features/utilities/logIntoWorkspace";
 
 type WorkspaceFormProps = {
     workspaceAction: "create" | "join"
@@ -16,11 +16,13 @@ type WorkspaceFormProps = {
 
 export const WorkspaceForm = ({...props}: WorkspaceFormProps) => {
 
+    // States
     const [name, setName] = useState("");
     const [workspaceInputId, setWorkspaceInputId] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
+    // Hooks
     const {replace} = useReplaceRouteLink()
     const {userId, setMode, setWorkspaceId, userName, userSurname, userMail} = useWorkSpaceContext()
 
@@ -31,7 +33,9 @@ export const WorkspaceForm = ({...props}: WorkspaceFormProps) => {
 
     const formSubmit = async (e: FormEvent) => {
         e.preventDefault()
-        console.log("clicked")
+
+        if (!userId) return
+
 
         if (password.trim() === "" || name.trim() === "") return setError('Missing password or name')
 
@@ -46,61 +50,52 @@ export const WorkspaceForm = ({...props}: WorkspaceFormProps) => {
             setMode("workspace")
             setWorkspaceId(workspaceId)
             replace("/")
-        } else {
-            if (!userId) throw new Error(invalidUserId)
-            const docRef = doc(db, "realms", workspaceInputId);
-            const userRef = doc(db, "users", userId)
-            const docSnap = await getDoc(docRef)
-            const userSnap = await getDoc(userRef)
+        }
 
-            if (!docSnap.exists() || !userSnap.exists()) return setError("Wrong password or Id")
-            const data = docSnap.data()
-            const userData = userSnap.data()
-            const correctPassword = data.password
-            const blackList: Member[] = data.blackList || []
-            const members: Member[] = data.members
-            const workspacesList: WorkspaceCredentials[] = userData.workspacesList || []
-            if (password !== correctPassword) return setError("Wrong password or Id")
-            if (blackList.some(member => member.userId === userId)) return setError("You don't have permission to join this workspace.")
-            const workspaceCredential: WorkspaceCredentials = {
-                workspaceId: workspaceInputId,
-                password: password
+        if ((props.workspaceAction === 'join')) {
+
+
+            const workspaceMembersData = await getAllWorkspaceMembers(workspaceInputId)
+
+            const newMember: Member = {
+                userId: userId,
+                email: userMail,
+                name: userName,
+                surname: userSurname,
+                role: "Member",
+                class: "unset"
             }
 
-            const matchedWorkspace = workspacesList.find(w => w.workspaceId === workspaceInputId)
-            const updatedWorkspacesList = workspacesList.map((workspace) => {
-                if (workspace.workspaceId !== workspaceInputId) return workspace
+            console.log(workspaceInputId)
 
-                return {...workspace, password: password}
-            })
-            const setStatesAndReplace = async () => {
-                if (matchedWorkspace) {
-                    await updateDoc(userRef, {workspacesList: updatedWorkspacesList})
-                } else {
-                    await updateDoc(userRef, {workspacesList: arrayUnion(workspaceCredential)})
+            try {
+                await logIntoWorkspace(
+                    userId,
+                    workspaceInputId,
+                    password,
+                    workspaceMembersData,
+                    newMember
+                )
+                setError("")
+            } catch (err) {
+                if (err instanceof Error) {
+                    if (err.message === fetchMessages.workspaceNotFound) {
+                        return setError("Wrong workspace name or password.")
+                    } else if (err.message === fetchMessages.wrongPassword) {
+                        return setError("Wrong workspace name or password.")
+                    } else if (err.message === fetchMessages.invalidPermission) {
+                        return setError("You don't have permission to join this workspace.")
+                    } else return setError("Something went wrong, try again.")
                 }
-                setMode("workspace")
-                setWorkspaceId(workspaceInputId)
-                setWorkspaceInputId("")
-                setPassword("")
-                setLocalStorageUserMode("workspace")
-                setLocalStorageWorkspaceId(workspaceInputId)
             }
-            const isMember = members.some(member => member.userId === userId)
-            if (!isMember) {
-                const newMember: Member = {
-                    userId: userId,
-                    email: userMail,
-                    name: userName,
-                    surname: userSurname,
-                    role: "Member",
-                    class: "unset"
-                }
 
-                await updateDoc(docRef, {members: arrayUnion(newMember)})
-                await setStatesAndReplace()
-            } else await setStatesAndReplace()
 
+            setMode("workspace")
+            setWorkspaceId(workspaceInputId)
+            setWorkspaceInputId("")
+            setPassword("")
+            setLocalStorageUserMode("workspace")
+            setLocalStorageWorkspaceId(workspaceInputId)
         }
     }
 

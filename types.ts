@@ -29,6 +29,8 @@ export type UserMode = "solo" | "workspace"
 
 export type ProjectType = "tracking" | "logging"
 
+export type UserBlackListData = Record<string, { name: string, surname: string, email: string }>
+
 export type UserProjectOptions = {
     userId: string;
     activeOptions: ProjectOption[];
@@ -121,7 +123,12 @@ export type Member = {
 
 export type WorkspaceId = string | 'unused';
 
-export interface WorkspaceCredentials {
+export type WorkspaceCredentials = {
+    workspaceId: string;
+    password: string;
+}
+
+export type WorkspacesListItem = {
     workspaceId: string;
     password: string;
 }
