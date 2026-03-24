@@ -14,6 +14,7 @@ import {SelectBar} from "@/components/SelectBar/SelectBar";
 import {LargeButton} from "@/components/LargeButton/LargeButton";
 import {NoResultBar} from "@/components/NoTracksFoundBar/NoResultBar";
 import ListContainer from "@/components/List-Components/ListContainer/ListContainer";
+import MaxTrackingTimeIndicator from "@/components/MaxTrackingTimeIndicator/MaxTrackingTimeIndicator";
 
 
 export const ProjectSectionsSection = ({projectId}: { projectId: string }) => {
@@ -51,6 +52,12 @@ export const ProjectSectionsSection = ({projectId}: { projectId: string }) => {
         setFilteredSections(sections.filter(section => section.updateDate === formatedDateToYMD))
     }
 
+    const maxTrackingTimeIndicatorUserValue = () => {
+        if (userRole === 'Member') return userId
+        else if (filteredMemberId === 'all') return userId
+        else return filteredMemberId
+    }
+
 // Single Snapshot Listener
     useEffect(() => {
         if (!workspaceData || !projectData) return
@@ -81,47 +88,59 @@ export const ProjectSectionsSection = ({projectId}: { projectId: string }) => {
                 <div
                     className={"flex flex-col w-full gap-3"}>
                     <section
-                        className={"flex gap-2 w-full"}>
-                        {members.length > 0 &&
-                            <SelectBar
-                                options={membersOptions}
-                                value={filteredMemberId}
-                                inputId={"members-input"}
-                                inputClassname={`border border-black/20 outline-none px-2 h-8.5 w-[100px] text-sm rounded-md bg-white`}
-                                onChange={(e) => setFilteredMemberId(e)}
+                        className={"flex justify-between gap-2 w-full"}>
+                        <div
+                            className={"flex gap-2"}
+                        >
+                            {members.length > 0 &&
+                                <SelectBar
+                                    options={membersOptions}
+                                    value={filteredMemberId}
+                                    inputId={"members-input"}
+                                    inputClassname={`border border-black/20 outline-none px-2 h-8.5 w-[100px] text-sm rounded-md bg-white`}
+                                    onChange={(e) => setFilteredMemberId(e)}
+                                />
+                            }
+                            <LargeButton
+                                type={"button"}
+                                className={"px-2 py-0.5 border text-base rounded-md text-white bg-black/24 hover:bg-black/40"}
+                                onClick={() => {
+                                    setFilteredDate(subDays(filteredDate ?? currDate, 1))
+                                    filterProjectSections(formateDateToYMD(subDays(filteredDate ?? currDate, 1)))
+                                }}
+                            >
+                                <FaAngleLeft/>
+                            </LargeButton>
+                            <MaxDateCalendarInput
+                                inputId={"list-date-input"}
+                                selectedDate={filteredDate}
+                                onChange={(e) => {
+                                    setFilteredDate(e)
+                                    filterProjectSections(formateDateToYMD(e))
+                                }}
                             />
-                        }
-                        <LargeButton
-                            type={"button"}
-                            className={"px-2 py-0.5 border text-base rounded-md text-white bg-black/24 hover:bg-black/40"}
-                            onClick={() => {
-                                setFilteredDate(subDays(filteredDate ?? currDate, 1))
-                                filterProjectSections(formateDateToYMD(subDays(filteredDate ?? currDate, 1)))
-                            }}
-                        >
-                            <FaAngleLeft/>
-                        </LargeButton>
-                        <MaxDateCalendarInput
-                            inputId={"list-date-input"}
-                            selectedDate={filteredDate}
-                            onChange={(e) => {
-                                setFilteredDate(e)
-                                filterProjectSections(formateDateToYMD(e))
-                            }}
-                        />
-                        <LargeButton
-                            type={"button"}
-                            className={`${isPlusButtonDisabled() ? "cursor-not-allowed" : "cursor-pointer hover:bg-black/40"}
+                            <LargeButton
+                                type={"button"}
+                                className={`${isPlusButtonDisabled() ? "cursor-not-allowed" : "cursor-pointer hover:bg-black/40"}
                             px-2 py-0.5 border text-base rounded-md text-white bg-black/24 hover:bg-black/40`}
-                            disabled={isPlusButtonDisabled()}
-                            onClick={() => {
-                                setFilteredDate(addDays(filteredDate ?? new Date(), 1))
-                                filterProjectSections(formateDateToYMD(addDays(filteredDate ?? new Date(), 1)))
-                            }}
-                        >
-                            <FaAngleRight/>
-                        </LargeButton>
-                        {/* Plus date btn */}
+                                disabled={isPlusButtonDisabled()}
+                                onClick={() => {
+                                    setFilteredDate(addDays(filteredDate ?? new Date(), 1))
+                                    filterProjectSections(formateDateToYMD(addDays(filteredDate ?? new Date(), 1)))
+                                }}
+                            >
+                                <FaAngleRight/>
+                            </LargeButton>
+                        </div>
+                        <div>
+                            <MaxTrackingTimeIndicator
+                                userId={maxTrackingTimeIndicatorUserValue()}
+                                workspaceId={workspaceId}
+                                projectId={projectId}
+                                formatedDateToYMD={formateDateToYMD(filteredDate)}
+                                bodyClassname={"mr-1"}
+                            />
+                        </div>
                     </section>
                     <ListContainer
                         headerTitles={['Name', 'Type', 'Time', 'Date']}

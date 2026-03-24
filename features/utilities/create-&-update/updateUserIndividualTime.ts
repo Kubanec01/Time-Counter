@@ -28,7 +28,7 @@ export const updateUserIndividualTime = async (
         }
     } else {
         if (changes === "increase") {
-            membersData[userId].daily[formatedDateToYMD] += seconds
+            membersData[userId].daily[formatedDateToYMD] = (membersData[userId].daily[formatedDateToYMD] ?? 0) + seconds
             membersData[userId].total += seconds
         } else {
             membersData[userId].daily[formatedDateToYMD] -= seconds

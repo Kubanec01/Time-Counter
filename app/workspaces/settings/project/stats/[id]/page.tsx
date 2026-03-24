@@ -59,14 +59,14 @@ export default function StatsHome() {
             const weeklyStats = currentWeekDays.map(date => {
                 const formatedDate = formateDateToYMD(date)
                 const matchedWeekData = totalDailyTrackedTimes[formatedDate]
-                if (matchedWeekData) return matchedWeekData
+                if (matchedWeekData) return formatSecondsToFloatHours(matchedWeekData)
                 else return 0
             })
 
             const monthlyStats = currentMonthDays.map(date => {
                 const formatedDate = formateDateToYMD(date)
                 const matchedMonthData = totalDailyTrackedTimes[formatedDate]
-                if (matchedMonthData) return matchedMonthData
+                if (matchedMonthData) return formatSecondsToFloatHours(matchedMonthData)
                 else return 0
             })
 
