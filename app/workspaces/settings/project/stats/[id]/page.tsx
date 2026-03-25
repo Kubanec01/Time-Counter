@@ -4,7 +4,7 @@ import {useParams} from "next/navigation";
 import {useEffect, useState} from "react";
 import {Member} from "@/types";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
-import {format} from "date-fns";
+import {format, subDays} from "date-fns";
 import {formateDateToYMD} from "@/features/utilities/date/dateOperations";
 import {formatDateToMM, formatSecondsToFloatHours} from "@/features/utilities/time/timeOperations";
 import {
@@ -35,22 +35,26 @@ export default function StatsHome() {
     const [totalTrackedYearTimes, setTotalTrackedYearTimes] = useState<(number | null)[]>([]);
     const [membersStats, setMembersStats] = useState<{ value: number, name: string }[]>([]);
     const [projectTotalTime, setProjectTotalTime] = useState<number>(0);
+    const [mostActiveUsers, setMostActiveUsers] = useState<string[]>([]);
+    const [dailyDifference, setDailyDifference] = useState<number>(0);
+    const [dailyDifferencePercentage, setDailyDifferencePercentage] = useState<number>(0);
+
 
     // Hooks
     const params = useParams()
     const projectId = params.id as string
     const {mode, workspaceId, userId} = useWorkSpaceContext()
-    const projectdata = useProjectData(workspaceId, projectId)
+    const projectData = useProjectData(workspaceId, projectId)
 
 
     useEffect(() => {
-        if (!userId || !projectdata || workspaceId === 'unused') return
+        if (!userId || !projectData || workspaceId === 'unused') return
 
         const updateData = async () => {
             const members = await getAllWorkspaceMembers(workspaceId)
-            const membersIndividualTimes = projectdata.membersIndividualTimes
+            const membersIndividualTimes = projectData.membersIndividualTimes
             const currMonth = format(new Date(), "MM")
-            const totalDailyTrackedTimes = projectdata.totalDailyTrackedTimes
+            const totalDailyTrackedTimes = projectData.totalDailyTrackedTimes
             const totalDailyTrackedArray = Object.entries(totalDailyTrackedTimes).map(([key, value]) => ({
                 date: key,
                 value: value
@@ -88,17 +92,40 @@ export default function StatsHome() {
                     name: `${m.name} ${m.surname}`,
                 }))
 
-            setProjectTotalTime(projectdata.totalTime)
-            setTotalTrackedWeekTimes(weeklyStats)
-            setTotalTrackedMonthTimes(monthlyStats)
-            setTotalTrackedYearTimes(yearlyStats)
-            setMembersStats(membersStates)
+            const allUsersArr = Object.entries(membersIndividualTimes).map(([key, value]) => ({
+                userId: key,
+                totalTime: value.total
+            }))
 
+            const sortedUsers = allUsersArr.sort((a, b) => b.totalTime - a.totalTime)
+
+            const mostActiveUsersNames = sortedUsers.map((user) => {
+                const matchedMember = members.find(m => m.userId === user.userId)
+                if (matchedMember) return `${matchedMember.name} ${matchedMember.surname}`
+                else return ''
+            })
+
+            const currDailyTrackedTime = totalDailyTrackedTimes[formateDateToYMD(new Date())]
+            const yesterdaysTrackedTime = totalDailyTrackedTimes[formateDateToYMD(subDays(new Date(), 1))]
+
+            const dailyDiff = currDailyTrackedTime - yesterdaysTrackedTime
+            const dailyDiffPercentage = ((currDailyTrackedTime - yesterdaysTrackedTime) / yesterdaysTrackedTime) * 100
+
+
+            setDailyDifference
+            (dailyDiff)
+            setMembersStats(membersStates)
+            setTotalTrackedWeekTimes(weeklyStats)
+            setTotalTrackedYearTimes(yearlyStats)
+            setTotalTrackedMonthTimes(monthlyStats)
+            setProjectTotalTime(projectData.totalTime)
+            setDailyDifferencePercentage(Math.round(dailyDiffPercentage))
+            setMostActiveUsers(mostActiveUsersNames.slice(0, 6))
         }
 
         updateData()
 
-    }, [mode, projectId, projectdata, userId, workspaceId])
+    }, [mode, projectId, projectData, userId, workspaceId])
 
     return (
         <>
@@ -123,10 +150,14 @@ export default function StatsHome() {
                         totalTrackedMonthTimes={totalTrackedMonthTimes}
                         totalTrackedYearTimes={totalTrackedYearTimes}
                     />
-                    <ComparativeTimeIndicator/>
+                    <ComparativeTimeIndicator
+                        differenceValue={dailyDifference}
+                        differencePercentage={dailyDifferencePercentage}
+                    />
                     <EveryUserTotalTimePieChart
                         projectTotalTimeValue={projectTotalTime}
                         membersStats={membersStats}
+                        mostActiveUsersNames={mostActiveUsers}
                     />
                     <ProjectTimeProgres
                         projectTotalTimeValue={projectTotalTime}

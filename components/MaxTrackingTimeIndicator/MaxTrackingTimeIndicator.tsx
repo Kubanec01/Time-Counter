@@ -42,6 +42,14 @@ const MaxTrackingTimeIndicator = ({...props}: MaxTrackingTimeIndicatorProps) => 
             const maxWeeklyTrackingTime = projectData.weeklyMaxTrackTime
             const usersTrackedTimes = projectData.membersIndividualTimes[props.userId]
 
+            if (!usersTrackedTimes) {
+                setUsersTrackedTime(0)
+                if (maxDailyTrackingTime > 0) setMaxTrackingTime(maxDailyTrackingTime)
+                else setMaxTrackingTime(maxWeeklyTrackingTime)
+                setIsDataLoading(false)
+                return
+            }
+
             if (maxDailyTrackingTime > 0) {
                 const usersTimeValue = usersTrackedTimes.daily[props.formatedDateToYMD]
                 setMaxTrackingTime(maxDailyTrackingTime)

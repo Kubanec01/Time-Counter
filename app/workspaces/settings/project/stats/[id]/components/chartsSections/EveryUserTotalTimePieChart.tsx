@@ -8,11 +8,20 @@ import {formatSecondsToTimeString} from "@/features/utilities/time/timeOperation
 type PieChartProps = {
     membersStats: { value: number, name: string }[]
     projectTotalTimeValue: number
+    mostActiveUsersNames: string[]
 }
 
 export const EveryUserTotalTimePieChart = ({...props}: PieChartProps) => {
 
     const totalTime = formatSecondsToTimeString(props.projectTotalTimeValue as number)
+
+    const usersListColorPalette = [
+        "bg-vibrant-purple-700/100",
+        "bg-vibrant-purple-700/80",
+        "bg-vibrant-purple-700/60",
+        "bg-vibrant-purple-700/40",
+        "bg-vibrant-purple-700/20",
+    ]
 
     return (
         <>
@@ -56,10 +65,19 @@ export const EveryUserTotalTimePieChart = ({...props}: PieChartProps) => {
                     </h1>
                     <div
                         className={"w-full flex-1 flex justify-center items-center"}>
-                        <h1
-                            className={"text-sm text-black/40 -mt-4"}>
-                            No data found :/
-                        </h1>
+                        <ul
+                            className={'w-full h-full flex flex-col gap-1.5 pt-2'}>
+                            {props.mostActiveUsersNames.map((user, index) => (
+                                <li
+                                    key={`user-${index}`}
+                                    className={"flex items-center justify-start text-sm gap-2 text-black/70 font-medium"}
+                                >
+                                    <span
+                                        className={`aspect-square rounded-full h-3 ${usersListColorPalette[index]}`}/>
+                                    {user}
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 </section>
             </div>

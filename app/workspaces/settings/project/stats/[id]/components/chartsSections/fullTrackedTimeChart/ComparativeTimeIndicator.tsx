@@ -1,5 +1,14 @@
-export const ComparativeTimeIndicator = () => {
+import {formatSecondsToTimeString} from "@/features/utilities/time/timeOperations";
 
+type ComparativeTimeIndicatorProps = {
+    differenceValue: number
+    differencePercentage: number
+}
+
+export const ComparativeTimeIndicator = ({...props}: ComparativeTimeIndicatorProps) => {
+
+    const timeStringValue = formatSecondsToTimeString(Math.abs(props.differenceValue))
+    const percentageValue = props.differencePercentage
 
     return (
         <div
@@ -14,10 +23,11 @@ export const ComparativeTimeIndicator = () => {
             <section>
                 <div
                     className={"flex items-center justify-center w-[170px] gap-2 rounded-xl text-black/80 bg-white/94 py-1.5 text-xl font-medium mt-4"}>
-                    02:20:04
+                    {timeStringValue}
                     <span
-                        className={"text-xs p-0.5 rounded-sm bg-light-green text-dark-green font-semibold"}>
-                        +200%
+                        className={`${percentageValue >= 0 ? "bg-light-green text-dark-green" : "bg-red-400/80 text-red-900"}
+                        text-xs p-0.5 px-1.5 rounded-sm bg-light-green text-dark-green font-semibold`}>
+                        {percentageValue > 0 && "+"}{percentageValue}%
                     </span>
                 </div>
             </section>

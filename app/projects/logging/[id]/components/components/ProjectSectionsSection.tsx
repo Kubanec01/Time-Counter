@@ -49,7 +49,14 @@ export const ProjectSectionsSection = ({projectId}: { projectId: string }) => {
 
     const filterProjectSections = (formatedDateToYMD: string) => {
 
-        setFilteredSections(sections.filter(section => section.updateDate === formatedDateToYMD))
+        if (filteredMemberId === 'all') setFilteredSections(sections.filter(section => section.updateDate === formatedDateToYMD))
+        else setFilteredSections(sections.filter(section => section.updateDate === formatedDateToYMD && section.userId === filteredMemberId))
+    }
+
+    const filterSectionsByMemberId = (id: string) => {
+        setFilteredMemberId(id)
+        if (id === 'all') setFilteredSections(sections.filter(section => section.updateDate === formateDateToYMD(filteredDate)))
+        else setFilteredSections(sections.filter(sec => sec.userId === id && sec.updateDate === formateDateToYMD(filteredDate)))
     }
 
     const maxTrackingTimeIndicatorUserValue = () => {
@@ -80,6 +87,8 @@ export const ProjectSectionsSection = ({projectId}: { projectId: string }) => {
 
     }, [projectData, projectId, userId, userRole, workspaceData, workspaceId])
 
+    // console.log(filteredSections)
+
     return (
         <>
             <EntryListPanel
@@ -98,7 +107,7 @@ export const ProjectSectionsSection = ({projectId}: { projectId: string }) => {
                                     value={filteredMemberId}
                                     inputId={"members-input"}
                                     inputClassname={`border border-black/20 outline-none px-2 h-8.5 w-[100px] text-sm rounded-md bg-white`}
-                                    onChange={(e) => setFilteredMemberId(e)}
+                                    onChange={(e) => filterSectionsByMemberId(e)}
                                 />
                             }
                             <LargeButton
