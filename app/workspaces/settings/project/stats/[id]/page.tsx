@@ -106,7 +106,7 @@ export default function StatsHome() {
             })
 
             const currDailyTrackedTime = totalDailyTrackedTimes[formateDateToYMD(new Date())]
-            const yesterdaysTrackedTime = totalDailyTrackedTimes[formateDateToYMD(subDays(new Date(), 1))]
+            const yesterdaysTrackedTime = totalDailyTrackedTimes[formateDateToYMD(subDays(new Date(), 1))] ?? 0
 
             const dailyDiff = currDailyTrackedTime - yesterdaysTrackedTime
             const dailyDiffPercentage = ((currDailyTrackedTime - yesterdaysTrackedTime) / yesterdaysTrackedTime) * 100

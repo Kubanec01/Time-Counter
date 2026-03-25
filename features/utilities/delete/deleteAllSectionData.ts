@@ -2,7 +2,7 @@ import {doc, getDoc, updateDoc} from "firebase/firestore";
 import {Section, TimeCheckout, UpdatedSectionByDate, WorkspaceId} from "@/types";
 import {sectionNotFound} from "@/messages/errors";
 import {updateUserIndividualTime} from "@/features/utilities/create-&-update/updateUserIndividualTime";
-import {updateTotalTrackedTime} from "@/features/utilities/edit/updateTotalTrackedTime";
+import {updateTotalDailyTrackedTime} from "@/features/utilities/edit/updateTotalDailyTrackedTime";
 import {db} from "@/app/firebase/config";
 import {updateProjectTotalTime} from "@/features/utilities/time/timeOperations";
 
@@ -41,7 +41,7 @@ export const deleteAllSectionData = async (
     const updatedSectionsByDates = sectionsByDates.filter((s: UpdatedSectionByDate) => s.sectionId !== sectionId);
 
     await updateUserIndividualTime(userId, workspaceId, projectId, date, seconds, "decrease")
-    await updateTotalTrackedTime(projectId, date, seconds, workspaceId, "decrease")
+    await updateTotalDailyTrackedTime(projectId, date, seconds, workspaceId, "decrease")
 
     await updateDoc(userRef, {
         projectsSections: updatedSections,

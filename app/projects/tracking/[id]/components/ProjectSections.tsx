@@ -46,7 +46,7 @@ export const ProjectSections = ({...props}: ProjectSectionsProps) => {
 
     return (
         <EntryListPanel
-            classname={"py-6"}
+            classname={"mb-10"}
         >
             <>
                 <NoResultBar

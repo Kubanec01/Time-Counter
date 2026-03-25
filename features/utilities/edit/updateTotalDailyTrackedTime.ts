@@ -4,7 +4,7 @@ import {db} from "@/app/firebase/config";
 import {documentNotFound} from "@/messages/errors";
 
 
-export const updateTotalTrackedTime = async (
+export const updateTotalDailyTrackedTime = async (
     projectId: string,
     formatedDateToYMD: string,
     seconds: number,

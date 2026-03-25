@@ -20,6 +20,7 @@ import {updateUserIndividualTime} from "@/features/utilities/create-&-update/upd
 import SectionCartContainer from "@/components/SectionCart/SectionCartContainer";
 import {LargeButton} from "@/components/LargeButton/LargeButton";
 import UserBadge from "@/components/UserBadge/UserBadge";
+import {updateTotalDailyTrackedTime} from "@/features/utilities/edit/updateTotalDailyTrackedTime";
 
 
 const SectionCart = ({...props}: SectionCartProps) => {
@@ -85,6 +86,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
             await updateTimeData(props.sectionId, totalSeconds, formatedDate, workspaceId);
             await createNewTimeCheckout(props.projectId, props.sectionId, formatedDate, startTime, formatedTime, difference, workspaceId);
             await updateUserIndividualTime(props.userId, workspaceId, props.projectId, formatedDate, difference, "increase")
+            await updateTotalDailyTrackedTime(props.projectId, formatedDate, difference, workspaceId, 'increase')
         }
     };
 

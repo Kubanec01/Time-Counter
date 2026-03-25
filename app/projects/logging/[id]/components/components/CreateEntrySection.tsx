@@ -11,7 +11,7 @@ import {
     formatFloatHoursToSeconds, formatSecondsToFloatHours, updateProjectTotalTime
 } from "@/features/utilities/time/timeOperations";
 import {createNewSection} from "@/features/utilities/create-&-update/createNewSection";
-import {updateTotalTrackedTime} from "@/features/utilities/edit/updateTotalTrackedTime";
+import {updateTotalDailyTrackedTime} from "@/features/utilities/edit/updateTotalDailyTrackedTime";
 import {updateUserIndividualTime} from "@/features/utilities/create-&-update/updateUserIndividualTime";
 import {formateDateToYMD} from "@/features/utilities/date/dateOperations";
 import {getHours, getMinutes} from "date-fns";
@@ -79,7 +79,7 @@ export const CreateEntrySection = ({projectId}: { projectId: string }) => {
 
         await updateUserIndividualTime(userId, workspaceId, projectId, formateDateToYMD(selectedDate), timeToSeconds, "increase")
         await createNewSection(userId, userFullName, projectId, nameValue, timeToSeconds, formateDateToYMD(selectedDate), setNameValue, newTaskType, workspaceId)
-        await updateTotalTrackedTime(projectId, formateDateToYMD(selectedDate), timeToSeconds, workspaceId, "increase")
+        await updateTotalDailyTrackedTime(projectId, formateDateToYMD(selectedDate), timeToSeconds, workspaceId, "increase")
         await updateProjectTotalTime(projectId, timeToSeconds, workspaceId, "increase")
 
         setNameValue("")
