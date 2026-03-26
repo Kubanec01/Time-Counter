@@ -9,22 +9,17 @@ import {
 import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {auth, db} from "@/app/firebase/config";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
-import {signOut} from "@firebase/auth";
 import ConfirmModal from "@/components/modals/ConfirmModal";
-import {
-    removeLocalStorageWorkspaceIdAndUserMode,
-    setLocalStorageUserMode,
-    setLocalStorageWorkspaceId
-} from "@/features/utilities/localStorage";
+import {setLocalStorageUserMode, setLocalStorageWorkspaceId} from "@/features/utilities/local-storage/localStorage";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 import {Member, WorkspaceCredentials} from "@/types";
 import {doc, getDoc, onSnapshot} from "firebase/firestore";
 import {removeWorkspaceFromList} from "@/features/utilities/delete/removeWorkspaceFromList";
 import {invalidUserId} from "@/messages/errors";
 import {useRouter} from "next/navigation";
-import {FaPlusCircle} from "react-icons/fa";
 import {PiSignOutLight} from "react-icons/pi";
 import {useLeaveWorkspace} from "@/features/hooks/useLeaveWorkspace";
+import {useSignOutUser} from "@/features/hooks/useSignOutUser";
 
 interface Props {
     isUserMenuOpen: boolean
@@ -33,23 +28,31 @@ interface Props {
 
 export const UserMenu = ({...props}: Props) => {
 
+    // States
     const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
     const [isLeaveWorkspaceModalOpen, setIsLeaveWorkspaceModalOpen] = useState(false);
     const [workspacesList, setWorkspacesList] = useState<WorkspaceCredentials[]>([]);
 
-    const setVisibility = props.isUserMenuOpen ? "flex" : "hidden";
-    const {userName, userSurname, userInitials, userRole, userId, setMode, setWorkspaceId, mode} = useWorkSpaceContext()
+    // Hooks
     const {replace} = useReplaceRouteLink()
+    const {signOutUser} = useSignOutUser(auth)
     const router = useRouter();
     const {leaveWorkspace} = useLeaveWorkspace()
+    const {userName, userSurname, userInitials, userRole, userId, setMode, setWorkspaceId, mode} = useWorkSpaceContext()
 
+    const isMenuOpen = props.isUserMenuOpen ? "flex" : "hidden";
+
+    // Functions
     const handleLeaveWorkspace = () => {
         leaveWorkspace()
         setIsLeaveWorkspaceModalOpen(false);
     }
 
     const joinWorkspace = async (
-        userId: string | undefined, workspaceId: string, password: string,) => {
+        userId: string | undefined,
+        workspaceId: string,
+        password: string
+    ) => {
 
         if (!userId) throw new Error(invalidUserId)
         const docRef = doc(db, "realms", workspaceId)
@@ -93,7 +96,7 @@ export const UserMenu = ({...props}: Props) => {
         <>
             <div
                 onMouseLeave={() => props.setIsUserMenuOpen(false)}
-                className={`${setVisibility} fixed top-12 right-0 rounded-xl z-50 bg-gray-300 shadow-xl border border-black/15 overflow-hidden backdrop-blur-lg flex flex-col w-[286px]`}>
+                className={`${isMenuOpen} fixed top-12 right-0 rounded-xl z-50 bg-gray-300 shadow-xl border border-black/15 overflow-hidden backdrop-blur-lg flex flex-col w-[286px]`}>
                 {/* User section */}
                 <section
                     className={"px-3 bg-white pt-3"}>
@@ -185,7 +188,7 @@ export const UserMenu = ({...props}: Props) => {
                 btnFunction={() => {
                     setIsLogoutModalOpen(false);
                     replace("/")
-                    signOut(auth)
+                    signOutUser()
                 }}
                 desc={"You can always log back in anywhere, anytime. Your progress will be saved without any worries."}
             />

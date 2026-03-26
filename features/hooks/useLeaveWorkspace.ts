@@ -1,5 +1,5 @@
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
-import {removeLocalStorageWorkspaceIdAndUserMode} from "@/features/utilities/localStorage";
+import {removeLocalStorageWorkspaceIdAndUserMode} from "@/features/utilities/local-storage/localStorage";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 
 

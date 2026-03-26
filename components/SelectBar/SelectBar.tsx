@@ -17,8 +17,6 @@ export const SelectBar = <T extends string>({...props}: SelectBarProps<T>) => {
     const labelClass = "font-medium text-sm text-black/60"
     const inputClass = "medium-button bg-gradient-to-b from-white from-30% to-black/8 border border-black/15 text-black outline-none"
 
-    console.log(props.options)
-
     return (
         <div
             className={"flex flex-col"}>

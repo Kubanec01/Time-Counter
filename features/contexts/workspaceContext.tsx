@@ -6,7 +6,7 @@ import {getUserNameData, getUserRoleData} from "@/features/utilities/userInfoDat
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth} from "@/app/firebase/config";
 import {getWorkspaceName} from "@/features/utilities/getWorkspaceName";
-import {removeLocalStorageWorkspaceIdAndUserMode} from "@/features/utilities/localStorage";
+import {removeLocalStorageWorkspaceIdAndUserMode} from "@/features/utilities/local-storage/localStorage";
 
 interface Context {
     mode: UserMode
@@ -41,6 +41,8 @@ export const WorkSpaceContextProvider = ({children}: { children: ReactNode }) =>
 
     const [user] = useAuthState(auth)
     const userId = user?.uid
+
+    console.log(mode, workspaceId)
 
 
     // Fetch Mode and WorkspaceId

@@ -2,7 +2,7 @@ import {documentNotFound, invalidUserId} from "@/messages/errors";
 import {arrayUnion, doc, getDoc, setDoc, updateDoc} from "firebase/firestore";
 import {db} from "@/app/firebase/config";
 import {Member, WorkspaceCredentials} from "@/types";
-import {setLocalStorageUserMode, setLocalStorageWorkspaceId} from "@/features/utilities/localStorage";
+import {setLocalStorageUserMode, setLocalStorageWorkspaceId} from "@/features/utilities/local-storage/localStorage";
 import {usersClasses} from "@/data/users";
 import {createNewMember} from "@/features/utilities/create-&-update/createNewMember";
 

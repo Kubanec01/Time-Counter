@@ -4,11 +4,11 @@ import {throwRandomNum} from "@/features/utilities/throwRandomNum";
 import {createNewWorkspace} from "@/features/utilities/create-&-update/createNewWorkspace";
 import {fetchMessages} from "@/messages/errors";
 import {Member} from "@/types";
-import {setLocalStorageUserMode, setLocalStorageWorkspaceId} from "@/features/utilities/localStorage";
+import {setLocalStorageUserMode, setLocalStorageWorkspaceId} from "@/features/utilities/local-storage/localStorage";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {getAllWorkspaceMembers} from "@/features/utilities/getAllWorkspaceMembers";
-import {logIntoWorkspace} from "@/features/utilities/logIntoWorkspace";
+import {logIntoWorkspace} from "@/features/utilities/sign-utils/logIntoWorkspace";
 
 type WorkspaceFormProps = {
     workspaceAction: "create" | "join"

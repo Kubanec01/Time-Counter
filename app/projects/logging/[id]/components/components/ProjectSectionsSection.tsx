@@ -79,7 +79,7 @@ export const ProjectSectionsSection = ({projectId}: { projectId: string }) => {
             const workspaceMembers = await getAllWorkspaceMembers(workspaceId)
 
             setSections(validSections)
-            setFilteredSections(validSections.filter(s => s.updateDate === formateDateToYMD(currDate)))
+            setFilteredSections(validSections.filter(s => s.updateDate === formateDateToYMD(filteredDate)))
             setMembers(workspaceMembers.filter(m => projectData.membersList.find(id => id === m.userId)))
         }
 

@@ -66,10 +66,6 @@ export interface ProjectProps {
     projectName: string
 }
 
-export interface ProjectWithCustomOptions extends Project {
-    customizedUsersOptions: UserProjectOptions[]
-}
-
 export interface SectionCartProps {
     sectionId: string;
     projectId: string;

@@ -3,7 +3,7 @@
 
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 import {ProjectOption} from "@/types";
-import {updateProjectOptions} from "@/features/utilities/updateProjectOption";
+import {updateProjectOptions} from "@/features/utilities/create-&-update/updateProjectOption";
 import {ChangeFormModal} from "@/app/workspaces/settings/components/ChangeFormModal";
 import {useState} from "react";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
