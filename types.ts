@@ -57,7 +57,6 @@ export interface Project {
     membersIndividualTimes: UserIndividualTimes
     options: ProjectOption[],
     trackFormat: "Decimal" | "Range",
-    customizedUsersOptions: UserProjectOptions[]
     membersList: string[]
 }
 

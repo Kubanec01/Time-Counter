@@ -30,7 +30,6 @@ export const createNewProject = async (
             totalDailyTrackedTimes: {},
             membersIndividualTimes: {},
             options: projectTasksOptions,
-            customizedUsersOptions: [],
             trackFormat: "Decimal",
             membersList: [userId]
         };

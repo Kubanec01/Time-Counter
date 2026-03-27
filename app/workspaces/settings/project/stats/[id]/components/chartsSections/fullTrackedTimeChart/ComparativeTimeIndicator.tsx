@@ -7,9 +7,14 @@ type ComparativeTimeIndicatorProps = {
 
 export const ComparativeTimeIndicator = ({...props}: ComparativeTimeIndicatorProps) => {
 
-    const timeStringValue = formatSecondsToTimeString(Math.abs(props.differenceValue))
+    const timeStringValue = () => {
+        if (Number.isNaN(props.differenceValue)) return '00:00:00'
+        else return formatSecondsToTimeString(Math.abs(props.differenceValue))
+    }
+
     const getPercentageValue = () => {
         if (props.differencePercentage === Infinity) return 0
+        else if (Number.isNaN(props.differencePercentage)) return 0
         else return props.differencePercentage
     }
 
@@ -25,8 +30,8 @@ export const ComparativeTimeIndicator = ({...props}: ComparativeTimeIndicatorPro
             </h1>
             <section>
                 <div
-                    className={"flex items-center justify-center w-[170px] gap-2 rounded-xl text-black/80 bg-white/94 py-1.5 text-xl font-medium mt-4"}>
-                    {timeStringValue}
+                    className={"inline-flex items-center justify-start gap-2 rounded-xl text-black/80 bg-white/94 py-1.5 px-2 text-xl font-medium mt-4"}>
+                    {timeStringValue()}
                     <span
                         className={`${getPercentageValue() >= 0 ? "bg-light-green text-dark-green" : "bg-red-400/80 text-red-900"}
                         text-xs p-0.5 px-1.5 rounded-sm bg-light-green text-dark-green font-semibold`}>
