@@ -60,12 +60,7 @@ body {
     font-family: 'Pacifico', cursive;
 }
 
-.glass-effect {
-    border-left: 1px solid rgba(255, 255, 255, 0.3);
-    border-top: 1px solid rgba(255, 255, 255, 0.3);
-    border-right: 1px solid rgba(255, 255, 255, 0.3);
-    border-bottom: none;
-}
+
 
 li {
     list-style: none;

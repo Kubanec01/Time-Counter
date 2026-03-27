@@ -42,8 +42,6 @@ export const WorkSpaceContextProvider = ({children}: { children: ReactNode }) =>
     const [user] = useAuthState(auth)
     const userId = user?.uid
 
-    console.log(mode, workspaceId)
-
 
     // Fetch Mode and WorkspaceId
     useEffect(() => {

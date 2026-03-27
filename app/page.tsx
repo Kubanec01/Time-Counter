@@ -1,6 +1,5 @@
 "use client";
 
-import CreateProjectModal from "@/components/modals/CreateProjectModal";
 import ProjectsBars from "@/components/ProjectsBars/ProjectsBars";
 import React, {useEffect, useState} from "react";
 import {ProjectType} from "@/types";
@@ -10,34 +9,41 @@ import {LoadingPage} from "@/app/LoadingPage/LoadingPage";
 import {OnboardingModal} from "@/components/modals/OnboardingModal";
 import {createNewProject} from "@/features/utilities/create-&-update/createNewProject";
 import LoginWorkspacesPage from "@/app/workspaces/page";
+import {createPortal} from "react-dom";
+import CreateModal from "@/components/modals01/CreateModal";
+import {TextInput} from "@/components/TextInput/TextInput";
+import {MediumButton} from "@/components/MediumButton/MediumButton";
 
 export default function HomePage() {
 
-    // User Auth Redirect
-    const {user, loading} = useAuthRedirect()
-
-    // User Data
-    const {mode, workspaceId, userRole, userId} = useWorkSpaceContext()
-
-
-    //   States
+    // States
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [inputValue, setInputValue] = useState<string>("");
+    const [newProjectName, setNewProjectName] = useState<string>("");
     const [typeofProject, setTypeOfProject] = useState<ProjectType>("tracking");
     const [isClient, setIsClient] = useState<boolean>(false);
 
+    // Hooks
+    const {user, loading} = useAuthRedirect()
+    const {mode, workspaceId, userRole, userId} = useWorkSpaceContext()
+    const isUserMember = userRole === "Member"
 
-    // Create New project
-    const setNewProject = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
 
-        await createNewProject(userId, inputValue, typeofProject, workspaceId);
-        setInputValue("");
+    // Functions
+    const setNewProject = async () => {
+        if (newProjectName.trim().length === 0) return
+
         setIsModalOpen(false);
+        await createNewProject(userId, newProjectName, typeofProject, workspaceId);
+        setNewProjectName("");
         setTypeOfProject("tracking");
     }
 
-    const isUserMember = userRole === "Member"
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setNewProjectName("")
+        setTypeOfProject('tracking')
+    }
+
 
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -92,17 +98,47 @@ export default function HomePage() {
                                         Create project
                                     </button>
                                 </div>
-                                {/*Modals*/}
-                                <CreateProjectModal
-                                    title="Project"
-                                    setIsModalOpen={setIsModalOpen}
-                                    isModalOpen={isModalOpen}
-                                    setInputValue={setInputValue}
-                                    inputValue={inputValue}
-                                    typeOfProject={typeofProject}
-                                    setTypeOfProject={setTypeOfProject}
-                                    formFunction={setNewProject}
-                                />
+                                {createPortal(
+                                    <CreateModal
+                                        iconClassName={"text-vibrant-purple-700"}
+                                        className={"w-[370px] h-[400px]"}
+                                        title={"Create New Project"}
+                                        description={"Create a new project where you can measure progress, time, performance, and simply everything that will move your work to the speed of light! (max 24 characters)"}
+                                        isOpen={isModalOpen}
+                                        confirmBtnText={"Create"}
+                                        onSubmit={() => setNewProject()}
+                                        cancelButtonFn={() => closeModal()}
+                                    >
+                                        <div
+                                            className={"flex flex-col mb-6 gap-2"}
+                                        >
+                                            <TextInput
+                                                inputId={"project-name-input"}
+                                                placeholder={"What are you going to work on?"}
+                                                value={newProjectName}
+                                                OnChange={(value) => setNewProjectName(value)}
+                                                isIconVisible={false}
+                                                inputClassname={"mb-2"}
+                                            />
+                                            <MediumButton
+                                                buttonType={'button'}
+                                                disabled={typeofProject === 'tracking'}
+                                                className={typeofProject === 'tracking' ? "bg-purple-gradient hover:bg-vibrant-purple-600 cursor-default" : "bg-black/10 text-black/60 border-black/1"}
+                                                onClick={() => setTypeOfProject("tracking")}
+                                            >
+                                                {'I will track with timer'}
+                                            </MediumButton>
+                                            <MediumButton
+                                                buttonType={'button'}
+                                                className={typeofProject === 'tracking' ? "bg-black/10 text-black/60 border-black/1" : "bg-purple-gradient hover:bg-vibrant-purple-600 cursor-default"}
+                                                onClick={() => setTypeOfProject("logging")}
+                                            >
+                                                {'I will enter time manually'}
+                                            </MediumButton>
+                                        </div>
+                                    </CreateModal>,
+                                    document.body
+                                )}
                             </section>
                             <ProjectsBars/>
                         </div>

@@ -9,7 +9,6 @@ import {
 import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {auth, db} from "@/app/firebase/config";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
-import ConfirmModal from "@/components/modals/ConfirmModal";
 import {setLocalStorageUserMode, setLocalStorageWorkspaceId} from "@/features/utilities/local-storage/localStorage";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 import {Member, WorkspaceCredentials} from "@/types";
@@ -20,6 +19,9 @@ import {useRouter} from "next/navigation";
 import {PiSignOutLight} from "react-icons/pi";
 import {useLeaveWorkspace} from "@/features/hooks/useLeaveWorkspace";
 import {useSignOutUser} from "@/features/hooks/useSignOutUser";
+import {createPortal} from "react-dom";
+import ConfirmModal from "@/components/modals01/ConfirmModal";
+import {FaUser} from "react-icons/fa";
 
 interface Props {
     isUserMenuOpen: boolean
@@ -179,28 +181,36 @@ export const UserMenu = ({...props}: Props) => {
                     </button>
                 </section>
             </div>
-            <ConfirmModal
-                topDistance={200}
-                title={"Log Out of Trackio?"}
-                setIsModalOpen={setIsLogoutModalOpen}
-                isModalOpen={isLogoutModalOpen}
-                btnText={"Log Out"}
-                btnFunction={() => {
-                    setIsLogoutModalOpen(false);
-                    replace("/")
-                    signOutUser()
-                }}
-                desc={"You can always log back in anywhere, anytime. Your progress will be saved without any worries."}
-            />
-            <ConfirmModal
-                topDistance={200}
-                title={"Leave Workspace?"}
-                setIsModalOpen={setIsLeaveWorkspaceModalOpen}
-                isModalOpen={isLeaveWorkspaceModalOpen}
-                btnText={"Leave"}
-                btnFunction={() => handleLeaveWorkspace()}
-                desc={"You can always join back anywhere, anytime. Your progress will be saved without any worries."}
-            />
+            {/* Log Out User */}
+            {createPortal(
+                <ConfirmModal
+                    isModalOpen={isLogoutModalOpen}
+                    title={"Log Out of Synto?"}
+                    description={"You can always log back in anywhere, anytime. Your progress will be saved without any worries."}
+                    onCancelClick={() => setIsLogoutModalOpen(false)}
+                    confirmButtonText={"Log Out"}
+                    customIcon={<><FaUser className={"w-full text-2xl"}/></>}
+                    onConfirmClick={() => {
+                        setIsLogoutModalOpen(false);
+                        replace("/")
+                        signOutUser()
+                    }}
+                />,
+                document.body
+            )}
+            {/* Leave Workspace */}
+            {createPortal(
+                <ConfirmModal
+                    isModalOpen={isLeaveWorkspaceModalOpen}
+                    title={"Leave Workspace?"}
+                    description={"You can always join back anywhere, anytime. Your progress will be saved without any worries."}
+                    onCancelClick={() => setIsLeaveWorkspaceModalOpen(false)}
+                    confirmButtonText={"Leave"}
+                    customIcon={<><FaUser className={"w-full text-2xl"}/></>}
+                    onConfirmClick={() => handleLeaveWorkspace()}
+                />,
+                document.body
+            )}
         </>
     );
 }

@@ -15,7 +15,7 @@ export interface Section {
     userId: string;
     title: string;
     time: number;
-    updateDate?: string
+    updateDate: string
     category: LoggingType
 }
 
