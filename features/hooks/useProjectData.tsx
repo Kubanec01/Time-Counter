@@ -2,7 +2,6 @@ import {useEffect, useState} from "react";
 import {Project} from "@/types";
 import {db} from "@/app/firebase/config";
 import {doc, onSnapshot} from "firebase/firestore";
-import {documentNotFound} from "@/messages/errors";
 
 
 export const useProjectData = (workspaceId: string, projectId: string) => {
@@ -16,7 +15,6 @@ export const useProjectData = (workspaceId: string, projectId: string) => {
 
             const fetchData = onSnapshot(docRef, snapshot => {
                 if (!snapshot.exists()) {
-                    console.error(documentNotFound);
                     setStatus('not-found')
                     return;
                 }

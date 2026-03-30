@@ -1,3 +1,5 @@
+'use client'
+
 import {addDays, isSameDay, subDays} from "date-fns";
 import {FaAngleLeft, FaAngleRight} from "react-icons/fa";
 import {MaxDateCalendarInput} from "@/features/utilities/date/MaxDateCalendarInput";
@@ -15,6 +17,8 @@ import {LargeButton} from "@/components/LargeButton/LargeButton";
 import {NoResultBar} from "@/components/NoTracksFoundBar/NoResultBar";
 import ListContainer from "@/components/List-Components/ListContainer/ListContainer";
 import MaxTrackingTimeIndicator from "@/components/MaxTrackingTimeIndicator/MaxTrackingTimeIndicator";
+import {useRouter} from "next/navigation";
+import {LoadingPage} from "@/app/LoadingPage/LoadingPage";
 
 
 export const ProjectSectionsSection = ({projectId}: { projectId: string }) => {
@@ -29,16 +33,37 @@ export const ProjectSectionsSection = ({projectId}: { projectId: string }) => {
     const [sections, setSections] = useState<Section[]>([]);
     const [filteredSections, setFilteredSections] = useState<Section[]>([]);
 
+    const {userRole, workspaceId, userId} = useWorkSpaceContext()
+    const {project} = useProjectData(workspaceId, projectId)
+    const workspaceData = useWorkspaceData(workspaceId)
+
+    useEffect(() => {
+
+        if (!workspaceData || !project) return
+
+        const updateData = async () => {
+            const projectsSections: Section[] = workspaceData.projectsSections || []
+            let validSections: Section[]
+
+            if (userRole === 'Member') validSections = projectsSections.filter(s => s.projectId === projectId && s.userId === userId)
+            else validSections = projectsSections.filter(s => s.projectId === projectId)
+
+            const workspaceMembers = await getAllWorkspaceMembers(workspaceId)
+
+            setSections(validSections)
+            setFilteredSections(validSections.filter(s => s.updateDate === formateDateToYMD(filteredDate)))
+            setMembers(workspaceMembers.filter(m => project.membersList.find(id => id === m.userId)))
+        }
+
+        updateData()
+
+    }, [filteredDate, project, projectId, userId, userRole, workspaceData, workspaceId])
+
     // Variables
     const membersOptions: BaseOption[] = [
         {value: "all", label: "All Users"},
         ...members.map(m => ({value: m.userId, label: `${m.name} ${m.surname}`})),
     ]
-
-    // Hooks
-    const {userRole, workspaceId, userId} = useWorkSpaceContext()
-    const {project, status} = useProjectData(workspaceId, projectId)
-    const workspaceData = useWorkspaceData(workspaceId)
 
     // Functions
     const isPlusButtonDisabled = () => {
@@ -64,30 +89,6 @@ export const ProjectSectionsSection = ({projectId}: { projectId: string }) => {
         else if (filteredMemberId === 'all') return userId
         else return filteredMemberId
     }
-
-// Single Snapshot Listener
-    useEffect(() => {
-        if (!workspaceData || !project) return
-
-        const updateData = async () => {
-            const projectsSections: Section[] = workspaceData.projectsSections || []
-            let validSections: Section[]
-
-            if (userRole === 'Member') validSections = projectsSections.filter(s => s.projectId === projectId && s.userId === userId)
-            else validSections = projectsSections.filter(s => s.projectId === projectId)
-
-            const workspaceMembers = await getAllWorkspaceMembers(workspaceId)
-
-            setSections(validSections)
-            setFilteredSections(validSections.filter(s => s.updateDate === formateDateToYMD(filteredDate)))
-            setMembers(workspaceMembers.filter(m => project.membersList.find(id => id === m.userId)))
-        }
-
-        updateData()
-
-    }, [project, projectId, userId, userRole, workspaceData, workspaceId])
-
-    // console.log(filteredSections)
 
     return (
         <>
