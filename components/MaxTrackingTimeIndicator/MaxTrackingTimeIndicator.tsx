@@ -26,7 +26,7 @@ const MaxTrackingTimeIndicator = ({...props}: MaxTrackingTimeIndicatorProps) => 
     const [usersTrackedTime, setUsersTrackedTime] = useState<number>(0)
 
     // Hooks
-    const projectData = useProjectData(props.workspaceId, props.projectId)
+    const {project, status} = useProjectData(props.workspaceId, props.projectId)
 
     const bodyClass = "flex items-center h-full"
     const labelClassname = `${isDataLoading ? "hidden" : "flex"} text-base text-black/50 font-medium`
@@ -34,13 +34,13 @@ const MaxTrackingTimeIndicator = ({...props}: MaxTrackingTimeIndicatorProps) => 
     useEffect(() => {
 
         const updateData = async () => {
-            if (!props.userId || !projectData) return
+            if (!props.userId || !project) return
 
             setIsDataLoading(true)
 
-            const maxDailyTrackingTime = projectData.dailyMaxTrackTime
-            const maxWeeklyTrackingTime = projectData.weeklyMaxTrackTime
-            const usersTrackedTimes = projectData.membersIndividualTimes[props.userId]
+            const maxDailyTrackingTime = project.dailyMaxTrackTime
+            const maxWeeklyTrackingTime = project.weeklyMaxTrackTime
+            const usersTrackedTimes = project.membersIndividualTimes[props.userId]
 
             if (!usersTrackedTimes) {
                 setUsersTrackedTime(0)
@@ -77,7 +77,7 @@ const MaxTrackingTimeIndicator = ({...props}: MaxTrackingTimeIndicatorProps) => 
         }
 
         updateData()
-    }, [projectData, props.formatedDateToYMD, props.userId])
+    }, [project, props.formatedDateToYMD, props.userId])
 
     return (
         <div

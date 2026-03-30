@@ -15,7 +15,7 @@ type ProjectBarProps = {
 
 export const ProjectBar = ({...props}: ProjectBarProps) => {
 
-    const project = useProjectData(props.workspaceId, props.projectId)
+    const {project} = useProjectData(props.workspaceId, props.projectId)
     const router = useRouter();
 
     const enterProject = async () => {

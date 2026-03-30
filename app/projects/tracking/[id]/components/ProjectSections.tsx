@@ -25,11 +25,11 @@ export const ProjectSections = ({...props}: ProjectSectionsProps) => {
 
     // Hooks
     const {workspaceId, userId} = useWorkSpaceContext()
-    const projectData = useProjectData(workspaceId, props.projectId)
+    const {project} = useProjectData(workspaceId, props.projectId)
     const workspaceData = useWorkspaceData(workspaceId)
 
     useEffect(() => {
-        if (!workspaceData || !projectData) return
+        if (!workspaceData || !project) return
 
         const updateData = () => {
             const validSectionsByDates = workspaceData.updatedSectionsByDates.filter((s: UpdatedSectionByDate) => s.projectId === props.projectId)
@@ -42,7 +42,7 @@ export const ProjectSections = ({...props}: ProjectSectionsProps) => {
 
         updateData()
 
-    }, [projectData, props.projectId, workspaceData])
+    }, [project, props.projectId, workspaceData])
 
     return (
         <EntryListPanel

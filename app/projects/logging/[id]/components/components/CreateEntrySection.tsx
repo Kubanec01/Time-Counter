@@ -46,7 +46,7 @@ export const CreateEntrySection = ({projectId}: { projectId: string }) => {
     // Hooks
     const router = useRouter();
     const {workspaceId, userName, userSurname, userRole, userId} = useWorkSpaceContext()
-    const projectData = useProjectData(workspaceId, projectId)
+    const {project, status} = useProjectData(workspaceId, projectId)
     const memberData = useMemberData(workspaceId, userId)
     const workspaceData = useWorkspaceData(workspaceId)
 
@@ -98,21 +98,21 @@ export const CreateEntrySection = ({projectId}: { projectId: string }) => {
 
     // Fetch Data
     useEffect(() => {
-        if (!userId || !projectData || !memberData || !workspaceData) return
+        if (!userId || !project || !memberData || !workspaceData) return
 
         const updateData = () => {
 
             if (memberData.class && memberData.class !== 'unset') {
                 const classOptions = workspaceData.userClasses.find((c: UsersClasses) => c.id === memberData.class)
                 if (classOptions) setOptions(classOptions)
-            } else setOptions(projectData.options.filter(o => o.active))
+            } else setOptions(project.options.filter(o => o.active))
 
-            setTimeFormat(projectData.trackFormat)
+            setTimeFormat(project.trackFormat)
         }
 
         updateData()
 
-    }, [memberData, projectData, userId, workspaceData])
+    }, [memberData, project, userId, workspaceData])
 
     return (
         <>

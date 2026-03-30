@@ -7,6 +7,7 @@ import {documentNotFound} from "@/messages/errors";
 
 export const useProjectData = (workspaceId: string, projectId: string) => {
 
+    const [status, setStatus] = useState<'loading' | 'found' | 'not-found'>()
     const [project, setProject] = useState<Project | null>(null);
 
     useEffect(() => {
@@ -16,11 +17,12 @@ export const useProjectData = (workspaceId: string, projectId: string) => {
             const fetchData = onSnapshot(docRef, snapshot => {
                 if (!snapshot.exists()) {
                     console.error(documentNotFound);
+                    setStatus('not-found')
                     return;
                 }
 
                 setProject(snapshot.data() as Project);
-
+                setStatus('found')
             })
 
             return () => fetchData()
@@ -29,6 +31,6 @@ export const useProjectData = (workspaceId: string, projectId: string) => {
     )
     ;
 
-    if (project !== null) return project
+    return {status, project};
 
 }

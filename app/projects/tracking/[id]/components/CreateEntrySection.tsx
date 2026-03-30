@@ -43,7 +43,7 @@ const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
     // Hooks
     const {workspaceId, userName, userSurname, userRole, userId} = useWorkSpaceContext()
     const router = useRouter();
-    const projectData = useProjectData(workspaceId, props.projectId)
+    const {project, status} = useProjectData(workspaceId, props.projectId)
     const workspaceData = useWorkspaceData(workspaceId)
     const memberData = useMemberData(workspaceId, userId)
 
@@ -75,18 +75,18 @@ const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
 
     // Fetch Data
     useEffect(() => {
-        if (!userId || !workspaceData || !projectData || !memberData) return
+        if (!userId || !workspaceData || !project || !memberData) return
 
         const updateData = () => {
 
             if (memberData.class && memberData.class !== 'unset') {
                 const classOptions = workspaceData.userClasses.find((c: UsersClasses) => c.id === memberData.class)
                 if (classOptions) setOptions(classOptions)
-            } else setOptions(projectData.options.filter(o => o.active))
+            } else setOptions(project.options.filter(o => o.active))
         }
         updateData()
 
-    }, [memberData, projectData, userId, workspaceData])
+    }, [memberData, project, userId, workspaceData])
 
     return (
         <>

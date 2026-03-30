@@ -37,7 +37,7 @@ export const ProjectSectionsSection = ({projectId}: { projectId: string }) => {
 
     // Hooks
     const {userRole, workspaceId, userId} = useWorkSpaceContext()
-    const projectData = useProjectData(workspaceId, projectId)
+    const {project, status} = useProjectData(workspaceId, projectId)
     const workspaceData = useWorkspaceData(workspaceId)
 
     // Functions
@@ -67,7 +67,7 @@ export const ProjectSectionsSection = ({projectId}: { projectId: string }) => {
 
 // Single Snapshot Listener
     useEffect(() => {
-        if (!workspaceData || !projectData) return
+        if (!workspaceData || !project) return
 
         const updateData = async () => {
             const projectsSections: Section[] = workspaceData.projectsSections || []
@@ -80,12 +80,12 @@ export const ProjectSectionsSection = ({projectId}: { projectId: string }) => {
 
             setSections(validSections)
             setFilteredSections(validSections.filter(s => s.updateDate === formateDateToYMD(filteredDate)))
-            setMembers(workspaceMembers.filter(m => projectData.membersList.find(id => id === m.userId)))
+            setMembers(workspaceMembers.filter(m => project.membersList.find(id => id === m.userId)))
         }
 
         updateData()
 
-    }, [projectData, projectId, userId, userRole, workspaceData, workspaceId])
+    }, [project, projectId, userId, userRole, workspaceData, workspaceId])
 
     // console.log(filteredSections)
 

@@ -1,8 +1,10 @@
 import userBgImg from "@/public/gradient-bg.jpg";
+import {twMerge} from "tailwind-merge";
 
 
-export const ProfileAvatar = ({userInitials}: { userInitials: string }) => {
+export const ProfileAvatar = ({userInitials, className}: { userInitials: string, className?: string }) => {
 
+    const styleClass = `aspect-square w-[32px] rounded-[100px] overflow-hidden flex justify-center items-center text-white text-sm font-base`
 
     return (
         <div
@@ -11,8 +13,7 @@ export const ProfileAvatar = ({userInitials}: { userInitials: string }) => {
                 backgroundSize: "cover",
                 backgroundRepeat: "no-repeat",
             }}
-            className={`aspect-square w-[32px] rounded-[100px]
-                         overflow-hidden flex justify-center items-center text-white text-sm font-base`}
+            className={twMerge(styleClass, className)}
         >
             {userInitials}
         </div>
