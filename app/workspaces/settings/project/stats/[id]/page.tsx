@@ -44,17 +44,17 @@ export default function StatsHome() {
     const params = useParams()
     const projectId = params.id as string
     const {mode, workspaceId, userId} = useWorkSpaceContext()
-    const projectData = useProjectData(workspaceId, projectId)
+    const {project} = useProjectData(workspaceId, projectId)
 
 
     useEffect(() => {
-        if (!userId || !projectData || workspaceId === 'unused') return
+        if (!userId || !project || workspaceId === 'unused') return
 
         const updateData = async () => {
             const members = await getAllWorkspaceMembers(workspaceId)
-            const membersIndividualTimes = projectData.membersIndividualTimes
+            const membersIndividualTimes = project.membersIndividualTimes
             const currMonth = format(new Date(), "MM")
-            const totalDailyTrackedTimes = projectData.totalDailyTrackedTimes
+            const totalDailyTrackedTimes = project.totalDailyTrackedTimes
             const totalDailyTrackedArray = Object.entries(totalDailyTrackedTimes).map(([key, value]) => ({
                 date: key,
                 value: value
@@ -79,7 +79,7 @@ export default function StatsHome() {
                 const month = format(date, "MM")
                 const matchedData = totalDailyTrackedArray.filter(track => formatDateToMM(track.date) === month)
 
-                // Is matchedDate lesser than current Date
+                // Is matchedDate lesser than the current date?
                 if (matchedData.find(track => Number(formatDateToMM(track.date)) <= Number(currMonth))) {
                     matchedData.forEach(track => seconds += track.value)
                     return formatSecondsToFloatHours(seconds)
@@ -118,14 +118,14 @@ export default function StatsHome() {
             setTotalTrackedWeekTimes(weeklyStats)
             setTotalTrackedYearTimes(yearlyStats)
             setTotalTrackedMonthTimes(monthlyStats)
-            setProjectTotalTime(projectData.totalTime)
+            setProjectTotalTime(project.totalTime)
             setDailyDifferencePercentage(Math.round(dailyDiffPercentage))
             setMostActiveUsers(mostActiveUsersNames.slice(0, 6))
         }
 
         updateData()
 
-    }, [mode, projectId, projectData, userId, workspaceId])
+    }, [mode, projectId, project, userId, workspaceId])
 
     return (
         <>

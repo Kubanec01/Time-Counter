@@ -42,11 +42,9 @@ const ProjectsBars = () => {
                 className={"relative w-full flex flex-1 overflow-y-hidden"}
             >
                 <span
-                    className={"absolute top-0 left-0 w-[98%] h-10 bg-linear-to-b from-white from-25% z-10 to-transparent"}/>
-                <span
-                    className={"absolute bottom-0 left-0 w-[98%] h-10 bg-linear-to-t from-white from-20% z-40 to-transparent"}/>
+                    className={"absolute top-0 left-0 w-full h-10 bg-linear-to-b from-white from-25% z-[1000] to-transparent"}/>
 
-                <ul className={"pb-[24px] pt-6 w-full overflow-y-auto"}>
+                <ul className={"pb-[24px] pt-6 w-full overflow-y-auto z-50"}>
                     {projectsData.length > 0 ?
                         <>
                             {projectsData.map((p: Project) => (
@@ -63,8 +61,9 @@ const ProjectsBars = () => {
                         </>
                         :
                         <>
-                            <h1 className="text-custom-gray-600 text-center text-lg mt-24">You have no projects created
-                                0.o</h1>
+                            <h1 className="text-custom-gray-600 text-center text-lg mt-24">
+                                You have no projects created 0.o
+                            </h1>
                         </>
                     }
                 </ul>

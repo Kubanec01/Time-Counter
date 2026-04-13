@@ -36,7 +36,7 @@ export const ProjectBar = ({...props}: ProjectBarProps) => {
             <div
                 onClick={() => enterProject()}
                 className={"cursor-pointer ease-in border mb-4 border-black/20 shadow-md rounded-xl" +
-                    " bg-linear-to-t from-black/2 to-white hover:from-black/4 duration-100 w-full flex items-center justify-between px-6 py-4"}
+                    " bg-linear-to-t from-white to-white hover:from-black/4 duration-100 w-full flex items-center justify-between px-6 py-4"}
             >
                 <div
                     className={"w-[30%]"}>

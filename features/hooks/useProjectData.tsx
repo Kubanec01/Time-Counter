@@ -6,11 +6,17 @@ import {doc, onSnapshot} from "firebase/firestore";
 
 export const useProjectData = (workspaceId: string, projectId: string) => {
 
-    const [status, setStatus] = useState<'loading' | 'found' | 'not-found'>()
+    const [status, setStatus] = useState<'loading' | 'found' | 'not-found'>('loading')
     const [project, setProject] = useState<Project | null>(null);
 
     useEffect(() => {
-            if (workspaceId === 'unset' || !projectId) return
+            // Guard against invalid workspaces or missing project id
+            if (workspaceId === 'unset' || workspaceId === 'unused' || !projectId) {
+                // eslint-disable-next-line react-hooks/set-state-in-effect
+                setStatus('loading')
+                setProject(null)
+                return
+            }
             const docRef = doc(db, "realms", workspaceId, "projects", projectId)
 
             const fetchData = onSnapshot(docRef, snapshot => {

@@ -20,7 +20,7 @@ export const CustomizeProject = () => {
 
     const {workspaceId} = useWorkSpaceContext()
     const projectId = useParams().id as string;
-    const projectData = useProjectData(workspaceId, projectId);
+    const {project} = useProjectData(workspaceId, projectId);
 
     const updateTrackFormat = async (value: "Decimal" | "Range") => {
         setOptionTimeFormat(value)
@@ -33,12 +33,12 @@ export const CustomizeProject = () => {
     }
 
     useEffect(() => {
-            if (!projectData) return
+            if (!project) return
 
-            const dailyTrackLimit = projectData.dailyMaxTrackTime
-            const weeklyTrackLimit = projectData.weeklyMaxTrackTime
-            const activeOptions: ProjectOption[] = projectData.options || []
-            const trackFormat = projectData.trackFormat
+            const dailyTrackLimit = project.dailyMaxTrackTime
+            const weeklyTrackLimit = project.weeklyMaxTrackTime
+            const activeOptions: ProjectOption[] = project.options || []
+            const trackFormat = project.trackFormat
             // eslint-disable-next-line react-hooks/set-state-in-effect
             setOptionTimeFormat(trackFormat)
 
@@ -48,7 +48,7 @@ export const CustomizeProject = () => {
             } else setTrackLimitValue(dailyTrackLimit)
 
             setProjectOptions(activeOptions)
-        }, [projectData]
+        }, [project]
     )
 
     return (

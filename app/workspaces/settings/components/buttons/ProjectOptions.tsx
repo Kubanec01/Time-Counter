@@ -8,8 +8,7 @@ import {ChangeFormModal} from "@/app/workspaces/settings/components/ChangeFormMo
 import {useState} from "react";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {db} from "@/app/firebase/config";
-import {doc, getDoc, updateDoc} from "firebase/firestore";
-import {documentNotFound} from "@/messages/errors";
+import {doc, updateDoc} from "firebase/firestore";
 import {useProjectData} from "@/features/hooks/useProjectData";
 import {MediumButton} from "@/components/MediumButton/MediumButton";
 
@@ -22,34 +21,43 @@ type ProjectOptionsProps = {
 
 export const ProjectOptions = ({...props}: ProjectOptionsProps) => {
 
-
+    // Hooks
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
     const [optionName, setOptionName] = useState<string>("");
     const [errorMess, setErrorMess] = useState<string>("");
     const [isCreateLoading, setIsCreateLoading] = useState(false);
+    const [isOptionUpdating, setIsOptionUpdating] = useState(false);
 
-    // Hooks
     const {workspaceId} = useWorkSpaceContext()
-    const projectData = useProjectData(workspaceId, props.projectId)
+    const {project} = useProjectData(workspaceId, props.projectId)
     const {replace} = useReplaceRouteLink()
 
+    const updateOption = async (selectedOption: ProjectOption) => {
+
+        setIsOptionUpdating(true)
+
+        await updateProjectOptions(props.workspaceId, props.projectId, project?.options, selectedOption)
+
+        setIsOptionUpdating(false)
+
+    }
 
     const createNewOption = async (option: ProjectOption) => {
-        if (!projectData) return
+        if (!project) return
 
         setIsCreateLoading(true);
 
         if (optionName.trim() === "") {
             setIsCreateLoading(false);
             return setErrorMess("Something went wrong, try again.")
-        } else if (projectData.options.find(o => o.value === option.value)) {
+        } else if (project.options.find(o => o.value === option.value)) {
             setIsCreateLoading(false);
             return setErrorMess("This option already exists.")
         }
 
         const docRef = doc(db, 'realms', workspaceId, 'projects', props.projectId)
 
-        const updatedOptions = [...projectData.options, option]
+        const updatedOptions = [...project.options, option]
 
         await updateDoc(docRef, {options: updatedOptions})
 
@@ -82,7 +90,7 @@ export const ProjectOptions = ({...props}: ProjectOptionsProps) => {
                 <input
                     value={optionName}
                     onChange={(e) => setOptionName(e.target.value)}
-                    className={"w-full border border-black/20 focus:border-black/40 rounded-md text-sm py-1 px-2 mt-1 outline-none"}
+                    className={"w-full border border-black/20 focus:border-black/40 bg-white rounded-md text-sm py-1 px-2 mt-1 outline-none"}
                     id={"custom-option"}
                     placeholder={"Type your custom option"}
                     type="text"/>
@@ -109,7 +117,7 @@ export const ProjectOptions = ({...props}: ProjectOptionsProps) => {
 
     return (
         <div
-            className={"border-b border-black/20 py-4"}>
+            className={"border-b border-black/20 py-4 relative"}>
             <div>
                 <h1
                     className={"text-[22px]"}>
@@ -135,15 +143,15 @@ export const ProjectOptions = ({...props}: ProjectOptionsProps) => {
                         {"Custom +"}
                     </MediumButton>
                 </li>
-                {props.projectOptions.map(o => (
+                {props.projectOptions.map(option => (
                     <li
-                        key={o.value}
+                        key={option.value}
                     >
                         <MediumButton
-                            onClick={() => updateProjectOptions(props.workspaceId, props.projectId, projectData?.options, o)}
-                            className={`${o.active ? "" : "border-black/20 text-black/20 hover:text-black hover:border-black duration-150"} py-0.5 font-medium border rounded-full`}
+                            onClick={() => updateOption(option)}
+                            className={`${option.active ? "" : "border-black/20 text-black/20 hover:text-black hover:border-black duration-150"} py-0.5 font-medium border rounded-full`}
                         >
-                            {o.label}
+                            {option.label}
                         </MediumButton>
                     </li>
                 ))}
@@ -156,6 +164,13 @@ export const ProjectOptions = ({...props}: ProjectOptionsProps) => {
                     formSection={formBody}
                     isFormSent={false}/>
             </section>
+            {/* Updating Info Bar */}
+            <div
+                className={`${isOptionUpdating ? "opacity-100" : "opacity-0"} absolute bottom-2 right-2 text-sm 
+                duration-300 bg-light-green text-dark-green rounded-md w-fit px-2 py-0.5`}
+            >
+                Updating...
+            </div>
         </div>
     )
 }

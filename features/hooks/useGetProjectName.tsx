@@ -9,16 +9,16 @@ export const useGetProjectName = (
 
     const [projectName, setProjectName] = useState("");
     const {workspaceId} = useWorkSpaceContext()
-    const projectData = useProjectData(workspaceId, projectId)
+    const {project} = useProjectData(workspaceId, projectId)
 
     useEffect(() => {
-        if (!projectData) return
+        if (!project) return
 
-        const fetchProjectName = () => setProjectName(projectData.title)
+        const fetchProjectName = () => setProjectName(project.title)
 
         fetchProjectName()
 
-    }, [projectData]);
+    }, [project]);
 
     return {projectName}
 
