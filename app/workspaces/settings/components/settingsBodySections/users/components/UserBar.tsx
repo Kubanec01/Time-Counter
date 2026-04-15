@@ -5,6 +5,7 @@ import {Dispatch, SetStateAction} from "react";
 import {ProfileAvatar} from "@/components/ProfileAvatar/ProfileAvatar";
 import {RiSettings3Fill} from "react-icons/ri";
 import {useRouter} from "next/navigation";
+import {manageMembersPageUrlPath} from "@/data/Url_Paths/urlPaths";
 
 interface UserBarProps {
     userId: string;
@@ -56,7 +57,7 @@ export const UserBar = ({...props}: UserBarProps) => {
                     {props.class}
                 </div>
                 <button
-                    onClick={() => router.push(`/workspaces/settings/user/${props.userId}`)}
+                    onClick={() => router.push(manageMembersPageUrlPath(props.userId))}
                     className={"absolute right-4 cursor-pointer px-2.5 py-1 text-xs rounded-sm text-black/34 hover:text-black/50 duration-200 bg-gradient-to-b from-white to-black/3 border  border-black/8"}>
                     <RiSettings3Fill/>
                 </button>

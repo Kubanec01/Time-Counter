@@ -2,6 +2,7 @@ import {useEffect} from "react";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {useProjectData} from "@/features/hooks/useProjectData";
 import {useRouter} from "next/navigation";
+import {mainHomePageUrlPath} from "@/data/Url_Paths/urlPaths";
 
 
 export const useRequiredProject = (projectId: string) => {
@@ -12,7 +13,7 @@ export const useRequiredProject = (projectId: string) => {
 
     useEffect(() => {
 
-        if (status === 'not-found') router.replace('/')
+        if (status === 'not-found') router.replace(mainHomePageUrlPath)
 
     }, [router, status])
 

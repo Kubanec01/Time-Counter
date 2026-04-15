@@ -15,8 +15,7 @@ type SettingsBodyProps = {
     setActiveNavIdAction: Dispatch<SetStateAction<string>>
 }
 
-export const SettingsBody = ({...props}: SettingsBodyProps) => {
-
+export const SettingsTemplateBody = ({...props}: SettingsBodyProps) => {
 
     const router = useRouter()
 

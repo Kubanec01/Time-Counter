@@ -25,6 +25,7 @@ import {NumberInput} from "@/components/NumberInput/NumberInput";
 import {ClockTimeInput} from "@/components/ClockTimeInput/ClockTimeInput";
 import {LargeButton} from "@/components/LargeButton/LargeButton";
 import {EntryCreatorPanel} from "@/components/EntryCreatorPanel/EntryCreatorPanel";
+import {projectSettingsMainUrlPath, projectStatsPageUrlPath} from "@/data/Url_Paths/urlPaths";
 
 export const CreateEntrySection = ({projectId}: { projectId: string }) => {
 
@@ -46,7 +47,7 @@ export const CreateEntrySection = ({projectId}: { projectId: string }) => {
     // Hooks
     const router = useRouter();
     const {workspaceId, userName, userSurname, userRole, userId} = useWorkSpaceContext()
-    const {project, status} = useProjectData(workspaceId, projectId)
+    const {project} = useProjectData(workspaceId, projectId)
     const memberData = useMemberData(workspaceId, userId)
     const workspaceData = useWorkspaceData(workspaceId)
 
@@ -122,7 +123,7 @@ export const CreateEntrySection = ({projectId}: { projectId: string }) => {
                     <div
                         className={`${userRole === "Member" ? "hidden" : "flex"} gap-2.5`}>
                         <MediumButton
-                            onClick={() => router.push(`/workspaces/settings/project/stats/${projectId}`)}
+                            onClick={() => router.push(projectStatsPageUrlPath(projectId))}
                             className={"bg-black-gradient"}>
                         <span className={"flex items-center gap-1"}>
                             Stats
@@ -130,7 +131,7 @@ export const CreateEntrySection = ({projectId}: { projectId: string }) => {
                         </span>
                         </MediumButton>
                         <MediumButton
-                            onClick={() => router.push(`/workspaces/settings/project/${projectId}`)}
+                            onClick={() => router.push(projectSettingsMainUrlPath(projectId))}
                             className={"bg-black-gradient"}>
                         <span className={"flex items-center gap-1"}>
                             Settings

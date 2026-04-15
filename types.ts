@@ -127,3 +127,6 @@ export type WorkspacesListItem = {
     workspaceId: string;
     password: string;
 }
+
+
+export type NavSettingsLinksData = { id: string, title: string }

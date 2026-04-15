@@ -22,6 +22,7 @@ import {useSignOutUser} from "@/features/hooks/useSignOutUser";
 import {createPortal} from "react-dom";
 import ConfirmModal from "@/components/modals01/ConfirmModal";
 import {FaUser} from "react-icons/fa";
+import {manageAccountUrlPath, workspaceSettingsMainUrlPath} from "@/data/Url_Paths/urlPaths";
 
 interface Props {
     isUserMenuOpen: boolean
@@ -128,6 +129,7 @@ export const UserMenu = ({...props}: Props) => {
                     <div
                         className={"flex items-center gap-2 my-2 mt-3 justify-start"}>
                         <button
+                            onClick={() => router.push(manageAccountUrlPath(userId ?? "not-found"))}
                             className={"text-black small-button gap-1 bg-black/3 border border-black/15"}>
                             <MdOutlineSettings/>
                             Manage account
@@ -168,7 +170,7 @@ export const UserMenu = ({...props}: Props) => {
                         style={{
                             display: mode === "solo" || userRole === "Member" ? "none" : "flex",
                         }}
-                        onClick={() => router.push("/workspaces/settings")}
+                        onClick={() => router.push(workspaceSettingsMainUrlPath)}
                         className={"items-center w-full px-3 py-2.5 gap-1  text-black/90 text-xs border-b border-white/50 hover:bg-white/10 cursor-pointer"}>
                         <MdOutlineSettings className={"text-sm"}/> Manage workspace
                     </button>

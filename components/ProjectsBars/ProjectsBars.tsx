@@ -42,9 +42,9 @@ const ProjectsBars = () => {
                 className={"relative w-full flex flex-1 overflow-y-hidden"}
             >
                 <span
-                    className={"absolute top-0 left-0 w-full h-10 bg-linear-to-b from-white from-25% z-[1000] to-transparent"}/>
+                    className={"absolute top-0 left-0 w-full h-10 bg-linear-to-b from-white from-25% z-30 to-transparent"}/>
 
-                <ul className={"pb-[24px] pt-6 w-full overflow-y-auto z-50"}>
+                <ul className={"pb-[24px] pt-6 w-full overflow-y-auto z-10"}>
                     {projectsData.length > 0 ?
                         <>
                             {projectsData.map((p: Project) => (

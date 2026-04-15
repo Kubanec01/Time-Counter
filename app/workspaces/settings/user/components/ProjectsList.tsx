@@ -5,6 +5,7 @@ import {getAllProjects} from "@/features/utilities/getAllProjects";
 import {LargeButton} from "@/components/LargeButton/LargeButton";
 import {useRouter} from "next/navigation";
 import {formatSecondsToTimeString} from "@/features/utilities/time/timeOperations";
+import {enterProjectMainPageUrlPath} from "@/data/Url_Paths/urlPaths";
 
 type ProjectsListProps = {
     workspaceId: string;
@@ -43,7 +44,7 @@ const ProjectsList = ({...props}: ProjectsListProps) => {
                         className={"border mb-2 w-full flex items-center justify-between bg-linear-to-b from-vibrant-purple-300/40 to-vibrant-purple-300/40 border-vibrant-purple-300" +
                             " hover:from-vibrant-purple-300/70 duration-150"}
                         type={'button'}
-                        onClick={() => router.push(`/projects/logging/${project.projectId}`)}
+                        onClick={() => router.push(enterProjectMainPageUrlPath('logging',project.projectId))}
                     >
                         <>
                             <div

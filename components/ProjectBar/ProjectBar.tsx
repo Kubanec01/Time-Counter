@@ -3,6 +3,7 @@ import {useRouter} from "next/navigation";
 import {useProjectData} from "@/features/hooks/useProjectData";
 import {arrayUnion, doc, updateDoc} from "firebase/firestore";
 import {db} from "@/app/firebase/config";
+import {enterProjectMainPageUrlPath} from "@/data/Url_Paths/urlPaths";
 
 type ProjectBarProps = {
     userId: string | undefined;
@@ -20,7 +21,7 @@ export const ProjectBar = ({...props}: ProjectBarProps) => {
 
     const enterProject = async () => {
         if (!project || !props.userId) return
-        const replaceToProject = () => router.push(`/projects/${project.type}/${project.projectId}`);
+        const replaceToProject = () => router.push(enterProjectMainPageUrlPath(project.type, project.projectId));
 
         const isUserInMembersList = project.membersList.find(user => user === props.userId)
         if (isUserInMembersList) return replaceToProject()

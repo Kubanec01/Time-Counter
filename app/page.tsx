@@ -65,13 +65,13 @@ export default function HomePage() {
                 :
                 <>
                     <section
-                        className={"relative w-full h-screen pt-[180px]"}
+                        className={"relative w-full h-auto pt-[180px]"}
                     >
 
                         <span
                             className={"fixed top-0 left-0 w-full h-[25%] bg-linear-to-b from-gradient-purple to-transparent z-10"}/>
                         <span
-                            className={"fixed bottom-0 left-0 w-full h-[12%] bg-linear-to-t from-gradient-green to-transparent z-50"}/>
+                            className={"fixed bottom-0 left-0 w-full h-[12%] bg-linear-to-t from-gradient-green to-transparent z-10"}/>
                         {/*Projects Hero*/}
                         <div
                             className={"w-[90%] max-w-small mx-auto border-l flex flex-col justify-center items-start border-black/20 h-[600px] pl-7"}

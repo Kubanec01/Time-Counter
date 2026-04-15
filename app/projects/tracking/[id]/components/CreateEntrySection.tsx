@@ -18,6 +18,7 @@ import {MediumButton} from "@/components/MediumButton/MediumButton";
 import {LargeButton} from "@/components/LargeButton/LargeButton";
 import {SelectBar} from "@/components/SelectBar/SelectBar";
 import {TextInput} from "@/components/TextInput/TextInput";
+import {projectSettingsMainUrlPath, projectStatsPageUrlPath} from "@/data/Url_Paths/urlPaths";
 
 type CreateEntrySectionProps = {
     projectId: string;
@@ -96,7 +97,7 @@ const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                     <div
                         className={`${userRole === "Member" ? "hidden" : "flex"} gap-2.5`}>
                         <MediumButton
-                            onClick={() => router.push(`/workspaces/settings/project/stats/${props.projectId}`)}
+                            onClick={() => router.push(projectStatsPageUrlPath(props.projectId))}
                             className={"bg-black-gradient"}>
                         <span className={"flex items-center gap-1"}>
                             Stats
@@ -104,7 +105,7 @@ const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                         </span>
                         </MediumButton>
                         <MediumButton
-                            onClick={() => router.push(`/workspaces/settings/project/${props.projectId}`)}
+                            onClick={() => router.push(projectSettingsMainUrlPath(props.projectId))}
                             className={"bg-black-gradient"}>
                         <span className={"flex items-center gap-1"}>
                             Settings

@@ -1,12 +1,13 @@
 'use client'
 
 import {useState} from "react";
-import {SettingsBody} from "@/app/workspaces/settings/components/SettingsBody";
+import {SettingsTemplateBody} from "@/app/workspaces/settings/components/SettingsTemplateBody";
 import {Stats} from "@/app/workspaces/settings/project/[id]/components/projectSettingsBodySections/Stats";
 import {ProjectName} from "@/app/workspaces/settings/project/[id]/components/projectSettingsBodySections/ProjectName";
 import {
     CustomizeProject
 } from "@/app/workspaces/settings/project/[id]/components/projectSettingsBodySections/CustomizeProject";
+import {NavSettingsLinksData} from "@/types";
 
 export default function ProjectSettingsPage() {
 
@@ -15,7 +16,7 @@ export default function ProjectSettingsPage() {
     const [primarySectionTitle, setPrimarySectionTitle] = useState("Customize Project");
 
     const navTitle = <h1>Project <br/> Settings</h1>
-    const navLinksData: { id: string, title: string }[] = [
+    const navLinksData: NavSettingsLinksData[] = [
         {
             id: "customize",
             title: "Customize",
@@ -42,7 +43,7 @@ export default function ProjectSettingsPage() {
 
     return (
         <>
-            <SettingsBody
+            <SettingsTemplateBody
                 navTitle={navTitle}
                 activeNavId={activeNavId}
                 primarySectionTitle={primarySectionTitle}
@@ -51,7 +52,7 @@ export default function ProjectSettingsPage() {
                 navbarLinks={navLinksData}
             >
                 {primarySectionBody()}
-            </SettingsBody>
+            </SettingsTemplateBody>
         </>
     )
 }

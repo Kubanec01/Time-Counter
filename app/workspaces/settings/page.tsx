@@ -1,6 +1,6 @@
 'use client'
 
-import {SettingsBody} from "@/app/workspaces/settings/components/SettingsBody";
+import {SettingsTemplateBody} from "@/app/workspaces/settings/components/SettingsTemplateBody";
 import {useState} from "react";
 import {WorkspacesProjects} from "@/app/workspaces/settings/components/settingsBodySections/WorkspacesProjects";
 import {NameAndPassword} from "@/app/workspaces/settings/components/settingsBodySections/NameAndPassword";
@@ -42,7 +42,7 @@ const WorkspaceSettingsHome = () => {
 
     return (
         <>
-            <SettingsBody
+            <SettingsTemplateBody
                 navTitle={navTitle}
                 activeNavId={activeNavId}
                 primarySectionTitle={primarySectionTitle}
@@ -51,7 +51,7 @@ const WorkspaceSettingsHome = () => {
                 navbarLinks={navLinksData}
             >
                 {primarySectionBody()}
-            </SettingsBody>
+            </SettingsTemplateBody>
         </>
     )
 }
