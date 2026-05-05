@@ -130,3 +130,11 @@ export type WorkspacesListItem = {
 
 
 export type NavSettingsLinksData = { id: string, title: string }
+
+export type NavSettingsButtonSpec = {
+    id: string,
+    title: string,
+    specSubtitle: string,
+    navLink: string,
+    bulletPoint: "active" | "inactive"
+}

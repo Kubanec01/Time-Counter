@@ -1,9 +1,10 @@
 'use client'
 
-import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 import {Dispatch, JSX, ReactNode, SetStateAction} from "react";
 import {useRouter} from "next/navigation";
 import {Users} from "@/app/workspaces/settings/components/settingsBodySections/users/Users";
+import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {manageAccountUrlPath} from "@/data/Url_Paths/urlPaths";
 
 type SettingsBodyProps = {
     navbarLinks: { id: string, title: string }[]
@@ -13,11 +14,13 @@ type SettingsBodyProps = {
     setPrimarySectionTitleAction: Dispatch<SetStateAction<string>>;
     activeNavId: string
     setActiveNavIdAction: Dispatch<SetStateAction<string>>
+    isManageAccountNavVisible?: boolean
 }
 
 export const SettingsTemplateBody = ({...props}: SettingsBodyProps) => {
 
     const router = useRouter()
+    const {userId} = useWorkSpaceContext()
 
     const navLink = props.navbarLinks || []
 
@@ -68,13 +71,16 @@ export const SettingsTemplateBody = ({...props}: SettingsBodyProps) => {
                     ))}
                     <li
                         key={"manage-account"}
-                        className={navLinkBaseStyle}>
-                        <span className={navLinkDotStyle}>·</span> Manage account
+                        className={`${navLinkBaseStyle} ${props.isManageAccountNavVisible ? "block" : "hidden"}`}
+                        onClick={() => router.push(manageAccountUrlPath(userId ?? '/'))}>
+                        <span className={navLinkDotStyle}>·</span>
+                        Manage account
                     </li>
                     <li
                         key={"support"}
                         className={navLinkBaseStyle}>
-                        <span className={navLinkDotStyle}>·</span> Support
+                        <span className={navLinkDotStyle}>·</span>
+                        Support
                     </li>
                 </ul>
             </section>

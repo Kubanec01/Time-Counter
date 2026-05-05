@@ -130,7 +130,7 @@ export default function StatsHome() {
     return (
         <>
             <div
-                className={"w-11/12 max-w-medium mx-auto mt-32"}>
+                className={"w-11/12 max-w-medium mb-14 mx-auto mt-32"}>
                 <section
                     className={"w-full mb-3 pl-2"}>
                     <p

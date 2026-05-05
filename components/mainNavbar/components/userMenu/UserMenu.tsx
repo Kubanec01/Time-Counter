@@ -167,9 +167,7 @@ export const UserMenu = ({...props}: Props) => {
                     className={""}
                 >
                     <button
-                        style={{
-                            display: mode === "solo" || userRole === "Member" ? "none" : "flex",
-                        }}
+                        style={{display: mode === "solo" || userRole === "Member" ? "none" : "flex",}}
                         onClick={() => router.push(workspaceSettingsMainUrlPath)}
                         className={"items-center w-full px-3 py-2.5 gap-1  text-black/90 text-xs border-b border-white/50 hover:bg-white/10 cursor-pointer"}>
                         <MdOutlineSettings className={"text-sm"}/> Manage workspace

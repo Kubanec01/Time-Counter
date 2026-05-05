@@ -2,15 +2,13 @@
 
 import {BsBoxArrowInDownRight} from "react-icons/bs";
 import {useRouter} from "next/navigation";
+import {NavSettingsButtonSpec} from "@/types";
 
-export const NavButton = ({...props}: {
-    id: string,
-    title: string,
-    specSubtitle: string,
-    navLink: string,
-    bulletPoint: "active" | "inactive"
-}) => {
+export type NavButtonProps = NavSettingsButtonSpec
 
+
+
+export const NavButton = ({...props}: NavButtonProps) => {
     const router = useRouter()
 
 

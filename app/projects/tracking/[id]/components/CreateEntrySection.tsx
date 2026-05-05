@@ -46,7 +46,7 @@ const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
     const router = useRouter();
     const {project, status} = useProjectData(workspaceId, props.projectId)
     const workspaceData = useWorkspaceData(workspaceId)
-    const memberData = useMemberData(workspaceId, userId)
+    const {data} = useMemberData(workspaceId, userId)
 
     // Functions
     const currFormatedDate = formateDateToYMD(new Date());
@@ -76,18 +76,18 @@ const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
 
     // Fetch Data
     useEffect(() => {
-        if (!userId || !workspaceData || !project || !memberData) return
+        if (!userId || !workspaceData || !project || !data) return
 
         const updateData = () => {
 
-            if (memberData.class && memberData.class !== 'unset') {
-                const classOptions = workspaceData.userClasses.find((c: UsersClasses) => c.id === memberData.class)
+            if (data.class && data.class !== 'unset') {
+                const classOptions = workspaceData.userClasses.find((c: UsersClasses) => c.id === data.class)
                 if (classOptions) setOptions(classOptions)
             } else setOptions(project.options.filter(o => o.active))
         }
         updateData()
 
-    }, [memberData, project, userId, workspaceData])
+    }, [data, project, userId, workspaceData])
 
     return (
         <>

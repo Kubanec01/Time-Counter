@@ -1,10 +1,10 @@
 import {ProjectType} from "@/types";
 
 
-export const manageAccountUrlPath = (accountId: string) =>
-    `/settings/account/${accountId}`
+export const manageAccountUrlPath = (userId: string) =>
+    `/settings/account/${userId}`
 
-export const workspaceSettingsMainUrlPath = 'workspaces/settings'
+export const workspaceSettingsMainUrlPath = '/workspaces/settings'
 
 export const projectStatsPageUrlPath = (projectId: string) =>
     `/workspaces/settings/project/stats/${projectId}`

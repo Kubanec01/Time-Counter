@@ -49,6 +49,7 @@ const WorkspaceSettingsHome = () => {
                 setPrimarySectionTitleAction={setPrimarySectionTitle}
                 setActiveNavIdAction={setActiveNavId}
                 navbarLinks={navLinksData}
+                isManageAccountNavVisible={true}
             >
                 {primarySectionBody()}
             </SettingsTemplateBody>
