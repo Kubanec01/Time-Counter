@@ -10,6 +10,8 @@ export type InputCollection = {
     onChange: (eventValue: string) => void
 }
 
+export type InputCollectionList = Readonly<Record<'primary' | 'secondary', InputCollection[]>>
+
 type UpdateFormModalProps = {
     title: string,
     confirmBtnLabel: string,
@@ -19,13 +21,14 @@ type UpdateFormModalProps = {
     handleBackBtnFn: () => void
     errorMessage: string | null
     isUpdateDataLoading: boolean
-    onSubmitFn: (e: FormEvent) => Promise<void>
+    onSubmitFn: ((e: FormEvent) => Promise<void>) | ((e: FormEvent) => void)
     primaryInputsCollection: InputCollection[]
-    secondaryInputsCollection: InputCollection[]
+    secondaryInputsCollection?: InputCollection[]
 }
 
 const UpdateFormModal = ({...props}: UpdateFormModalProps) => {
 
+    const secondaryInputsCollection = props.secondaryInputsCollection || []
 
     return (
         <>
@@ -62,7 +65,7 @@ const UpdateFormModal = ({...props}: UpdateFormModalProps) => {
                             />
                         </div>
                     ))}
-                    {props.secondaryInputsCollection.map(input => (
+                    {secondaryInputsCollection.map(input => (
                         <div
                             key={input.id}
                             className={"w-full mt-1"}>

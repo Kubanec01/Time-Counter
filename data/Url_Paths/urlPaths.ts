@@ -18,6 +18,21 @@ export const manageMembersPageUrlPath = (userId: string) =>
 export const enterProjectMainPageUrlPath = (projectType: ProjectType, projectId: string) =>
     `/projects/${projectType}/${projectId}`
 
+export const editProjectNamePageUrlPath = (projectId: string) =>
+    `/workspaces/settings/project/edit-project-name/${projectId}`
+
+export const editWorkspaceNamePageUrlPath =
+    "/workspaces/settings/nameAndPassword/edit-name"
+
+export const editWorkspacePasswordPageUrlPath =
+    "/workspaces/settings/nameAndPassword/edit-password"
+
+export const editUserNamePageUrlPath =
+    '/settings/account/edit-user-name'
+
+export const editUserPasswordPageUrlPath =
+    '/settings/account/edit-user-password'
+
 export const signInPageUrlPath = '/sign-in'
 
 export const mainHomePageUrlPath = '/'

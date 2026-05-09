@@ -2,7 +2,7 @@
 
 import {NavSettingsLinksData} from "@/types";
 import {SettingsTemplateBody} from "@/app/workspaces/settings/components/SettingsTemplateBody";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import NameAndSurname from "@/app/settings/account/components/NameAndSurname/NameAndSurname";
 import AccountOperations from "../components/SignOutOrDelete/AccountOperations";
 import EmailAndPassword from "@/app/settings/account/components/EmailAndPassword/EmailAndPassword";

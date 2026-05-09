@@ -5,9 +5,12 @@ import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {db} from "@/app/firebase/config";
 import {doc, updateDoc} from "firebase/firestore";
 import {useGetWorkspacePassword} from "@/features/hooks/useGetWorkspacePassword";
-import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 import RadialPurpleGradientBg from "@/components/RadialPurpleGradientBg/RadialPurpleGradientBg";
-import UpdateFormModal, {InputCollection} from "@/components/modals/UpdateFormModal/UpdateFormModal";
+import UpdateFormModal, {
+    InputCollection,
+    InputCollectionList
+} from "@/components/modals/UpdateFormModal/UpdateFormModal";
+import {useRouter} from "next/navigation";
 
 const WorkspaceName = () => {
 
@@ -18,7 +21,7 @@ const WorkspaceName = () => {
     const [isFormSent, setIsFormSent] = useState(false);
     const {workspaceId} = useWorkSpaceContext()
     const {password} = useGetWorkspacePassword()
-    const {replace} = useReplaceRouteLink()
+    const router = useRouter()
 
     const changeWorkspaceName = async (e: FormEvent) => {
         e.preventDefault();
@@ -41,7 +44,7 @@ const WorkspaceName = () => {
         setIsFormSent(true)
     }
     
-    const formModalCollections: Readonly<Record<string, InputCollection[]>> = {
+    const formModalCollections: InputCollectionList = {
         'primary': [
             {
             id: 'workspace-password',
@@ -69,10 +72,10 @@ const WorkspaceName = () => {
             <UpdateFormModal
                 title={"Change workspace name"}
                 confirmBtnLabel={'Change'}
-                secondaryConfirmBtnLabel={'Back to Home'}
+                secondaryConfirmBtnLabel={'Go Back'}
                 confirmText={"Workspace name has been updated!"}
                 isFormSent={isFormSent}
-                handleBackBtnFn={() => replace('/')}
+                handleBackBtnFn={() => router.back()}
                 errorMessage={errMessage}
                 isUpdateDataLoading={isLoading}
                 onSubmitFn={changeWorkspaceName}

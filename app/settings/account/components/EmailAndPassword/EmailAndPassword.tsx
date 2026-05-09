@@ -2,26 +2,27 @@
 
 import {NavSettingsButtonSpec} from "@/types";
 import {NavButton} from "@/app/workspaces/settings/components/buttons/NavButton";
-import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
-import {useMemberData} from "@/features/hooks/useMemberData";
+import {editUserPasswordPageUrlPath} from "@/data/Url_Paths/urlPaths";
+import {getAuth} from "firebase/auth";
 
 
 const EmailAndPassword = () => {
 
-    const {userId, workspaceId} = useWorkSpaceContext()
-    const {data, error} = useMemberData(workspaceId, userId)
+    const auth = getAuth()
+    const userData = auth.currentUser;
+    const email = userData?.email;
 
     const buttonsList: NavSettingsButtonSpec[] = [
         {
             id: "edit-password",
             title: "Change Password",
             specSubtitle: "Feel free to update your password whenever you want; you can change it as often as you need.",
-            navLink: "---",
+            navLink: editUserPasswordPageUrlPath,
             bulletPoint: "inactive"
         }
     ]
 
-    if(!data?.email) return null;
+    if(!email) return null;
 
     return (
         <ul>
@@ -33,7 +34,7 @@ const EmailAndPassword = () => {
                 </h1>
                 <p
                     className={" text-xs text-black/50 w-[70%]"}>
-                    {data?.email ?? "Loading email..."}
+                    {email ?? "Loading email..."}
                 </p>
             </div>
             {buttonsList.map(buttonItem => (
