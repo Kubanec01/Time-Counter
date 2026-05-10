@@ -4,17 +4,24 @@ import {db} from "@/app/firebase/config";
 
 
 export const deleteSubsectionAndTimeCheckoutsData = async (
-    subSectionId: string,
-    sectionId: string,
-    updatedClockTime: number,
     workspaceId: WorkspaceId,
+    projectId: string,
+    sectionId: string,
+    subSectionId: string,
+    formatedDateToYMD: string,
+    updatedClockTime: number,
+    durationTime: number,
 ) => {
 
     const userRef = doc(db, "realms", workspaceId);
+    const projectRef = doc(db, 'realms', workspaceId, 'projects', projectId)
+    const projectSnap = await getDoc(projectRef)
     const userSnap = await getDoc(userRef);
 
-    if (!userSnap.exists()) return;
+    if (!userSnap.exists() || !projectSnap.exists()) return;
     const data = userSnap.data();
+    const projectData = projectSnap.data();
+    const totalDailyTrackedTimes: Record<string, number> = projectData.totalDailyTrackedTimes
     const timeCheckouts = data.timeCheckouts || []
     const sections = data.projectsSections || []
 
@@ -25,10 +32,11 @@ export const deleteSubsectionAndTimeCheckoutsData = async (
         if (s.sectionId !== sectionId) return s;
 
         return {...s, time: updatedClockTime}
-
     })
 
-    await updateDoc(userRef, {timeCheckouts: updatedCheckouts});
-    await updateDoc(userRef, {projectsSections: updatedSections})
+    totalDailyTrackedTimes[formatedDateToYMD] = totalDailyTrackedTimes[formatedDateToYMD] - durationTime
+
+    await updateDoc(userRef, {timeCheckouts: updatedCheckouts, projectsSections: updatedSections});
+    await updateDoc(projectRef, {totalDailyTrackedTimes: totalDailyTrackedTimes})
 }
 

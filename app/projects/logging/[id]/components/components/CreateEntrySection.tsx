@@ -25,7 +25,7 @@ import {NumberInput} from "@/components/NumberInput/NumberInput";
 import {ClockTimeInput} from "@/components/ClockTimeInput/ClockTimeInput";
 import {LargeButton} from "@/components/LargeButton/LargeButton";
 import {EntryCreatorPanel} from "@/components/EntryCreatorPanel/EntryCreatorPanel";
-import {projectSettingsMainUrlPath, projectStatsPageUrlPath} from "@/data/Url_Paths/urlPaths";
+import { editProjectSettingsPageUrlPath, projectStatsPageUrlPath } from "@/data/Url_Paths/urlPaths";
 
 export const CreateEntrySection = ({projectId}: { projectId: string }) => {
 
@@ -131,7 +131,7 @@ export const CreateEntrySection = ({projectId}: { projectId: string }) => {
                         </span>
                         </MediumButton>
                         <MediumButton
-                            onClick={() => router.push(projectSettingsMainUrlPath(projectId))}
+                            onClick={() => router.push(editProjectSettingsPageUrlPath(projectId, 'logging'))}
                             className={"bg-black-gradient"}>
                         <span className={"flex items-center gap-1"}>
                             Settings

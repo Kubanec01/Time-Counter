@@ -15,13 +15,19 @@ import {formatTimeUnit, updateProjectTotalTime} from "@/features/utilities/time/
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {formateDateToYMD, formateYMDToDMY} from "@/features/utilities/date/dateOperations";
 import {db} from "@/app/firebase/config";
-import {useSectionSettings} from "@/features/hooks/useSectionSettings";
 import {updateUserIndividualTime} from "@/features/utilities/create-&-update/updateUserIndividualTime";
 import SectionCartContainer from "@/components/SectionCart/SectionCartContainer";
 import {LargeButton} from "@/components/LargeButton/LargeButton";
 import UserBadge from "@/components/UserBadge/UserBadge";
 import {updateTotalDailyTrackedTime} from "@/features/utilities/edit/updateTotalDailyTrackedTime";
 
+export type SectionCartContainerData = {
+    userId: string,
+    workspaceId: string,
+    projectId: string,
+    sectionId: string,
+    updatedDate: string
+}
 
 const SectionCart = ({...props}: SectionCartProps) => {
 
@@ -52,7 +58,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
 
 
     // Functions
-    const deleteSubSection = async (subSectionId: string, durationTime: number, sectionId: string) => {
+    const deleteSubSection = async (subSectionId: string, durationTime: number, dateToYMD: string) => {
 
         const updatedClockTime = totalSeconds - durationTime
         resetClockTime(updatedClockTime, reset)
@@ -60,7 +66,15 @@ const SectionCart = ({...props}: SectionCartProps) => {
 
         await updateProjectTotalTime(props.projectId, durationTime, workspaceId, "decrease")
         await updateUserIndividualTime(props.userId, workspaceId, props.projectId, formatedDate, durationTime, "decrease")
-        await deleteSubsectionAndTimeCheckoutsData(subSectionId, sectionId, updatedClockTime, workspaceId)
+        await deleteSubsectionAndTimeCheckoutsData(
+            workspaceId,
+            props.projectId,
+            props.sectionId,
+            subSectionId,
+            dateToYMD,
+            updatedClockTime,
+            durationTime,
+        )
     }
 
     const toggleTimer = async () => {
@@ -117,6 +131,14 @@ const SectionCart = ({...props}: SectionCartProps) => {
         },
     ]
 
+    const dataInfo: SectionCartContainerData = {
+        userId: props.userId ?? '',
+        workspaceId: workspaceId,
+        projectId: props.projectId,
+        sectionId: props.sectionId,
+        updatedDate: props.updatedDate
+    }
+
     // Fetch Initial ClockTime
     useEffect(() => {
 
@@ -154,6 +176,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
 
     return (
         <SectionCartContainer
+            dataInfo={dataInfo}
             listClassName={userRole === 'Member' ? "" : "pt-5"}
             menuButtonsClassname={isRunning ? 'cursor-not-allowed' : ''}
             bodyClassname={"py-2"}
@@ -174,7 +197,7 @@ const SectionCart = ({...props}: SectionCartProps) => {
                         stopTime={s.stopTime}
                         durationTime={s.durationTime}
                         date={formateYMDToDMY(s.date)}
-                        deleteFunction={() => deleteSubSection(s.subSectionId, s.durationTime, s.sectionId)}
+                        deleteFunction={() => deleteSubSection(s.subSectionId, s.durationTime, s.date)}
                     />
                 ))}
             </ul>

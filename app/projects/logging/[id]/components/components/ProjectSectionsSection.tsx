@@ -17,8 +17,6 @@ import {LargeButton} from "@/components/LargeButton/LargeButton";
 import {NoResultBar} from "@/components/NoTracksFoundBar/NoResultBar";
 import ListContainer from "@/components/List-Components/ListContainer/ListContainer";
 import MaxTrackingTimeIndicator from "@/components/MaxTrackingTimeIndicator/MaxTrackingTimeIndicator";
-import {useRouter} from "next/navigation";
-import {LoadingPage} from "@/app/LoadingPage/LoadingPage";
 
 
 export const ProjectSectionsSection = ({projectId}: { projectId: string }) => {

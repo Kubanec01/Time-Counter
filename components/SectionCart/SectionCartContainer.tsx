@@ -10,10 +10,11 @@ import CreateModal from "@/components/modals01/CreateModal";
 import {deleteSection} from "@/features/utilities/delete/deleteSection";
 import {updateSectionName} from "@/features/utilities/create-&-update/updateSectionName";
 import {TextInput} from "@/components/TextInput/TextInput";
+import {SectionCartContainerData} from "@/app/projects/tracking/[id]/components/projectCart/components/SectionCart";
 
 
 type SectionCartProps = {
-    dataInfo: { userId: string, workspaceId: string, projectId: string, sectionId: string, updatedDate: string };
+    dataInfo: SectionCartContainerData;
     sectionList: { id: string, content: JSX.Element | ReactNode }[]
     listClassName?: string;
     bodyClassname?: string;

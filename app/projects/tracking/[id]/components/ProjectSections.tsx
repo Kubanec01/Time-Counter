@@ -22,8 +22,6 @@ export const ProjectSections = ({...props}: ProjectSectionsProps) => {
     // States
     const [sectionsDates, setSectionsDates] = React.useState<string[]>([])
     const [sections, setSections] = React.useState<Section[]>([])
-
-    // Hooks
     const {workspaceId, userId} = useWorkSpaceContext()
     const {project} = useProjectData(workspaceId, props.projectId)
     const workspaceData = useWorkspaceData(workspaceId)
@@ -31,8 +29,14 @@ export const ProjectSections = ({...props}: ProjectSectionsProps) => {
     useEffect(() => {
         if (!workspaceData || !project) return
 
+
         const updateData = () => {
-            const validSectionsByDates = workspaceData.updatedSectionsByDates.filter((s: UpdatedSectionByDate) => s.projectId === props.projectId)
+        const updatedSectionsByDates = workspaceData.updatedSectionsByDates
+
+            if(updatedSectionsByDates === undefined) return
+
+            const validSectionsByDates = updatedSectionsByDates
+                .filter((s: UpdatedSectionByDate) => s.projectId === props.projectId)
 
             const ascendedSectionsByDates = sortDatesAscending(getUniqueDatesFromSectionByDates(validSectionsByDates))
             setSections(workspaceData.projectsSections.filter((s: Section) => s.projectId === props.projectId))
@@ -73,6 +77,7 @@ export const ProjectSections = ({...props}: ProjectSectionsProps) => {
                                             if (i.updateDate === date) {
                                                 return (
                                                     <SectionCart
+                                                        updatedDate={i.updateDate}
                                                         key={i.sectionId}
                                                         userName={i.userName}
                                                         sectionId={i.sectionId}

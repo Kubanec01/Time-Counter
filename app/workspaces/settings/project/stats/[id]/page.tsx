@@ -112,8 +112,7 @@ export default function StatsHome() {
             const dailyDiffPercentage = ((currDailyTrackedTime - yesterdaysTrackedTime) / yesterdaysTrackedTime) * 100
 
 
-            setDailyDifference
-            (dailyDiff)
+            setDailyDifference(dailyDiff)
             setMembersStats(membersStates)
             setTotalTrackedWeekTimes(weeklyStats)
             setTotalTrackedYearTimes(yearlyStats)

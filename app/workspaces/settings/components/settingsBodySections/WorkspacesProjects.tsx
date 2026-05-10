@@ -3,6 +3,7 @@ import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
 import {NavButton} from "@/app/workspaces/settings/components/buttons/NavButton";
 import {Project} from "@/types";
 import {getAllProjects} from "@/features/utilities/getAllProjects";
+import {editProjectSettingsPageUrlPath} from "@/data/Url_Paths/urlPaths";
 
 
 export const WorkspacesProjects = () => {
@@ -39,7 +40,7 @@ export const WorkspacesProjects = () => {
                             bulletPoint={"active"}
                             key={project.projectId}
                             id={project.projectId}
-                            navLink={`/workspaces/settings/project/${project.projectId}`}
+                            navLink={editProjectSettingsPageUrlPath(project.projectId, project.type)}
                             title={project.title}
                             specSubtitle={`${(project.type)[0].toUpperCase()}${(project.type).slice(1)} Project`}/>
                     ))

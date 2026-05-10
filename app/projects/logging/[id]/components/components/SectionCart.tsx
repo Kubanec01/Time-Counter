@@ -5,7 +5,6 @@ import {formatSecondsToTimeString} from "@/features/utilities/time/timeOperation
 import {formateYMDToDMY} from "@/features/utilities/date/dateOperations";
 import SectionCartContainer from "@/components/SectionCart/SectionCartContainer";
 import UserBadge from "@/components/UserBadge/UserBadge";
-import {deleteSection} from "@/features/utilities/delete/deleteSection";
 
 
 export const SectionCart = ({...props}: Section) => {

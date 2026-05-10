@@ -41,7 +41,7 @@ const WorkspaceSettingsHome = () => {
     }
 
     return (
-        <>s
+        <>
             <SettingsTemplateBody
                 navTitle={navTitle}
                 activeNavId={activeNavId}

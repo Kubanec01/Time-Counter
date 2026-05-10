@@ -9,9 +9,6 @@ export const workspaceSettingsMainUrlPath = '/workspaces/settings'
 export const projectStatsPageUrlPath = (projectId: string) =>
     `/workspaces/settings/project/stats/${projectId}`
 
-export const projectSettingsMainUrlPath = (projectId: string) =>
-    `/workspaces/settings/project/${projectId}`
-
 export const manageMembersPageUrlPath = (userId: string) =>
     `/workspaces/settings/user/${userId}`
 
@@ -20,6 +17,9 @@ export const enterProjectMainPageUrlPath = (projectType: ProjectType, projectId:
 
 export const editProjectNamePageUrlPath = (projectId: string) =>
     `/workspaces/settings/project/edit-project-name/${projectId}`
+
+export const editProjectSettingsPageUrlPath = (projectId: string, projectType: string) =>
+    `/workspaces/settings/project/${projectId}?type=${projectType}`
 
 export const editWorkspaceNamePageUrlPath =
     "/workspaces/settings/nameAndPassword/edit-name"

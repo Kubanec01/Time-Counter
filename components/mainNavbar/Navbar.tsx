@@ -37,14 +37,12 @@ const Navbar = () => {
         setIsClient(true)
     }, [])
 
-    if (!isClient) return (
-        <></>
-    )
+    if (!isClient) return null
 
     return (
         <div
             className={`${userId ? "block" : "hidden"} w-[90%] max-w-small backdrop-blur-sm px-4 fixed top-2 left-2/4 -translate-x-2/4 h-[46px]
-             rounded-xl z-[40] bg-[#F8F8F8E6] border border-black/20 shadow-xs flex justify-between items-center`}
+             rounded-xl z-40 bg-[#F8F8F8E6] border border-black/20 shadow-xs flex justify-between items-center`}
         >
             {/*Left Side*/}
             <div
@@ -56,13 +54,11 @@ const Navbar = () => {
                     <img src={"/Logo.png"} alt={"Logo image"} className={"w-[20px] aspect-square"}/>
                 </div>
                 <div
-                    className={"h-full flex items-center justify-start text-nowrap"}
-                >
+                    className={"h-full flex items-center justify-start text-nowrap"}>
                     {mode === "solo"
                         ?
                         <div
-                            className={"text-black/80 bg-black/4 medium-button ml-[18px] border border-black/10"}
-                        >
+                            className={"text-black/80 bg-black/4 medium-button ml-[18px] cursor-auto border border-black/10"}>
                             {welcomeSign()}
                         </div>
                         :

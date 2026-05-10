@@ -18,7 +18,7 @@ import {MediumButton} from "@/components/MediumButton/MediumButton";
 import {LargeButton} from "@/components/LargeButton/LargeButton";
 import {SelectBar} from "@/components/SelectBar/SelectBar";
 import {TextInput} from "@/components/TextInput/TextInput";
-import {projectSettingsMainUrlPath, projectStatsPageUrlPath} from "@/data/Url_Paths/urlPaths";
+import {editProjectSettingsPageUrlPath, projectStatsPageUrlPath} from "@/data/Url_Paths/urlPaths";
 
 type CreateEntrySectionProps = {
     projectId: string;
@@ -44,7 +44,7 @@ const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
     // Hooks
     const {workspaceId, userName, userSurname, userRole, userId} = useWorkSpaceContext()
     const router = useRouter();
-    const {project, status} = useProjectData(workspaceId, props.projectId)
+    const {project} = useProjectData(workspaceId, props.projectId)
     const workspaceData = useWorkspaceData(workspaceId)
     const {data} = useMemberData(workspaceId, userId)
 
@@ -105,7 +105,7 @@ const CreateEntrySection = ({...props}: CreateEntrySectionProps) => {
                         </span>
                         </MediumButton>
                         <MediumButton
-                            onClick={() => router.push(projectSettingsMainUrlPath(props.projectId))}
+                            onClick={() => router.push(editProjectSettingsPageUrlPath(props.projectId, 'tracking'))}
                             className={"bg-black-gradient"}>
                         <span className={"flex items-center gap-1"}>
                             Settings

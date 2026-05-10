@@ -70,6 +70,7 @@ export interface SectionCartProps {
     projectId: string;
     userName: string;
     title: string;
+    updatedDate: string;
     userId: string | undefined;
     type: string | LoggingType
 }

@@ -1,7 +1,7 @@
 import {ToggleButton} from "@/app/workspaces/settings/components/buttons/ToggleButton";
 import {useEffect, useState} from "react";
 import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
-import {useParams} from "next/navigation";
+import {useParams, useSearchParams} from "next/navigation";
 import {ProjectOption} from "@/types";
 import MaxTrackingTime from "@/app/workspaces/settings/components/buttons/MaxTrackingTime";
 import {updateProjectDailyTrackLimit} from "@/features/utilities/create-&-update/updateProjectDailyTrackLimit";
@@ -16,21 +16,10 @@ export const CustomizeProject = () => {
     const [trackLimitValue, setTrackLimitValue] = useState<number>(86400);
     const [activatedTrackLimitPeriod, setActivatedTrackLimitPeriod] = useState<"daily" | "weekly">("daily");
     const [projectOptions, setProjectOptions] = useState<ProjectOption[]>([]);
-
-
     const {workspaceId} = useWorkSpaceContext()
     const projectId = useParams().id as string;
     const {project} = useProjectData(workspaceId, projectId);
-
-    const updateTrackFormat = async (value: "Decimal" | "Range") => {
-        setOptionTimeFormat(value)
-        await updateTrackFormatData(workspaceId, projectId, value)
-    }
-
-    const updateTrackTimeLimit = () => {
-
-        updateProjectDailyTrackLimit(workspaceId, projectId, activatedTrackLimitPeriod, trackLimitValue)
-    }
+    const searchParams = useSearchParams()
 
     useEffect(() => {
             if (!project) return
@@ -51,6 +40,19 @@ export const CustomizeProject = () => {
         }, [project]
     )
 
+    const updateTrackFormat = async (value: "Decimal" | "Range") => {
+        setOptionTimeFormat(value)
+        await updateTrackFormatData(workspaceId, projectId, value)
+    }
+
+    const updateTrackTimeLimit = () => {
+
+        updateProjectDailyTrackLimit(workspaceId, projectId, activatedTrackLimitPeriod, trackLimitValue)
+    }
+
+    const isProjectTypeTracking = searchParams.get('type') === 'tracking'
+
+
     return (
         <section
             className={"w-full flex flex-col"}>
@@ -67,6 +69,8 @@ export const CustomizeProject = () => {
                 </p>
             </div>
             {/* Set time format */}
+            <div
+            className={isProjectTypeTracking ? 'hidden' : 'block'}>
             <ToggleButton
                 title={"Track format"}
                 specSubtitle={" Set time tracking to (From - To) format. This will allow you to set the clock to the exact time you worked, rounded to the nearest 15 minutes. When turned off, time tracking will default to 0.25 mode."}
@@ -76,6 +80,7 @@ export const CustomizeProject = () => {
                     updateTrackFormat(value)
                 }}
             />
+            </div>
             {/* Set max tracking time */}
             <MaxTrackingTime
                 title={"Max. tracking time"}
