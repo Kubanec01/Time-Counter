@@ -136,5 +136,6 @@ export type NavSettingsButtonSpec = {
     title: string,
     specSubtitle: string,
     navLink: string,
+    onClickFn?: () => void,
     bulletPoint: "active" | "inactive"
 }

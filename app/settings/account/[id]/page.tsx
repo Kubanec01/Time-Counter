@@ -1,21 +1,36 @@
 'use client'
 
-import {NavSettingsLinksData} from "@/types";
+import {NavSettingsLinksData, WorkspacesListItem} from "@/types";
 import {SettingsTemplateBody} from "@/app/workspaces/settings/components/SettingsTemplateBody";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import NameAndSurname from "@/app/settings/account/components/NameAndSurname/NameAndSurname";
 import AccountOperations from "../components/SignOutOrDelete/AccountOperations";
 import EmailAndPassword from "@/app/settings/account/components/EmailAndPassword/EmailAndPassword";
 import {useParams, useRouter} from "next/navigation";
-import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {mainHomePageUrlPath} from "@/data/Url_Paths/urlPaths";
+import {getUSerWorkspacesList} from "@/features/utilities/userInfoData";
+import WorkspacesList from "@/app/settings/account/components/WorkspacesList/WorkspacesList";
+import {getAuth} from "firebase/auth";
 
 
 const UserAccountMainPage = () => {
 
     const {id} = useParams()
-    const {userId} = useWorkSpaceContext()
+    const auth = getAuth()
+    const userId = auth.currentUser?.uid
+    const router = useRouter()
     const [primarySectionTitle, setPrimarySectionTitle] =useState('Name and Surname')
+    const [workspacesList, setWorkspacesList] = useState<WorkspacesListItem[] | null>(null)
     const [activeNavId, setActiveNavId] = useState('name-and-surname')
+
+    useEffect(() => {
+        if(id && userId && id !== userId || (!id || !userId)) return router.replace(mainHomePageUrlPath)
+
+            getUSerWorkspacesList(userId)
+                .then(setWorkspacesList)
+                .catch(() => console.error('Failed to fetch user workspaces list'))
+
+    }, [id, router, userId]);
 
 const navLinksData: NavSettingsLinksData[] = [
     {
@@ -42,9 +57,14 @@ const navLinksData: NavSettingsLinksData[] = [
         if (activeNavId === 'name-and-surname' ) return <NameAndSurname/>
         else if (activeNavId === 'email-and-password') return <EmailAndPassword/>
         else if (activeNavId === 'account-operations') return <AccountOperations/>
+        else if (activeNavId === 'workspace-profile') return <WorkspacesList
+        workspacesList={workspacesList ?? []}
+        userId={userId}
+        />
     }
 
     if(id !== userId) return null
+
 
 return (
     <>

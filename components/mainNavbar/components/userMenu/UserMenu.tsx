@@ -22,7 +22,8 @@ import {useSignOutUser} from "@/features/hooks/useSignOutUser";
 import {createPortal} from "react-dom";
 import ConfirmModal from "@/components/modals01/ConfirmModal";
 import {FaUser} from "react-icons/fa";
-import {manageAccountUrlPath, workspaceSettingsMainUrlPath} from "@/data/Url_Paths/urlPaths";
+import {mainHomePageUrlPath, manageAccountUrlPath, workspaceSettingsMainUrlPath} from "@/data/Url_Paths/urlPaths";
+import {useJoinToWorkspace} from "@/features/hooks/useJoinToWorkspace";
 
 interface Props {
     isUserMenuOpen: boolean
@@ -35,9 +36,8 @@ export const UserMenu = ({...props}: Props) => {
     const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
     const [isLeaveWorkspaceModalOpen, setIsLeaveWorkspaceModalOpen] = useState(false);
     const [workspacesList, setWorkspacesList] = useState<WorkspaceCredentials[]>([]);
-
-    // Hooks
     const {replace} = useReplaceRouteLink()
+    const {joinToWorkspace} = useJoinToWorkspace()
     const {signOutUser} = useSignOutUser(auth)
     const router = useRouter();
     const {leaveWorkspace} = useLeaveWorkspace()
@@ -57,26 +57,9 @@ export const UserMenu = ({...props}: Props) => {
         password: string
     ) => {
 
-        if (!userId) throw new Error(invalidUserId)
-        const docRef = doc(db, "realms", workspaceId)
-        const userRef = doc(db, "users", userId)
-
-        if (!docRef || !userRef) return console.error("Could not find docRef or userRef")
-
-        const docSnap = await getDoc(docRef)
-
-        if (!docSnap.exists()) return
-        const data = docSnap.data()
-        const correctPassword = data.password
-        const blackList: Member[] = data.blackList || []
-
-        if (password !== correctPassword) return console.log("Wrong edit-password or Id")
-        if (blackList.some(member => member.userId === userId)) return console.log("You don't have permission to join this workspace.")
-        setLocalStorageUserMode("workspace")
-        setLocalStorageWorkspaceId(workspaceId)
-        setMode("workspace")
-        setWorkspaceId(workspaceId)
-        replace("/")
+        joinToWorkspace(userId, workspaceId, password)
+            .then(() => replace(mainHomePageUrlPath))
+            .catch(err => console.log(err.message))
     }
 
     useEffect(() => {

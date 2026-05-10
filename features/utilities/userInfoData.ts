@@ -1,6 +1,6 @@
 import {documentNotFound, invalidUserId} from "@/messages/errors";
 import {doc, getDoc} from "firebase/firestore";
-import {UserMode, WorkspaceId} from "@/types";
+import {UserMode, WorkspaceId, WorkspacesListItem} from "@/types";
 import {db} from "@/app/firebase/config";
 
 
@@ -37,4 +37,19 @@ export const getUserRoleData = async (
     const data = docSnap.data();
 
     return data.role
+}
+
+
+export const getUSerWorkspacesList = async (userId: string | undefined): Promise<WorkspacesListItem[]> => {
+
+    if (!userId) throw new Error(invalidUserId)
+
+    const userRef = doc(db, 'users', userId);
+    const docSnap = await getDoc(userRef);
+
+    if (!docSnap.exists()) throw new Error(documentNotFound)
+    const data = docSnap.data();
+
+    return data.workspacesList
+
 }

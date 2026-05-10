@@ -3,15 +3,25 @@
 import {BsBoxArrowInDownRight} from "react-icons/bs";
 import {useRouter} from "next/navigation";
 
+type DeleteButtonProps = {
+    id: string,
+    navLink: string,
+    specSubtitle: string
+    title: string
+    onClickFnAction?: () => void,
+}
 
-export const DeleteButton = ({...props}: { id: string, title: string, specSubtitle: string, navLink: string }) => {
+export const DeleteButton = ({...props}: DeleteButtonProps) => {
 
     const router = useRouter();
 
     return (
         <>
             <li
-                onClick={() => router.push(props.navLink)}
+                onClick={() => {
+                    if(props.onClickFnAction) props.onClickFnAction()
+                    else router.push(props.navLink)
+                }}
                 className={"border-b border-black/20 py-3 pr-5 cursor-pointer hover:translate-x-3 duration-200"}>
                 <div
                     className={"flex items-center justify-between"}>

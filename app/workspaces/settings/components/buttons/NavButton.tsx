@@ -15,7 +15,10 @@ export const NavButton = ({...props}: NavButtonProps) => {
     return (
         <>
             <li
-                onClick={() => router.push(props.navLink)}
+                onClick={() => {
+                    if (props.onClickFn) props.onClickFn()
+                    else router.push(props.navLink)
+                }}
                 className={`${props.bulletPoint === "active" ? "pt-3 pb-1" : "py-3"} border-b border-black/20 pr-5 cursor-pointer hover:translate-x-3 duration-200`}>
                 <div
                     className={"flex items-center justify-between"}>
