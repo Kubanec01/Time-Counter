@@ -25,7 +25,7 @@ export const ProjectSectionsSection = ({projectId}: { projectId: string }) => {
     const currDate = new Date();
 
     // States
-    const [members, setMembers] = useState<Member[]>([])
+    const [ members, setMembers] = useState<Member[]>([])
     const [filteredMemberId, setFilteredMemberId] = useState<string | "all">("all")
     const [filteredDate, setFilteredDate] = useState<Date | null>(currDate);
     const [sections, setSections] = useState<Section[]>([]);

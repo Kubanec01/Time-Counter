@@ -15,6 +15,7 @@ type SettingsBodyProps = {
     activeNavId: string
     setActiveNavIdAction: Dispatch<SetStateAction<string>>
     isManageAccountNavVisible?: boolean
+    isUsersWorkspaceAccountsNavInVisible?: boolean
 }
 
 export const SettingsTemplateBody = ({...props}: SettingsBodyProps) => {
@@ -52,7 +53,9 @@ export const SettingsTemplateBody = ({...props}: SettingsBodyProps) => {
                             props.setActiveNavIdAction("users")
                             props.setPrimarySectionTitleAction("Users")
                         }}
-                        className={`${navLinkBaseStyle} ${props.activeNavId === "users" ? "text-vibrant-purple-600 font-medium" : ""}`}>
+                        className={`
+                        ${navLinkBaseStyle} ${props.isUsersWorkspaceAccountsNavInVisible ? "hidden" : "block"} 
+                        ${props.activeNavId === "users" ? "text-vibrant-purple-600 font-medium" : ""}`}>
                         <span className={navLinkDotStyle}>·</span> Users
                     </li>
                     {navLink.map(navItem => (

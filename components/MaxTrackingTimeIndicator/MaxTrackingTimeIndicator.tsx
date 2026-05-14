@@ -26,7 +26,7 @@ const MaxTrackingTimeIndicator = ({...props}: MaxTrackingTimeIndicatorProps) => 
     const [usersTrackedTime, setUsersTrackedTime] = useState<number>(0)
 
     // Hooks
-    const {project, status} = useProjectData(props.workspaceId, props.projectId)
+    const {project} = useProjectData(props.workspaceId, props.projectId)
 
     const bodyClass = "flex items-center h-full"
     const labelClassname = `${isDataLoading ? "hidden" : "flex"} text-base text-black/50 font-medium`
@@ -41,6 +41,8 @@ const MaxTrackingTimeIndicator = ({...props}: MaxTrackingTimeIndicatorProps) => 
             const maxDailyTrackingTime = project.dailyMaxTrackTime
             const maxWeeklyTrackingTime = project.weeklyMaxTrackTime
             const usersTrackedTimes = project.membersIndividualTimes[props.userId]
+
+            console.log(usersTrackedTimes)
 
             if (!usersTrackedTimes) {
                 setUsersTrackedTime(0)
@@ -81,19 +83,15 @@ const MaxTrackingTimeIndicator = ({...props}: MaxTrackingTimeIndicatorProps) => 
 
     return (
         <div
-            className={twMerge(bodyClass, props.bodyClassname)}
-        >
+            className={twMerge(bodyClass, props.bodyClassname)}>
             <h1
-                className={`${isDataLoading ? "block" : "hidden"} text-sm text-black/50`}
-            >
+                className={`${isDataLoading ? "block" : "hidden"} text-sm text-black/50`}>
                 Loading Data...
             </h1>
             <div
-                className={twMerge(labelClassname, props.labelClassname)}
-            >
+                className={twMerge(labelClassname, props.labelClassname)}>
                 <p
-                    className={`${usersTrackedTime === maxTrackingTime ? "text-vibrant-purple-700" : ""} ${usersTrackedTime > maxTrackingTime ? "text-red-400" : ""}`}
-                >
+                    className={`${usersTrackedTime === maxTrackingTime ? "text-vibrant-purple-700" : ""} ${usersTrackedTime > maxTrackingTime ? "text-red-400" : ""}`}>
                     {formatSecondsToFloatHours(usersTrackedTime)}
                 </p>
                 <p>/</p>

@@ -65,7 +65,6 @@ const navLinksData: NavSettingsLinksData[] = [
 
     if(id !== userId) return null
 
-
 return (
     <>
         <SettingsTemplateBody
@@ -76,6 +75,7 @@ return (
             primarySectionTitle={primarySectionTitle}
             setPrimarySectionTitleAction={setPrimarySectionTitle}
             isManageAccountNavVisible={false}
+            isUsersWorkspaceAccountsNavInVisible={true}
         >
             {primarySectionBody()}
         </SettingsTemplateBody>

@@ -12,6 +12,8 @@ import {getUniqueDatesFromSectionByDates} from "@/features/utilities/date/getUni
 import {NoResultBar} from "@/components/NoTracksFoundBar/NoResultBar";
 import {EntryListPanel} from "@/components/EntryListPanel/EntryListPanel";
 import ListContainer from "@/components/List-Components/ListContainer/ListContainer";
+import {formateDateToYMD} from "@/features/utilities/date/dateOperations";
+import MaxTrackingTimeIndicator from "@/components/MaxTrackingTimeIndicator/MaxTrackingTimeIndicator";
 
 type ProjectSectionsProps = {
     projectId: string;
@@ -22,7 +24,7 @@ export const ProjectSections = ({...props}: ProjectSectionsProps) => {
     // States
     const [sectionsDates, setSectionsDates] = React.useState<string[]>([])
     const [sections, setSections] = React.useState<Section[]>([])
-    const {workspaceId, userId} = useWorkSpaceContext()
+    const {workspaceId, userId, userRole} = useWorkSpaceContext()
     const {project} = useProjectData(workspaceId, props.projectId)
     const workspaceData = useWorkspaceData(workspaceId)
 
@@ -48,6 +50,15 @@ export const ProjectSections = ({...props}: ProjectSectionsProps) => {
 
     }, [project, props.projectId, workspaceData])
 
+    // Tato funkcia je zatial zakomentovana, v pripade sirsieho vyuzitia trackovanaia viac userov v
+    // tema ebude opatovne spristupnena
+
+    // const maxTrackingTimeIndicatorUserValue = () => {
+    //     if (userRole === 'Member') return userId
+    //     else if (filteredMemberId === 'all') return userId
+    //     else return filteredMemberId
+    // }
+
     return (
         <EntryListPanel
             classname={"mb-10"}
@@ -57,16 +68,25 @@ export const ProjectSections = ({...props}: ProjectSectionsProps) => {
                     bodyClass={sections.length === 0 ? "flex" : "hidden"}
                     label={"No tracks found 0.o"}
                 />
-                <ul className={`${sections.length === 0 ? "hidden" : "flex"} w-full flex-col gap-[20px]`}
+                <ul className={`${sections.length === 0 ? "hidden" : "flex"} w-full flex-col gap-8`}
                 >
                     {sectionsDates.map((date) => (
                         <li
                             key={date}
-                            className="w-full"
-                        >
-                            <h1 className="text-sm text-black/50 font-medium ml-2 mb-2">
-                                {setNameByDate(date)}
-                            </h1>
+                            className="w-full">
+                            <div
+                            className={"flex items-center justify-between"}>
+                                <h1 className="text-sm text-black/50 font-medium ml-2 mb-2">
+                                    {setNameByDate(date)}
+                                </h1>
+                                <MaxTrackingTimeIndicator
+                                    userId={userId}
+                                    workspaceId={workspaceId}
+                                    projectId={props.projectId}
+                                    formatedDateToYMD={date}
+                                    bodyClassname={"mr-1"}
+                                />
+                            </div>
                             <ListContainer
                                 headerTitles={['Name', 'Type', 'Time', '']}
                             >
