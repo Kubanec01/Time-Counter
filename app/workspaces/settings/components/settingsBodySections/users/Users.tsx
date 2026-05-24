@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Member} from "@/types";
-import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth, db} from "@/app/firebase/config";
 import {collection, doc, getDoc, getDocs, onSnapshot} from "firebase/firestore";

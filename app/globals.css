@@ -42,6 +42,10 @@
         @apply bg-linear-to-t from-black to-black/60 hover:to-black/55 text-white;
     }
 
+    .bg-disabled-gradient {
+        @apply bg-linear-to-t from-custom-gray-800 to-custom-gray-700 hover:to-custom-gray-700/90 text-gray-100 cursor-not-allowed;
+    }
+
     .max-w-small {
         @apply max-w-[900px];
     }
@@ -59,7 +63,6 @@ body {
 .font-pacifico {
     font-family: 'Pacifico', cursive;
 }
-
 
 
 li {

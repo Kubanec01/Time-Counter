@@ -7,14 +7,12 @@ import {
     MdOutlineSettings,
 } from "react-icons/md";
 import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
-import {auth, db} from "@/app/firebase/config";
-import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
-import {setLocalStorageUserMode, setLocalStorageWorkspaceId} from "@/features/utilities/local-storage/localStorage";
+import {db} from "@/app/firebase/config";
+import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
-import {Member, WorkspaceCredentials} from "@/types";
-import {doc, getDoc, onSnapshot} from "firebase/firestore";
+import {WorkspaceCredentials} from "@/types";
+import {doc, onSnapshot} from "firebase/firestore";
 import {removeWorkspaceFromList} from "@/features/utilities/delete/removeWorkspaceFromList";
-import {invalidUserId} from "@/messages/errors";
 import {useRouter} from "next/navigation";
 import {PiSignOutLight} from "react-icons/pi";
 import {useLeaveWorkspace} from "@/features/hooks/useLeaveWorkspace";
@@ -38,7 +36,7 @@ export const UserMenu = ({...props}: Props) => {
     const [workspacesList, setWorkspacesList] = useState<WorkspaceCredentials[]>([]);
     const {replace} = useReplaceRouteLink()
     const {joinToWorkspace} = useJoinToWorkspace()
-    const {signOutUser} = useSignOutUser(auth)
+    const {signOutUser} = useSignOutUser()
     const router = useRouter();
     const {leaveWorkspace} = useLeaveWorkspace()
     const {userName, userSurname, userInitials, userRole, userId, setMode, setWorkspaceId, mode} = useWorkSpaceContext()
@@ -82,7 +80,7 @@ export const UserMenu = ({...props}: Props) => {
         <>
             <div
                 onMouseLeave={() => props.setIsUserMenuOpen(false)}
-                className={`${isMenuOpen} fixed top-12 right-0 rounded-xl z-50 bg-gray-300 shadow-xl border border-black/15 overflow-hidden backdrop-blur-lg flex flex-col w-[286px]`}>
+                className={`${isMenuOpen} fixed top-12 right-0 rounded-xl z-50 bg-gray-300 shadow-xl border border-black/15 overflow-hidden backdrop-blur-lg flex flex-col w-71.5`}>
                 {/* User section */}
                 <section
                     className={"px-3 bg-white pt-3"}>
@@ -95,7 +93,7 @@ export const UserMenu = ({...props}: Props) => {
                         backgroundSize: "cover",
                         backgroundRepeat: "no-repeat",
                     }}
-                    className={`aspect-square w-[40px] rounded-full
+                    className={`aspect-square w-10 rounded-full
                          overflow-hidden flex justify-center items-center text-white text-base`}
                 >
                     {userInitials}

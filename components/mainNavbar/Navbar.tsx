@@ -3,7 +3,7 @@
 
 import {useEffect, useState} from "react";
 import {UserMenu} from "@/components/mainNavbar/components/userMenu/UserMenu";
-import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 import {getHours} from "date-fns";
 import {ProfileAvatar} from "@/components/ProfileAvatar/ProfileAvatar";

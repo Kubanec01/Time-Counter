@@ -1,4 +1,4 @@
-import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
 import {removeLocalStorageWorkspaceIdAndUserMode} from "@/features/utilities/local-storage/localStorage";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 

@@ -1,5 +1,5 @@
 import {useEffect} from "react";
-import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
 import {useProjectData} from "@/features/hooks/useProjectData";
 import {useRouter} from "next/navigation";
 import {mainHomePageUrlPath} from "@/data/Url_Paths/urlPaths";

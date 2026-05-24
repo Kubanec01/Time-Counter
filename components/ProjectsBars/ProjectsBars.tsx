@@ -3,7 +3,7 @@
 import {Project} from "@/types";
 import {collection, onSnapshot} from "firebase/firestore";
 import React, {useEffect, useState} from "react";
-import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
 import {useMounted} from "@/features/hooks/useMounted";
 import {formatSecondsToTimeString} from "@/features/utilities/time/timeOperations";
 import {ProjectBar} from "@/components/ProjectBar/ProjectBar";

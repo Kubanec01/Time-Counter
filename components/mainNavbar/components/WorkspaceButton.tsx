@@ -1,4 +1,4 @@
-import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 import {RiTeamFill, RiUserReceived2Fill} from "react-icons/ri";
 

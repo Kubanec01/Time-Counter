@@ -3,7 +3,7 @@
 import {Dispatch, JSX, ReactNode, SetStateAction} from "react";
 import {useRouter} from "next/navigation";
 import {Users} from "@/app/workspaces/settings/components/settingsBodySections/users/Users";
-import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
 import {manageAccountUrlPath} from "@/data/Url_Paths/urlPaths";
 
 type SettingsBodyProps = {

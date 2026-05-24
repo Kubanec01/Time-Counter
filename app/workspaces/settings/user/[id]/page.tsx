@@ -3,7 +3,7 @@
 
 import {useParams} from "next/navigation";
 import {useMemberData} from "@/features/hooks/useMemberData";
-import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
 import TitleBar from "@/app/workspaces/settings/user/components/TitleBar";
 import {LoadingPage} from "@/app/LoadingPage/LoadingPage";
 import UserInfo from "@/app/workspaces/settings/user/components/UserInfo";

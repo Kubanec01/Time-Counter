@@ -21,6 +21,7 @@ type UpdateFormModalProps = {
     handleBackBtnFn: () => void
     errorMessage: string | null
     isUpdateDataLoading: boolean
+    isConfirmBtnDisabled: boolean
     onSubmitFn: ((e: FormEvent) => Promise<void>) | ((e: FormEvent) => void)
     primaryInputsCollection: InputCollection[]
     secondaryInputsCollection?: InputCollection[]
@@ -33,7 +34,7 @@ const UpdateFormModal = ({...props}: UpdateFormModalProps) => {
     return (
         <>
             <div
-                className={"w-75 border border-black/16 shadow-lg rounded-xl bg-white/30 backdrop-blur-lg p-6 mx-auto"}>
+                className={"w-75 border border-black/16 shadow-lg rounded-xl bg-white/60 backdrop-blur-lg p-6 mx-auto"}>
                 <section>
                     <BiSolidMessageAltEdit className={"text-[34px] mx-auto"}/>
                     <h1
@@ -89,9 +90,10 @@ const UpdateFormModal = ({...props}: UpdateFormModalProps) => {
                         {props.errorMessage}
                     </span>
                     <button
-                        disabled={props.isUpdateDataLoading}
+                        disabled={props.isConfirmBtnDisabled}
                         type="submit"
-                        className={"medium-button bg-black-gradient mt-4"}>
+                        className={`${props.isConfirmBtnDisabled ? 'bg-disabled-gradient' : 'bg-black-gradient'}
+                        medium-button mt-4`}>
                         {props.confirmBtnLabel}
                     </button>
                     <button

@@ -6,7 +6,7 @@ import {
 } from "@/app/workspaces/settings/components/settingsBodySections/users/components/membersSections/noUsersMess";
 import DeleteModal from "@/components/modals/DeleteModal";
 import {removeUser} from "@/features/utilities/delete/removeUser";
-import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
 import {setUserRole} from "@/features/utilities/edit/setUSerRole";
 import ConfirmModal from "@/components/modals/ConfirmModal";
 import {useAuthState} from "react-firebase-hooks/auth";

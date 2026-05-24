@@ -6,7 +6,7 @@ import {ProjectOption} from "@/types";
 import {updateProjectOptions} from "@/features/utilities/create-&-update/updateProjectOption";
 import {ChangeFormModal} from "@/app/workspaces/settings/components/ChangeFormModal";
 import {useState} from "react";
-import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
 import {db} from "@/app/firebase/config";
 import {doc, updateDoc} from "firebase/firestore";
 import {useProjectData} from "@/features/hooks/useProjectData";

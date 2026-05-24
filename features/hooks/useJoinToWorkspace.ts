@@ -3,7 +3,7 @@ import {doc, getDoc} from "firebase/firestore";
 import {db} from "@/app/firebase/config";
 import {Member} from "@/types";
 import {setLocalStorageUserMode, setLocalStorageWorkspaceId} from "@/features/utilities/local-storage/localStorage";
-import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
 
 
 export const useJoinToWorkspace = () => {

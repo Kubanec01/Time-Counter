@@ -1,6 +1,6 @@
 import {Section} from "@/types";
 import React, {JSX, ReactNode} from "react";
-import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
 import {formatSecondsToTimeString} from "@/features/utilities/time/timeOperations";
 import {formateYMDToDMY} from "@/features/utilities/date/dateOperations";
 import SectionCartContainer from "@/components/SectionCart/SectionCartContainer";

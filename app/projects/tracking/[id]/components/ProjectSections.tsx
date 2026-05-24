@@ -6,7 +6,7 @@ import {setNameByDate} from "@/features/utilities/date/setNameByDate";
 import SectionCart from "@/app/projects/tracking/[id]/components/projectCart/components/SectionCart";
 import {useProjectData} from "@/features/hooks/useProjectData";
 import {useWorkspaceData} from "@/features/hooks/useWorkspaceData";
-import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
 import {sortDatesAscending} from "@/features/utilities/date/sortDates";
 import {getUniqueDatesFromSectionByDates} from "@/features/utilities/date/getUniqueDates";
 import {NoResultBar} from "@/components/NoTracksFoundBar/NoResultBar";

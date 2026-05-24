@@ -1,7 +1,7 @@
 import {Member, Role} from "@/types";
 import {doc, getDoc, updateDoc} from "firebase/firestore";
 import {db} from "@/app/firebase/config";
-import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
 import {FaCircleUser} from "react-icons/fa6";
 import {MdEmail, MdOutlineShield} from "react-icons/md";
 

@@ -5,7 +5,7 @@ import {BaseOption, LoggingType, ProjectOption, UsersClasses} from "@/types";
 import {MaxDateCalendarInput} from "@/features/utilities/date/MaxDateCalendarInput";
 import React, {FormEvent, useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
-import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
 import {
     formatedTwoTimesDifferenceToSeconds,
     formatFloatHoursToSeconds, formatSecondsToFloatHours, updateProjectTotalTime

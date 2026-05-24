@@ -3,12 +3,13 @@ import {FormEvent, useState} from "react";
 import {throwRandomNum} from "@/features/utilities/throwRandomNum";
 import {createNewWorkspace} from "@/features/utilities/create-&-update/createNewWorkspace";
 import {fetchMessages} from "@/messages/errors";
-import {Member} from "@/types";
+import {ErrorBannerValues, Member} from "@/types";
 import {setLocalStorageUserMode, setLocalStorageWorkspaceId} from "@/features/utilities/local-storage/localStorage";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
-import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
 import {getAllWorkspaceMembers} from "@/features/utilities/getAllWorkspaceMembers";
 import {logIntoWorkspace} from "@/features/utilities/sign-utils/logIntoWorkspace";
+import {useErrorBannerContext} from "@/features/hooks/context/useErrorBannerContext";
 
 type WorkspaceFormProps = {
     workspaceAction: "create" | "join"
@@ -20,7 +21,8 @@ export const WorkspaceForm = ({...props}: WorkspaceFormProps) => {
     const [name, setName] = useState("");
     const [workspaceInputId, setWorkspaceInputId] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
+    const {setErrorCode} = useErrorBannerContext()
+    // const [error, setError] = useState("");
 
     // Hooks
     const {replace} = useReplaceRouteLink()
@@ -37,7 +39,7 @@ export const WorkspaceForm = ({...props}: WorkspaceFormProps) => {
         if (!userId) return
 
 
-        if (password.trim() === "" || name.trim() === "") return setError('Missing password or name')
+        if (password.trim() === "" || name.trim() === "") return setErrorCode('EMPTY_INPUTS')
 
 
         if (props.workspaceAction === "create") {
@@ -66,8 +68,6 @@ export const WorkspaceForm = ({...props}: WorkspaceFormProps) => {
                 class: "unset"
             }
 
-            console.log(workspaceInputId)
-
             try {
                 await logIntoWorkspace(
                     userId,
@@ -76,17 +76,11 @@ export const WorkspaceForm = ({...props}: WorkspaceFormProps) => {
                     workspaceMembersData,
                     newMember
                 )
-                setError("")
+                setErrorCode(null)
             } catch (err) {
                 if (err instanceof Error) {
-                    if (err.message === fetchMessages.workspaceNotFound) {
-                        return setError("Wrong workspace name or password.")
-                    } else if (err.message === fetchMessages.wrongPassword) {
-                        return setError("Wrong workspace name or password.")
-                    } else if (err.message === fetchMessages.invalidPermission) {
-                        return setError("You don't have permission to join this workspace.")
-                    } else return setError("Something went wrong, try again.")
-                }
+                    return setErrorCode(err.message as ErrorBannerValues)
+                } else return setErrorCode('UNKNOWN_ERROR')
             }
 
 
@@ -102,7 +96,7 @@ export const WorkspaceForm = ({...props}: WorkspaceFormProps) => {
 
     return (
         <div
-            className={"w-[290px] border border-black/10 shadow-lg mt-14 rounded-xl bg-white/90 p-6 mx-auto"}
+            className={"w-72.5 border border-black/10 shadow-lg mt-14 rounded-xl bg-white/90 p-6 mx-auto"}
         >
             <GiSunSpear className={"text-3xl mx-auto"}/>
             <h1
@@ -150,13 +144,8 @@ export const WorkspaceForm = ({...props}: WorkspaceFormProps) => {
                         placeholder={"Enter workspace password"}
                         type="password"/>
                 </div>
-                <p
-                    className={"text-xs font text-center font-semibold text-red-400"}
-                >
-                    {error}
-                </p>
                 <button
-                    className={"medium-button bg-black-gradient rounded-lg py-1.5"}
+                    className={"medium-button bg-black-gradient rounded-lg py-1.5 mt-6"}
                 >
                     {btnTitle}
                 </button>

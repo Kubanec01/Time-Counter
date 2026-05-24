@@ -140,3 +140,11 @@ export type NavSettingsButtonSpec = {
     onClickFn?: () => void,
     bulletPoint: "active" | "inactive"
 }
+
+export type ErrorBannerCodes = {
+    GENERAL: 'UNKNOWN_ERROR',
+    USER: 'EMPTY_INPUTS' | 'PASSWORDS_NOT_MATCH' | 'INVALID_PASSWORD' | 'USER_NOT_FOUND' | 'WEAK_PASSWORD'
+    WORKSPACE: 'WORKSPACE_NOT_FOUND' | 'WRONG_PASSWORD' | 'INVALID_PERMISSION'
+}
+
+export type ErrorBannerValues = ErrorBannerCodes[keyof ErrorBannerCodes]

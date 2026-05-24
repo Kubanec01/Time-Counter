@@ -3,7 +3,7 @@
 import {useParams} from "next/navigation";
 import {useEffect, useState} from "react";
 import {Member} from "@/types";
-import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
 import {format, subDays} from "date-fns";
 import {formateDateToYMD} from "@/features/utilities/date/dateOperations";
 import {formatDateToMM, formatSecondsToFloatHours} from "@/features/utilities/time/timeOperations";

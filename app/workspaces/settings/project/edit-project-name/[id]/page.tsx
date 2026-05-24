@@ -1,7 +1,7 @@
 'use client'
 
 import {FormEvent, useState} from "react";
-import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
 import {useGetWorkspacePassword} from "@/features/hooks/useGetWorkspacePassword";
 import {doc, updateDoc} from "firebase/firestore";
 import {db} from "@/app/firebase/config";

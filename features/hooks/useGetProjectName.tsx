@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
 import {useProjectData} from "@/features/hooks/useProjectData";
 
 

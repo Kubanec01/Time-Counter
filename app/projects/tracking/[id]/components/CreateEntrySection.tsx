@@ -5,7 +5,7 @@ import {RiBarChart2Fill, RiSettings3Fill} from "react-icons/ri";
 import {BaseOption, LoggingType, ProjectOption, UsersClasses} from "@/types";
 import React, {FormEvent, useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
-import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
 import {formatFloatHoursToSeconds} from "@/features/utilities/time/timeOperations";
 import {createNewSection} from "@/features/utilities/create-&-update/createNewSection";
 import {updateUserIndividualTime} from "@/features/utilities/create-&-update/updateUserIndividualTime";

@@ -6,7 +6,7 @@ import {MaxDateCalendarInput} from "@/features/utilities/date/MaxDateCalendarInp
 import {SectionCart} from "@/app/projects/logging/[id]/components/components/SectionCart";
 import React, {useEffect, useState} from "react";
 import {BaseOption, Member, Section} from "@/types";
-import {useWorkSpaceContext} from "@/features/contexts/workspaceContext";
+import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
 import {formateDateToYMD} from "@/features/utilities/date/dateOperations";
 import {getAllWorkspaceMembers} from "@/features/utilities/getAllWorkspaceMembers";
 import {useProjectData} from "@/features/hooks/useProjectData";

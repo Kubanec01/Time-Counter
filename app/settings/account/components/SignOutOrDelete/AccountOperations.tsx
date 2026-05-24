@@ -3,12 +3,14 @@ import {DeleteButton} from "@/app/workspaces/settings/components/buttons/DeleteB
 import {useSignOutUser} from "@/features/hooks/useSignOutUser";
 import {getAuth} from "firebase/auth";
 import {mainHomePageUrlPath} from "@/data/Url_Paths/urlPaths";
+import LogOutUserModal from "@/components/modals/LogOutUserModal/LogOutUserModal";
+import {useState} from "react";
 
 
 const AccountOperations = () => {
+    const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false)
 
-    const auth = getAuth()
-    const {signOutUser} = useSignOutUser(auth)
+    const updateModalView = () => setIsLogoutModalOpen(!isLogoutModalOpen)
 
     const buttonsList: NavSettingsButtonSpec[] = [
         {
@@ -16,7 +18,7 @@ const AccountOperations = () => {
             title: "Sign Out",
             specSubtitle: "Feel free to sign out whenever you need; your session can be resumed anytime by logging back in.\"",
             navLink: mainHomePageUrlPath,
-            onClickFn: () => signOutUser(),
+            onClickFn: updateModalView,
             bulletPoint: "inactive"
         },
         {
@@ -28,19 +30,26 @@ const AccountOperations = () => {
         }
     ]
 
+
     return (
-        <ul>
-            {buttonsList.map(buttonItem => (
-                <DeleteButton
-                    key={buttonItem.id}
-                    id={buttonItem.id}
-                    title={buttonItem.title}
-                    onClickFnAction={buttonItem.onClickFn}
-                    specSubtitle={buttonItem.specSubtitle}
-                    navLink={buttonItem.navLink}
-                />
-            ))}
-        </ul>
+        <>
+            <ul>
+                {buttonsList.map(buttonItem => (
+                    <DeleteButton
+                        key={buttonItem.id}
+                        id={buttonItem.id}
+                        title={buttonItem.title}
+                        onClickFnAction={buttonItem.onClickFn}
+                        specSubtitle={buttonItem.specSubtitle}
+                        navLink={buttonItem.navLink}
+                    />
+                ))}
+            </ul>
+            <LogOutUserModal
+                isLogoutModalOpen={isLogoutModalOpen}
+                onCancelClickFn={updateModalView}
+                onConfirmFn={updateModalView}/>
+        </>
     )
 }
 

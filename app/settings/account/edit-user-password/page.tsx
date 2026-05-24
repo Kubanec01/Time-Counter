@@ -6,6 +6,8 @@ import {useRouter} from "next/navigation";
 import {FormEvent, useState} from "react";
 import {getAuth, updatePassword, reauthenticateWithCredential, EmailAuthProvider} from "firebase/auth";
 import {mainHomePageUrlPath} from "@/data/Url_Paths/urlPaths";
+import {useErrorBannerContext} from "@/features/hooks/context/useErrorBannerContext";
+import {FirebaseError} from "@firebase/app";
 
 
 const EditUserPassword = () => {
@@ -17,30 +19,42 @@ const EditUserPassword = () => {
     const [newPassword, setNewPassword] = useState<string>('')
     const [newPasswordConfirm, setNewPasswordConfirm] = useState<string>('')
     const router = useRouter()
+    const {setErrorCode} = useErrorBannerContext()
+
+    const isInputsEmpty = oldPassword.trim() === '' || newPassword.trim() === '' || newPasswordConfirm.trim() === ''
+
+    const handleNavigate = () => {
+        if (isFormSent) router.replace(mainHomePageUrlPath)
+        else router.back()
+    }
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
 
-        if(newPassword !== newPasswordConfirm) return setErrorMess('Passwords do not match')
-        else if(newPassword.trim() === '') return setErrorMess('Password cannot be empty')
+        if (newPassword !== newPasswordConfirm) return setErrorCode('PASSWORDS_NOT_MATCH')
+        else if (newPassword.trim() === '') return setErrorCode('EMPTY_INPUTS')
 
         const auth = getAuth()
         const user = auth.currentUser
         const userEmail = user?.email
 
-        if(!userEmail) return console.error('User is not logged in')
+        if (!userEmail) return console.error('User is not logged in')
 
 
         try {
-        const credential = EmailAuthProvider.credential(user.email, oldPassword);
-        await reauthenticateWithCredential(user, credential)
-        await updatePassword(user, newPassword)
+            const credential = EmailAuthProvider.credential(user.email, oldPassword);
+            await reauthenticateWithCredential(user, credential)
+            await updatePassword(user, newPassword)
             setIsProcessLoading(false)
             setIsFormSent(true)
+            setErrorCode(null)
         } catch (error) {
-            console.error(error)
             setIsProcessLoading(false)
-            setErrorMess('Something went wrong, try again later.')
+            if (error instanceof FirebaseError) {
+                console.log(error.code)
+                if (error.code === 'auth/weak-password') setErrorCode('WEAK_PASSWORD')
+                else if (error.code === 'auth/invalid-credential') setErrorCode('INVALID_PASSWORD')
+            } else setErrorCode('UNKNOWN_ERROR')
         }
     }
 
@@ -77,21 +91,22 @@ const EditUserPassword = () => {
 
 
     return (
-    <RadialPurpleGradientBg>
-        <UpdateFormModal
-            title={'Change Password'}
-            confirmBtnLabel={'Change'}
-            secondaryConfirmBtnLabel={'Back to Home'}
-            confirmText={'Your password was updated!'}
-            isFormSent={isFormSent}
-            handleBackBtnFn={() => router.replace(mainHomePageUrlPath)}
-            errorMessage={errorMess}
-            isUpdateDataLoading={isProcessLoading}
-            onSubmitFn={handleSubmit}
-            primaryInputsCollection={inputCollection.primary}
-            secondaryInputsCollection={inputCollection.secondary}
-        />
-    </RadialPurpleGradientBg>
+        <RadialPurpleGradientBg>
+            <UpdateFormModal
+                title={'Change Password'}
+                confirmBtnLabel={'Change'}
+                secondaryConfirmBtnLabel={'Go Back'}
+                confirmText={'Your password was updated!'}
+                isConfirmBtnDisabled={isInputsEmpty || isProcessLoading}
+                isFormSent={isFormSent}
+                handleBackBtnFn={handleNavigate}
+                errorMessage={errorMess}
+                isUpdateDataLoading={isProcessLoading}
+                onSubmitFn={handleSubmit}
+                primaryInputsCollection={inputCollection.primary}
+                secondaryInputsCollection={inputCollection.secondary}
+            />
+        </RadialPurpleGradientBg>
     )
 }
 
