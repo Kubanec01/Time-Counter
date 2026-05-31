@@ -18,6 +18,7 @@
     --color-light-green: #94F2CD;
     --color-dark-green: #124C0F;
     --color-light-purple: #919191;
+    --color-dark-bg: #1E1F1E ;
 }
 
 @layer components {
@@ -38,6 +39,10 @@
         @apply text-white border border-vibrant-purple-700 bg-linear-to-t from-vibrant-purple-600 to-vibrant-purple-500 hover:to-vibrant-purple-500/85;
     }
 
+    .bg-red-gradient {
+        @apply text-white border border-red-900 bg-linear-to-t from-red-800/90 to-red-800 hover:to-red-700;
+    }
+
     .bg-black-gradient {
         @apply bg-linear-to-t from-black to-black/60 hover:to-black/55 text-white;
     }
@@ -46,12 +51,16 @@
         @apply bg-linear-to-t from-custom-gray-800 to-custom-gray-700 hover:to-custom-gray-700/90 text-gray-100 cursor-not-allowed;
     }
 
+    .bg-dark-background {
+        @apply bg-dark-bg;
+    }
+
     .max-w-small {
-        @apply max-w-[900px];
+        @apply max-w-225;
     }
 
     .max-w-medium {
-        @apply max-w-[1000px];
+        @apply max-w-250;
     }
 }
 

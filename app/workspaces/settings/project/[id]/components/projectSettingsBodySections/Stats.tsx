@@ -1,10 +1,7 @@
 import {NavButton} from "@/app/workspaces/settings/components/buttons/NavButton";
-import {useParams} from "next/navigation";
 
 
-export const Stats = () => {
-
-    const projectId = useParams().id
+export const Stats = ({projectId}: { projectId: string }) => {
 
     return (
         <NavButton

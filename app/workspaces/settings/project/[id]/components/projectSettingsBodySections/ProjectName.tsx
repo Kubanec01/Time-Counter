@@ -1,13 +1,10 @@
 'use client'
 
 import {NavButton} from "@/app/workspaces/settings/components/buttons/NavButton";
-import {useParams} from "next/navigation";
 import {editProjectNamePageUrlPath} from "@/data/Url_Paths/urlPaths";
 
 
-export const ProjectName = () => {
-
-    const projectId = useParams().id as string
+export const ProjectName = ({projectId}: { projectId: string }) => {
 
     return (
         <NavButton

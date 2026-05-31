@@ -8,7 +8,7 @@ import {useGetWorkspacePassword} from "@/features/hooks/useGetWorkspacePassword"
 import UpdateFormModal, {
     InputCollection,
     InputCollectionList
-} from "@/components/modals/UpdateFormModal/UpdateFormModal";
+} from "@/components/modals01/UpdateFormModal/UpdateFormModal";
 import {useRouter} from "next/navigation";
 import RadialPurpleGradientBg from "@/components/RadialPurpleGradientBg/RadialPurpleGradientBg";
 

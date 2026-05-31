@@ -6,10 +6,7 @@ import {useGetWorkspacePassword} from "@/features/hooks/useGetWorkspacePassword"
 import {doc, updateDoc} from "firebase/firestore";
 import {db} from "@/app/firebase/config";
 import {useParams, useRouter} from "next/navigation";
-import UpdateFormModal, {
-    InputCollection,
-    InputCollectionList
-} from "@/components/modals/UpdateFormModal/UpdateFormModal";
+import UpdateFormModal, {InputCollectionList} from "@/components/modals01/UpdateFormModal/UpdateFormModal";
 import {useProjectData} from "@/features/hooks/useProjectData";
 
 
@@ -50,7 +47,7 @@ export default function EditProjectNamePage() {
         setIsFormSent(true)
     }
 
-    const inputCollections: InputCollectionList =  {
+    const inputCollections: InputCollectionList = {
         'primary': [
             {
                 id: 'workspace-password',
@@ -60,7 +57,7 @@ export default function EditProjectNamePage() {
                 onChange: (eventValue) => setWorkspacePassword(eventValue),
                 value: workspacePassword
             },
-    ],
+        ],
         'secondary': [
             {
                 id: 'project-name',
@@ -78,6 +75,7 @@ export default function EditProjectNamePage() {
         <section
             className="w-full h-screen flex flex-col justify-center items-center bg-radial from-gradient-purple to-white to-40%">
             <UpdateFormModal
+                isConfirmBtnDisabled={isLoading}
                 title={'Change project name'}
                 confirmBtnLabel={'Change'}
                 secondaryConfirmBtnLabel={'Go back'}

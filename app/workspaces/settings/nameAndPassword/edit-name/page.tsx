@@ -9,7 +9,7 @@ import RadialPurpleGradientBg from "@/components/RadialPurpleGradientBg/RadialPu
 import UpdateFormModal, {
     InputCollection,
     InputCollectionList
-} from "@/components/modals/UpdateFormModal/UpdateFormModal";
+} from "@/components/modals01/UpdateFormModal/UpdateFormModal";
 import {useRouter} from "next/navigation";
 
 const WorkspaceName = () => {

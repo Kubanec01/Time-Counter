@@ -4,16 +4,56 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="88e9b0f7-57eb-4e50-b7a0-4eeccd1312a7" name="Changes" comment="" />
+    <list default="true" id="88e9b0f7-57eb-4e50-b7a0-4eeccd1312a7" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/app/workspaces/settings/project/[id]/components/projectSettingsBodySections/DeleteProject/DeleteProject.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/workspaces/settings/project/delete/[id]/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/modals01/TwoFactorDeleteModal.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/features/utilities/delete/deleteProject.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/globals.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/settings/account/components/SignOutOrDelete/AccountOperations.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/settings/account/components/SignOutOrDelete/AccountOperations.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/settings/account/edit-user-name/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/settings/account/edit-user-name/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/settings/account/edit-user-password/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/settings/account/edit-user-password/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/workspaces/settings/nameAndPassword/edit-name/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/workspaces/settings/nameAndPassword/edit-name/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/workspaces/settings/nameAndPassword/edit-password/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/workspaces/settings/nameAndPassword/edit-password/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/workspaces/settings/project/[id]/components/projectSettingsBodySections/CustomizeProject.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/workspaces/settings/project/[id]/components/projectSettingsBodySections/CustomizeProject.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/workspaces/settings/project/[id]/components/projectSettingsBodySections/ProjectName.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/workspaces/settings/project/[id]/components/projectSettingsBodySections/ProjectName.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/workspaces/settings/project/[id]/components/projectSettingsBodySections/Stats.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/workspaces/settings/project/[id]/components/projectSettingsBodySections/Stats.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/workspaces/settings/project/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/workspaces/settings/project/[id]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/workspaces/settings/project/edit-project-name/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/workspaces/settings/project/edit-project-name/[id]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/modals/CreateProjectModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/modals/CreateProjectModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/modals/ErrorBunderModal/ErrorBannerModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/modals01/ErrorBunderModal/ErrorBannerModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/modals/LogOutUserModal/LogOutUserModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/modals01/LogOutUserModal/LogOutUserModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/modals/UpdateFormModal/UpdateFormModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/modals01/UpdateFormModal/UpdateFormModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/modals01/CreateModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/modals01/CreateModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/modals01/ModalTemplate/ModalTemplate.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/modals01/ModalTemplate/ModalTemplate.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/Url_Paths/urlPaths.ts" beforeDir="false" afterPath="$PROJECT_DIR$/data/Url_Paths/urlPaths.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="191" />
+    <option name="cachedIndexableFilesCount" value="197" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Kubanec01&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Kubanec01/Time-Counter.git&quot;,
+    &quot;accountId&quot;: &quot;fd159598-7e8e-4d5b-97b2-3a918d17bf35&quot;
+  }
+}</component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
@@ -26,6 +66,9 @@
   &quot;associatedIndex&quot;: 3
 }</component>
   <component name="ProjectId" id="3EAXIQeLkaE5BrTSp6c5nZcwnEn" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -36,9 +79,11 @@
     &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
     &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
     &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;javascript.preferred.runtime.type.id&quot;: &quot;node&quot;,
     &quot;js.debugger.nextJs.config.created.client&quot;: &quot;true&quot;,
     &quot;js.debugger.nextJs.config.created.server&quot;: &quot;true&quot;,
@@ -56,6 +101,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\jakub\Desktop\Front-End-Folder\Projects\React_Ts\time-counter\components\modals01" />
       <recent name="C:\Users\jakub\Desktop\Front-End-Folder\Projects\React_Ts\time-counter\features\hooks\context" />
     </key>
   </component>
@@ -89,10 +135,35 @@
       <option name="presentableId" value="Default" />
       <updated>1779622267978</updated>
       <workItem from="1779622269527" duration="12020000" />
+      <workItem from="1779651694347" duration="195000" />
+      <workItem from="1780225346472" duration="8576000" />
+      <workItem from="1780243791781" duration="5366000" />
     </task>
+    <task id="LOCAL-00001" summary="build: update idea file">
+      <option name="closed" value="true" />
+      <created>1779651775270</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1779651775270</updated>
+    </task>
+    <task id="LOCAL-00002" summary="build: update idea file to include new">
+      <option name="closed" value="true" />
+      <created>1779651881709</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1779651881709</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="build: update idea file" />
+    <MESSAGE value="build: update idea file to include new" />
+    <option name="LAST_COMMIT_MESSAGE" value="build: update idea file to include new" />
   </component>
 </project>

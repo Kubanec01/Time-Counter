@@ -1,7 +1,7 @@
 'use client'
 
 import RadialPurpleGradientBg from "@/components/RadialPurpleGradientBg/RadialPurpleGradientBg";
-import UpdateFormModal, {InputCollectionList} from "@/components/modals/UpdateFormModal/UpdateFormModal";
+import UpdateFormModal, {InputCollectionList} from "@/components/modals01/UpdateFormModal/UpdateFormModal";
 import {useRouter} from "next/navigation";
 import {FormEvent, useEffect, useState} from "react";
 import {doc, getDoc, updateDoc} from "firebase/firestore";

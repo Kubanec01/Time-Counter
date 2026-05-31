@@ -3,7 +3,7 @@ import {DeleteButton} from "@/app/workspaces/settings/components/buttons/DeleteB
 import {useSignOutUser} from "@/features/hooks/useSignOutUser";
 import {getAuth} from "firebase/auth";
 import {mainHomePageUrlPath} from "@/data/Url_Paths/urlPaths";
-import LogOutUserModal from "@/components/modals/LogOutUserModal/LogOutUserModal";
+import LogOutUserModal from "@/components/modals01/LogOutUserModal/LogOutUserModal";
 import {useState} from "react";
 
 

@@ -26,12 +26,10 @@ const CreateModal = ({...props}: CreateModalProps) => {
             style={{display: props.isOpen ? "block" : "none"}}
             className={"fixed top-0 left-0 w-full h-screen z-50"}>
             <ModalTemplate
-                className={props.className}
-            >
+                className={props.className}>
                 <GiSunSpear className={twMerge("text-3xl mx-auto shadow-none", props.iconClassName)}/>
                 <div
-                    className={"mt-4"}
-                >
+                    className={"mt-4"}>
                     <h1
                         className={"font-medium"}>
                         {props.title}
@@ -46,23 +44,19 @@ const CreateModal = ({...props}: CreateModalProps) => {
                         e.preventDefault();
                         props.onSubmit()
                     }}
-                    className={"mt-5"}
-                >
+                    className={"mt-5"}>
                     {props.children}
                     <div
-                        className={'flex items-center justify-between'}
-                    >
+                        className={'flex items-center justify-between'}>
                         <MediumButton
                             buttonType={'button'}
                             onClick={() => props.cancelButtonFn()}
-                            className={"px-6  text-black/70 border-black/1 hover:bg-black/16"}
-                        >
+                            className={"px-6  text-black/70 border-black/1 hover:bg-black/16"}>
                             Cancel
                         </MediumButton>
                         <MediumButton
                             buttonType={'submit'}
-                            className={"bg-purple-gradient px-6 rounded-md"}
-                        >
+                            className={"bg-purple-gradient px-6 rounded-md"}>
                             {props.confirmBtnText}
                         </MediumButton>
                     </div>

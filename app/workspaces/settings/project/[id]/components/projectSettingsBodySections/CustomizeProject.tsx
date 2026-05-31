@@ -1,7 +1,7 @@
 import {ToggleButton} from "@/app/workspaces/settings/components/buttons/ToggleButton";
 import {useEffect, useState} from "react";
 import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
-import {useParams, useSearchParams} from "next/navigation";
+import {useSearchParams} from "next/navigation";
 import {ProjectOption} from "@/types";
 import MaxTrackingTime from "@/app/workspaces/settings/components/buttons/MaxTrackingTime";
 import {updateProjectDailyTrackLimit} from "@/features/utilities/create-&-update/updateProjectDailyTrackLimit";
@@ -9,7 +9,7 @@ import {ProjectOptions} from "@/app/workspaces/settings/components/buttons/Proje
 import {useProjectData} from "@/features/hooks/useProjectData";
 import {updateTrackFormatData} from "@/features/utilities/create-&-update/updateTrackFormatData";
 
-export const CustomizeProject = () => {
+export const CustomizeProject = ({projectId}: { projectId: string }) => {
 
 
     const [optionTimeFormat, setOptionTimeFormat] = useState<"Range" | "Decimal">("Decimal");
@@ -17,7 +17,6 @@ export const CustomizeProject = () => {
     const [activatedTrackLimitPeriod, setActivatedTrackLimitPeriod] = useState<"daily" | "weekly">("daily");
     const [projectOptions, setProjectOptions] = useState<ProjectOption[]>([]);
     const {workspaceId} = useWorkSpaceContext()
-    const projectId = useParams().id as string;
     const {project} = useProjectData(workspaceId, projectId);
     const searchParams = useSearchParams()
 
@@ -70,16 +69,16 @@ export const CustomizeProject = () => {
             </div>
             {/* Set time format */}
             <div
-            className={isProjectTypeTracking ? 'hidden' : 'block'}>
-            <ToggleButton
-                title={"Track format"}
-                specSubtitle={" Set time tracking to (From - To) format. This will allow you to set the clock to the exact time you worked, rounded to the nearest 15 minutes. When turned off, time tracking will default to 0.25 mode."}
-                isToggleActive={optionTimeFormat === "Range"}
-                toggleFunction={() => {
-                    const value = optionTimeFormat === "Decimal" ? "Range" : "Decimal"
-                    updateTrackFormat(value)
-                }}
-            />
+                className={isProjectTypeTracking ? 'hidden' : 'block'}>
+                <ToggleButton
+                    title={"Track format"}
+                    specSubtitle={" Set time tracking to (From - To) format. This will allow you to set the clock to the exact time you worked, rounded to the nearest 15 minutes. When turned off, time tracking will default to 0.25 mode."}
+                    isToggleActive={optionTimeFormat === "Range"}
+                    toggleFunction={() => {
+                        const value = optionTimeFormat === "Decimal" ? "Range" : "Decimal"
+                        updateTrackFormat(value)
+                    }}
+                />
             </div>
             {/* Set max tracking time */}
             <MaxTrackingTime

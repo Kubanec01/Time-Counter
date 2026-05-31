@@ -6,7 +6,7 @@ import {Metadata} from "next";
 import Navbar from "@/components/mainNavbar/Navbar";
 import {Inter} from "next/font/google"
 import {ErrorBannerContextProvider} from "@/features/hooks/context/useErrorBannerContext";
-import ErrorBannerModal from "@/components/modals/ErrorBunderModal/ErrorBannerModal";
+import ErrorBannerModal from "@/components/modals01/ErrorBunderModal/ErrorBannerModal";
 
 const inter = Inter({
     subsets: ["latin", "latin-ext"],

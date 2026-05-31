@@ -8,12 +8,19 @@ import {
     CustomizeProject
 } from "@/app/workspaces/settings/project/[id]/components/projectSettingsBodySections/CustomizeProject";
 import {NavSettingsLinksData} from "@/types";
+import DeleteProject
+    from "@/app/workspaces/settings/project/[id]/components/projectSettingsBodySections/DeleteProject/DeleteProject";
+import {useParams} from "next/navigation";
 
 export default function ProjectSettingsPage() {
 
 
     const [activeNavId, setActiveNavId] = useState("customize");
     const [primarySectionTitle, setPrimarySectionTitle] = useState("Customize Project");
+    const projectId = useParams().id as string
+
+    console.log('params', projectId)
+
 
     const navTitle = <h1>Project <br/> Settings</h1>
     const navLinksData: NavSettingsLinksData[] = [
@@ -36,9 +43,10 @@ export default function ProjectSettingsPage() {
     ]
 
     const primarySectionBody = () => {
-        if (activeNavId === "stats") return <Stats/>
-        else if (activeNavId === "project-name") return <ProjectName/>
-        else if (activeNavId === "customize") return <CustomizeProject/>
+        if (activeNavId === "stats") return <Stats projectId={projectId}/>
+        else if (activeNavId === "project-name") return <ProjectName projectId={projectId}/>
+        else if (activeNavId === "customize") return <CustomizeProject projectId={projectId}/>
+        else if (activeNavId === "delete-project") return <DeleteProject projectId={projectId}/>
     }
 
     return (

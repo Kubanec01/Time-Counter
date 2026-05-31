@@ -42,14 +42,14 @@ const CreateProjectModal = ({...props}: ModalProps) => {
         >
             <form
                 onSubmit={props.formFunction}
-                className={"w-[90%] max-w-[360px] rounded-xl border border-black/14 bg-white/90 p-7"}
+                className={"w-[90%] max-w-90 rounded-xl border border-black/14 bg-white/90 p-7"}
             >
                 <span
                     className={"mx-auto text-4xl w-full flex justify-center text-vibrant-purple-600"}
                 >
                     <PiCirclesThreeFill/>
                 </span>
-                <div className={"mt-[18px]"}>
+                <div className={"mt-4.5"}>
                     <h1 className={"text-lg font-semibold text-black"}>Create new project?</h1>
                     <p className={"text-sm text-black/60 font-semibold w-[98%]"}>
                         Create a new project where you can measure
@@ -62,38 +62,38 @@ const CreateProjectModal = ({...props}: ModalProps) => {
                        value={props.inputValue}
                        maxLength={24}
                        placeholder={"What are you going to work on?"}
-                       className={"w-full h-[34px] pl-2" +
-                           " border border-black/60 text-sm font-medium rounded-[100px] mt-[18px] outline-none"}/>
+                       className={"w-full h-8.5 pl-2" +
+                           " border border-black/60 text-sm font-medium rounded-[100px] mt-4.5 outline-none"}/>
                 <div
-                    className={"w-full flex flex-col justify-center items-center gap-1 mt-[10px]"}
+                    className={"w-full flex flex-col justify-center items-center gap-1 mt-2.5"}
                 >
                     {/*Tracking*/}
                     <button
                         type={"button"}
                         onClick={() => props.setTypeOfProject("tracking")}
-                        className={`${props.typeOfProject === "tracking" ? "bg-vibrant-purple-600 text-white" : "text-black/70 bg-black/4"} cursor-pointer font-medium w-full h-[34px] pl-2 text-sm rounded-[100px] outline-none`}>
+                        className={`${props.typeOfProject === "tracking" ? "bg-vibrant-purple-600 text-white" : "text-black/70 bg-black/4"} cursor-pointer font-medium w-full h-8.5 pl-2 text-sm rounded-[100px] outline-none`}>
                         I will track my time
                     </button>
                     {/*Logging*/}
                     <button
                         type={"button"}
                         onClick={() => props.setTypeOfProject("logging")}
-                        className={`${props.typeOfProject === "logging" ? "bg-vibrant-purple-600 text-white" : "text-black/70 bg-black/4"} cursor-pointer font-medium w-full h-[34px] pl-2 text-sm rounded-[100px] outline-none`}>
+                        className={`${props.typeOfProject === "logging" ? "bg-vibrant-purple-600 text-white" : "text-black/70 bg-black/4"} cursor-pointer font-medium w-full h-8.5 pl-2 text-sm rounded-[100px] outline-none`}>
                         I will log my time
                     </button>
                 </div>
                 <div
-                    className={"w-full flex items-center justify-between font-medium mt-[14px]"}>
+                    className={"w-full flex items-center justify-between font-medium mt-3.5"}>
                     <button
                         onClick={() => closeModal()}
                         type={"button"}
-                        className={"cursor-pointer w-[100px] h-[34px] text-base rounded-[100px] text-custom-gray-800 hover:bg-black/2 border border-custom-gray-800"}>
+                        className={"cursor-pointer w-25 h-8.5 text-base rounded-[100px] text-custom-gray-800 hover:bg-black/2 border border-custom-gray-800"}>
                         Cancel
                     </button>
                     <button
                         type={"submit"}
                         disabled={isInputEmpty}
-                        className={`w-[100px] h-[34px] text-base rounded-[100px] text-white ${isInputEmpty ? "bg-custom-gray-600" : "bg-vibrant-purple-600 hover:bg-vibrant-purple-700 cursor-pointer"}`}>
+                        className={`w-25 h-8.5 text-base rounded-[100px] text-white ${isInputEmpty ? "bg-custom-gray-600" : "bg-vibrant-purple-600 hover:bg-vibrant-purple-700 cursor-pointer"}`}>
                         Create
                     </button>
                 </div>
