@@ -17,15 +17,13 @@ export const WorkspacesLoginSection = () => {
                 <button
                     onClick={() => setWorkspaceAction("create")}
                     className={`${workspaceAction === "create" ? "text-black" : "text-black/40"}
-                    font-semibold cursor-pointer`}
-                >
+                    font-semibold cursor-pointer`}>
                     Create Workspace
                 </button>
                 <button
                     onClick={() => setWorkspaceAction("join")}
                     className={`${workspaceAction === "join" ? "text-black" : "text-black/40"}
-                    font-semibold cursor-pointer`}
-                >
+                    font-semibold cursor-pointer`}>
                     Join Workspace
                 </button>
             </div>

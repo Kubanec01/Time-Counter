@@ -14,6 +14,7 @@ type TwoFactorDeleteModalProps = {
     isFirstFactorSuccessful: boolean
     isSecondFactorSuccessful: boolean
     closeModalFn?: () => void
+    isSubmitButtonDisabled?: boolean
     confirmText: string
     isModalOpen: boolean
     isProcesLoading: boolean
@@ -50,7 +51,7 @@ const TwoFactorDeleteModal = ({...props}: TwoFactorDeleteModalProps) => {
         createPortal(
             <div
                 className={'fixed top-1/2 left-1/2 -translate-1/2 border border-white/40 rounded-lg ' +
-                    'w-11/12 max-w-75 px-6 py-6'}>
+                    'w-11/12 max-w-80 px-6 py-6'}>
                 <div
                     className={`flex justify-center items-center text-red-700 text-3xl`}>
                     <LuBadgeInfo/>

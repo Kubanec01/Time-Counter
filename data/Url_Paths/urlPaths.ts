@@ -20,8 +20,11 @@ export const editWorkspaceNamePageUrlPath = "/workspaces/settings/nameAndPasswor
 
 export const workspaceSettingsMainUrlPath = '/workspaces/settings'
 
+export const deleteWorkspaceSettingsUrlPath = '/workspaces/settings/delete-workspace'
+
 export const manageMembersPageUrlPath = (userId: string) =>
     `/workspaces/settings/user/${userId}`
+
 
 
 // Project

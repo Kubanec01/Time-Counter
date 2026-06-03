@@ -16,7 +16,7 @@ interface Context {
     userName: string;
     userSurname: string;
     userMail: string;
-    userInitials: string;
+    userInitials: string | null;
     userRole: Role;
     workspaceName: string | null;
     isUserMenuOpen: boolean;
@@ -35,7 +35,7 @@ export const WorkSpaceContextProvider = ({children}: { children: ReactNode }) =>
     const [userName, setUserName] = useState("")
     const [userSurname, setUserSurname] = useState("")
     const [userMail, setUserMail] = useState("")
-    const [userInitials, setUserInitials] = useState("")
+    const [userInitials, setUserInitials] = useState<string | null>(null)
     const [userRole, setUserRole] = useState<Role>("Admin")
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
 

@@ -5,6 +5,7 @@ import {useState} from "react";
 import {WorkspacesProjects} from "@/app/workspaces/settings/components/settingsBodySections/WorkspacesProjects";
 import {NameAndPassword} from "@/app/workspaces/settings/components/settingsBodySections/NameAndPassword";
 import {DeleteButton} from "@/app/workspaces/settings/components/buttons/DeleteButton";
+import {deleteWorkspaceSettingsUrlPath} from "@/data/Url_Paths/urlPaths";
 
 
 const WorkspaceSettingsHome = () => {
@@ -34,9 +35,10 @@ const WorkspaceSettingsHome = () => {
         if (activeNavId === "projects") return <WorkspacesProjects/>
         else if (activeNavId === "edit-name-and-edit-password") return <NameAndPassword/>
         else if (activeNavId === "delete-workspace") {
-            return <DeleteButton id={"delete"} title={"Delete workspace"}
+            return <DeleteButton id={"delete"}
+                                 title={"Delete workspace"}
                                  specSubtitle={"Deleting this workspace will permanently remove all projects, data, user access, and statistics. This action is irreversible. Please proceed with caution."}
-                                 navLink={"workspaces/settings/delete"}/>
+                                 navLink={deleteWorkspaceSettingsUrlPath}/>
         }
     }
 

@@ -2,7 +2,6 @@ import {GiSunSpear} from "react-icons/gi";
 import {FormEvent, useState} from "react";
 import {throwRandomNum} from "@/features/utilities/throwRandomNum";
 import {createNewWorkspace} from "@/features/utilities/create-&-update/createNewWorkspace";
-import {fetchMessages} from "@/messages/errors";
 import {ErrorBannerValues, Member} from "@/types";
 import {setLocalStorageUserMode, setLocalStorageWorkspaceId} from "@/features/utilities/local-storage/localStorage";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
@@ -20,9 +19,9 @@ export const WorkspaceForm = ({...props}: WorkspaceFormProps) => {
     // States
     const [name, setName] = useState("");
     const [workspaceInputId, setWorkspaceInputId] = useState("");
+    const [isProcessLoading, setIsProcessLoading] = useState(false)
     const [password, setPassword] = useState("");
     const {setErrorCode} = useErrorBannerContext()
-    // const [error, setError] = useState("");
 
     // Hooks
     const {replace} = useReplaceRouteLink()
@@ -33,14 +32,12 @@ export const WorkspaceForm = ({...props}: WorkspaceFormProps) => {
     const btnTitle = props.workspaceAction === "create" ? "Create" : "Join"
 
 
-    const formSubmit = async (e: FormEvent) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
+        setIsProcessLoading(true)
 
         if (!userId) return
-
-
         if (password.trim() === "" || name.trim() === "") return setErrorCode('EMPTY_INPUTS')
-
 
         if (props.workspaceAction === "create") {
 
@@ -51,6 +48,7 @@ export const WorkspaceForm = ({...props}: WorkspaceFormProps) => {
             setPassword("")
             setMode("workspace")
             setWorkspaceId(workspaceId)
+            setIsProcessLoading(false)
             replace("/")
         }
 
@@ -77,44 +75,42 @@ export const WorkspaceForm = ({...props}: WorkspaceFormProps) => {
                     newMember
                 )
                 setErrorCode(null)
+                setIsProcessLoading(false)
+                setMode("workspace")
+                setWorkspaceId(workspaceInputId)
+                setWorkspaceInputId("")
+                setPassword("")
+                setLocalStorageUserMode("workspace")
+                setLocalStorageWorkspaceId(workspaceInputId)
             } catch (err) {
                 if (err instanceof Error) {
-                    return setErrorCode(err.message as ErrorBannerValues)
-                } else return setErrorCode('UNKNOWN_ERROR')
+                    setErrorCode(err.message as ErrorBannerValues)
+                    setIsProcessLoading(false)
+                } else {
+                    setErrorCode('UNKNOWN_ERROR')
+                    setIsProcessLoading(false)
+                }
             }
-
-
-            setMode("workspace")
-            setWorkspaceId(workspaceInputId)
-            setWorkspaceInputId("")
-            setPassword("")
-            setLocalStorageUserMode("workspace")
-            setLocalStorageWorkspaceId(workspaceInputId)
         }
     }
 
 
     return (
         <div
-            className={"w-72.5 border border-black/10 shadow-lg mt-14 rounded-xl bg-white/90 p-6 mx-auto"}
-        >
+            className={"w-72.5 border border-black/10 shadow-lg mt-14 rounded-xl bg-white/90 p-6 mx-auto"}>
             <GiSunSpear className={"text-3xl mx-auto"}/>
             <h1
-                className={"text-center font-semibold mt-3 mb-6"}
-            >
+                className={"text-center font-semibold mt-3 mb-6"}>
                 {title}
             </h1>
             <form
-                onSubmit={(e) => formSubmit(e)}
-                className={"flex flex-col gap-4"}
-            >
+                onSubmit={handleSubmit}
+                className={"flex flex-col gap-4"}>
                 <div
-                    className={"w-full"}
-                >
+                    className={"w-full"}>
                     <label
                         htmlFor="create-workspace"
-                        className={"text-xs font-bold"}
-                    >
+                        className={"text-xs font-bold"}>
                         Workspace name
                     </label>
                     <input
@@ -129,12 +125,10 @@ export const WorkspaceForm = ({...props}: WorkspaceFormProps) => {
                         type="text"/>
                 </div>
                 <div
-                    className={"w-full"}
-                >
+                    className={"w-full"}>
                     <label
                         htmlFor="create-workspace"
-                        className={"text-xs font-bold"}
-                    >
+                        className={"text-xs font-bold"}>
                         Password
                     </label>
                     <input
@@ -145,8 +139,9 @@ export const WorkspaceForm = ({...props}: WorkspaceFormProps) => {
                         type="password"/>
                 </div>
                 <button
-                    className={"medium-button bg-black-gradient rounded-lg py-1.5 mt-6"}
-                >
+                    disabled={isProcessLoading}
+                    className={`${isProcessLoading ? 'bg-disabled-gradient' : 'bg-black-gradient'}
+                    medium-button rounded-lg py-1.5 mt-6`}>
                     {btnTitle}
                 </button>
             </form>

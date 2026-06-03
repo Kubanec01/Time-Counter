@@ -1,6 +1,7 @@
 import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
 import {removeLocalStorageWorkspaceIdAndUserMode} from "@/features/utilities/local-storage/localStorage";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
+import {mainHomePageUrlPath} from "@/data/Url_Paths/urlPaths";
 
 
 export const useLeaveWorkspace = () => {
@@ -12,7 +13,7 @@ export const useLeaveWorkspace = () => {
         setMode("solo")
         setWorkspaceId("unused")
         removeLocalStorageWorkspaceIdAndUserMode()
-        replace("/")
+        replace(mainHomePageUrlPath)
     }
 
     return {leaveWorkspace}

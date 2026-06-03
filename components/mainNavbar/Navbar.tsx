@@ -85,23 +85,24 @@ const Navbar = () => {
             >
                 <li>
                     <button
-                        className={btnStyle}
-                    >
+                        className={btnStyle}>
                         Guide
                     </button>
                 </li>
                 <li>
                     <button
-                        className={btnStyle}
-                    >
+                        className={btnStyle}>
                         Contact us
                     </button>
                 </li>
                 <li
-                    onClick={() => setIsUserMenuOpen(v => !v)}
-                    className={"ml-2 cursor-pointer"}
-                >
-                    <ProfileAvatar userInitials={userInitials}/>
+                    className={"ml-2"}>
+                    <button
+                        disabled={!userInitials}
+                        className={`${!userInitials ? "cursor-default" : "cursor-pointer"}`}
+                        onClick={() => setIsUserMenuOpen(v => !v)}>
+                    <ProfileAvatar userInitials={userInitials ?? '...'}/>
+                    </button>
                 </li>
             </ul>
             <UserMenu

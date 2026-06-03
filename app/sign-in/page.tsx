@@ -68,11 +68,12 @@ const SignInPage = () => {
                     className={"text-white/90 text-2xl w-[70%]"}>
                     Measure, analyze, and optimize your work with confidence.
                 </h1>
-                <p
-                    className={"text-sm text-white/52 w-[80%] mt-2"}>
-                    Create a workspace. Build projects. Track time, solo or with your team. Increase your efficiency and
-                    organization with precise data.
-                </p>
+                {/* Zacommentovany des. z pripadu buduceho vymazania */}
+                {/*<p*/}
+                {/*    className={"text-sm text-white/52 w-[80%] mt-2"}>*/}
+                {/*    Create a workspace. Build projects. Track time, solo or with your team. Increase your efficiency and*/}
+                {/*    organization with precise data.*/}
+                {/*</p>*/}
             </section>
             <section className="h-full flex flex-col justify-center items-center flex-1">
                 <h1
