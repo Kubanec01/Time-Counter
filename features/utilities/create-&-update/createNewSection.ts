@@ -2,7 +2,7 @@ import React from "react";
 import {arrayUnion, doc, updateDoc} from "firebase/firestore";
 import {throwRandomNum} from "@/features/utilities/throwRandomNum";
 import {LoggingType, Section, UpdatedSectionByDate, WorkspaceId} from "@/types";
-import {db} from "@/app/firebase/config";
+import {db} from "../../../app/config/firebase/config";
 
 export const createNewSection = async (
     userId: string | undefined,

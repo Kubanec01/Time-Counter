@@ -1,6 +1,6 @@
 import React, {Dispatch, SetStateAction} from "react";
 import {GoArrowUpRight, GoTrash} from "react-icons/go";
-import {db} from "@/app/firebase/config";
+import {db} from "../../app/config/firebase/config";
 import {doc, getDoc, updateDoc} from "firebase/firestore";
 import {WorkspaceCredentials} from "@/types";
 import {removeWorkspaceFromList} from "@/features/utilities/delete/removeWorkspaceFromList";

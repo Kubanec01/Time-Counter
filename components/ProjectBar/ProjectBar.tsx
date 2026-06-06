@@ -2,7 +2,7 @@ import React from "react";
 import {useRouter} from "next/navigation";
 import {useProjectData} from "@/features/hooks/useProjectData";
 import {arrayUnion, doc, updateDoc} from "firebase/firestore";
-import {db} from "@/app/firebase/config";
+import {db} from "../../app/config/firebase/config";
 import {enterProjectMainPageUrlPath} from "@/data/Url_Paths/urlPaths";
 
 type ProjectBarProps = {

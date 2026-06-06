@@ -1,6 +1,6 @@
 import {doc, getDoc, updateDoc} from "firebase/firestore";
 import {Section, WorkspaceId} from "@/types";
-import {db} from "@/app/firebase/config";
+import {db} from "../../../app/config/firebase/config";
 import {documentNotFound} from "@/messages/errors";
 
 

@@ -1,6 +1,6 @@
 import {Auth, signOut} from "@firebase/auth";
 import {useLeaveWorkspace} from "@/features/hooks/useLeaveWorkspace";
-import {auth} from "@/app/firebase/config";
+import {auth} from "../../app/config/firebase/config";
 
 
 export const useSignOutUser = () => {

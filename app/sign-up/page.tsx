@@ -1,6 +1,6 @@
 "use client";
 
-import {auth, db} from "@/app/firebase/config";
+import {auth, db} from "../config/firebase/config";
 import {FormEvent, useState} from "react";
 import Link from "next/link";
 import {doc, setDoc} from "firebase/firestore";

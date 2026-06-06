@@ -1,5 +1,5 @@
 import {doc, updateDoc} from "firebase/firestore";
-import {db} from "@/app/firebase/config";
+import {db} from "../../../app/config/firebase/config";
 
 
 export const updateProjectDailyTrackLimit = async (

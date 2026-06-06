@@ -4,7 +4,7 @@ import {createContext, Dispatch, ReactNode, SetStateAction, useContext, useEffec
 import {Role, UserMode, WorkspaceId} from "@/types";
 import {getUserNameData, getUserRoleData} from "@/features/utilities/userInfoData";
 import {useAuthState} from "react-firebase-hooks/auth";
-import {auth} from "@/app/firebase/config";
+import {auth} from "../../../app/config/firebase/config";
 import {getWorkspaceName} from "@/features/utilities/getWorkspaceName";
 import {removeLocalStorageWorkspaceIdAndUserMode} from "@/features/utilities/local-storage/localStorage";
 

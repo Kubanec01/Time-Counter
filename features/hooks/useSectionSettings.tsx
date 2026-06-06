@@ -3,7 +3,7 @@
 
 import {useEffect, useState} from "react";
 import {doc, onSnapshot} from "firebase/firestore";
-import {db} from "@/app/firebase/config";
+import {db} from "../../app/config/firebase/config";
 import {Section} from "@/types";
 
 export const useSectionSettings = (

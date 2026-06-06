@@ -1,11 +1,13 @@
 "use client";
 
 import {FormEvent, useEffect, useState} from "react";
-import {auth} from "@/app/firebase/config";
+import {auth} from "../config/firebase/config";
 import Link from "next/link";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 import {onAuthStateChanged, signInWithEmailAndPassword} from "@firebase/auth";
 import {IoMdEye, IoMdEyeOff} from "react-icons/io";
+import {seoTitle} from "@/app/config/seo.title";
+import {TextHighlighter} from "@/app/sign-in/components/TextHighlighter";
 
 const SignInPage = () => {
     const [email, setEmail] = useState("");
@@ -17,7 +19,7 @@ const SignInPage = () => {
     const {replace} = useReplaceRouteLink()
 
     // Style
-    const inputStyle = "w-full py-1.5 border border-custom-gray-800 text-custom-gray-600 rounded-lg px-3 outline-none"
+    const inputStyle = "w-full sm:py-1.5 py-1 border border-custom-gray-800 text-custom-gray-600 rounded-lg px-3 outline-none"
 
 
     const handleSignIn = async (e: FormEvent) => {
@@ -51,11 +53,15 @@ const SignInPage = () => {
     }, []);
 
     return (
+        <>
+            <title>{seoTitle.signIn.title}</title>
         <div className="w-full h-screen bg-black flex relative">
-            <h1
-                className={"text-white/40 text-sm absolute right-[24px] top-[24px]"}>
-                Synto
-            </h1>
+            <a
+                href={'#'}
+                target={'_blank'}
+                className={"text-white/40 hover:underline cursor-pointer text-sm absolute right-6 top-6"}>
+                Orion
+            </a>
             <section
                 style={{
                     backgroundImage: `url(/signIn-img.png)`,
@@ -63,10 +69,13 @@ const SignInPage = () => {
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center',
                 }}
-                className={"w-[36%] max-w-[600px] pl-11 pt-14"}>
+                className={"w-[36%] max-w-114 pl-6 pt-14 md:block hidden"}>
                 <h1
-                    className={"text-white/90 text-2xl w-[70%]"}>
-                    Measure, analyze, and optimize your work with confidence.
+                    className={"text-white/70 text-xl w-[80%]"}>
+                    <TextHighlighter>Measure</TextHighlighter>,
+                    <TextHighlighter> analyze</TextHighlighter>, and
+                    <TextHighlighter> optimize</TextHighlighter> your work with
+                    <TextHighlighter> confidence</TextHighlighter>.
                 </h1>
                 {/* Zacommentovany des. z pripadu buduceho vymazania */}
                 {/*<p*/}
@@ -75,7 +84,7 @@ const SignInPage = () => {
                 {/*    organization with precise data.*/}
                 {/*</p>*/}
             </section>
-            <section className="h-full flex flex-col justify-center items-center flex-1">
+            <section className="h-full flex flex-col justify-center items-center flex-1 border">
                 <h1
                     className={"text-white/90 font- text-2xl"}>
                     Welcome back
@@ -86,7 +95,7 @@ const SignInPage = () => {
                 </p>
                 <form
                     onSubmit={handleSignIn}
-                    className="w-[312px] flex flex-col justify-center items-center gap-2 mt-12">
+                    className="sm:w-78 w-70 flex flex-col justify-center items-center gap-2 mt-12 px-2">
                     {/* Email Input */}
                     <input
                         onChange={(e) => setEmail(e.target.value)}
@@ -112,21 +121,16 @@ const SignInPage = () => {
                             style={{display: isPasswordHidden ? "none" : "block"}}
                             className={"absolute text-custom-gray-800 text-lg right-2.5 cursor-pointer"}/>
                     </div>
-                    <h1
-                        className={"text-red-500/90 text-xs mb-2"}>
-                        {errorMess}
-                    </h1>
                     <button
                         type={"submit"}
                         disabled={isLoading}
-                        className={`${isLoading ? "bg-white/30" : "bg-purple-gradient border"} large-button py-2 w-full`}
-                    >
+                        className={`${isLoading ? "bg-white/30" : "bg-purple-gradient border"} large-button sm:py-2 
+                        py-1.5 w-full sm:mt-0 mt-3`}>
                         Log in
                     </button>
                     <button
                         type={"button"}
-                        className="cursor-pointer hover:underline text-xs text-white mt-6"
-                    >
+                        className="cursor-pointer hover:underline text-xs text-white mt-6">
                         Forgot your password?
                     </button>
                     <span
@@ -137,6 +141,7 @@ const SignInPage = () => {
                 </form>
             </section>
         </div>
+        </>
     );
 };
 

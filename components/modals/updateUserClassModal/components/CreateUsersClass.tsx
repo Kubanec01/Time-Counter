@@ -3,7 +3,7 @@
 import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {ProjectOption} from "@/types";
 import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
-import {db} from "@/app/firebase/config";
+import {db} from "../../../../app/config/firebase/config";
 import {arrayUnion, doc, updateDoc} from "firebase/firestore";
 import {UsersClasses} from "@/data/users";
 

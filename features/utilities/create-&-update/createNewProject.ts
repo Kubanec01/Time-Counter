@@ -2,7 +2,7 @@ import {throwRandomNum} from "@/features/utilities/throwRandomNum";
 import {Project, ProjectType, WorkspaceId} from "@/types";
 import {doc, setDoc} from "firebase/firestore";
 import {projectTasksOptions} from "@/data/users";
-import {db} from "@/app/firebase/config";
+import {db} from "../../../app/config/firebase/config";
 
 export const createNewProject = async (
         userId: string | undefined,

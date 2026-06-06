@@ -10,7 +10,7 @@ import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
 import {setUserRole} from "@/features/utilities/edit/setUSerRole";
 import ConfirmModal from "@/components/modals/ConfirmModal";
 import {useAuthState} from "react-firebase-hooks/auth";
-import {auth, db} from "@/app/firebase/config";
+import {auth, db} from "../../../../../../../config/firebase/config";
 import InformativeModal from "@/components/modals/InformativeModal";
 import {UpdateUserClassModal} from "@/components/modals/updateUserClassModal/UpdateUserClassModal";
 

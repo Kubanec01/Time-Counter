@@ -6,7 +6,7 @@ import {useRouter} from "next/navigation";
 import {FormEvent, useEffect, useState} from "react";
 import {doc, getDoc, updateDoc} from "firebase/firestore";
 import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
-import {db} from "@/app/firebase/config";
+import {db} from "../../../config/firebase/config";
 import {LoadingPage} from "@/app/LoadingPage/LoadingPage";
 import {documentNotFound} from "@/messages/errors";
 import {useErrorBannerContext} from "@/features/hooks/context/useErrorBannerContext";

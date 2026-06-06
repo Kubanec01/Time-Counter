@@ -7,7 +7,7 @@ import {
     MdOutlineSettings,
 } from "react-icons/md";
 import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
-import {db} from "@/app/firebase/config";
+import {db} from "../../../../app/config/firebase/config";
 import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
 import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 import {WorkspaceCredentials} from "@/types";

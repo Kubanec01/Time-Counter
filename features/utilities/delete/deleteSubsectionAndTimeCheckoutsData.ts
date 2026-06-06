@@ -1,6 +1,6 @@
 import {doc, getDoc, updateDoc} from "firebase/firestore";
 import {Section, TimeCheckout, WorkspaceId} from "@/types";
-import {db} from "@/app/firebase/config";
+import {db} from "../../../app/config/firebase/config";
 
 
 export const deleteSubsectionAndTimeCheckoutsData = async (

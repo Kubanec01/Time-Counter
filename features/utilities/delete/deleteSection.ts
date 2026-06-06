@@ -1,5 +1,5 @@
 import {doc, getDoc, updateDoc} from "firebase/firestore";
-import {db} from "@/app/firebase/config";
+import {db} from "../../../app/config/firebase/config";
 import {documentNotFound} from "@/messages/errors";
 import {Section, UpdatedSectionByDate} from "@/types";
 import {updateUserIndividualTime} from "@/features/utilities/create-&-update/updateUserIndividualTime";

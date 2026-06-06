@@ -13,6 +13,7 @@ import {createPortal} from "react-dom";
 import CreateModal from "@/components/modals01/CreateModal";
 import {TextInput} from "@/components/TextInput/TextInput";
 import {MediumButton} from "@/components/MediumButton/MediumButton";
+import {seoTitle} from "@/app/config/seo.title";
 
 export default function HomePage() {
 
@@ -24,7 +25,7 @@ export default function HomePage() {
 
     // Hooks
     const {user, loading} = useAuthRedirect()
-    const {mode, workspaceId, userRole, userId} = useWorkSpaceContext()
+    const {mode, workspaceId, userRole, userId, workspaceName} = useWorkSpaceContext()
     const isUserMember = userRole === "Member"
 
 
@@ -50,12 +51,18 @@ export default function HomePage() {
         setIsClient(true)
     }, []);
 
+    const setTitleValue = (mode: 'solo' | 'workspace') => {
+        if(mode === 'solo' || !workspaceName) return seoTitle.home.title
+        else return seoTitle.workspacePage(workspaceName).title
+    }
+
     if ((loading || !user) || !isClient) return (
         <LoadingPage/>
     )
 
     return (
         <>
+            <title>{setTitleValue(mode)}</title>
             <OnboardingModal/>
             {mode === "solo"
                 ?

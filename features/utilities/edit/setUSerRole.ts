@@ -1,6 +1,6 @@
 import {Member, Role} from "@/types";
 import {doc, getDoc, updateDoc} from "firebase/firestore";
-import {db} from "@/app/firebase/config";
+import {db} from "../../../app/config/firebase/config";
 
 export const setUserRole = async (
     memberId: string,

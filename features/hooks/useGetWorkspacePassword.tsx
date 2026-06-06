@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
-import {db} from "@/app/firebase/config";
+import {db} from "../../app/config/firebase/config";
 import {doc, getDoc} from "firebase/firestore";
 import {documentNotFound} from "@/messages/errors";
 

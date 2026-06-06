@@ -3,6 +3,7 @@
 import {useParams} from "next/navigation";
 import {useGetProjectName} from "@/features/hooks/useGetProjectName";
 import TrackingProjectCart from "./components/projectCart/TrackingProjectCart";
+import {seoTitle} from "@/app/config/seo.title";
 
 
 const TrackingProjectPage = () => {
@@ -16,7 +17,10 @@ const TrackingProjectPage = () => {
     const {projectName} = useGetProjectName(projectId)
 
     return (
-        <TrackingProjectCart projectId={projectId} projectName={projectName}/>
+        <>
+            <title>{seoTitle.projectPage(projectName).title}</title>
+            <TrackingProjectCart projectId={projectId} projectName={projectName}/>
+        </>
     );
 };
 

@@ -1,5 +1,5 @@
 import {doc, getDoc} from "firebase/firestore";
-import {db} from "@/app/firebase/config";
+import {db} from "../../app/config/firebase/config";
 import {documentNotFound} from "@/messages/errors";
 
 

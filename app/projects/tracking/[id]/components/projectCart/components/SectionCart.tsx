@@ -14,7 +14,7 @@ import SubSectionCart from "@/app/projects/tracking/[id]/components/projectCart/
 import {formatTimeUnit, updateProjectTotalTime} from "@/features/utilities/time/timeOperations";
 import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
 import {formateDateToYMD, formateYMDToDMY} from "@/features/utilities/date/dateOperations";
-import {db} from "@/app/firebase/config";
+import {db} from "../../../../../../config/firebase/config";
 import {updateUserIndividualTime} from "@/features/utilities/create-&-update/updateUserIndividualTime";
 import SectionCartContainer from "@/components/SectionCart/SectionCartContainer";
 import {LargeButton} from "@/components/LargeButton/LargeButton";

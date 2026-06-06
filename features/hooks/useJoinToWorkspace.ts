@@ -1,6 +1,6 @@
 import {invalidUserId} from "@/messages/errors";
 import {doc, getDoc} from "firebase/firestore";
-import {db} from "@/app/firebase/config";
+import {db} from "../../app/config/firebase/config";
 import {Member} from "@/types";
 import {setLocalStorageUserMode, setLocalStorageWorkspaceId} from "@/features/utilities/local-storage/localStorage";
 import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";

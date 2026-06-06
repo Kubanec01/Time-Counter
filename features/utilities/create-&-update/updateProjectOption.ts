@@ -1,5 +1,5 @@
 import {ProjectOption} from "@/types";
-import {db} from "@/app/firebase/config";
+import {db} from "../../../app/config/firebase/config";
 import {doc, updateDoc} from "firebase/firestore";
 
 

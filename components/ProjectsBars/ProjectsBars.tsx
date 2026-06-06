@@ -7,7 +7,7 @@ import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
 import {useMounted} from "@/features/hooks/useMounted";
 import {formatSecondsToTimeString} from "@/features/utilities/time/timeOperations";
 import {ProjectBar} from "@/components/ProjectBar/ProjectBar";
-import {db} from "@/app/firebase/config";
+import {db} from "../../app/config/firebase/config";
 
 
 const ProjectsBars = () => {

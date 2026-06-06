@@ -1,7 +1,7 @@
 import {useRouter} from "next/navigation";
 import {useEffect} from "react";
 import {useAuthState} from "react-firebase-hooks/auth";
-import {auth} from "@/app/firebase/config"
+import {auth} from "../../app/config/firebase/config"
 import {signInPageUrlPath} from "@/data/Url_Paths/urlPaths";
 
 

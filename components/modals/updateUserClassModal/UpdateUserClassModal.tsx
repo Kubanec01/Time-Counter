@@ -4,7 +4,7 @@ import {UsersClasses} from "@/data/users";
 import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {Member} from "@/types";
 import {doc, getDoc, onSnapshot, updateDoc} from "firebase/firestore";
-import {db} from "@/app/firebase/config";
+import {db} from "../../../app/config/firebase/config";
 import {AiOutlinePlusCircle} from "react-icons/ai";
 import {CreateUsersClass} from "@/components/modals/updateUserClassModal/components/CreateUsersClass";
 

@@ -1,5 +1,5 @@
 import {collection, getDocs} from "firebase/firestore";
-import {db} from "@/app/firebase/config";
+import {db} from "../../app/config/firebase/config";
 import {Project} from "@/types";
 
 export const getAllProjects = async (workspaceId: string) => {

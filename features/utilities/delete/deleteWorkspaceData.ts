@@ -1,5 +1,5 @@
 import {deleteDoc, doc, getDoc, updateDoc} from "firebase/firestore";
-import {db} from "@/app/firebase/config";
+import {db} from "../../../app/config/firebase/config";
 
 export const deleteWorkspaceData = async (
     userId: string | undefined,

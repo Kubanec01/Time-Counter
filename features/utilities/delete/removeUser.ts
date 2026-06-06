@@ -1,5 +1,5 @@
 import {arrayUnion, doc, getDoc, updateDoc} from "firebase/firestore";
-import {db} from "@/app/firebase/config";
+import {db} from "../../../app/config/firebase/config";
 import {Member} from "@/types";
 
 

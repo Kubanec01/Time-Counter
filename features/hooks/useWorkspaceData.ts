@@ -1,7 +1,7 @@
 'use client'
 
 import {useEffect, useState} from "react";
-import {db} from "@/app/firebase/config";
+import {db} from "../../app/config/firebase/config";
 import {doc, DocumentData,onSnapshot} from "firebase/firestore";
 import {documentNotFound} from "@/messages/errors";
 import {WorkspaceId} from "@/types";

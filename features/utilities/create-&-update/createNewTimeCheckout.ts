@@ -1,7 +1,7 @@
 import {throwRandomNum} from "@/features/utilities/throwRandomNum";
 import {arrayUnion, doc, updateDoc} from "firebase/firestore";
 import {TimeCheckout, WorkspaceId} from "@/types";
-import {db} from "@/app/firebase/config";
+import {db} from "../../../app/config/firebase/config";
 
 
 export const createNewTimeCheckout = async (

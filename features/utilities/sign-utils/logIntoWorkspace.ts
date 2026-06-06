@@ -1,7 +1,7 @@
 import {Member, UserBlackListData, WorkspacesListItem} from "@/types";
 import {fetchMessages, userNotFound} from "@/messages/errors";
 import {doc, getDoc, setDoc, updateDoc} from "firebase/firestore";
-import {db} from "@/app/firebase/config";
+import {db} from "../../../app/config/firebase/config";
 
 
 export const logIntoWorkspace = async (

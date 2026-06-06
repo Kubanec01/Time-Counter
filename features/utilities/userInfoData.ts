@@ -1,7 +1,7 @@
 import {documentNotFound, invalidUserId} from "@/messages/errors";
 import {doc, getDoc} from "firebase/firestore";
 import {UserMode, WorkspaceId, WorkspacesListItem} from "@/types";
-import {db} from "@/app/firebase/config";
+import {db} from "../../app/config/firebase/config";
 
 
 export const getUserNameData = async (

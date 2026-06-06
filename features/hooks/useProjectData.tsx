@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {Project} from "@/types";
-import {db} from "@/app/firebase/config";
+import {db} from "../../app/config/firebase/config";
 import {doc, onSnapshot} from "firebase/firestore";
 
 

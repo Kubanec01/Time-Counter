@@ -2,7 +2,7 @@
 
 import {FormEvent, useState} from "react";
 import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
-import {db} from "@/app/firebase/config";
+import {db} from "../../../../config/firebase/config";
 import {doc, updateDoc} from "firebase/firestore";
 import {useGetWorkspacePassword} from "@/features/hooks/useGetWorkspacePassword";
 import RadialPurpleGradientBg from "@/components/RadialPurpleGradientBg/RadialPurpleGradientBg";

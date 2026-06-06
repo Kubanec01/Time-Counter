@@ -37,7 +37,11 @@ export const WorkspaceForm = ({...props}: WorkspaceFormProps) => {
         setIsProcessLoading(true)
 
         if (!userId) return
-        if (password.trim() === "" || name.trim() === "") return setErrorCode('EMPTY_INPUTS')
+        if (password.trim() === "" || name.trim() === "")  {
+            setErrorCode('EMPTY_INPUTS')
+            setIsProcessLoading(false)
+            return
+        }
 
         if (props.workspaceAction === "create") {
 
@@ -49,6 +53,7 @@ export const WorkspaceForm = ({...props}: WorkspaceFormProps) => {
             setMode("workspace")
             setWorkspaceId(workspaceId)
             setIsProcessLoading(false)
+            setErrorCode(null)
             replace("/")
         }
 
@@ -94,6 +99,8 @@ export const WorkspaceForm = ({...props}: WorkspaceFormProps) => {
         }
     }
 
+    console.log(isProcessLoading)
+
 
     return (
         <div
@@ -120,6 +127,7 @@ export const WorkspaceForm = ({...props}: WorkspaceFormProps) => {
                             setName(e.target.value)
                             setWorkspaceId(e.target.value)
                             setWorkspaceInputId(e.target.value)
+                            setErrorCode(null)
                         }}
                         placeholder={"Enter workspace name"}
                         type="text"/>
@@ -134,7 +142,10 @@ export const WorkspaceForm = ({...props}: WorkspaceFormProps) => {
                     <input
                         className={"w-full border border-black/20 focus:border-black/40 rounded-md text-sm py-1 px-2 mt-1 outline-none"}
                         id={"create-&-update-workspace"}
-                        onChange={e => setPassword(e.target.value)}
+                        onChange={e => {
+                            setPassword(e.target.value)
+                            setErrorCode(null)
+                        }}
                         placeholder={"Enter workspace password"}
                         type="password"/>
                 </div>
