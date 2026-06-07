@@ -166,7 +166,7 @@ export const UserMenu = ({...props}: Props) => {
             {createPortal(
                 <ConfirmModal
                     isModalOpen={isLogoutModalOpen}
-                    title={"Log Out of Synto?"}
+                    title={"Log Out of Orion?"}
                     description={"You can always log back in anywhere, anytime. Your progress will be saved without any worries."}
                     onCancelClick={() => setIsLogoutModalOpen(false)}
                     confirmButtonText={"Log Out"}

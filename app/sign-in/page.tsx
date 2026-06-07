@@ -8,13 +8,14 @@ import {onAuthStateChanged, signInWithEmailAndPassword} from "@firebase/auth";
 import {IoMdEye, IoMdEyeOff} from "react-icons/io";
 import {seoTitle} from "@/app/config/seo.title";
 import {TextHighlighter} from "@/app/sign-in/components/TextHighlighter";
+import {useErrorBannerContext} from "@/features/hooks/context/useErrorBannerContext";
 
 const SignInPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [errorMess, setErrorMess] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+    const {setErrorCode} = useErrorBannerContext()
 
     const {replace} = useReplaceRouteLink()
 
@@ -55,92 +56,89 @@ const SignInPage = () => {
     return (
         <>
             <title>{seoTitle.signIn.title}</title>
-        <div className="w-full h-screen bg-black flex relative">
-            <a
-                href={'#'}
-                target={'_blank'}
-                className={"text-white/40 hover:underline cursor-pointer text-sm absolute right-6 top-6"}>
-                Orion
-            </a>
-            <section
-                style={{
-                    backgroundImage: `url(/signIn-img.png)`,
-                    backgroundSize: 'cover',
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'center',
-                }}
-                className={"w-[36%] max-w-114 pl-6 pt-14 md:block hidden"}>
-                <h1
-                    className={"text-white/70 text-xl w-[80%]"}>
-                    <TextHighlighter>Measure</TextHighlighter>,
-                    <TextHighlighter> analyze</TextHighlighter>, and
-                    <TextHighlighter> optimize</TextHighlighter> your work with
-                    <TextHighlighter> confidence</TextHighlighter>.
-                </h1>
-                {/* Zacommentovany des. z pripadu buduceho vymazania */}
-                {/*<p*/}
-                {/*    className={"text-sm text-white/52 w-[80%] mt-2"}>*/}
-                {/*    Create a workspace. Build projects. Track time, solo or with your team. Increase your efficiency and*/}
-                {/*    organization with precise data.*/}
-                {/*</p>*/}
-            </section>
-            <section className="h-full flex flex-col justify-center items-center flex-1 border">
-                <h1
-                    className={"text-white/90 font- text-2xl"}>
-                    Welcome back
-                </h1>
-                <p
-                    className={"text-xs text-white/50 mt-2"}>
-                    Sign in and take control of your time again.
-                </p>
-                <form
-                    onSubmit={handleSignIn}
-                    className="sm:w-78 w-70 flex flex-col justify-center items-center gap-2 mt-12 px-2">
-                    {/* Email Input */}
-                    <input
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Your email..."
-                        className={inputStyle}
-                        type="text"
-                    />
-                    {/* Password Input */}
+            <div className="w-full h-screen bg-black flex relative">
+                <a
+                    href={'#'}
+                    target={'_blank'}
+                    className={"text-white/40 hover:underline cursor-pointer text-sm absolute right-6 top-6"}>
+                    Orion
+                </a>
+                <section
+                    style={{
+                        backgroundImage: `url(/signIn-img.png)`,
+                        backgroundSize: 'cover',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'center',
+                    }}
+                    className={"w-[36%] max-w-114 pl-6 pt-14 md:block hidden"}>
+                    <h1
+                        className={"text-white/70 text-xl w-[80%]"}>
+                        <TextHighlighter>Measure</TextHighlighter>,
+                        <TextHighlighter> analyze</TextHighlighter>, and
+                        <TextHighlighter> optimize</TextHighlighter> your work with
+                        <TextHighlighter> confidence</TextHighlighter>.
+                    </h1>
+                </section>
+                <section className="h-full flex-1 flex justify-center items-center px-4 overflow-hidden">
                     <div
-                        className={"w-full relative flex items-center"}>
-                        <input
-                            onChange={(e) => setPassword(e.target.value)}
-                            placeholder="Your password..."
-                            className={`${inputStyle} mt-0.5`}
-                            type={`${isPasswordHidden ? "password" : "text"}`}
-                        />
-                        <IoMdEyeOff
-                            onClick={() => setIsPasswordHidden(v => !v)}
-                            style={{display: isPasswordHidden ? "block" : "none"}}
-                            className={"absolute text-custom-gray-800 text-lg right-2.5 cursor-pointer"}/>
-                        <IoMdEye
-                            onClick={() => setIsPasswordHidden(v => !v)}
-                            style={{display: isPasswordHidden ? "none" : "block"}}
-                            className={"absolute text-custom-gray-800 text-lg right-2.5 cursor-pointer"}/>
-                    </div>
-                    <button
-                        type={"submit"}
-                        disabled={isLoading}
-                        className={`${isLoading ? "bg-white/30" : "bg-purple-gradient border"} large-button sm:py-2 
+                        className={'border border-white/30 px-4 py-14 rounded-md flex flex-col justify-center items-center'}>
+                        <h1
+                            className={"text-white/90 text-center text-2xl font-medium"}>
+                            Welcome back to ORION.
+                        </h1>
+                        <p
+                            className={"text-sm text-white/50 mt-2 text-center"}>
+                            Sign in and take control of your time.
+                        </p>
+                        <form
+                            onSubmit={handleSignIn}
+                            className="sm:w-78 w-full max-w-78 flex flex-col justify-center items-center gap-2 mt-10 px-2">
+                            {/* Email Input */}
+                            <input
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="Your email..."
+                                className={inputStyle}
+                                type="text"
+                            />
+                            {/* Password Input */}
+                            <div
+                                className={"w-full relative flex items-center"}>
+                                <input
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    placeholder="Your password..."
+                                    className={`${inputStyle} mt-0.5`}
+                                    type={`${isPasswordHidden ? "password" : "text"}`}
+                                />
+                                <IoMdEyeOff
+                                    onClick={() => setIsPasswordHidden(v => !v)}
+                                    style={{display: isPasswordHidden ? "block" : "none"}}
+                                    className={"absolute text-custom-gray-800 text-lg right-2.5 cursor-pointer"}/>
+                                <IoMdEye
+                                    onClick={() => setIsPasswordHidden(v => !v)}
+                                    style={{display: isPasswordHidden ? "none" : "block"}}
+                                    className={"absolute text-custom-gray-800 text-lg right-2.5 cursor-pointer"}/>
+                            </div>
+                            <button
+                                type={"submit"}
+                                disabled={isLoading}
+                                className={`${isLoading ? "bg-white/30" : "bg-purple-gradient border"} large-button sm:py-2 
                         py-1.5 w-full sm:mt-0 mt-3`}>
-                        Log in
-                    </button>
-                    <button
-                        type={"button"}
-                        className="cursor-pointer hover:underline text-xs text-white mt-6">
-                        Forgot your password?
-                    </button>
-                    <span
-                        className={"text-custom-gray-700/80 text-base text-sm mt-1"}>
+                                Log in
+                            </button>
+                            <button
+                                type={"button"}
+                                className="cursor-pointer hover:underline text-sm text-white mt-4">
+                                Forgot your password?
+                            </button>
+                            <span
+                                className={"text-custom-gray-700 text-center text-sm mt-1"}>
                         {"Or don't have an account?"}
-                        <Link className={"text-vibrant-purple-400 hover:underline"}
-                              href="/sign-up"> Sign up</Link></span>
-                </form>
-            </section>
-        </div>
+                                <Link className={"text-vibrant-purple-400 hover:underline"}
+                                      href="/sign-up"> Sign up</Link></span>
+                        </form>
+                    </div>
+                </section>
+            </div>
         </>
     );
 };

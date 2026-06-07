@@ -12,7 +12,7 @@ const ModalTemplate = (
             <div
                 className={twMerge(`${bodyClass} backdrop-blur-sm z-40`, className)}/>
             <div
-                className={twMerge(`${bodyClass} z-40 bg-white/20 border border-black/12 shadow-xl`, className)}>
+                className={twMerge(`${bodyClass} z-40 bg-white/70 border border-black/12 shadow-xl`, className)}>
                 {children}
             </div>
         </>

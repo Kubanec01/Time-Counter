@@ -52,7 +52,7 @@ export default function HomePage() {
     }, []);
 
     const setTitleValue = (mode: 'solo' | 'workspace') => {
-        if(mode === 'solo' || !workspaceName) return seoTitle.home.title
+        if (mode === 'solo' || !workspaceName) return seoTitle.home.title
         else return seoTitle.workspacePage(workspaceName).title
     }
 

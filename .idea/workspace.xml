@@ -4,68 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="88e9b0f7-57eb-4e50-b7a0-4eeccd1312a7" name="Changes" comment="fix:&#10;- update homePage onSubmit fn for joining to Workspace">
-      <change afterPath="$PROJECT_DIR$/app/config/seo.title.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/sign-in/components/TextHighlighter.tsx" afterDir="false" />
+    <list default="true" id="88e9b0f7-57eb-4e50-b7a0-4eeccd1312a7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/LoadingPage/LoadingPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/LoadingPage/LoadingPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/firebase/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/config/firebase/config.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/projects/tracking/[id]/components/projectCart/components/SectionCart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/projects/tracking/[id]/components/projectCart/components/SectionCart.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/projects/tracking/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/projects/tracking/[id]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/settings/account/edit-user-name/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/settings/account/edit-user-name/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/sign-in/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/sign-in/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/sign-up/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/sign-up/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/workspaces/settings/components/buttons/ProjectOptions.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/workspaces/settings/components/buttons/ProjectOptions.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/workspaces/settings/components/settingsBodySections/users/Users.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/workspaces/settings/components/settingsBodySections/users/Users.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/workspaces/settings/components/settingsBodySections/users/components/BannedUserBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/workspaces/settings/components/settingsBodySections/users/components/BannedUserBar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/workspaces/settings/components/settingsBodySections/users/components/membersSections/MembersSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/workspaces/settings/components/settingsBodySections/users/components/membersSections/MembersSection.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/workspaces/settings/nameAndPassword/edit-name/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/workspaces/settings/nameAndPassword/edit-name/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/workspaces/settings/nameAndPassword/edit-password/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/workspaces/settings/nameAndPassword/edit-password/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/workspaces/settings/project/edit-project-name/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/workspaces/settings/project/edit-project-name/[id]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/workspaces/workspaceLoginSection/WorkspaceForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/workspaces/workspaceLoginSection/WorkspaceForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ProjectBar/ProjectBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ProjectBar/ProjectBar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ProjectsBars/ProjectsBars.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ProjectsBars/ProjectsBars.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/mainNavbar/components/userMenu/UserMenu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/mainNavbar/components/userMenu/UserMenu.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/modals/OnboardingModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/modals/OnboardingModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/modals/WorkspacesListModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/modals/WorkspacesListModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/modals/updateUserClassModal/UpdateUserClassModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/modals/updateUserClassModal/UpdateUserClassModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/modals/updateUserClassModal/components/CreateUsersClass.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/modals/updateUserClassModal/components/CreateUsersClass.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/hooks/context/workspaceContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/features/hooks/context/workspaceContext.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/hooks/useAuthRedirect.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/features/hooks/useAuthRedirect.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/hooks/useGetWorkspacePassword.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/features/hooks/useGetWorkspacePassword.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/hooks/useJoinToWorkspace.ts" beforeDir="false" afterPath="$PROJECT_DIR$/features/hooks/useJoinToWorkspace.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/hooks/useMemberData.ts" beforeDir="false" afterPath="$PROJECT_DIR$/features/hooks/useMemberData.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/hooks/useProjectData.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/features/hooks/useProjectData.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/hooks/useSectionSettings.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/features/hooks/useSectionSettings.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/hooks/useSignOutUser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/features/hooks/useSignOutUser.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/hooks/useWorkspaceData.ts" beforeDir="false" afterPath="$PROJECT_DIR$/features/hooks/useWorkspaceData.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/utilities/create-&amp;-update/createNewMember.ts" beforeDir="false" afterPath="$PROJECT_DIR$/features/utilities/create-&amp;-update/createNewMember.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/utilities/create-&amp;-update/createNewProject.ts" beforeDir="false" afterPath="$PROJECT_DIR$/features/utilities/create-&amp;-update/createNewProject.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/utilities/create-&amp;-update/createNewSection.ts" beforeDir="false" afterPath="$PROJECT_DIR$/features/utilities/create-&amp;-update/createNewSection.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/utilities/create-&amp;-update/createNewTimeCheckout.ts" beforeDir="false" afterPath="$PROJECT_DIR$/features/utilities/create-&amp;-update/createNewTimeCheckout.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/utilities/create-&amp;-update/createNewWorkspace.ts" beforeDir="false" afterPath="$PROJECT_DIR$/features/utilities/create-&amp;-update/createNewWorkspace.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/utilities/create-&amp;-update/updateProjectDailyTrackLimit.ts" beforeDir="false" afterPath="$PROJECT_DIR$/features/utilities/create-&amp;-update/updateProjectDailyTrackLimit.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/utilities/create-&amp;-update/updateProjectOption.ts" beforeDir="false" afterPath="$PROJECT_DIR$/features/utilities/create-&amp;-update/updateProjectOption.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/utilities/create-&amp;-update/updateSectionName.ts" beforeDir="false" afterPath="$PROJECT_DIR$/features/utilities/create-&amp;-update/updateSectionName.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/utilities/create-&amp;-update/updateTrackFormatData.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/features/utilities/create-&amp;-update/updateTrackFormatData.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/utilities/create-&amp;-update/updateUserIndividualTime.ts" beforeDir="false" afterPath="$PROJECT_DIR$/features/utilities/create-&amp;-update/updateUserIndividualTime.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/utilities/delete/deleteProject.ts" beforeDir="false" afterPath="$PROJECT_DIR$/features/utilities/delete/deleteProject.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/utilities/delete/deleteSection.ts" beforeDir="false" afterPath="$PROJECT_DIR$/features/utilities/delete/deleteSection.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/utilities/delete/deleteSubsectionAndTimeCheckoutsData.ts" beforeDir="false" afterPath="$PROJECT_DIR$/features/utilities/delete/deleteSubsectionAndTimeCheckoutsData.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/utilities/delete/deleteWorkspace.ts" beforeDir="false" afterPath="$PROJECT_DIR$/features/utilities/delete/deleteWorkspace.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/utilities/delete/deleteWorkspaceData.ts" beforeDir="false" afterPath="$PROJECT_DIR$/features/utilities/delete/deleteWorkspaceData.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/utilities/delete/removeUser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/features/utilities/delete/removeUser.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/utilities/delete/removeWorkspaceFromList.ts" beforeDir="false" afterPath="$PROJECT_DIR$/features/utilities/delete/removeWorkspaceFromList.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/utilities/edit/setUSerRole.ts" beforeDir="false" afterPath="$PROJECT_DIR$/features/utilities/edit/setUSerRole.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/utilities/edit/updateTotalDailyTrackedTime.ts" beforeDir="false" afterPath="$PROJECT_DIR$/features/utilities/edit/updateTotalDailyTrackedTime.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/utilities/getAllProjects.ts" beforeDir="false" afterPath="$PROJECT_DIR$/features/utilities/getAllProjects.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/utilities/getAllWorkspaceMembers.ts" beforeDir="false" afterPath="$PROJECT_DIR$/features/utilities/getAllWorkspaceMembers.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/utilities/getWorkspaceName.ts" beforeDir="false" afterPath="$PROJECT_DIR$/features/utilities/getWorkspaceName.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/utilities/sign-utils/logIntoWorkspace.ts" beforeDir="false" afterPath="$PROJECT_DIR$/features/utilities/sign-utils/logIntoWorkspace.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/utilities/time/timeOperations.ts" beforeDir="false" afterPath="$PROJECT_DIR$/features/utilities/time/timeOperations.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/utilities/time/updateTimeData.ts" beforeDir="false" afterPath="$PROJECT_DIR$/features/utilities/time/updateTimeData.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/utilities/userInfoData.ts" beforeDir="false" afterPath="$PROJECT_DIR$/features/utilities/userInfoData.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/modals01/ConfirmModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/modals01/ConfirmModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/modals01/ModalTemplate/ModalTemplate.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/modals01/ModalTemplate/ModalTemplate.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,7 +18,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="205" />
+    <option name="cachedIndexableFilesCount" value="197" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="Git.Settings">
@@ -88,7 +33,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/Kubanec01/Time-Counter.git&quot;,
-    &quot;accountId&quot;: &quot;29dd9fac-2834-44d9-9069-dbe28f38e4d6&quot;
+    &quot;accountId&quot;: &quot;fd159598-7e8e-4d5b-97b2-3a918d17bf35&quot;
   }
 }</component>
   <component name="McpProjectServerCommands">
@@ -110,35 +55,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;javascript.preferred.runtime.type.id&quot;: &quot;node&quot;,
-    &quot;js.debugger.nextJs.config.created.client&quot;: &quot;true&quot;,
-    &quot;js.debugger.nextJs.config.created.server&quot;: &quot;true&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Users/jakubroman/WebstormProjects/Time-Counter/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "main",
+    "javascript.preferred.runtime.type.id": "node",
+    "js.debugger.nextJs.config.created.client": "true",
+    "js.debugger.nextJs.config.created.server": "true",
+    "junie.onboarding.icon.badge.shown": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "ml.llm.LLMConfigurable",
+    "to.speed.mode.migration.done": "true",
+    "ts.external.directory.path": "C:\\Users\\jakub\\Desktop\\Front-End-Folder\\Projects\\React_Ts\\time-counter\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/app/config" />
       <recent name="C:\Users\jakub\Desktop\Front-End-Folder\Projects\React_Ts\time-counter\components\modals01" />
       <recent name="C:\Users\jakub\Desktop\Front-End-Folder\Projects\React_Ts\time-counter\features\hooks\context" />
     </key>
@@ -161,7 +105,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-WS-261.23567.141" />
+        <option value="bundled-js-predefined-d6986cc7102b-3bd3a6803838-JavaScript-WS-261.22158.274" />
       </set>
     </attachedChunks>
   </component>
@@ -176,12 +120,6 @@
       <workItem from="1779651694347" duration="195000" />
       <workItem from="1780225346472" duration="8576000" />
       <workItem from="1780243791781" duration="5366000" />
-      <workItem from="1780377679373" duration="223000" />
-      <workItem from="1780378186535" duration="1997000" />
-      <workItem from="1780463297411" duration="2644000" />
-      <workItem from="1780465995582" duration="75000" />
-      <workItem from="1780510386110" duration="2166000" />
-      <workItem from="1780761954771" duration="1788000" />
     </task>
     <task id="LOCAL-00001" summary="build: update idea file">
       <option name="closed" value="true" />
@@ -199,15 +137,7 @@
       <option name="project" value="LOCAL" />
       <updated>1779651881709</updated>
     </task>
-    <task id="LOCAL-00003" summary="feat: create whole Delete Workspace fn and compatibility&#10;&#10;fix:&#10;update dependencie in form fn when user set incorrect password into Workspace Login on HomePage">
-      <option name="closed" value="true" />
-      <created>1780465946889</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1780465946889</updated>
-    </task>
-    <option name="localTasksCounter" value="4" />
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -216,7 +146,6 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="build: update idea file" />
     <MESSAGE value="build: update idea file to include new" />
-    <MESSAGE value="feat: create whole Delete Workspace fn and compatibility&#10;&#10;fix:&#10;update dependencie in form fn when user set incorrect password into Workspace Login on HomePage" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: create whole Delete Workspace fn and compatibility&#10;&#10;fix:&#10;update dependencie in form fn when user set incorrect password into Workspace Login on HomePage" />
+    <option name="LAST_COMMIT_MESSAGE" value="build: update idea file to include new" />
   </component>
 </project>

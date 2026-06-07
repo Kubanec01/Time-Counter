@@ -19,8 +19,7 @@ const ConfirmModal = ({...props}: ConfirmModalProps) => {
         <section
             style={{display: props.isModalOpen ? "block" : "none"}}
             className={'fixed top-0 left-0 w-full h-screen z-50'}>
-            <ModalTemplate
-            >
+            <ModalTemplate>
                 {props.customIcon
                     ?
                     props.customIcon
@@ -28,30 +27,25 @@ const ConfirmModal = ({...props}: ConfirmModalProps) => {
                     <GiSunSpear className={"text-3xl mx-auto shadow-none"}/>
                 }
                 <div
-                    className={"mt-5"}
-                >
+                    className={"mt-5"}>
                     <h1
-                        className={"mb-1 font-medium"}
-                    >
+                        className={"mb-1 font-medium"}>
                         {props.title}
                     </h1>
                     <p
-                        className={"text-sm text-black/70 w-11/12"}
-                    >
+                        className={"text-sm text-black/70 w-11/12"}>
                         {props.description}
                     </p>
                     <div
                         className={"flex flex-col items-center justify-center gap-3 mt-10"}>
                         <MediumButton
                             onClick={props.onConfirmClick}
-                            className={"w-full bg-black-gradient border-none"}
-                        >
+                            className={"w-full bg-black-gradient border-none"}>
                             {props.confirmButtonText}
                         </MediumButton>
                         <MediumButton
                             onClick={props.onCancelClick}
-                            className={"w-full border-none rounded-md hover:bg-black/15 text-black/70 duration-150"}
-                        >
+                            className={"w-full border-none rounded-md hover:bg-black/15 text-black/70 duration-150"}>
                             Back
                         </MediumButton>
                     </div>
