@@ -4,13 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="88e9b0f7-57eb-4e50-b7a0-4eeccd1312a7" name="Changes" comment="">
+    <list default="true" id="88e9b0f7-57eb-4e50-b7a0-4eeccd1312a7" name="Changes" comment="fix:&#10;- update homePage onSubmit fn for joining to Workspace">
+      <change afterPath="$PROJECT_DIR$/components/modals01/loadings/LoadingSmallModal/LoadingSmallModal.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/globals.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/sign-in/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/sign-in/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/sign-up/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/sign-up/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/mainNavbar/Navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/mainNavbar/Navbar.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/mainNavbar/components/userMenu/UserMenu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/mainNavbar/components/userMenu/UserMenu.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/modals01/ConfirmModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/modals01/ConfirmModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/modals01/ModalTemplate/ModalTemplate.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/modals01/ModalTemplate/ModalTemplate.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/modals01/ErrorBunderModal/ErrorBannerModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/modals01/ErrorBunderModal/ErrorBannerModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/features/hooks/context/useErrorBannerContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/features/hooks/context/useErrorBannerContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,7 +25,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="197" />
+    <option name="cachedIndexableFilesCount" value="209" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="Git.Settings">
@@ -33,7 +40,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/Kubanec01/Time-Counter.git&quot;,
-    &quot;accountId&quot;: &quot;fd159598-7e8e-4d5b-97b2-3a918d17bf35&quot;
+    &quot;accountId&quot;: &quot;29dd9fac-2834-44d9-9069-dbe28f38e4d6&quot;
   }
 }</component>
   <component name="McpProjectServerCommands">
@@ -55,34 +62,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "main",
-    "javascript.preferred.runtime.type.id": "node",
-    "js.debugger.nextJs.config.created.client": "true",
-    "js.debugger.nextJs.config.created.server": "true",
-    "junie.onboarding.icon.badge.shown": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "ml.llm.LLMConfigurable",
-    "to.speed.mode.migration.done": "true",
-    "ts.external.directory.path": "C:\\Users\\jakub\\Desktop\\Front-End-Folder\\Projects\\React_Ts\\time-counter\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;javascript.preferred.runtime.type.id&quot;: &quot;node&quot;,
+    &quot;js.debugger.nextJs.config.created.client&quot;: &quot;true&quot;,
+    &quot;js.debugger.nextJs.config.created.server&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/jakubroman/WebstormProjects/Time-Counter/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/config" />
       <recent name="C:\Users\jakub\Desktop\Front-End-Folder\Projects\React_Ts\time-counter\components\modals01" />
       <recent name="C:\Users\jakub\Desktop\Front-End-Folder\Projects\React_Ts\time-counter\features\hooks\context" />
     </key>
@@ -105,7 +113,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-3bd3a6803838-JavaScript-WS-261.22158.274" />
+        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-WS-261.23567.141" />
       </set>
     </attachedChunks>
   </component>
@@ -120,6 +128,15 @@
       <workItem from="1779651694347" duration="195000" />
       <workItem from="1780225346472" duration="8576000" />
       <workItem from="1780243791781" duration="5366000" />
+      <workItem from="1780377679373" duration="223000" />
+      <workItem from="1780378186535" duration="1997000" />
+      <workItem from="1780463297411" duration="2644000" />
+      <workItem from="1780465995582" duration="75000" />
+      <workItem from="1780510386110" duration="2166000" />
+      <workItem from="1780761954771" duration="1788000" />
+      <workItem from="1780897827173" duration="311000" />
+      <workItem from="1781069897599" duration="1263000" />
+      <workItem from="1781071186631" duration="457000" />
     </task>
     <task id="LOCAL-00001" summary="build: update idea file">
       <option name="closed" value="true" />
@@ -137,7 +154,15 @@
       <option name="project" value="LOCAL" />
       <updated>1779651881709</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="feat: create whole Delete Workspace fn and compatibility&#10;&#10;fix:&#10;update dependencie in form fn when user set incorrect password into Workspace Login on HomePage">
+      <option name="closed" value="true" />
+      <created>1780465946889</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1780465946889</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -146,6 +171,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="build: update idea file" />
     <MESSAGE value="build: update idea file to include new" />
-    <option name="LAST_COMMIT_MESSAGE" value="build: update idea file to include new" />
+    <MESSAGE value="feat: create whole Delete Workspace fn and compatibility&#10;&#10;fix:&#10;update dependencie in form fn when user set incorrect password into Workspace Login on HomePage" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: create whole Delete Workspace fn and compatibility&#10;&#10;fix:&#10;update dependencie in form fn when user set incorrect password into Workspace Login on HomePage" />
   </component>
 </project>

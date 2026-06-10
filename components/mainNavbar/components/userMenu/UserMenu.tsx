@@ -39,7 +39,7 @@ export const UserMenu = ({...props}: Props) => {
     const {signOutUser} = useSignOutUser()
     const router = useRouter();
     const {leaveWorkspace} = useLeaveWorkspace()
-    const {userName, userSurname, userInitials, userRole, userId, setMode, setWorkspaceId, mode} = useWorkSpaceContext()
+    const {userName, userSurname, userInitials, userRole, userId, mode} = useWorkSpaceContext()
 
     const isMenuOpen = props.isUserMenuOpen ? "flex" : "hidden";
 

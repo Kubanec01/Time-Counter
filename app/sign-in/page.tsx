@@ -20,12 +20,18 @@ const SignInPage = () => {
     const {replace} = useReplaceRouteLink()
 
     // Style
-    const inputStyle = "w-full sm:py-1.5 py-1 border border-custom-gray-800 text-custom-gray-600 rounded-lg px-3 outline-none"
+    const inputStyle = "w-full sm:py-1.5 py-1 md:text-base text-sm border border-custom-gray-800 text-custom-gray-600 rounded-sm px-3 outline-none"
 
 
     const handleSignIn = async (e: FormEvent) => {
         e.preventDefault()
         setIsLoading(true)
+
+        if (email.trim().length === 0 || password.trim().length === 0)  {
+            setIsLoading(false)
+            setErrorCode('EMPTY_INPUTS')
+            return
+        }
 
         try {
             const resp = await signInWithEmailAndPassword(auth, email, password);
@@ -35,11 +41,12 @@ const SignInPage = () => {
                 setPassword("");
                 replace("/");
                 setIsLoading(false)
+                setErrorCode(null)
             }
 
         } catch {
             setIsLoading(false)
-            setErrorMess("Incorrect email or edit-password (≥o≤)")
+            setErrorCode('INVALID_PASSWORD_OR_MAIL')
         }
     };
 
@@ -81,9 +88,9 @@ const SignInPage = () => {
                 </section>
                 <section className="h-full flex-1 flex justify-center items-center px-4 overflow-hidden">
                     <div
-                        className={'border border-white/30 px-4 py-14 rounded-md flex flex-col justify-center items-center'}>
+                        className={'border border-white/20 px-4 py-14 rounded-md flex flex-col justify-center items-center'}>
                         <h1
-                            className={"text-white/90 text-center text-2xl font-medium"}>
+                            className={"text-white/90 text-center md:text-2xl text-lg font-medium"}>
                             Welcome back to ORION.
                         </h1>
                         <p
@@ -122,7 +129,7 @@ const SignInPage = () => {
                                 type={"submit"}
                                 disabled={isLoading}
                                 className={`${isLoading ? "bg-white/30" : "bg-purple-gradient border"} large-button sm:py-2 
-                        py-1.5 w-full sm:mt-0 mt-3`}>
+                                md:py-1.5 py-1 w-full sm:mt-0 mt-3`}>
                                 Log in
                             </button>
                             <button

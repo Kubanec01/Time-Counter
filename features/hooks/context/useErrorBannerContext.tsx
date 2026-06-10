@@ -1,7 +1,7 @@
 'use client'
 
 import {createContext, Dispatch, SetStateAction, useContext, useState} from "react";
-import {ErrorBannerCodes, ErrorBannerValues} from "@/types";
+import {ErrorBannerValues} from "@/types";
 
 
 type ErrorBannerContextType = {

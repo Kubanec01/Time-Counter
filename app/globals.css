@@ -32,7 +32,7 @@
     }
 
     .large-button {
-        @apply text-sm rounded-lg cursor-pointer px-4 py-2.5;
+        @apply text-sm rounded-md cursor-pointer px-4 py-2.5;
     }
 
     .bg-purple-gradient {

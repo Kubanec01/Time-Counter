@@ -23,6 +23,7 @@ const ErrorBannerModal = () => {
         INVALID_PASSWORD: 'Wrong password. Please try again.',
         USER_NOT_FOUND: 'User not found. Please check your credentials.',
         WEAK_PASSWORD: 'Your password is too weak. Please use a stronger password with at least 8 characters, including uppercase letters, lowercase letters, numbers, and special characters.',
+        INVALID_PASSWORD_OR_MAIL: 'Incorrect email or password',
         // Workspace
         WORKSPACE_NOT_FOUND: 'Workspace not found. Please check your credentials.',
         WRONG_PASSWORD: 'Wrong password. Please try again.',

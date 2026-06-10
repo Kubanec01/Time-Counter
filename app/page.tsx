@@ -105,7 +105,7 @@ export default function HomePage() {
                                 {createPortal(
                                     <CreateModal
                                         iconClassName={"text-vibrant-purple-700"}
-                                        className={"w-92.5 h-100"}
+                                        className={"w-82 h-100 mt-0.2"}
                                         title={"Create New Project"}
                                         description={"Create a new project where you can measure progress, time, performance, and simply everything that will move your work to the speed of light! (max 24 characters)"}
                                         isOpen={isModalOpen}

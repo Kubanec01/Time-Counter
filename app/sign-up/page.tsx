@@ -23,7 +23,7 @@ const SignUpPage = () => {
 
     const {replace} = useReplaceRouteLink()
 
-    const inputStyle = "w-full py-1.5 border border-custom-gray-800 text-custom-gray-600 rounded-lg px-3 outline-none"
+    const inputStyle = "w-full md:py-1.5 py-1 md:text-base text-sm border border-custom-gray-800 text-custom-gray-600 rounded-sm px-3 outline-none"
 
 
     const handleSignUp = async (e: FormEvent) => {
@@ -75,18 +75,18 @@ const SignUpPage = () => {
     return (
         <section className="w-full bg-black h-screen flex flex-col justify-center items-center relative">
             <h1
-                className={"text-white/40 text-sm absolute right-[24px] top-[24px]"}>
+                className={"text-white/40 text-sm absolute right-6 top-6"}>
                 Synto
             </h1>
             <div
-                className="border border-custom-gray-800/80 max-w-[350px] w-[90%] rounded-xl flex flex-col py-10 px-5">
-                <h1 className="text-white/90 text-center mb-2">
+                className="border border-custom-gray-800/80 max-w-87.5 w-[90%] rounded-lg flex flex-col md:py-10 py-6 px-5">
+                <h1 className="text-white/90 text-center mb-2 text-md-lg text-base font-medium">
                     Sign up to track your time and <br/>
                     keep your projects in
                     line.</h1>
                 <form
                     onSubmit={handleSignUp}
-                    className="w-full flex flex-col justify-center items-center flex-1 gap-2 mt-[32px]">
+                    className="w-full flex flex-col justify-center items-center flex-1 gap-2 mt-md-8 mt-4">
                     {/* Email Input */}
                     <div
                         className={"flex gap-2"}>
@@ -138,13 +138,9 @@ const SignUpPage = () => {
                             type={`${isPasswordHidden ? "password" : "text"}`}
                         />
                     </div>
-                    <h1
-                        className={"text-red-500/90 text-sm"}>
-                        {errMess}</h1>
                     <button
                         type={"submit"}
-                        className={`${isLoading ? "bg-white/30" : "bg-purple-gradient border"} large-button py-2 w-full`}
-                    >
+                        className={`${isLoading ? "bg-white/30" : "bg-purple-gradient border"} large-button md:py-2 py-1 w-full`}>
                         Sign Up
                     </button>
                     <span
