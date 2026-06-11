@@ -8,6 +8,7 @@ import {useReplaceRouteLink} from "@/features/hooks/useReplaceRouteLink";
 import {createUserWithEmailAndPassword} from "@firebase/auth";
 import {FirebaseError} from "@firebase/app";
 import {IoMdEye, IoMdEyeOff} from "react-icons/io";
+import {useErrorBannerContext} from "@/features/hooks/context/useErrorBannerContext";
 
 const SignUpPage = () => {
 
@@ -17,9 +18,9 @@ const SignUpPage = () => {
     const [passwordConfirm, setPasswordConfirm] = useState("");
     const [name, setName] = useState("");
     const [surname, setSurname] = useState("");
-    const [errMess, setErrMess] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+    const {setErrorCode} = useErrorBannerContext()
 
     const {replace} = useReplaceRouteLink()
 
@@ -32,10 +33,10 @@ const SignUpPage = () => {
 
         if (password !== passwordConfirm) {
             setIsLoading(false);
-            return setErrMess("Passwords do not match (≥o≤)");
+            return setErrorCode('PASSWORDS_NOT_MATCH')
         } else if (name.trim().length === 0 || surname.trim().length === 0) {
             setIsLoading(false);
-            return setErrMess("Please fill in all fields 0.o");
+            return setErrorCode('EMPTY_INPUTS');
         }
 
         try {
@@ -53,18 +54,19 @@ const SignUpPage = () => {
                 setPassword("");
                 replace("/");
                 setIsLoading(false)
+                setErrorCode(null)
             }
         } catch (err) {
             if (err instanceof FirebaseError) {
                 switch (err.code) {
                     case "auth/weak-edit-password":
-                        setErrMess("The edit-password is too weak :(")
+                        setErrorCode('WEAK_PASSWORD')
                         break;
                     case "auth/email-already-in-use":
-                        setErrMess("This email is already in use (≥o≤)")
+                        setErrorCode('EMAIL_ALREADY_EXISTS')
                         break;
                     default:
-                        setErrMess("Something went wrong. Please try again.")
+                        setErrorCode('UNKNOWN_ERROR')
                         break;
                 }
             }
@@ -144,8 +146,7 @@ const SignUpPage = () => {
                         Sign Up
                     </button>
                     <span
-                        className="mt-5 text-center text-sm text-custom-gray-700/80"
-                    >
+                        className="md:mt-5 mt-4 text-center md:text-sm text-xs text-custom-gray-700/80">
                         Already have account?
                         <Link
                             href="/sign-in"

@@ -88,13 +88,13 @@ const SignInPage = () => {
                 </section>
                 <section className="h-full flex-1 flex justify-center items-center px-4 overflow-hidden">
                     <div
-                        className={'border border-white/20 px-4 py-14 rounded-md flex flex-col justify-center items-center'}>
+                        className={'border border-white/20 px-4 md:py-14 py-10 rounded-md flex flex-col justify-center items-center'}>
                         <h1
                             className={"text-white/90 text-center md:text-2xl text-lg font-medium"}>
                             Welcome back to ORION.
                         </h1>
                         <p
-                            className={"text-sm text-white/50 mt-2 text-center"}>
+                            className={"md:text-sm text-xs text-white/50 mt-2 text-center"}>
                             Sign in and take control of your time.
                         </p>
                         <form
@@ -134,12 +134,12 @@ const SignInPage = () => {
                             </button>
                             <button
                                 type={"button"}
-                                className="cursor-pointer hover:underline text-sm text-white mt-4">
+                                className="cursor-pointer hover:underline md:text-sm text-xs text-white mt-4">
                                 Forgot your password?
                             </button>
                             <span
-                                className={"text-custom-gray-700 text-center text-sm mt-1"}>
-                        {"Or don't have an account?"}
+                                className={"text-custom-gray-700 text-center md:text-sm text-xs md:mt-1"}>
+                                {"Or don't have an account?"}
                                 <Link className={"text-vibrant-purple-400 hover:underline"}
                                       href="/sign-up"> Sign up</Link></span>
                         </form>
