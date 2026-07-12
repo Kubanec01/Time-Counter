@@ -180,16 +180,13 @@ const SectionCart = ({...props}: SectionCartProps) => {
             listClassName={userRole === 'Member' ? "" : "pt-5"}
             menuButtonsClassname={isRunning ? 'cursor-not-allowed' : ''}
             bodyClassname={"py-2"}
-            sectionList={sectionList}
-        >
+            sectionList={sectionList}>
             <UserBadge
                 className={isWorkspaceRoleAdmin ? "flex" : "hidden"}
-                userName={props.userName}
-            />
+                userName={props.userName}/>
             <ul
                 className={`${
-                    subSections.length > 0 ? "flex-1" : "hidden"} w-full flex flex-col justify-center items-center mt-2`}
-            >
+                    subSections.length > 0 ? "flex-1" : "hidden"} w-full flex flex-col justify-center items-center mt-2`}>
                 {subSections.map((s) => (
                     <SubSectionCart
                         key={s.subSectionId}

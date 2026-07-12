@@ -44,3 +44,10 @@ export const enterProjectMainPageUrlPath = (projectType: ProjectType, projectId:
 
 export const setProjectDeletePageUrlPath = (projectId: string) =>
     `/workspaces/settings/project/delete/${projectId}`
+
+
+// Errors
+type ErrorUrlCode = 'general' | 'not-found' | 'server'
+
+export const setErrorPageUrlPath = (errorCode: ErrorUrlCode) =>
+    `/error/${errorCode}`

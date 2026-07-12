@@ -12,11 +12,11 @@ import {getUniqueDatesFromSectionByDates} from "@/features/utilities/date/getUni
 import {NoResultBar} from "@/components/NoTracksFoundBar/NoResultBar";
 import {EntryListPanel} from "@/components/EntryListPanel/EntryListPanel";
 import ListContainer from "@/components/List-Components/ListContainer/ListContainer";
-import {formateDateToYMD} from "@/features/utilities/date/dateOperations";
 import MaxTrackingTimeIndicator from "@/components/MaxTrackingTimeIndicator/MaxTrackingTimeIndicator";
 
 type ProjectSectionsProps = {
     projectId: string;
+    selectedUserId: string;
 };
 
 export const ProjectSections = ({...props}: ProjectSectionsProps) => {
@@ -41,7 +41,14 @@ export const ProjectSections = ({...props}: ProjectSectionsProps) => {
                 .filter((s: UpdatedSectionByDate) => s.projectId === props.projectId)
 
             const ascendedSectionsByDates = sortDatesAscending(getUniqueDatesFromSectionByDates(validSectionsByDates))
-            setSections(workspaceData.projectsSections.filter((s: Section) => s.projectId === props.projectId))
+            const projectSections: Section[] = workspaceData.projectsSections.filter((s: Section) => s.projectId === props.projectId)
+
+            const filteredSectionsByUSerRole = () => {
+                if (userRole === 'Member') return projectSections.filter((sec) => sec.userId === userId)
+                else return projectSections
+            }
+
+            setSections(filteredSectionsByUSerRole())
             setSectionsDates(ascendedSectionsByDates)
 
         }
@@ -61,15 +68,13 @@ export const ProjectSections = ({...props}: ProjectSectionsProps) => {
 
     return (
         <EntryListPanel
-            classname={"mb-10"}
-        >
+            classname={"mb-10"}>
             <>
                 <NoResultBar
                     bodyClass={sections.length === 0 ? "flex" : "hidden"}
                     label={"No tracks found 0.o"}
                 />
-                <ul className={`${sections.length === 0 ? "hidden" : "flex"} w-full flex-col gap-8`}
-                >
+                <ul className={`${sections.length === 0 ? "hidden" : "flex"} w-full flex-col gap-8`}>
                     {sectionsDates.map((date) => (
                         <li
                             key={date}
@@ -88,8 +93,7 @@ export const ProjectSections = ({...props}: ProjectSectionsProps) => {
                                 />
                             </div>
                             <ListContainer
-                                headerTitles={['Name', 'Type', 'Time', '']}
-                            >
+                                headerTitles={['Name', 'Type', 'Time', '']}>
                                 <>
                                     <ul
                                         className={'flex flex-col gap-1'}>

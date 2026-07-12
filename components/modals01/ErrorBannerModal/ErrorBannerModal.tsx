@@ -10,6 +10,7 @@ const ErrorBannerModal = () => {
     const {errorCode, setErrorCode} = useErrorBannerContext()
     const [isMounted, setIsMounted] = useState(false)
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setIsMounted(true)
     }, [])
 
@@ -41,7 +42,7 @@ const ErrorBannerModal = () => {
         createPortal(
             <section
                 style={{zIndex: 9999}}
-                className={'fixed top-0 left-0 w-full py-5 px-6 text-cloud-white bg-[#f15e6b] flex justify-center items-center'}>
+                className={'fixed top-0 left-0 w-full py-5 px-6 text-cloud-white bg-danger-400 flex justify-center items-center'}>
                 <div
                     className={'flex justify-between items-center max-w-4xl w-11/12'}>
                     <h1

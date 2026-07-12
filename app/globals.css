@@ -15,6 +15,16 @@
     --color-gradient-purple: #dbcffd;
     --color-gradient-green: #CEF2EC;
     --color-cloud-white: #ffffff;
+    --color-danger-200: #f8a5ac;
+    --color-danger-300: #f47f89;
+    --color-danger-400: #f15e6b;
+    --color-danger-500: #e54b5a;
+    --color-danger-600: #cf3e4d;
+    --color-light-green-200: #caf9ea;
+    --color-light-green-300: #aff6dc;
+    --color-light-green-400: #94F2CD;
+    --color-light-green-500: #78e6bb;
+    --color-light-green-600: #5ed8a8;
     --color-light-green: #94F2CD;
     --color-dark-green: #124C0F;
     --color-light-purple: #919191;
@@ -22,6 +32,10 @@
 }
 
 @layer components {
+
+    .test-border {
+        @apply border border-red-500;
+    }
 
     .small-button {
         @apply flex items-center justify-center text-xs p-1 px-1.5 rounded-md cursor-pointer;

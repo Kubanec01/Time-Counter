@@ -98,9 +98,8 @@ export const ProjectSectionsSection = ({projectId}: { projectId: string }) => {
                     <section
                         className={"flex justify-between gap-2 w-full"}>
                         <div
-                            className={"flex gap-2"}
-                        >
-                            {members.length > 0 &&
+                            className={"flex gap-2"}>
+                            {(members.length > 0 && userRole !== 'Member') &&
                                 <SelectBar
                                     options={membersOptions}
                                     value={filteredMemberId}

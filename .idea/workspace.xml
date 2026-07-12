@@ -5,11 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="88e9b0f7-57eb-4e50-b7a0-4eeccd1312a7" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/app/error/general/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/projects/tracking/[id]/components/SelectUsersBar/SelectUserBar.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/modals01/SuccessBannerModal/SuccesssBannerModal.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/features/hooks/context/successCodeContext/successCodeContext.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/features/hooks/context/successCodeContext/useSuccessCodeContext.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/sign-in/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/sign-in/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/sign-up/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/sign-up/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/modals01/ErrorBunderModal/ErrorBannerModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/modals01/ErrorBunderModal/ErrorBannerModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/globals.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/projects/logging/[id]/components/components/ProjectSectionsSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/projects/logging/[id]/components/components/ProjectSectionsSection.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/projects/tracking/[id]/components/ProjectSections.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/projects/tracking/[id]/components/ProjectSections.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/projects/tracking/[id]/components/projectCart/TrackingProjectCart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/projects/tracking/[id]/components/projectCart/TrackingProjectCart.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/projects/tracking/[id]/components/projectCart/components/SectionCart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/projects/tracking/[id]/components/projectCart/components/SectionCart.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ProjectHero/ProjectHero.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ProjectHero/ProjectHero.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/modals01/ErrorBunderModal/ErrorBannerModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/modals01/ErrorBannerModal/ErrorBannerModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/Url_Paths/urlPaths.ts" beforeDir="false" afterPath="$PROJECT_DIR$/data/Url_Paths/urlPaths.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,8 +27,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="209" />
-    <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
+    <option name="cachedIndexableFilesCount" value="208" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -42,10 +51,10 @@
   <component name="PackageJsonUpdateNotifier">
     <dismissed value="$PROJECT_DIR$/package.json" />
   </component>
-  <component name="ProjectColorInfo">{
-  &quot;customColor&quot;: &quot;&quot;,
-  &quot;associatedIndex&quot;: 3
-}</component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 5,
+  "fromUser": true
+}]]></component>
   <component name="ProjectId" id="3EAXIQeLkaE5BrTSp6c5nZcwnEn" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -54,34 +63,36 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;javascript.preferred.runtime.type.id&quot;: &quot;node&quot;,
-    &quot;js.debugger.nextJs.config.created.client&quot;: &quot;true&quot;,
-    &quot;js.debugger.nextJs.config.created.server&quot;: &quot;true&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Users/jakubroman/WebstormProjects/Time-Counter/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "main",
+    "javascript.preferred.runtime.type.id": "node",
+    "js.debugger.nextJs.config.created.client": "true",
+    "js.debugger.nextJs.config.created.server": "true",
+    "junie.onboarding.icon.badge.shown": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "npm.Next.js: server-side.executor": "Run",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "to.speed.mode.migration.done": "true",
+    "ts.external.directory.path": "/Users/jakubroman/WebstormProjects/Time-Counter/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/features/hooks/context/successCodeContext" />
       <recent name="$PROJECT_DIR$/app/config" />
       <recent name="C:\Users\jakub\Desktop\Front-End-Folder\Projects\React_Ts\time-counter\components\modals01" />
       <recent name="C:\Users\jakub\Desktop\Front-End-Folder\Projects\React_Ts\time-counter\features\hooks\context" />
@@ -129,7 +140,8 @@
       <workItem from="1780897827173" duration="311000" />
       <workItem from="1781069897599" duration="1263000" />
       <workItem from="1781071186631" duration="542000" />
-      <workItem from="1781156417100" duration="1061000" />
+      <workItem from="1781156417100" duration="1131000" />
+      <workItem from="1783873043254" duration="9183000" />
     </task>
     <task id="LOCAL-00001" summary="build: update idea file">
       <option name="closed" value="true" />
@@ -163,17 +175,37 @@
       <option name="project" value="LOCAL" />
       <updated>1781071709446</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="refactor:&#10;- update error handling messages in signUp page&#10;&#10;style:&#10;- udpate SignUp page">
+      <option name="closed" value="true" />
+      <created>1781157542201</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1781157542201</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="build: update idea file" />
     <MESSAGE value="build: update idea file to include new" />
     <MESSAGE value="feat: create whole Delete Workspace fn and compatibility&#10;&#10;fix:&#10;update dependencie in form fn when user set incorrect password into Workspace Login on HomePage" />
     <MESSAGE value="style:&#10;- update responsive UI of sign in and sign up page&#10;&#10;feat:&#10;- create Loading modals components sections&#10;&#10;buld:&#10;- update node modules packages" />
-    <option name="LAST_COMMIT_MESSAGE" value="style:&#10;- update responsive UI of sign in and sign up page&#10;&#10;feat:&#10;- create Loading modals components sections&#10;&#10;buld:&#10;- update node modules packages" />
+    <MESSAGE value="refactor:&#10;- update error handling messages in signUp page&#10;&#10;style:&#10;- udpate SignUp page" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor:&#10;- update error handling messages in signUp page&#10;&#10;style:&#10;- udpate SignUp page" />
   </component>
 </project>
