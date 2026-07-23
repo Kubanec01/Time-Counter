@@ -1,6 +1,5 @@
 'use client'
 
-
 import {useEffect, useState} from "react";
 import {UserMenu} from "@/components/mainNavbar/components/userMenu/UserMenu";
 import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
@@ -9,6 +8,7 @@ import {getHours} from "date-fns";
 import {ProfileAvatar} from "@/components/ProfileAvatar/ProfileAvatar";
 import {CopyTextButton} from "@/components/CopyTextButton/CopyTextButton";
 import LoadingSmallModal from "@/components/modals01/loadings/LoadingSmallModal/LoadingSmallModal";
+import ToggleViewThemeButton from "@/components/ToggleViewThemeButton/ToggleViewThemeButton";
 
 
 const Navbar = () => {
@@ -91,10 +91,7 @@ const Navbar = () => {
                     </button>
                 </li>
                 <li>
-                    <button
-                        className={btnStyle}>
-                        Contact us
-                    </button>
+                    <ToggleViewThemeButton/>
                 </li>
                 <li
                     className={"ml-2"}>

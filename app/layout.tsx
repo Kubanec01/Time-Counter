@@ -7,6 +7,7 @@ import Navbar from "@/components/mainNavbar/Navbar";
 import {Inter} from "next/font/google"
 import {ErrorBannerContextProvider} from "@/features/hooks/context/useErrorBannerContext";
 import ErrorBannerModal from "../components/modals01/ErrorBannerModal/ErrorBannerModal";
+import ThemeModeContextProvider from "@/features/hooks/context/themeModeContext/ThemeModeContextProvider";
 
 const inter = Inter({
     subsets: ["latin", "latin-ext"],
@@ -28,15 +29,17 @@ export default function RootLayout({children}: Readonly<{
     return (
         <html lang="en">
         <body className={`${inter.className} font-sans`}>
-        <ErrorBannerContextProvider>
-            <WorkSpaceContextProvider>
-                <ClockTimeContextProvider>
-                    <Navbar/>
-                    <ErrorBannerModal/>
-                    {children}
-                </ClockTimeContextProvider>
-            </WorkSpaceContextProvider>
-        </ErrorBannerContextProvider>
+        <ThemeModeContextProvider>
+            <ErrorBannerContextProvider>
+                <WorkSpaceContextProvider>
+                    <ClockTimeContextProvider>
+                        <Navbar/>
+                        <ErrorBannerModal/>
+                        {children}
+                    </ClockTimeContextProvider>
+                </WorkSpaceContextProvider>
+            </ErrorBannerContextProvider>
+        </ThemeModeContextProvider>
         </body>
         </html>
     );
