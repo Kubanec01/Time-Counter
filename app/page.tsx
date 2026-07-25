@@ -79,9 +79,9 @@ export default function HomePage() {
                             className={"fixed bottom-0 left-0 w-full h-[12%] bg-linear-to-t from-gradient-green to-transparent z-10"}/>
                         {/*Projects Hero*/}
                         <div
-                            className={"w-[90%] max-w-small mx-auto border-l flex flex-col justify-center items-start border-black/20 h-150 pl-7"}>
+                            className={"w-[90%] max-w-small mx-auto border-l flex flex-col justify-center items-start border-black/20 dark:border-white h-150 pl-7"}>
                             <section
-                                className={"flex justify-between items-center w-full border-b border-black/20"}>
+                                className={"flex justify-between items-center w-full border-b border-black/20 dark:border-white"}>
                                 {/*Left Side*/}
                                 <div
                                     className={`flex items-center justify-center`}>

@@ -1,8 +1,8 @@
 'use client'
 
 import {createContext, Dispatch, ReactNode, SetStateAction, useState} from "react";
-import {getLocalThemeMode, setLocalThemeMode, ThemeMode} from "@/features/local/localThemeMode";
-
+import {useLocalStorage} from "@/features/hooks/useStorage/useLocalStorage";
+type ThemeMode = 'light' | 'dark'
 
 
 type ThemeModeContext = {
@@ -15,18 +15,25 @@ export const themeModeContext = createContext<ThemeModeContext | undefined>(unde
 
 
 const ThemeModeContextProvider = ({children}: {children: ReactNode}) => {
+    const {getLocalStorage, setLocalStorage} = useLocalStorage()
+    const themeKey = process.env.NEXT_PUBLIC_THEME_MODE_KEY as string
 
-    const [themeMode, setThemeMode] = useState<ThemeMode>(getLocalThemeMode());
+    const [themeMode, setThemeMode] = useState<ThemeMode>(getLocalStorage(themeKey, 'light'));
 
     const handleChangeThemeMode = () => {
         let updatedThemeMode: ThemeMode;
 
-        if (themeMode === 'dark')
+        if (themeMode === 'dark'){
             updatedThemeMode = 'light'
-        else updatedThemeMode = 'dark';
+            document.documentElement.classList.remove('dark')
+        }
+        else {
+            updatedThemeMode = 'dark'
+            document.documentElement.classList.add('dark')
+        }
 
         setThemeMode(updatedThemeMode)
-        setLocalThemeMode(updatedThemeMode)
+        setLocalStorage(themeKey, updatedThemeMode)
     }
 
     return (

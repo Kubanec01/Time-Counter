@@ -4,16 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="88e9b0f7-57eb-4e50-b7a0-4eeccd1312a7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/components/ToggleViewThemeButton/ToggleViewThemeButton.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/features/hooks/context/themeModeContext/ThemeModeContextProvider.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/features/hooks/context/themeModeContext/useThemeModeContext.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/features/local/localThemeMode.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/light-theme-toggle-button-img.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/night-theme-toggle-button-img.png" afterDir="false" />
+    <list default="true" id="88e9b0f7-57eb-4e50-b7a0-4eeccd1312a7" name="Changes" comment="feat(themeMode):&#10;- create ThemeMode toggle button into Navbar and whle fn on handleThemeMode style">
+      <change afterPath="$PROJECT_DIR$/features/hooks/useStorage/useLocalStorage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/mainNavbar/Navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/mainNavbar/Navbar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/globals.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/features/hooks/context/themeModeContext/ThemeModeContextProvider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/features/hooks/context/themeModeContext/ThemeModeContextProvider.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/features/local/localThemeMode.ts" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,7 +18,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="215" />
+    <option name="cachedIndexableFilesCount" value="218" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="Git.Settings">
@@ -139,7 +136,8 @@
       <workItem from="1781156417100" duration="1131000" />
       <workItem from="1783873043254" duration="9367000" />
       <workItem from="1784228207379" duration="3447000" />
-      <workItem from="1784822527765" duration="2676000" />
+      <workItem from="1784822527765" duration="2848000" />
+      <workItem from="1784997326742" duration="6194000" />
     </task>
     <task id="LOCAL-00001" summary="build: update idea file">
       <option name="closed" value="true" />
@@ -189,7 +187,15 @@
       <option name="project" value="LOCAL" />
       <updated>1783887965355</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="feat(themeMode):&#10;- create ThemeMode toggle button into Navbar and whle fn on handleThemeMode style">
+      <option name="closed" value="true" />
+      <created>1784825277476</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1784825277476</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -213,6 +219,7 @@
     <MESSAGE value="style:&#10;- update responsive UI of sign in and sign up page&#10;&#10;feat:&#10;- create Loading modals components sections&#10;&#10;buld:&#10;- update node modules packages" />
     <MESSAGE value="refactor:&#10;- update error handling messages in signUp page&#10;&#10;style:&#10;- udpate SignUp page" />
     <MESSAGE value="Feat:&#10;- Create dependency for logging project for Select Users button for userRole visibility&#10;&#10;- create errors page components&#10;&#10;- create successMess context and banner component&#10;&#10;- create base structure of users data select filtering in Tracking Project" />
-    <option name="LAST_COMMIT_MESSAGE" value="Feat:&#10;- Create dependency for logging project for Select Users button for userRole visibility&#10;&#10;- create errors page components&#10;&#10;- create successMess context and banner component&#10;&#10;- create base structure of users data select filtering in Tracking Project" />
+    <MESSAGE value="feat(themeMode):&#10;- create ThemeMode toggle button into Navbar and whle fn on handleThemeMode style" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(themeMode):&#10;- create ThemeMode toggle button into Navbar and whle fn on handleThemeMode style" />
   </component>
 </project>
