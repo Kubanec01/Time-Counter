@@ -21,7 +21,7 @@ const Navbar = () => {
     const {userInitials, workspaceName, workspaceId, mode, userId, userName} = useWorkSpaceContext()
     const {replace} = useReplaceRouteLink()
 
-    const btnStyle = "text-black text-sm duration-150 ease-in-out cursor-pointer hover:bg-black/5 border border-transparent hover:border-black/10 px-3 py-0.5 rounded-md duration-150"
+    const btnStyle = "text-black dark:text-white/84 text-sm duration-150 ease-in-out cursor-pointer hover:bg-black/5 border border-transparent hover:border-black/10 px-3 py-0.5 rounded-md duration-150"
 
     const welcomeSign = () => {
         const currHour = getHours(new Date())
@@ -43,15 +43,14 @@ const Navbar = () => {
     return (
         <>
         <div
-            className={`${userId ? "block" : "hidden"} w-[90%] max-w-small backdrop-blur-sm px-4 fixed top-2 left-2/4 -translate-x-2/4 h-[46px]
-             rounded-xl z-40 bg-[#F8F8F8E6] border border-black/20 shadow-xs flex justify-between items-center`}>
+            className={`${userId ? "block" : "hidden"} w-[90%] max-w-small backdrop-blur-sm px-4 fixed top-2 left-2/4 -translate-x-2/4 h-11.5
+             rounded-xl z-40 bg-[#F8F8F8E6] dark:bg-black/40 text-black  dark:backdrop-blur-lg border border-black/20 shadow-xs flex justify-between items-center`}>
             {/*Left Side*/}
             <div
                 className={"h-full flex justify-start items-center"}>
                 <div
                     onClick={() => replace("/")}
-                    className={"h-full flex items-center justify-center pr-4 cursor-pointer border-r border-black/10"}
-                >
+                    className={"h-full flex items-center justify-center pr-4 cursor-pointer border-r border-black/10"}>
                     <img src={"/Logo.png"} alt={"Logo image"} className={"w-[20px] aspect-square"}/>
                 </div>
                 <div
@@ -59,18 +58,18 @@ const Navbar = () => {
                     {mode === "solo"
                         ?
                         <div
-                            className={"text-black/80 bg-black/4 medium-button ml-[18px] cursor-auto border border-black/10"}>
+                            className={"text-black/80 dark:text-white/84 bg-black/4 medium-button ml-4.5 cursor-auto border border-black/10"}>
                             {welcomeSign()}
                         </div>
                         :
                         <>
-                            <span className={"text-black font-medium text-sm ml-[22px]"}>
+                            <span className={"text-black dark:text-white/84 font-medium text-sm ml-5.5"}>
                                 {"Workspace >"}
                             </span>
                             <div
-                                className={`flex flex-1 items-center justify-center gap-[30px] pl-1.5 h-full w-auto`}>
+                                className={`flex flex-1 items-center justify-center gap-7.5 pl-1.5 h-full w-auto`}>
                             <span
-                                className={"text-black/50 font-medium text-sm flex items-center justify-center"}>
+                                className={"text-black/50 dark:text-white/84 font-medium text-sm flex items-center justify-center"}>
                                 {workspaceName} /
                                 <span className={"text-xs ml-1"}> {workspaceId}</span> <CopyTextButton
                                 value={workspaceId}/>

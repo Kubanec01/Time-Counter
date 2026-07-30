@@ -21,7 +21,8 @@ export const CopyTextButton = ({value}: { value: string }) => {
             <button
                 type={"button"}
                 onClick={() => copyText()}
-                className={"text-xs ml-1.5 text-black/40 cursor-pointer hover:text-black/60"}>
+                className={"text-xs ml-1.5 text-black/40 dark:text-white/60" +
+                    " cursor-pointer hover:text-black/60 dark:hover:text-white/80"}>
                 <FaRegCopy/>
             </button>
             <div

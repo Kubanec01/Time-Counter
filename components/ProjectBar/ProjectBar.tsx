@@ -36,47 +36,44 @@ export const ProjectBar = ({...props}: ProjectBarProps) => {
         <>
             <div
                 onClick={() => enterProject()}
-                className={"cursor-pointer ease-in border mb-4 border-black/20 shadow-md rounded-xl" +
-                    " bg-linear-to-t from-white to-white hover:from-black/4 duration-100 w-full flex items-center justify-between px-6 py-4"}
-            >
+                className={"cursor-pointer ease-in border mb-4 border-black/20 dark:border-white/20 shadow-md rounded-xl" +
+                    " bg-linear-to-t from-white dark:from-black/50 to-white dark:to-black/50 hover:from-black/4" +
+                    " dark:hover:from-black/70 duration-100 w-full flex items-center justify-between px-6 py-4"}>
                 <div
                     className={"w-[30%]"}>
                     <p
-                        className={"text-xs font-medium text-vibrant-purple-700"}
-                    >
+                        className={"text-xs font-medium text-vibrant-purple-700 dark:text-vibrant-purple-500"}>
                         Project name
                     </p>
                     <h1
-                        className={"truncate"}>
+                        className={"truncatetext-black dark:text-white"}>
                         {props.title}
                     </h1>
                 </div>
                 <div
                     className={"w-[20%]"}>
                     <p
-                        className={"text-xs font-medium text-black/50"}
-                    >
+                        className={"text-xs font-medium text-black/50 dark:text-white/70"}>
                         Total time
                     </p>
                     <h1
-                        className={""}>
+                        className={"text-black dark:text-white"}>
                         {props.projectTotalTimeString}
                     </h1>
                 </div>
                 <div
                     className={"w-[20%]"}>
                     <p
-                        className={"text-xs font-medium text-black/50"}
-                    >
+                        className={"text-xs font-medium text-black/50 dark:text-white/70"}>
                         Users
                     </p>
                     <h1
-                        className={""}>
+                        className={"text-black dark:text-white"}>
                         {props.membersValue}
                     </h1>
                 </div>
                 <h1
-                    className={"text-sm"}>
+                    className={"text-sm text-black dark:text-white/70"}>
                     {'Enter project >'}
                 </h1>
             </div>

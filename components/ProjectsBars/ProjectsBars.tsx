@@ -7,7 +7,7 @@ import {useWorkSpaceContext} from "@/features/hooks/context/workspaceContext";
 import {useMounted} from "@/features/hooks/useMounted";
 import {formatSecondsToTimeString} from "@/features/utilities/time/timeOperations";
 import {ProjectBar} from "@/components/ProjectBar/ProjectBar";
-import {db} from "../../app/config/firebase/config";
+import {db} from "@/app/config/firebase/config";
 
 
 const ProjectsBars = () => {
@@ -39,12 +39,8 @@ const ProjectsBars = () => {
     return (
         <>
             <div
-                className={"relative w-full flex flex-1 overflow-y-hidden"}
-            >
-                <span
-                    className={"absolute top-0 left-0 w-full h-10 bg-linear-to-b from-white from-25% z-30 to-transparent"}/>
-
-                <ul className={"pb-[24px] pt-6 w-full overflow-y-auto z-10"}>
+                className={"relative w-full flex flex-1 overflow-y-hidden"}>
+                <ul className={"pb-6 pt-6 w-full overflow-y-auto z-10 mask-t-from-90% mask-b-from-90%"}>
                     {projectsData.length > 0 ?
                         <>
                             {projectsData.map((p: Project) => (

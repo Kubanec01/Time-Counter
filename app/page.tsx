@@ -79,18 +79,19 @@ export default function HomePage() {
                             className={"fixed bottom-0 left-0 w-full h-[12%] bg-linear-to-t from-gradient-green to-transparent z-10"}/>
                         {/*Projects Hero*/}
                         <div
-                            className={"w-[90%] max-w-small mx-auto border-l flex flex-col justify-center items-start border-black/20 dark:border-white h-150 pl-7"}>
+                            className={"w-[90%] max-w-small mx-auto border-l flex flex-col justify-center items-start " +
+                                "border-black/20 dark:border-white/50 h-150 pl-7"}>
                             <section
-                                className={"flex justify-between items-center w-full border-b border-black/20 dark:border-white"}>
+                                className={"flex justify-between items-center w-full border-b border-black/20 dark:border-white/50"}>
                                 {/*Left Side*/}
                                 <div
                                     className={`flex items-center justify-center`}>
                                     <h1
-                                        className={"text-[48px]"}>
+                                        className={"text-[48px] text-black dark:text-white/90"}>
                                         Projects
                                     </h1>
                                     <p
-                                        className={"text-base text-black/55 font-medium -mb-5.5 ml-3"}>
+                                        className={"text-base text-black/55 dark:text-white/80 -mb-5.5 ml-3"}>
                                         See all started projects
                                     </p>
                                 </div>
@@ -125,13 +126,16 @@ export default function HomePage() {
                                             <MediumButton
                                                 buttonType={'button'}
                                                 disabled={typeofProject === 'tracking'}
-                                                className={typeofProject === 'tracking' ? "bg-purple-gradient hover:bg-vibrant-purple-600 cursor-default" : "bg-black/10 text-black/60 border-black/1"}
+                                                className={typeofProject === 'tracking' ? "bg-purple-gradient " +
+                                                    "hover:bg-vibrant-purple-600 cursor-default" : "bg-black/10 text-black/60 " +
+                                                    "border-black/1"}
                                                 onClick={() => setTypeOfProject("tracking")}>
                                                 {'I will track with timer'}
                                             </MediumButton>
                                             <MediumButton
                                                 buttonType={'button'}
-                                                className={typeofProject === 'tracking' ? "bg-black/10 text-black/60 border-black/1" : "bg-purple-gradient hover:bg-vibrant-purple-600 cursor-default"}
+                                                className={typeofProject === 'tracking' ? "bg-black/10 " +
+                                                    "text-black/60 border-black/1" : "bg-purple-gradient hover:bg-vibrant-purple-600 cursor-default"}
                                                 onClick={() => setTypeOfProject("logging")}>
                                                 {'I will enter time manually'}
                                             </MediumButton>
