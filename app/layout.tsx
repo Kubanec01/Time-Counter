@@ -28,6 +28,9 @@ export default function RootLayout({children}: Readonly<{
 
     return (
         <html lang="en">
+        <head>
+            <link rel="icon" href="/favicon-ico.png"/>
+        </head>
         <body className={`${inter.className} font-sans`}>
         <ThemeModeContextProvider>
             <ErrorBannerContextProvider>

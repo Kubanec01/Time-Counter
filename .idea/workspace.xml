@@ -5,13 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="88e9b0f7-57eb-4e50-b7a0-4eeccd1312a7" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/assets/orion-orbit-black.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/orion-orbit-gradient.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/orion-orbit-white.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/favicon-ico.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/github-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/google-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/login-background-gradient-desktop.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/CopyTextButton/CopyTextButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/CopyTextButton/CopyTextButton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ProjectBar/ProjectBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ProjectBar/ProjectBar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ProjectsBars/ProjectsBars.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ProjectsBars/ProjectsBars.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/mainNavbar/Navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/mainNavbar/Navbar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/night-theme-toggle-button-img.png" beforeDir="false" afterPath="$PROJECT_DIR$/public/night-theme-toggle-button-img.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/globals.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/sign-in/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/sign-in/page.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,7 +23,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="218" />
+    <option name="cachedIndexableFilesCount" value="219" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="Git.Settings">
@@ -34,19 +38,78 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/Kubanec01/Time-Counter.git&quot;,
-    &quot;accountId&quot;: &quot;29dd9fac-2834-44d9-9069-dbe28f38e4d6&quot;
+    &quot;accountId&quot;: &quot;fd159598-7e8e-4d5b-97b2-3a918d17bf35&quot;
   }
 }</component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
   </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0000013227903362" />
+      <entry key="S2" value="1.036204526217385" />
+      <entry key="S5" value="1.3820133327649522" />
+      <entry key="S10" value="2.020562214514714" />
+      <entry key="S30" value="3.7011871254896023" />
+      <entry key="S60" value="5.911343793966922" />
+      <entry key="M2" value="10.440366040483672" />
+      <entry key="M5" value="19.60502124252252" />
+      <entry key="M10" value="30.216381122305048" />
+      <entry key="M15" value="43.55860832244133" />
+      <entry key="M30" value="87.40140520641894" />
+      <entry key="H1" value="145.3385789700534" />
+      <entry key="H2" value="194.75782509521733" />
+      <entry key="H4" value="227.42210996162217" />
+      <entry key="D1" value="259.8612553129238" />
+      <entry key="W1" value="265.9659948304495" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="8.572826473875327E-31" />
+      <entry key="MS500" value="9.696718914908946E-7" />
+      <entry key="S2" value="0.031380235726217905" />
+      <entry key="S5" value="0.25041623442654876" />
+      <entry key="S10" value="0.5004164365875539" />
+      <entry key="S30" value="0.8019643649857042" />
+      <entry key="S60" value="1.0303692142651244" />
+      <entry key="M2" value="1.7309267344952248" />
+      <entry key="M5" value="3.619221243510146" />
+      <entry key="M10" value="6.351795489236391" />
+      <entry key="M15" value="9.999431237602415" />
+      <entry key="M30" value="21.46997008268047" />
+      <entry key="H1" value="35.901418900959115" />
+      <entry key="H2" value="47.864831147169134" />
+      <entry key="H4" value="55.65569868238058" />
+      <entry key="D1" value="63.32139629467105" />
+      <entry key="W1" value="64.75703873618103" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="1.3387156135755296E-16" />
+      <entry key="MS500" value="6.698416074639492E-4" />
+      <entry key="S2" value="0.1963050576313046" />
+      <entry key="S5" value="0.9242614255727303" />
+      <entry key="S10" value="1.953589900460558" />
+      <entry key="S30" value="4.150533260063164" />
+      <entry key="S60" value="6.676025633852834" />
+      <entry key="M2" value="11.976692425725743" />
+      <entry key="M5" value="23.11107046406007" />
+      <entry key="M10" value="36.49224706164592" />
+      <entry key="M15" value="53.49129464933274" />
+      <entry key="M30" value="108.81359072940882" />
+      <entry key="H1" value="181.19604321958423" />
+      <entry key="H2" value="242.59447423728517" />
+      <entry key="H4" value="283.0617010920451" />
+      <entry key="D1" value="323.1796365471559" />
+      <entry key="W1" value="330.7225940041184" />
+    </decayedShown>
+  </component>
   <component name="PackageJsonUpdateNotifier">
     <dismissed value="$PROJECT_DIR$/package.json" />
   </component>
   <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 5,
-  &quot;fromUser&quot;: true
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 3
 }</component>
   <component name="ProjectId" id="3EAXIQeLkaE5BrTSp6c5nZcwnEn" />
   <component name="ProjectLevelVcsManager">
@@ -56,38 +119,41 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;javascript.preferred.runtime.type.id&quot;: &quot;node&quot;,
-    &quot;js.debugger.nextJs.config.created.client&quot;: &quot;true&quot;,
-    &quot;js.debugger.nextJs.config.created.server&quot;: &quot;true&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;npm.Next.js: server-side.executor&quot;: &quot;Run&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Users/jakubroman/WebstormProjects/Time-Counter/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "main",
+    "javascript.preferred.runtime.type.id": "node",
+    "js.debugger.nextJs.config.created.client": "true",
+    "js.debugger.nextJs.config.created.server": "true",
+    "junie.onboarding.icon.badge.shown": "true",
+    "last_opened_file_path": "C:/Users/jakub/Desktop/Front-End-Folder/Projects/React_Ts/time-counter/public",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "ml.llm.AcpAgentsConfigurable",
+    "to.speed.mode.migration.done": "true",
+    "ts.external.directory.path": "C:\\Users\\jakub\\Desktop\\Front-End-Folder\\Projects\\React_Ts\\time-counter\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\jakub\Desktop\Front-End-Folder\Projects\React_Ts\time-counter\public" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/public" />
-      <recent name="$PROJECT_DIR$/features/hooks/context/successCodeContext" />
-      <recent name="$PROJECT_DIR$/app/config" />
+      <recent name="C:\Users\jakub\Desktop\Front-End-Folder\Projects\React_Ts\time-counter\public" />
+      <recent name="C:\Users\jakub\Desktop\Front-End-Folder\Projects\React_Ts\time-counter\assets" />
+      <recent name="C:\Users\jakub\Desktop\Front-End-Folder\Projects\React_Ts\time-counter" />
       <recent name="C:\Users\jakub\Desktop\Front-End-Folder\Projects\React_Ts\time-counter\components\modals01" />
       <recent name="C:\Users\jakub\Desktop\Front-End-Folder\Projects\React_Ts\time-counter\features\hooks\context" />
     </key>
@@ -110,7 +176,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-WS-261.23567.141" />
+        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-WS-261.27258.45" />
       </set>
     </attachedChunks>
   </component>
@@ -125,21 +191,8 @@
       <workItem from="1779651694347" duration="195000" />
       <workItem from="1780225346472" duration="8576000" />
       <workItem from="1780243791781" duration="5366000" />
-      <workItem from="1780377679373" duration="223000" />
-      <workItem from="1780378186535" duration="1997000" />
-      <workItem from="1780463297411" duration="2644000" />
-      <workItem from="1780465995582" duration="75000" />
-      <workItem from="1780510386110" duration="2166000" />
-      <workItem from="1780761954771" duration="1788000" />
-      <workItem from="1780897827173" duration="311000" />
-      <workItem from="1781069897599" duration="1263000" />
-      <workItem from="1781071186631" duration="542000" />
-      <workItem from="1781156417100" duration="1131000" />
-      <workItem from="1783873043254" duration="9367000" />
-      <workItem from="1784228207379" duration="3447000" />
-      <workItem from="1784822527765" duration="2848000" />
-      <workItem from="1784997326742" duration="6271000" />
-      <workItem from="1785425964979" duration="3780000" />
+      <workItem from="1788006797320" duration="4921000" />
+      <workItem from="1788107201611" duration="4943000" />
     </task>
     <task id="LOCAL-00001" summary="build: update idea file">
       <option name="closed" value="true" />
@@ -157,80 +210,15 @@
       <option name="project" value="LOCAL" />
       <updated>1779651881709</updated>
     </task>
-    <task id="LOCAL-00003" summary="feat: create whole Delete Workspace fn and compatibility&#10;&#10;fix:&#10;update dependencie in form fn when user set incorrect password into Workspace Login on HomePage">
-      <option name="closed" value="true" />
-      <created>1780465946889</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1780465946889</updated>
-    </task>
-    <task id="LOCAL-00004" summary="style:&#10;- update responsive UI of sign in and sign up page&#10;&#10;feat:&#10;- create Loading modals components sections&#10;&#10;buld:&#10;- update node modules packages">
-      <option name="closed" value="true" />
-      <created>1781071709446</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1781071709446</updated>
-    </task>
-    <task id="LOCAL-00005" summary="refactor:&#10;- update error handling messages in signUp page&#10;&#10;style:&#10;- udpate SignUp page">
-      <option name="closed" value="true" />
-      <created>1781157542201</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1781157542201</updated>
-    </task>
-    <task id="LOCAL-00006" summary="Feat:&#10;- Create dependency for logging project for Select Users button for userRole visibility&#10;&#10;- create errors page components&#10;&#10;- create successMess context and banner component&#10;&#10;- create base structure of users data select filtering in Tracking Project">
-      <option name="closed" value="true" />
-      <created>1783887965355</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1783887965355</updated>
-    </task>
-    <task id="LOCAL-00007" summary="feat(themeMode):&#10;- create ThemeMode toggle button into Navbar and whle fn on handleThemeMode style">
-      <option name="closed" value="true" />
-      <created>1784825277476</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1784825277476</updated>
-    </task>
-    <task id="LOCAL-00008" summary="feat:&#10;- create localStorage hook&#10;- update ThemeModeContextProvider.tsx fn&#10;&#10;style:&#10;- update custom dark variant for selectors">
-      <option name="closed" value="true" />
-      <created>1785003616461</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1785003616462</updated>
-    </task>
-    <option name="localTasksCounter" value="9" />
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="build: update idea file" />
     <MESSAGE value="build: update idea file to include new" />
-    <MESSAGE value="feat: create whole Delete Workspace fn and compatibility&#10;&#10;fix:&#10;update dependencie in form fn when user set incorrect password into Workspace Login on HomePage" />
-    <MESSAGE value="style:&#10;- update responsive UI of sign in and sign up page&#10;&#10;feat:&#10;- create Loading modals components sections&#10;&#10;buld:&#10;- update node modules packages" />
-    <MESSAGE value="refactor:&#10;- update error handling messages in signUp page&#10;&#10;style:&#10;- udpate SignUp page" />
-    <MESSAGE value="Feat:&#10;- Create dependency for logging project for Select Users button for userRole visibility&#10;&#10;- create errors page components&#10;&#10;- create successMess context and banner component&#10;&#10;- create base structure of users data select filtering in Tracking Project" />
-    <MESSAGE value="feat(themeMode):&#10;- create ThemeMode toggle button into Navbar and whle fn on handleThemeMode style" />
-    <MESSAGE value="feat:&#10;- create localStorage hook&#10;- update ThemeModeContextProvider.tsx fn&#10;&#10;style:&#10;- update custom dark variant for selectors" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat:&#10;- create localStorage hook&#10;- update ThemeModeContextProvider.tsx fn&#10;&#10;style:&#10;- update custom dark variant for selectors" />
+    <option name="LAST_COMMIT_MESSAGE" value="build: update idea file to include new" />
   </component>
 </project>

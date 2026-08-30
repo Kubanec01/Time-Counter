@@ -103,6 +103,10 @@ li {
     list-style: none;
 }
 
+/*input:-webkit-autofill {*/
+/*    box-shadow: 0 0 0 30px wh inset;*/
+/*}*/
+
 
 /* :root {
   --background: #ffffff;
